@@ -2781,6 +2781,16 @@
   }
 }
 
+
+/* v67 mobile critical fixes */
+@media (max-width: 860px) {
+  .canvas-hud {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -7285,6 +7295,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('Autosave is debounced, pagehide-safe and uses a versioned localStorage payload.');
     ok('Full regression sandbox is available and isolated from the current project.');
     ok('Final cleanup pass applied: stable autosave listeners and consolidated mobile HUD overrides.');
+    ok('Mobile HUD is hidden and project file/local project openers use mobile-safe handlers.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
 
     const classicOk = state.topHardwareStyle === 'classic' || state.topHardwareStyle === 'realistic';
@@ -9811,7 +9822,7 @@ function LocalProjectsDialog({ onClose }: { onClose: () => void }) {
 
   return ReactDOM.createPortal(
     <div
-      style={{ position: 'fixed', inset: 0, zIndex: 4000, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+      style={{ position: 'fixed', inset: 0, zIndex: 6500, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
       onPointerDown={e => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div style={{ width: 'min(92vw, 560px)', maxHeight: '82vh', overflow: 'auto', background: '#1b1b1b', border: '1px solid #444', borderRadius: 8, boxShadow: '0 20px 60px rgba(0,0,0,0.55)' }}>
@@ -10158,9 +10169,9 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                   <div className="mobile-sheet-label">Project files</div>
                   <div className="mobile-action-grid">
                     <button onClick={() => exportJSON(state)}>Save project file</button>
-                    <button onClick={() => { onRequestProjectFileImport(); window.setTimeout(() => setMobileSheet(null), 250); }}>Load project file</button>
+                    <button onPointerDown={e => { e.preventDefault(); onRequestProjectFileImport(); window.setTimeout(() => setMobileSheet(null), 350); }}>Load project file</button>
                     <button onClick={() => saveProjectToBrowser(state)}>Save to browser</button>
-                    <button onClick={() => { setMobileSheet(null); onOpenLocalProjects(); }}>Open local projects</button>
+                    <button onPointerDown={e => { e.preventDefault(); setMobileSheet(null); window.setTimeout(onOpenLocalProjects, 40); }}>Open local projects</button>
                   </div>
                 </div>
                 <div className="mobile-sheet-section">
@@ -12215,13 +12226,20 @@ function App() {
 
   function requestProjectFileImport() {
     pendingFileOpenRef.current = true;
-    // Mobile Safari is picky: invoke the file input directly from the user click,
-    // then retry on the next frame if the sheet closing swallowed focus.
-    projectFileInputRef.current?.click();
-    window.requestAnimationFrame(() => {
-      if (pendingFileOpenRef.current) projectFileInputRef.current?.click();
-      window.setTimeout(() => { pendingFileOpenRef.current = false; }, 900);
-    });
+    const input = projectFileInputRef.current || document.getElementById('project-file-input') as HTMLInputElement | null;
+    if (!input) {
+      setAutosaveStatus('Project file input unavailable');
+      pendingFileOpenRef.current = false;
+      return;
+    }
+    try {
+      input.value = '';
+      input.click();
+      window.setTimeout(() => { pendingFileOpenRef.current = false; }, 1200);
+    } catch {
+      setAutosaveStatus('Open project file failed');
+      pendingFileOpenRef.current = false;
+    }
   }
 
   const renderedDistanceGuides = useMemo(() => {
@@ -12279,10 +12297,13 @@ function App() {
       {showShortcutHelp && <ShortcutHelpOverlay onClose={() => setShowShortcutHelp(false)} />}
       {showProductionCheck && <ProductionCheckDialog warnings={warnings} onClose={() => setShowProductionCheck(false)} onOpenExport={() => { setShowProductionCheck(false); setShowExportDialog(true); }} />}
       <input
+        id="project-file-input"
         ref={projectFileInputRef}
         type="file"
         accept=".json,.epanel,application/json"
-        style={{ display: 'none' }}
+        tabIndex={-1}
+        aria-hidden="true"
+        style={{ position:'fixed', left:-10000, top:0, width:1, height:1, opacity:0, pointerEvents:'none' }}
         onChange={e => { pendingFileOpenRef.current = false; onImport(e); }}
       />
 
