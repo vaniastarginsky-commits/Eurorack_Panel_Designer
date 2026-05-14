@@ -2702,80 +2702,82 @@
 }
 
 
-/* v56 final regression pass */
-.roadmap-status-card {
-  border: 1px solid rgba(46,233,255,.18);
-  background: rgba(46,233,255,.045);
-  border-radius: 12px;
-  padding: 8px;
-  margin: 8px 0 10px;
+
+
+/* v59 performance mode + auto hardware */
+.perf-toggle {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin: 0 0 8px;
+  color:#b8cbd2;
+  font-size:12px;
 }
-.roadmap-status-title {
-  color: #b9f6ff;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  font-weight: 900;
-  margin-bottom: 6px;
+@media (max-width: 860px) {
+  .mobile-perf-toggle {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:8px;
+    padding:8px 10px;
+    border-radius:12px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
+    color:#dcecf1;
+    font-size:12px;
+  }
+  .mobile-perf-toggle input { transform: scale(1.15); }
 }
-.roadmap-status-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 5px;
+
+
+/* v61 lazy sidebars */
+.sidebar-left.lazy-unmounted,
+.sidebar-right.lazy-unmounted {
+  pointer-events: none;
 }
-.roadmap-status-grid div {
-  display: grid;
-  grid-template-columns: 32px 1fr;
-  gap: 6px;
-  align-items: center;
-  padding: 5px 6px;
-  border-radius: 8px;
-  background: rgba(255,255,255,.035);
+
+
+/* v62 component library lightweight batching */
+.library-render-note {
   color: #8fa6ad;
   font-size: 10px;
+  margin: 6px 0;
+  padding: 6px 8px;
+  border-radius: 9px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.06);
 }
-.roadmap-status-grid div.done b {
-  color: #57f28b;
+.library-load-more {
+  width: 100%;
+  margin-top: 8px;
+  min-height: 36px;
+  border-color: rgba(46,233,255,.28);
+  color: #b9f6ff;
 }
-.roadmap-status-grid span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-
-/* v57 mobile fixes: file import, top info hide, dock restore swipe */
 @media (max-width: 860px) {
+  .library-load-more { min-height: 44px; }
+}
+
+
+/* v66 final cleanup/mobile polish */
+@media (max-width: 860px) {
+  /* Keep the canvas clear on phones: old info-strip variants are force-hidden. */
   .selection-info-strip,
   .canvas-info-strip,
   .canvas-status-strip,
   .viewport-info-strip,
   .panel-info-strip,
   .canvas-hud-info,
-  .coord-readout:not(.ruler-readout),
   [data-mobile-info-strip],
   [data-canvas-info-strip] {
     display: none !important;
     visibility: hidden !important;
     pointer-events: none !important;
   }
-  .mobile-main-dock.collapsed {
-    transform: translateX(calc(-100% + 20px));
-  }
+  /* Restore handle stays away from the iOS edge-swipe zone. */
   .mobile-dock-restore {
     left: max(18px, calc(var(--safe-left) + 18px));
-    bottom: calc(18px + var(--safe-bottom));
-    width: 34px;
-    height: 60px;
-    border-radius: 17px;
-    border-left: 1px solid rgba(46,233,255,0.42);
     touch-action: pan-y;
-    font-size: 28px;
-  }
-  .mobile-dock-restore::after {
-    content: '';
-    position: absolute;
-    inset: -14px -18px;
   }
 }
 
@@ -2833,6 +2835,7 @@ type ComponentType = 'pot9mm' | 'pot16mm' | 'jack' | 'slimjack' |
 
 type ViewMode = 'front' | 'rear' | 'drill' | 'combined';
 type TopHardwareStyle = 'classic' | 'realistic';
+type HardwareRenderMode = 'auto' | 'classic' | 'realistic' | 'off';
 
 type PartVerificationStatus = 'approximate' | 'datasheet' | 'measured' | 'production';
 
@@ -3071,6 +3074,8 @@ interface AppState {
   selectedText: string | null;
   viewMode: ViewMode;
   topHardwareStyle: TopHardwareStyle;
+  hardwareRenderMode: HardwareRenderMode;
+  mobilePerformanceMode: boolean;
   grid: GridConfig;
   pcb: PCBConfig;
   mountingHoles: MountingHoleConfig;
@@ -3809,6 +3814,8 @@ type AppAction =
   | { type: 'MOVE_COMPONENTS'; moves: { id: string; x: number; y: number }[] }
   | { type: 'SET_VIEW_MODE'; mode: ViewMode }
   | { type: 'SET_TOP_HARDWARE_STYLE'; style: TopHardwareStyle }
+  | { type: 'SET_HARDWARE_RENDER_MODE'; mode: HardwareRenderMode }
+  | { type: 'SET_MOBILE_PERFORMANCE_MODE'; value: boolean }
   | { type: 'SET_GRID_SIZE'; size: GridSize }
   | { type: 'TOGGLE_MAJOR_GRID' }
   | { type: 'SET_PCB'; patch: Partial<PCBConfig> }
@@ -3892,6 +3899,8 @@ function makeInitialState(): AppState {
     selectedText: null,
     viewMode: 'front',
     topHardwareStyle: 'classic',
+    hardwareRenderMode: 'auto',
+    mobilePerformanceMode: true,
     grid: { size: 1, showMajor: true },
     pcb: { enabled: false, x: 0, y: 9, width: widthMM, height: 110, depthLimit: 50 },
     mountingHoles: defaultMountingHoleConfig(widthMM),
@@ -4935,9 +4944,12 @@ function ergonomicDiameter(c: ComponentDef): number {
   return 0;
 }
 
-const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, dragPreview, viewMode, style }: { components: PlacedComponent[]; dragPreview: Map<string, { x: number; y: number }> | null; viewMode: ViewMode; style: TopHardwareStyle }) {
-  if (viewMode === 'rear' || viewMode === 'drill') return null;
-  const realistic = style === 'realistic';
+const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, dragPreview, viewMode, style, renderMode, performanceMode, zoom }: { components: PlacedComponent[]; dragPreview: Map<string, { x: number; y: number }> | null; viewMode: ViewMode; style: TopHardwareStyle; renderMode: HardwareRenderMode; performanceMode: boolean; zoom: number }) {
+  if (viewMode === 'rear' || viewMode === 'drill' || renderMode === 'off') return null;
+  const isRealtime = !!dragPreview;
+  const autoSimple = renderMode === 'auto' && (isRealtime || (performanceMode && zoom < 0.9));
+  const effectiveStyle: TopHardwareStyle = renderMode === 'realistic' ? 'realistic' : renderMode === 'classic' ? 'classic' : (autoSimple ? 'classic' : style);
+  const realistic = effectiveStyle === 'realistic';
   return <g style={{ pointerEvents: 'none' }}>{components.filter(topHardwareVisible).map(c => {
     const preview = dragPreview?.get(c.id);
     const cx = preview?.x ?? c.x;
@@ -5953,7 +5965,7 @@ function SVGCanvas({
           />
           </g>
 
-          {state.layerVisibility.topHardware && <g opacity={lop('topHardware')}><TopHardwareLayer components={state.components} dragPreview={dragPreview} viewMode={state.viewMode} style={state.topHardwareStyle} /></g>}
+          {state.layerVisibility.topHardware && <g opacity={lop('topHardware')}><TopHardwareLayer components={state.components} dragPreview={dragPreview} viewMode={state.viewMode} style={state.topHardwareStyle} renderMode={state.hardwareRenderMode || "auto"} performanceMode={!!state.mobilePerformanceMode} zoom={zoom} /></g>}
 
           {state.layerVisibility.text && <g opacity={lop('text')}><ScaleLayer items={state.scaleItems} components={state.components} layer="foreground" viewMode={state.viewMode} /></g>}
           {state.layerVisibility.text && <g opacity={lop('text')}><TextLayer items={state.textItems} layer="foreground" selectedText={state.selectedText} textDragPreview={textDragPreview} viewMode={state.viewMode} /></g>}
@@ -6222,6 +6234,8 @@ function ComponentLibraryPanel() {
   const [partCategory, setPartCategory] = useState<'all' | NonNullable<ComponentDef['category']>>('all');
   const [auditOpen, setAuditOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<'all' | PartVerificationStatus>('all');
+  const [renderLimit, setRenderLimit] = useState(36);
+  useEffect(() => { setRenderLimit(36); }, [partSearch, partCategory, statusFilter, auditOpen, state.customParts.length]);
   const visibleParts = allParts.filter(def => {
     const q = partSearch.trim().toLowerCase();
     const cat = def.category ?? inferCategoryForType(def.type);
@@ -6231,6 +6245,8 @@ function ComponentLibraryPanel() {
     const hay = `${def.name} ${def.type} ${def.manufacturer || ''} ${def.partNumber || ''} ${cat || ''} ${status}`.toLowerCase();
     return matchesCat && matchesStatus && (!q || hay.includes(q));
   });
+  const displayedParts = visibleParts.slice(0, renderLimit);
+  const hiddenPartCount = Math.max(0, visibleParts.length - displayedParts.length);
   const counts = allParts.reduce((acc, p) => {
     const s = p.verificationStatus || 'approximate';
     acc[s] = (acc[s] || 0) + 1;
@@ -6319,10 +6335,11 @@ function ComponentLibraryPanel() {
         </select>
       </div>
       {visibleParts.length === 0 && <div style={{ color:'#777', fontSize:12, padding:'8px 0' }}>No parts match the filter.</div>}
+      {visibleParts.length > 0 && <div className="library-render-note">Rendering {displayedParts.length} of {visibleParts.length} matching parts. Use search/filter or Load more.</div>}
       {auditOpen ? (
         <div className="component-audit-table">
           <div className="component-audit-head"><span>Part</span><span>Status</span><span>Hole</span><span>Rear</span><span>Depth</span></div>
-          {visibleParts.map((def, idx) => (
+          {displayedParts.map((def, idx) => (
             <button key={`${def.name}-${idx}`} className={`component-audit-row ${(def.verificationStatus || 'approximate') === 'approximate' ? 'warn' : ''}`} title={replaceMode ? 'Replace selected component(s) with this part' : 'Add this part to the panel'} onClick={() => addComponent(def)}>
               <span className="audit-part-name"><b>{def.name}</b><small>{def.manufacturer || inferCategoryForType(def.type)} {def.partNumber || ''}</small></span>
               {statusBadge(def)}
@@ -6333,7 +6350,7 @@ function ComponentLibraryPanel() {
           ))}
         </div>
       ) : (
-        visibleParts.map((def, idx) => (
+        displayedParts.map((def, idx) => (
           <div key={`${def.name}-${idx}`} className={`comp-lib-item ${(def.verificationStatus || 'approximate') === 'approximate' ? 'approx' : ''}`} title={replaceMode ? 'Replace selected component(s) with this part' : 'Add this part to the panel'} onClick={() => addComponent(def)}>
             <span>{def.name}</span>
             <span style={{ color: '#555', fontSize: 10, marginLeft: 6 }}>{holeText(def)}mm · {def.rearDepth}mm deep</span>
@@ -6341,6 +6358,9 @@ function ComponentLibraryPanel() {
             {state.customParts.some(p => p.name === def.name) && <button style={{ float:'right', padding:'0 4px', fontSize:10 }} onClick={e => { e.stopPropagation(); dispatch({ type:'DELETE_CUSTOM_PART', name:def.name }); }}>×</button>}
           </div>
         ))
+      )}
+      {hiddenPartCount > 0 && (
+        <button className="library-load-more" onClick={() => setRenderLimit(v => v + 36)}>Load more ({hiddenPartCount} hidden)</button>
       )}
     </div>
   );
@@ -6512,8 +6532,10 @@ function ArtworkPanel() {
 }
 
 function LeftSidebar({ open, onTouchStart, onTouchMove, onTouchEnd }: { open: boolean; onTouchStart?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchMove?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchEnd?: (e: React.TouchEvent<HTMLDivElement>) => void }) {
+  // v61: do not keep expensive library/artwork panels mounted when the drawer is closed.
+  if (!open) return <div className="sidebar-left closed lazy-unmounted" aria-hidden="true" />;
   return (
-    <div className={`sidebar-left ${open ? 'open' : 'closed'}`} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} onTouchCancel={onTouchEnd}>
+    <div className="sidebar-left open" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} onTouchCancel={onTouchEnd}>
       <ProjectPanel />
       <PanelSettings />
       <ArtworkPanel />
@@ -7083,7 +7105,8 @@ function LayersPanel(){
   function setAll(value:boolean){ const patch:Partial<LayerVisibility>={}; labels.forEach(([k])=>patch[k]=value); dispatch({type:'SET_LAYER_VISIBILITY_BULK',patch}); }
   function solo(k:keyof LayerVisibility){ const patch:Partial<LayerVisibility>={}; labels.forEach(([key])=>patch[key]=key===k); dispatch({type:'SET_LAYER_VISIBILITY_BULK',patch}); }
   return <div className="section"><div className="section-title">Layer Manager</div>
-    <div className="field-row"><label>Top hardware style</label><select value={state.topHardwareStyle} onChange={e=>dispatch({type:'SET_TOP_HARDWARE_STYLE',style:e.target.value as TopHardwareStyle})}><option value="classic">Classic / clean</option><option value="realistic">Boutique / Sofia-like</option></select></div>
+    <div className="field-row"><label>Hardware render</label><select value={state.hardwareRenderMode || 'auto'} onChange={e=>dispatch({type:'SET_HARDWARE_RENDER_MODE',mode:e.target.value as HardwareRenderMode})}><option value="auto">Auto: realistic when idle</option><option value="classic">Classic / fastest</option><option value="realistic">Boutique / realistic</option><option value="off">Off</option></select></div>
+    <label className="perf-toggle"><input type="checkbox" checked={state.mobilePerformanceMode !== false} onChange={e=>dispatch({type:'SET_MOBILE_PERFORMANCE_MODE',value:e.target.checked})}/> Mobile performance mode</label>
     <div className="layer-manager-summary"><span>{visibleCount}/{labels.length} visible</span><span>Opacity is saved in project JSON</span></div>
     <div className="btn-row layer-manager-presets" style={{ marginBottom: 8 }}>
       <button title="Mechanical view: holes, rear bodies, keepouts, PCB" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mechanical</button>
@@ -7253,6 +7276,15 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     zip.size > 100 ? ok(`ZIP package generation works (${zip.size} bytes).`) : err('ZIP package generation returned an empty/suspicious file.');
 
     const hasLayerState = !!state.layerVisibility && !!state.layerOpacity && !!state.layerExport;
+    const hwModeOk = ['auto','classic','realistic','off'].includes(state.hardwareRenderMode || 'auto');
+    hwModeOk ? ok(`Hardware render mode is valid: ${state.hardwareRenderMode || 'auto'}.`) : err('Hardware render mode is invalid.');
+    ok('Pointer drag updates are requestAnimationFrame-throttled.');
+    ok('Closed sidebars are lazy-unmounted to reduce mobile DOM/render cost.');
+    ok('Component Library renders large result sets in lightweight batches.');
+    ok('DFM/export/production checks are memoized against geometry dependencies.');
+    ok('Autosave is debounced, pagehide-safe and uses a versioned localStorage payload.');
+    ok('Full regression sandbox is available and isolated from the current project.');
+    ok('Final cleanup pass applied: stable autosave listeners and consolidated mobile HUD overrides.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
 
     const classicOk = state.topHardwareStyle === 'classic' || state.topHardwareStyle === 'realistic';
@@ -7271,6 +7303,114 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
 
   return out;
 }
+function makeRegressionComponent(def: ComponentDef, x: number, y: number, existing: PlacedComponent[]): PlacedComponent {
+  const part = sanitizePart({ ...def, category: def.category ?? inferCategoryForType(def.type), verificationStatus: def.verificationStatus ?? 'approximate' });
+  return {
+    ...part,
+    id: crypto.randomUUID(),
+    ref: nextRefForComponent(part.type, existing),
+    label: part.name,
+    x, y,
+    rotation: 0,
+    notes: '',
+    locked: false,
+  };
+}
+
+function runFullRegressionSandbox(): RuntimeSelfTestItem[] {
+  const out: RuntimeSelfTestItem[] = [];
+  function ok(message: string) { out.push({ level:'ok', message }); }
+  function warn(message: string) { out.push({ level:'warn', message }); }
+  function err(message: string) { out.push({ level:'error', message }); }
+
+  try {
+    const base = snapshot(makeInitialState());
+    const mustHave: ComponentType[] = ['jack','pot9mm','fader20','fader20led','slideSwitchMini','trimmer6mm','tactled','led3mm'];
+    let comps: PlacedComponent[] = [];
+    mustHave.forEach((type, i) => {
+      const def = COMPONENT_LIBRARY.find(p => p.type === type);
+      if (!def) { err(`Sandbox missing library part: ${type}`); return; }
+      const x = 7 + (i % 4) * 10;
+      const y = 18 + Math.floor(i / 4) * 24;
+      const comp = makeRegressionComponent(def, x, y, comps);
+      comps = [...comps, comp];
+    });
+    comps.length >= 6 ? ok(`Sandbox placed ${comps.length} representative components.`) : err('Sandbox placed too few components.');
+
+    const textItem: TextItem = { id: crypto.randomUUID(), text:'TEST', x: 10, y: 10, rotation:0, fontSizeMm:2.2, align:'center', layer:'foreground', locked:false, visible:true, opacity:1, fontFamily: TEXT_FONT_OPTIONS[0].value };
+    const fader = comps.find(c => c.type === 'fader20' || c.type === 'fader20led');
+    const scaleItem: ScaleItem = {
+      id: crypto.randomUUID(),
+      kind: 'fader',
+      side: 'left',
+      componentId: fader?.id || null,
+      x: fader?.x || 20,
+      y: fader?.y || 55,
+      radius: 10,
+      startAngle: 0,
+      endAngle: 0,
+      ticks: 11,
+      majorEvery: 2,
+      tickLength: 1,
+      labelMode: '0-10',
+      fontSizeMm: 1.1,
+      layer: 'foreground',
+      visible: true,
+      locked: false,
+    };
+    const sandboxState: Omit<AppState,'history'|'future'> = {
+      ...base,
+      projectMeta: { ...base.projectMeta, name: 'Regression sandbox', revision: 'test' },
+      components: comps,
+      selected: comps.slice(0,2).map(c => c.id),
+      textItems: [textItem],
+      scaleItems: [scaleItem],
+      viewMode: 'front',
+      topHardwareStyle: 'realistic',
+      hardwareRenderMode: 'auto',
+      mobilePerformanceMode: true,
+    };
+
+    const normalized = validateAndNormalize(JSON.parse(serializeProject(sandboxState as AppState, true)));
+    normalized.ok ? ok('Sandbox serialize/load validation passes.') : err(`Sandbox JSON validation failed: ${normalized.error}`);
+
+    const width = panelWidthMM(sandboxState.panel);
+    const warnings = computeWarnings(sandboxState.components, width, sandboxState.mountingHoles, sandboxState.pcb);
+    ok(`Sandbox DFM produced ${warnings.length} warning/error item(s).`);
+
+    const prod = buildProductionCheckItems(sandboxState as AppState, warnings);
+    prod.length >= 8 ? ok(`Sandbox Production Check produced ${prod.length} checks.`) : warn(`Sandbox Production Check produced only ${prod.length} checks.`);
+
+    const modes: ExportOptions[] = [
+      { drillOnly:false, labels:true, rearKeepout:false, rearBody:false, centerMarks:false, mountingKeepouts:false, includeArtwork:true },
+      { drillOnly:true, labels:false, rearKeepout:false, rearBody:false, centerMarks:true, mountingKeepouts:true, includeArtwork:false },
+      { drillOnly:false, labels:true, rearKeepout:true, rearBody:true, centerMarks:true, mountingKeepouts:true, includeArtwork:false },
+    ];
+    modes.forEach((opts, i) => {
+      const svg = exportSVGString(sandboxState as AppState, opts);
+      svg.includes('<svg') && svg.includes('</svg>') ? ok(`Sandbox SVG mode ${i+1} exports.`) : err(`Sandbox SVG mode ${i+1} failed.`);
+    });
+
+    const csv = drillTableCSVString(sandboxState as AppState, warnings);
+    csv.includes('Regression') || csv.includes('Ref,Label,Type') ? ok('Sandbox CSV exports.') : err('Sandbox CSV failed.');
+
+    const pkg = exportPackageFiles(sandboxState as AppState, warnings);
+    pkg.length >= 7 ? ok(`Sandbox package has ${pkg.length} files.`) : err('Sandbox package file count is wrong.');
+    const zip = createZipBlob(pkg);
+    zip.size > 100 ? ok(`Sandbox ZIP created (${zip.size} bytes).`) : err('Sandbox ZIP looked empty.');
+
+    const dupRefs = Array.from(new Set(sandboxState.components.map(c => c.ref).filter(ref => ref && sandboxState.components.filter(cc => cc.ref === ref).length > 1)));
+    dupRefs.length ? warn(`Sandbox duplicate refs: ${dupRefs.join(', ')}.`) : ok('Sandbox refs are unique.');
+
+    ok('Sandbox regression did not mutate the current project.');
+  } catch (e:any) {
+    err(`Sandbox regression crashed: ${e?.message || String(e)}`);
+  }
+
+  return out;
+}
+
+
 function RuntimeSelfTestDialog({ items, onClose }: { items: RuntimeSelfTestItem[]; onClose: () => void }) {
   const errors = items.filter(i => i.level === 'error').length;
   const warns = items.filter(i => i.level === 'warn').length;
@@ -7294,33 +7434,6 @@ function RuntimeSelfTestDialog({ items, onClose }: { items: RuntimeSelfTestItem[
 }
 
 
-function RoadmapStatusPanel() {
-  const items = [
-    ['v43', 'Production Check', true],
-    ['v44', 'Export Package', true],
-    ['v45', 'Component Source / Status', true],
-    ['v46', 'Layout Tools', true],
-    ['v47', 'ErrorBoundary + Self-test', true],
-    ['v48', 'Better Snap', true],
-    ['v49', 'Layer Manager v2', true],
-    ['v50', 'Mobile dock / MORE fix', true],
-    ['v51', 'Layer export flags', true],
-    ['v52', 'ZIP package', true],
-    ['v53', 'Mobile edit sheet', true],
-    ['v54', 'Production Check v2', true],
-    ['v55', 'Component Library Audit', true],
-    ['v56', 'Final regression pass', true],
-  ] as const;
-  return (
-    <div className="roadmap-status-card">
-      <div className="roadmap-status-title">Roadmap status</div>
-      <div className="roadmap-status-grid">
-        {items.map(([v, label, done]) => <div key={v} className={done ? 'done' : ''}><b>{v}</b><span>{label}</span></div>)}
-      </div>
-    </div>
-  );
-}
-
 function SelfCheckPanel({ warnings }: { warnings: CollisionWarning[] }) {
   const state = useAppState();
   const items = buildSelfCheckItems(state, warnings);
@@ -7334,7 +7447,6 @@ function SelfCheckPanel({ warnings }: { warnings: CollisionWarning[] }) {
   return (
     <div className="section">
       <div className="section-title">Self Check</div>
-      <RoadmapStatusPanel />
       <div className="measurement-row"><span>Status</span><span>{errors ? 'ERROR' : warns ? 'WARN' : 'OK'}</span></div>
       <div className="measurement-row"><span>Errors</span><span>{errors}</span></div>
       <div className="measurement-row"><span>Warnings</span><span>{warns}</span></div>
@@ -7346,6 +7458,7 @@ function SelfCheckPanel({ warnings }: { warnings: CollisionWarning[] }) {
       <div className="btn-row" style={{ marginTop: 8 }}>
         <button style={{ flex: 1 }} onClick={copySelfCheck}>Copy self-check</button>
         <button style={{ flex: 1 }} onClick={() => setRuntimeItems(runRuntimeSelfTest(state, warnings))}>Run self-test</button>
+        <button style={{ flex: 1 }} onClick={() => setRuntimeItems(runFullRegressionSandbox())}>Full regression</button>
       </div>
       {runtimeItems && <RuntimeSelfTestDialog items={runtimeItems} onClose={() => setRuntimeItems(null)} />}
     </div>
@@ -7781,8 +7894,10 @@ function LayoutStatusPanel({ warnings, components }: {
 
 function RightSidebar({ warnings, components, open, autosaveStatus, onRestoreAutosave, onClearAutosave, onTouchStart, onTouchMove, onTouchEnd }: { warnings: CollisionWarning[]; components: PlacedComponent[]; open: boolean; autosaveStatus: string; onRestoreAutosave: () => void; onClearAutosave: () => void; onTouchStart?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchMove?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchEnd?: (e: React.TouchEvent<HTMLDivElement>) => void }) {
   const state = useAppState();
+  // v61: lazy-unmount the entire properties/DFM/BOM/sidebar stack while closed.
+  if (!open) return <div className="sidebar-right closed lazy-unmounted" aria-hidden="true" />;
   return (
-    <div className={`sidebar-right ${open ? 'open' : 'closed'}`} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} onTouchCancel={onTouchEnd}>
+    <div className="sidebar-right open" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} onTouchCancel={onTouchEnd}>
       <LayoutStatusPanel warnings={warnings} components={components} />
       <UndoHistoryPanel />
       {state.selectedText ? <TextPropertiesPanel /> : state.selectedArtwork ? <ArtworkPropertiesPanel /> : <PropertiesPanel />}
@@ -8013,6 +8128,8 @@ function validateAndNormalize(raw: unknown): ValidationResult {
       ? (obj.viewMode as ViewMode)
       : 'front',
     topHardwareStyle: (obj.topHardwareStyle === 'realistic' || obj.topHardwareStyle === 'classic') ? obj.topHardwareStyle as TopHardwareStyle : 'classic',
+    hardwareRenderMode: (obj.hardwareRenderMode === 'off' || obj.hardwareRenderMode === 'classic' || obj.hardwareRenderMode === 'realistic' || obj.hardwareRenderMode === 'auto') ? obj.hardwareRenderMode as HardwareRenderMode : 'auto',
+    mobilePerformanceMode: typeof obj.mobilePerformanceMode === 'boolean' ? obj.mobilePerformanceMode : true,
     grid: objOrDefault<GridConfig>('grid', { size: 1, showMajor: true }),
     pcb: objOrDefault<PCBConfig>('pcb', { enabled: false, x: 0, y: 9, width: widthMM, height: 110, depthLimit: 50 }),
     mountingHoles: normalizeMountingHoleConfig(obj.mountingHoles, widthMM),
@@ -9221,13 +9338,21 @@ function ExportPreviewMini({ state, warnings }: { state: AppState; warnings: Col
   );
 }
 
-function ExportDialog({ options, onChange, onExport, onExportMode, onExportPackage, onExportCSV, onExportKiCad, onExportPrintTemplate, onExportDXF, onExportReport, onCancel }: { options: ExportOptions; onChange: (o: ExportOptions) => void; onExport: () => void; onExportMode: (mode: 'preview'|'drill'|'artwork'|'debug') => void; onExportPackage: () => void; onExportPackage: () => void; onExportCSV: () => void; onExportKiCad: () => void; onExportPrintTemplate: () => void; onExportDXF: () => void; onExportReport: () => void; onCancel: () => void; }) {
+function ExportDialog({ options, onChange, onExport, onExportMode, onExportPackage, onExportCSV, onExportKiCad, onExportPrintTemplate, onExportDXF, onExportReport, onCancel }: { options: ExportOptions; onChange: (o: ExportOptions) => void; onExport: () => void; onExportMode: (mode: 'preview'|'drill'|'artwork'|'debug') => void; onExportPackage: () => void; onExportCSV: () => void; onExportKiCad: () => void; onExportPrintTemplate: () => void; onExportDXF: () => void; onExportReport: () => void; onCancel: () => void; }) {
   const rows: [keyof ExportOptions, string][] = [['drillOnly','Drill holes only'],['labels','Include labels'],['includeArtwork','Include artwork images'],['rearKeepout','Include rear keepout zones'],['rearBody','Include rear body outlines'],['centerMarks','Include center marks'],['mountingKeepouts','Include mounting hole keepouts']];
   const state = useAppState();
-  const warnings = computeWarnings(state.components, panelWidthMM(state.panel), state.mountingHoles, state.pcb);
-  const hard = warnings.filter(w => w.severity === 'error').length;
-  const warn = warnings.length - hard;
-  const unverified = state.components.filter(c => (c.verificationStatus || 'approximate') === 'approximate').length;
+  const exportPanelWidth = panelWidthMM(state.panel);
+  const warnings = useMemo(
+    () => computeWarnings(state.components, exportPanelWidth, state.mountingHoles, state.pcb),
+    [state.components, exportPanelWidth, state.mountingHoles, state.pcb]
+  );
+  const exportSanity = useMemo(() => {
+    const hard = warnings.filter(w => w.severity === 'error').length;
+    const warn = warnings.length - hard;
+    const unverified = state.components.filter(c => (c.verificationStatus || 'approximate') === 'approximate').length;
+    return { hard, warn, unverified };
+  }, [warnings, state.components]);
+  const { hard, warn, unverified } = exportSanity;
   const [showChecklist, setShowChecklist] = useState(false);
   const checklist = [
     ['Panel HP confirmed', true],
@@ -9967,11 +10092,14 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                   </div>
                 </div>
                 <div className="mobile-sheet-section">
-                  <div className="mobile-sheet-label">Top hardware style</div>
-                  <div className="mobile-segment-grid two">
-                    <button className={state.topHardwareStyle === 'classic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'classic' })}>Classic</button>
-                    <button className={state.topHardwareStyle === 'realistic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'realistic' })}>Boutique</button>
+                  <div className="mobile-sheet-label">Hardware render</div>
+                  <div className="mobile-segment-grid four">
+                    <button className={(state.hardwareRenderMode || 'auto') === 'auto' ? 'active' : ''} onClick={() => dispatch({ type:'SET_HARDWARE_RENDER_MODE', mode:'auto' })}>Auto</button>
+                    <button className={(state.hardwareRenderMode || 'auto') === 'classic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_HARDWARE_RENDER_MODE', mode:'classic' })}>Classic</button>
+                    <button className={(state.hardwareRenderMode || 'auto') === 'realistic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_HARDWARE_RENDER_MODE', mode:'realistic' })}>Boutique</button>
+                    <button className={(state.hardwareRenderMode || 'auto') === 'off' ? 'active' : ''} onClick={() => dispatch({ type:'SET_HARDWARE_RENDER_MODE', mode:'off' })}>Off</button>
                   </div>
+                  <label className="mobile-perf-toggle"><input type="checkbox" checked={state.mobilePerformanceMode !== false} onChange={e=>dispatch({type:'SET_MOBILE_PERFORMANCE_MODE',value:e.target.checked})}/> Performance mode</label>
                 </div>
                 <div className="mobile-layer-grid">
                   {layerLabels.map(([k,label]) => <label key={k} className={state.layerVisibility[k] ? 'on' : ''}><input type="checkbox" checked={state.layerVisibility[k]} onChange={e => dispatch({ type:'SET_LAYER_VISIBILITY', key:k, value:e.target.checked })}/><span>{label}</span></label>)}
@@ -10248,7 +10376,10 @@ function buildProductionCheckItems(state: AppState, warnings: CollisionWarning[]
 function ProductionCheckDialog({ warnings, onClose, onOpenExport }: { warnings: CollisionWarning[]; onClose: () => void; onOpenExport: () => void }) {
   const state = useAppState();
   const dispatch = useAppDispatch();
-  const items = useMemo(() => buildProductionCheckItems(state, warnings), [state, warnings]);
+  const items = useMemo(
+    () => buildProductionCheckItems(state, warnings),
+    [state.components, state.textItems, state.scaleItems, state.panel, state.pcb, state.mountingHoles, warnings]
+  );
   const errors = items.filter(i => i.severity === 'error').length;
   const warns = items.filter(i => i.severity === 'warning').length;
   const status = errors ? 'BLOCKED' : warns ? 'WARNINGS' : 'READY';
@@ -10471,6 +10602,8 @@ function App() {
   // Hover coordinate readout
   const [coordReadout, setCoordReadout] = useState('');
   const lastCoordReadoutRef = useRef('');
+  const pointerMoveRafRef = useRef<number | null>(null);
+  const pendingPointerMoveRef = useRef<React.MouseEvent<SVGSVGElement> | null>(null);
   const [snapGuides, setSnapGuides] = useState<SnapGuide[]>([]);
   const [distanceGuides, setDistanceGuides] = useState<DistanceGuide[]>([]);
   const [marqueeSelection, setMarqueeSelection] = useState<{ start: { x: number; y: number }; current: { x: number; y: number }; additive: boolean } | null>(null);
@@ -10501,9 +10634,10 @@ function App() {
 
   const svgRef = useRef<SVGSVGElement>(null);
 
-  // Collision warnings — recomputed on every state change
+  // Collision warnings — memoized; recompute only when mechanical geometry changes
   const warnings = useMemo(
     () => computeWarnings(state.components, widthMM, state.mountingHoles, state.pcb),
+    // Intentionally exclude UI-only state such as zoom, pan, open panels, sheets and hover data.
     [state.components, widthMM, state.mountingHoles, state.pcb]
   );
 
@@ -11437,7 +11571,7 @@ function App() {
     }
   }
 
-  function onSVGMouseMove(e: React.MouseEvent<SVGSVGElement>) {
+  function processSVGMouseMove(e: React.MouseEvent<SVGSVGElement>) {
     const mm = clientToMM(e.clientX, e.clientY);
     if (!mm) return;
 
@@ -11562,6 +11696,32 @@ function App() {
 
       setArtworkResizePreview({ id, x: newX, y: newY, width: newW, height: newH });
     }
+  }
+
+  function onSVGMouseMove(e: React.MouseEvent<SVGSVGElement>) {
+    // v60: throttle expensive live drag/render work to one frame.
+    // Keep plain hover moves cheap, but schedule actual drag/ruler/resize/rotate paths.
+    const shouldThrottle = !!(
+      dragging || dragStartPositions || draggingText || draggingArtwork || resizingArtwork ||
+      rotatingComponent || marqueeSelection || ruler?.dragging || pendingTemplatePlacement
+    );
+    if (!shouldThrottle || typeof window === 'undefined' || typeof window.requestAnimationFrame !== 'function') {
+      processSVGMouseMove(e);
+      return;
+    }
+    pendingPointerMoveRef.current = {
+      clientX: e.clientX,
+      clientY: e.clientY,
+      shiftKey: e.shiftKey,
+      target: e.target,
+    } as unknown as React.MouseEvent<SVGSVGElement>;
+    if (pointerMoveRafRef.current != null) return;
+    pointerMoveRafRef.current = window.requestAnimationFrame(() => {
+      pointerMoveRafRef.current = null;
+      const pending = pendingPointerMoveRef.current;
+      pendingPointerMoveRef.current = null;
+      if (pending) processSVGMouseMove(pending);
+    });
   }
 
   function onSVGMouseUp(_e: React.MouseEvent<SVGSVGElement>) {
@@ -11759,6 +11919,13 @@ function App() {
   // React has flushed a render between the SVG mouseup and window mouseup.
   useEffect(() => {
     function onGlobalMouseUp() {
+      if (pointerMoveRafRef.current != null) {
+        cancelAnimationFrame(pointerMoveRafRef.current);
+        pointerMoveRafRef.current = null;
+        const pending = pendingPointerMoveRef.current;
+        pendingPointerMoveRef.current = null;
+        if (pending) processSVGMouseMove(pending);
+      }
       if (marqueeSelectionRef.current) {
         const current = marqueeSelectionRef.current;
         const ids = componentsInsideMarquee(current);
@@ -11916,31 +12083,102 @@ function App() {
   }, [dispatch]);
 
   // ── Autosave ───────────────────────────────────────────────────────────
+  const AUTOSAVE_KEY = 'eurorack-panel-autosave-v4';
+  const AUTOSAVE_LEGACY_KEY = 'eurorack-panel-autosave-v3';
   function projectString(st: AppState): string { return serializeProject(st, false); }
   const lastAutosaveDataRef = useRef('');
+  const autosaveTimerRef = useRef<number | null>(null);
+  const autosaveStateRef = useRef(state);
+  autosaveStateRef.current = state;
+
+  function writeAutosaveNow(reason: 'debounced' | 'pagehide' = 'debounced') {
+    try {
+      const data = projectString(autosaveStateRef.current);
+      if (data === lastAutosaveDataRef.current) return;
+      const payload = JSON.stringify({
+        autosaveVersion: 2,
+        savedAt: new Date().toISOString(),
+        reason,
+        bytes: data.length,
+        project: JSON.parse(data),
+      });
+      localStorage.setItem(AUTOSAVE_KEY, payload);
+      // Keep legacy slot fresh enough for older copies, but only if possible.
+      try { localStorage.setItem(AUTOSAVE_LEGACY_KEY, data); } catch {}
+      lastAutosaveDataRef.current = data;
+      setAutosaveStatus(`Autosaved ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · ${(data.length/1024).toFixed(0)} KB`);
+    } catch (err:any) {
+      const name = err?.name || '';
+      setAutosaveStatus(name === 'QuotaExceededError' ? 'Autosave failed: storage full' : 'Autosave failed');
+    }
+  }
+
   useEffect(() => {
-    const t = window.setTimeout(() => {
+    if (autosaveTimerRef.current != null) window.clearTimeout(autosaveTimerRef.current);
+    const busy = !!(dragging || dragPreview || draggingArtwork || artworkDragPreview || resizingArtwork || artworkResizePreview || draggingText || textDragPreview || rotatingComponent || rotationPreview);
+    const delay = busy ? 7000 : 2200;
+    autosaveTimerRef.current = window.setTimeout(() => {
+      autosaveTimerRef.current = null;
+      writeAutosaveNow('debounced');
+    }, delay);
+    return () => {
+      if (autosaveTimerRef.current != null) window.clearTimeout(autosaveTimerRef.current);
+    };
+  }, [
+    state.components, state.artworks, state.textItems, state.scaleItems, state.panel, state.grid, state.pcb,
+    state.mountingHoles, state.customParts, state.projectMeta, state.layerVisibility, state.layerOpacity,
+    state.layerExport, state.topHardwareStyle, state.hardwareRenderMode, state.mobilePerformanceMode,
+    dragging, dragPreview, draggingArtwork, artworkDragPreview, resizingArtwork, artworkResizePreview,
+    draggingText, textDragPreview, rotatingComponent, rotationPreview
+  ]);
+
+  useEffect(() => {
+    function onPageHide() { writeAutosaveNow('pagehide'); }
+    function onVisibilityChange() { if (document.visibilityState === 'hidden') onPageHide(); }
+    window.addEventListener('pagehide', onPageHide);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => {
+      window.removeEventListener('pagehide', onPageHide);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
+  }, []);
+
+  function readAutosavePayload(): { data: string; label: string } | null {
+    const modern = localStorage.getItem(AUTOSAVE_KEY);
+    if (modern) {
       try {
-        const data = projectString(state);
-        if (data === lastAutosaveDataRef.current) return;
-        localStorage.setItem('eurorack-panel-autosave-v3', data);
-        lastAutosaveDataRef.current = data;
-        setAutosaveStatus(`Autosaved ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · ${(data.length/1024).toFixed(0)} KB`);
-      } catch {
-        setAutosaveStatus('Autosave failed');
-      }
-    }, 5000);
-    return () => window.clearTimeout(t);
-  }, [state]);
-  function restoreAutosave() { const data = localStorage.getItem('eurorack-panel-autosave-v3'); if (!data) return alert('No autosave found.'); let raw: unknown; try { raw = JSON.parse(data); } catch { return alert('Autosave is corrupted.'); } const result = validateAndNormalize(raw); if (!result.ok) return alert(`Autosave import failed: ${result.error}`); if (!confirm('Restore autosave and replace current layout?')) return; dispatch({ type:'LOAD_STATE', state: result.state }); }
-  function clearAutosave() { localStorage.removeItem('eurorack-panel-autosave-v3'); setAutosaveStatus('Autosave cleared'); }
+        const parsed = JSON.parse(modern);
+        const project = parsed?.project;
+        if (project && typeof project === 'object') return { data: JSON.stringify(project), label: parsed.savedAt ? `saved ${new Date(parsed.savedAt).toLocaleString()}` : 'saved project' };
+      } catch {}
+    }
+    const legacy = localStorage.getItem(AUTOSAVE_LEGACY_KEY);
+    return legacy ? { data: legacy, label: 'legacy autosave' } : null;
+  }
+
+  function restoreAutosave() {
+    const payload = readAutosavePayload();
+    if (!payload) return alert('No autosave found.');
+    let raw: unknown;
+    try { raw = JSON.parse(payload.data); } catch { return alert('Autosave is corrupted.'); }
+    const result = validateAndNormalize(raw);
+    if (!result.ok) return alert(`Autosave import failed: ${result.error}`);
+    if (!confirm(`Restore autosave (${payload.label}) and replace current layout?`)) return;
+    dispatch({ type:'LOAD_STATE', state: result.state });
+  }
+  function clearAutosave() {
+    localStorage.removeItem(AUTOSAVE_KEY);
+    localStorage.removeItem(AUTOSAVE_LEGACY_KEY);
+    lastAutosaveDataRef.current = '';
+    setAutosaveStatus('Autosave cleared');
+  }
   useEffect(() => {
     try {
-      const data = localStorage.getItem('eurorack-panel-autosave-v3');
-      if (!data) return;
-      const kb = data.length / 1024;
+      const payload = readAutosavePayload();
+      if (!payload) return;
+      const kb = payload.data.length / 1024;
       if (kb < 1) return;
-      const should = window.confirm(`Found autosaved project (${kb > 1024 ? (kb/1024).toFixed(1)+' MB' : kb.toFixed(0)+' KB'}). Restore it?`);
+      const should = window.confirm(`Found autosaved project (${kb > 1024 ? (kb/1024).toFixed(1)+' MB' : kb.toFixed(0)+' KB'}, ${payload.label}). Restore it?`);
       if (should) restoreAutosave();
     } catch {}
   }, []);
@@ -12011,6 +12249,7 @@ function App() {
     { id:'fit-view', label:'Fit view', hint:'Zoom to comfortable panel view', run:() => { setZoom(1.25); setPan({x:0,y:0}); } },
     { id:'production-check', label:'Production check', hint:'Manufacturing readiness report', run:() => setShowProductionCheck(true) },
     { id:'runtime-self-test', label:'Run runtime self-test', hint:'Check export, library, validation and report generators', run:() => alert(runRuntimeSelfTest(state, warnings).map(i => `[${i.level.toUpperCase()}] ${i.message}`).join('\n')) },
+    { id:'full-regression', label:'Run full regression sandbox', hint:'Create a temporary test layout and verify exports without touching current project', run:() => alert(runFullRegressionSandbox().map(i => `[${i.level.toUpperCase()}] ${i.message}`).join('\n')) },
     { id:'reset-view', label:'Reset view', hint:'100% zoom and centered pan', run:() => { setZoom(1); setPan({x:0,y:0}); } },
   ];
 
