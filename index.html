@@ -1914,6 +1914,230 @@
     }
 
 
+    /* v16 delicate mobile workflow: contextual inspector, safer bottom spacing, bigger touch targets */
+    .mobile-precision-inspector { display: none; }
+    @media (max-width: 860px) {
+      :root { --mobile-inspector-bottom: calc(var(--mobile-dock-height) + 18px + var(--safe-bottom)); }
+
+      .mobile-precision-inspector {
+        display: block;
+        position: fixed;
+        left: calc(8px + var(--safe-left));
+        right: calc(8px + var(--safe-right));
+        bottom: var(--mobile-inspector-bottom);
+        z-index: 2240;
+        border: 1px solid rgba(46,233,255,0.22);
+        border-radius: 19px;
+        background: rgba(9, 12, 15, 0.78);
+        box-shadow: 0 14px 48px rgba(0,0,0,0.44), 0 0 0 1px rgba(255,255,255,0.035) inset;
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        color: #e9f8fb;
+        padding: 7px;
+        touch-action: manipulation;
+      }
+      .mobile-precision-inspector.compact {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: min(calc(100vw - 18px - var(--safe-left) - var(--safe-right)), 430px);
+      }
+      .mobile-inspector-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto auto auto;
+        align-items: center;
+        gap: 6px;
+      }
+      .mobile-inspector-title {
+        min-width: 0;
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        overflow: hidden;
+      }
+      .mobile-inspector-title strong {
+        color: #fff;
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .mobile-inspector-title span {
+        color: #86a6af;
+        font-size: 10px;
+        white-space: nowrap;
+      }
+      .mobile-precision-inspector button {
+        min-height: 36px;
+        border-radius: 12px;
+        padding: 5px 9px;
+        font-size: 12px;
+      }
+      .mobile-precision-inspector .ghost {
+        background: rgba(255,255,255,0.045);
+        border-color: rgba(255,255,255,0.10);
+      }
+      .mobile-inspector-body {
+        margin-top: 7px;
+        padding-top: 7px;
+        border-top: 1px solid rgba(255,255,255,0.07);
+        display: grid;
+        gap: 8px;
+      }
+      .mobile-inspector-stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 5px;
+      }
+      .mobile-inspector-stats span {
+        min-width: 0;
+        padding: 5px 6px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.045);
+        color: #a8bdc4;
+        font-size: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .mobile-nudge-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 6px;
+        align-items: stretch;
+      }
+      .mobile-nudge-grid .pad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 38px);
+        gap: 4px;
+        grid-column: span 2;
+      }
+      .mobile-nudge-grid .pad button { min-height: 38px; padding: 0; font-size: 16px; }
+      .mobile-nudge-grid .stepper { display: grid; gap: 4px; }
+      .mobile-nudge-grid .stepper button.active {
+        background: rgba(0,132,170,0.62);
+        border-color: rgba(46,233,255,0.62);
+        color: #fff;
+      }
+      .mobile-action-mini-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .mobile-action-mini-grid button.danger { color: #ffc7c7; }
+
+      /* Old floating selected toolbar stays available on desktop; on phone v16 inspector replaces it. */
+      .mobile-selection-actions,
+      .mobile-selected-count,
+      .mobile-nudge-pad { display: none !important; }
+
+      .mobile-bottom-sheet {
+        bottom: calc(var(--mobile-dock-height) + 16px + var(--safe-bottom));
+        max-height: calc(100dvh - var(--mobile-dock-height) - var(--safe-top) - var(--safe-bottom) - 50px);
+      }
+      .mobile-main-dock { z-index: 2310; }
+      .mobile-sheet-backdrop { z-index: 2260; }
+
+      .component-context-menu-mobile {
+        left: calc(10px + var(--safe-left)) !important;
+        right: calc(10px + var(--safe-right)) !important;
+        bottom: calc(var(--mobile-dock-height) + 18px + var(--safe-bottom)) !important;
+        top: auto !important;
+        width: auto !important;
+        max-width: none !important;
+        border-radius: 18px !important;
+        padding: 10px !important;
+        background: rgba(15,18,21,0.96) !important;
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+      }
+      .component-context-menu-mobile .btn-row {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: 7px !important;
+      }
+      .component-context-menu-mobile button { min-height: 42px; border-radius: 13px; }
+
+      .shortcut-help, .export-dialog-panel, .mobile-bottom-sheet {
+        overscroll-behavior: contain;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .mobile-inspector-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mobile-action-mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mobile-nudge-grid { grid-template-columns: 1fr; }
+      .mobile-nudge-grid .pad { grid-column: auto; }
+      .mobile-inspector-top { grid-template-columns: minmax(0, 1fr) auto auto; }
+      .mobile-inspector-top .hide-small { display: none; }
+    }
+
+
+    /* v17 preserve-functionality mobile optimization: full library, less obstruction while editing */
+    @media (max-width: 860px) {
+      .mobile-add-grid.compact button {
+        min-height: 46px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+      }
+      .mobile-add-grid.compact button span {
+        font-size: 12px;
+      }
+      .mobile-add-grid.compact button small {
+        font-size: 9.5px;
+      }
+      .mobile-bottom-sheet .mobile-sheet-section:first-of-type {
+        margin-top: 4px;
+      }
+      .mobile-bottom-sheet {
+        overscroll-behavior: contain;
+        scroll-padding-bottom: 18px;
+      }
+      .mobile-sheet-backdrop {
+        touch-action: none;
+      }
+      .mobile-bottom-sheet,
+      .mobile-bottom-sheet * {
+        touch-action: manipulation;
+      }
+      .mobile-layer-grid label,
+      .mobile-action-grid button,
+      .mobile-segment-grid button,
+      .mobile-add-grid button {
+        -webkit-tap-highlight-color: rgba(46,233,255,0.14);
+      }
+      .mobile-main-dock button:active,
+      .mobile-bottom-sheet button:active,
+      .mobile-precision-inspector button:active {
+        transform: translateY(1px) scale(0.99);
+      }
+      .mobile-precision-inspector.compact {
+        max-width: calc(100vw - 18px - var(--safe-left) - var(--safe-right));
+      }
+      .mobile-precision-inspector.expanded {
+        max-height: calc(100dvh - var(--mobile-dock-height) - var(--safe-top) - var(--safe-bottom) - 76px);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .mobile-inspector-body {
+        scroll-padding-bottom: 10px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .mobile-bottom-sheet {
+        max-height: calc(100dvh - var(--mobile-dock-height) - var(--safe-top) - var(--safe-bottom) - 42px);
+      }
+      .mobile-sheet-head strong {
+        font-size: 15px;
+      }
+      .mobile-sheet-note {
+        font-size: 11px;
+      }
+    }
+
+
   </style>
 </head>
 <body>
@@ -8034,7 +8258,7 @@ function LocalProjectsDialog({ onClose }: { onClose: () => void }) {
 
 
 
-function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts, touchMode, onSetTouchMode, onOpenExport, onOpenTemplates, onToggleLeftPanel, onToggleRightPanel, leftPanelOpen, rightPanelOpen, warnings }: {
+function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts, touchMode, onSetTouchMode, onOpenExport, onOpenTemplates, onToggleLeftPanel, onToggleRightPanel, leftPanelOpen, rightPanelOpen, warnings, onFitView, onZoomSelected }: {
   hidden: boolean;
   focusMode: boolean;
   onToggleFocus: () => void;
@@ -8048,6 +8272,8 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
   leftPanelOpen: boolean;
   rightPanelOpen: boolean;
   warnings: CollisionWarning[];
+  onFitView: () => void;
+  onZoomSelected: () => void;
 }) {
   const state = useAppState();
   const dispatch = useAppDispatch();
@@ -8058,6 +8284,11 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
   const commonParts = commonTypes
     .map(t => COMPONENT_LIBRARY.find(c => c.type === t))
     .filter(Boolean) as ComponentDef[];
+  // Mobile must not be a reduced editor: expose the full built-in library
+  // plus user custom parts inside Add, while keeping the common quick list first.
+  const commonKeys = new Set(commonParts.map(def => `${def.type}:${def.name}`));
+  const allMobileParts = [...COMPONENT_LIBRARY, ...state.customParts];
+  const extraMobileParts = allMobileParts.filter(def => !commonKeys.has(`${def.type}:${def.name}`));
   const hard = warnings.filter(w => w.severity === 'error').length;
   const warn = warnings.length - hard;
   const unverified = state.components.filter(c => !isPartVerified(c)).length;
@@ -8084,6 +8315,28 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
   }
 
   const sheetTitle = mobileSheet === 'add' ? 'Add component' : mobileSheet === 'view' ? 'View & layers' : 'More tools';
+
+  function setLayerPack(values: Partial<LayerVisibility>) {
+    (Object.keys(values) as (keyof LayerVisibility)[]).forEach(key => dispatch({ type:'SET_LAYER_VISIBILITY', key, value: !!values[key] }));
+  }
+
+  function applyMobileViewPreset(preset: 'design' | 'drill' | 'rear' | 'artwork' | 'clean') {
+    if (preset === 'design') {
+      dispatch({ type:'SET_VIEW_MODE', mode:'front' });
+      setLayerPack({ grid:true, panelOutline:true, mountingHoles:true, artwork:true, text:true, labels:true, componentHoles:true, frontShapes:true, topHardware:true, rearBodies:false, rearKeepouts:false, pcb:false });
+    } else if (preset === 'drill') {
+      dispatch({ type:'SET_VIEW_MODE', mode:'drill' });
+      setLayerPack({ grid:true, panelOutline:true, mountingHoles:true, artwork:false, text:false, labels:false, componentHoles:true, frontShapes:false, topHardware:false, rearBodies:false, rearKeepouts:false, pcb:false });
+    } else if (preset === 'rear') {
+      dispatch({ type:'SET_VIEW_MODE', mode:'rear' });
+      setLayerPack({ grid:true, panelOutline:true, mountingHoles:true, artwork:false, text:false, labels:true, componentHoles:true, frontShapes:false, topHardware:false, rearBodies:true, rearKeepouts:true, pcb:true });
+    } else if (preset === 'artwork') {
+      dispatch({ type:'SET_VIEW_MODE', mode:'front' });
+      setLayerPack({ grid:false, panelOutline:true, mountingHoles:false, artwork:true, text:true, labels:true, componentHoles:false, frontShapes:true, topHardware:true, rearBodies:false, rearKeepouts:false, pcb:false });
+    } else {
+      setLayerPack({ grid:false, panelOutline:true, mountingHoles:false, artwork:false, text:false, labels:false, componentHoles:false, frontShapes:true, topHardware:true, rearBodies:false, rearKeepouts:false, pcb:false });
+    }
+  }
 
   return (
     <>
@@ -8125,15 +8378,31 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
 
             {mobileSheet === 'add' && (
               <>
-                <div className="mobile-sheet-note">Adds the part at the center of the current panel. Drag it after placement.</div>
-                <div className="mobile-add-grid">
-                  {commonParts.map(def => (
-                    <button key={def.type} onClick={() => add(def)}>
-                      <span>{def.name}</span>
-                      <small>{def.category || def.type} · {def.holeType === 'slot' ? `${def.holeDiameter} × ${def.slotLength ?? def.holeDiameter} mm slot` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW ?? def.holeDiameter} × ${def.holeH ?? def.frontH ?? def.holeDiameter} mm cut` : `Ø ${def.holeDiameter} mm`}</small>
-                    </button>
-                  ))}
+                <div className="mobile-sheet-note">Adds the part at the center of the current panel. Common parts are first; the full library is below, so mobile does not lose desktop functionality.</div>
+                <div className="mobile-sheet-section">
+                  <div className="mobile-sheet-label">Common</div>
+                  <div className="mobile-add-grid">
+                    {commonParts.map(def => (
+                      <button key={def.type} onClick={() => add(def)}>
+                        <span>{def.name}</span>
+                        <small>{def.category || def.type} · {def.holeType === 'slot' ? `${def.holeDiameter} × ${def.slotLength ?? def.holeDiameter} mm slot` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW ?? def.holeDiameter} × ${def.holeH ?? def.frontH ?? def.holeDiameter} mm cut` : `Ø ${def.holeDiameter} mm`}</small>
+                      </button>
+                    ))}
+                  </div>
                 </div>
+                {extraMobileParts.length > 0 && (
+                  <div className="mobile-sheet-section">
+                    <div className="mobile-sheet-label">Full library</div>
+                    <div className="mobile-add-grid compact">
+                      {extraMobileParts.map((def, i) => (
+                        <button key={`${def.type}-${def.name}-${i}`} onClick={() => add(def)}>
+                          <span>{def.name}</span>
+                          <small>{def.category || def.type} · {def.holeType === 'slot' ? `${def.holeDiameter} × ${def.slotLength ?? def.holeDiameter} mm slot` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW ?? def.holeDiameter} × ${def.holeH ?? def.frontH ?? def.holeDiameter} mm cut` : `Ø ${def.holeDiameter} mm`}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </>
             )}
 
@@ -8149,12 +8418,20 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                   </div>
                 </div>
                 <div className="mobile-sheet-section">
-                  <div className="mobile-sheet-label">Layer presets</div>
-                  <div className="mobile-segment-grid four">
-                    <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button>
-                    <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mech</button>
-                    <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Prod</button>
-                    <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>All</button>
+                  <div className="mobile-sheet-label">Mobile view presets</div>
+                  <div className="mobile-segment-grid five">
+                    <button onClick={() => applyMobileViewPreset('design')}>Design</button>
+                    <button onClick={() => applyMobileViewPreset('drill')}>Drill</button>
+                    <button onClick={() => applyMobileViewPreset('rear')}>Rear</button>
+                    <button onClick={() => applyMobileViewPreset('artwork')}>Art</button>
+                    <button onClick={() => applyMobileViewPreset('clean')}>Clean</button>
+                  </div>
+                </div>
+                <div className="mobile-sheet-section">
+                  <div className="mobile-sheet-label">Zoom</div>
+                  <div className="mobile-action-grid">
+                    <button onClick={onFitView}>Fit panel</button>
+                    <button onClick={onZoomSelected} disabled={state.selected.length === 0}>Zoom selected</button>
                   </div>
                 </div>
                 <div className="mobile-layer-grid">
@@ -8169,15 +8446,25 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                   <strong>{hard ? 'DFM CHECK' : warn || unverified ? 'DFM CAUTION' : 'DFM OK'}</strong>
                   <span>{hard} errors · {warn} warnings · {unverified} unverified</span>
                 </div>
+                <div className="mobile-sheet-label">Primary tools</div>
                 <div className="mobile-action-grid">
                   <button className={focusMode ? 'active' : ''} onClick={onToggleFocus}>{focusMode ? 'Exit focus' : 'Focus mode'}</button>
                   <button onClick={onOpenExport}>Export preview</button>
                   <button onClick={onOpenTemplates}>Templates</button>
                   <button onClick={onOpenShortcuts}>Shortcuts</button>
+                </div>
+                <div className="mobile-sheet-section">
+                  <div className="mobile-sheet-label">Advanced / desktop panels</div>
+                  <div className="mobile-action-grid">
                   <button className={leftPanelOpen ? 'active' : ''} onClick={onToggleLeftPanel}>Left panel</button>
                   <button className={rightPanelOpen ? 'active' : ''} onClick={onToggleRightPanel}>Right panel</button>
                   <button onClick={() => onSetTouchMode('ruler')}>Ruler mode</button>
+                  <button onClick={onFitView}>Fit panel</button>
+                  <button onClick={onZoomSelected} disabled={state.selected.length === 0}>Zoom selected</button>
+                  <button onClick={() => dispatch({ type:'UNDO' })}>Undo</button>
+                  <button onClick={() => dispatch({ type:'REDO' })}>Redo</button>
                   <button onClick={() => dispatch({ type:'DESELECT_ALL' })}>Clear select</button>
+                  </div>
                 </div>
               </>
             )}
@@ -8190,8 +8477,8 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
 
 function ShortcutHelpOverlay({ onClose }: { onClose: () => void }) {
   const groups = [
-    { title: 'Navigation', rows: [['Ctrl/Cmd + K', 'Command palette'], ['F', 'Focus mode'], ['?', 'This help'], ['Mouse wheel', 'Zoom']] },
-    { title: 'Selection', rows: [['Click', 'Select component'], ['Shift + click', 'Add/remove selection'], ['Right click', 'Component edit menu'], ['Esc', 'Clear selection / cancel']] },
+    { title: 'Navigation', rows: [['Ctrl/Cmd + K', 'Command palette'], ['F', 'Focus mode'], ['?', 'This help'], ['Pinch', 'Zoom on mobile'], ['Fit / Zoom', 'View sheet or selection card']] },
+    { title: 'Selection', rows: [['Tap', 'Select component'], ['Long press', 'Component actions'], ['Precision card', 'Nudge / rotate / duplicate'], ['Esc', 'Clear selection / cancel']] },
     { title: 'Editing', rows: [['D', 'Duplicate selected'], ['R', 'Rotate selected 90°'], ['Delete / Backspace', 'Delete selected'], ['Arrow keys', 'Nudge by grid'], ['Shift + Arrow', 'Fine nudge 0.1 mm']] },
     { title: 'Project', rows: [['Ctrl/Cmd + S', 'Export JSON project'], ['Ctrl/Cmd + E', 'Open export preview'], ['Ctrl/Cmd + Z', 'Undo'], ['Ctrl/Cmd + Shift + Z', 'Redo']] },
   ];
@@ -8231,6 +8518,95 @@ function SelectionInfoStrip({ hidden }: { hidden: boolean }) {
 
 function avg(values: number[]): number {
   return values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+}
+
+
+function MobileSelectionInspector({ hidden, onOpenProperties, onFitView, onZoomSelected }: {
+  hidden: boolean;
+  onOpenProperties: () => void;
+  onFitView: () => void;
+  onZoomSelected: () => void;
+}) {
+  const state = useAppState();
+  const dispatch = useAppDispatch();
+  const [expanded, setExpanded] = useState(false);
+  const [step, setStep] = useState<0.25 | 0.5 | 1>(0.25);
+  const selected = state.components.filter(c => state.selected.includes(c.id));
+  if (hidden || selected.length === 0) return null;
+
+  const xs = selected.map(c => c.x);
+  const ys = selected.map(c => c.y);
+  const label = selected.length === 1 ? (selected[0].ref || selected[0].label || selected[0].name) : `${selected.length} parts`;
+  const details = selected.length === 1
+    ? `${selected[0].name} · ${selected[0].rotation || 0}°`
+    : `avg ${avg(xs).toFixed(2)} / ${avg(ys).toFixed(2)} mm`;
+  const locked = selected.filter(c => c.locked).length;
+
+  function nudge(dx: number, dy: number) {
+    const moves = selected.filter(c => !c.locked).map(c => ({ id: c.id, x: c.x + dx, y: c.y + dy }));
+    if (moves.length) dispatch({ type:'MOVE_COMPONENTS', moves });
+  }
+  function rotate(delta: number) {
+    selected.filter(c => !c.locked).forEach(c => dispatch({ type:'UPDATE_COMPONENT', id:c.id, patch:{ rotation: ((c.rotation || 0) + delta + 360) % 360 } }));
+  }
+  function center(axis: 'x' | 'y' | 'both') {
+    const widthMM = panelWidthMM(state.panel);
+    const targetX = widthMM / 2;
+    const targetY = PANEL_HEIGHT_MM / 2;
+    const dx = targetX - avg(xs);
+    const dy = targetY - avg(ys);
+    const moves = selected.filter(c => !c.locked).map(c => ({ id:c.id, x:c.x + (axis === 'x' || axis === 'both' ? dx : 0), y:c.y + (axis === 'y' || axis === 'both' ? dy : 0) }));
+    if (moves.length) dispatch({ type:'MOVE_COMPONENTS', moves });
+  }
+
+  return (
+    <div className={`mobile-precision-inspector ${expanded ? 'expanded' : 'compact'}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
+      <div className="mobile-inspector-top">
+        <div className="mobile-inspector-title"><strong>{label}</strong><span>{details}</span></div>
+        <button className="ghost hide-small" onClick={onOpenProperties}>Edit</button>
+        <button className={expanded ? 'active' : 'ghost'} onClick={() => setExpanded(v => !v)}>{expanded ? 'Hide' : 'Precise'}</button>
+        <button className="ghost" onClick={() => dispatch({ type:'DESELECT_ALL' })}>×</button>
+      </div>
+      {expanded && (
+        <div className="mobile-inspector-body">
+          <div className="mobile-inspector-stats">
+            <span>x {avg(xs).toFixed(2)}</span>
+            <span>y {avg(ys).toFixed(2)}</span>
+            <span>grid {state.grid.size}mm</span>
+            <span>{locked ? `${locked} locked` : 'unlocked'}</span>
+          </div>
+          <div className="mobile-nudge-grid">
+            <div className="pad">
+              <span />
+              <button onClick={() => nudge(0, -step)}>↑</button>
+              <span />
+              <button onClick={() => nudge(-step, 0)}>←</button>
+              <button onClick={() => center('both')}>◎</button>
+              <button onClick={() => nudge(step, 0)}>→</button>
+              <span />
+              <button onClick={() => nudge(0, step)}>↓</button>
+              <span />
+            </div>
+            <div className="stepper">
+              {([0.25, 0.5, 1] as (0.25 | 0.5 | 1)[]).map(v => <button key={v} className={step === v ? 'active' : ''} onClick={() => setStep(v)}>{v}mm</button>)}
+            </div>
+          </div>
+          <div className="mobile-action-mini-grid">
+            <button onClick={() => rotate(-15)}>⟲ 15°</button>
+            <button onClick={() => rotate(15)}>15° ⟳</button>
+            <button onClick={() => dispatch({ type:'DUPLICATE_SELECTED' })}>Duplicate</button>
+            <button onClick={() => dispatch({ type:'LOCK_SELECTED', locked: locked !== selected.length })}>{locked === selected.length ? 'Unlock' : 'Lock'}</button>
+            <button onClick={() => center('x')}>Center X</button>
+            <button onClick={() => center('y')}>Center Y</button>
+            <button onClick={onZoomSelected}>Zoom</button>
+            <button onClick={onFitView}>Fit</button>
+            <button className="danger" onClick={() => dispatch({ type:'DELETE_SELECTED' })}>Delete</button>
+            <button onClick={onOpenProperties}>Properties</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -8281,6 +8657,23 @@ function App() {
     setShowMobileNudge(false);
     setComponentMenu(null);
   }, [focusMode]);
+
+  function fitPanelView() {
+    setZoom(isNarrowInitial ? 1.1 : 1.25);
+    setPan({ x: 0, y: 0 });
+  }
+
+  function zoomToSelectedView() {
+    const selected = state.components.filter(c => state.selected.includes(c.id));
+    if (!selected.length) { fitPanelView(); return; }
+    const widthMM = panelWidthMM(state.panel);
+    const cx = avg(selected.map(c => c.x));
+    const cy = avg(selected.map(c => c.y));
+    const nextZoom = isNarrowInitial ? 2.05 : 1.8;
+    setZoom(nextZoom);
+    // SVG is rendered at roughly 4 px/mm before CSS scale. This centers the selected average without changing the canvas model.
+    setPan({ x: (widthMM / 2 - cx) * 4 * nextZoom, y: (PANEL_HEIGHT_MM / 2 - cy) * 4 * nextZoom });
+  }
 
   // Export dialog
   useEffect(() => {
@@ -9908,8 +10301,9 @@ function App() {
           coordReadout={coordReadout}
           warnings={warnings}
         />
-        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} onToggleFocus={() => setFocusMode(v => !v)} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} />
+        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} onToggleFocus={() => setFocusMode(v => !v)} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} onFitView={fitPanelView} onZoomSelected={zoomToSelectedView} />
         <SelectionInfoStrip hidden={sidePanelOpen && isNarrowInitial} />
+        <MobileSelectionInspector hidden={isNarrowInitial && (sidePanelOpen || !!dragging || !!rotatingComponent || touchMode === 'ruler' || !!componentMenu)} onOpenProperties={() => setRightPanelOpen(true)} onFitView={fitPanelView} onZoomSelected={zoomToSelectedView} />
         {!sidePanelOpen && (
         <div
           className="mobile-mode-switch"
@@ -9935,15 +10329,15 @@ function App() {
             style={{
               position: 'fixed',
               right: 10,
-              bottom: isNarrowInitial ? (state.selected.length > 0 ? 128 : 62) : (state.selected.length > 0 ? 82 : 12),
+              bottom: isNarrowInitial ? `calc(env(safe-area-inset-bottom, 0px) + ${state.selected.length > 0 ? 196 : 128}px)` : (state.selected.length > 0 ? 112 : 42),
               zIndex: 1100,
               background: 'rgba(18,18,18,0.62)',
               border: '1px solid rgba(210,210,210,0.45)',
               borderRadius: 8,
               boxShadow: '0 8px 22px rgba(0,0,0,0.28)',
-              padding: '6px 7px',
+              padding: '7px 9px',
               display: 'flex',
-              gap: 5,
+              gap: 6,
               alignItems: 'center',
               maxWidth: 'calc(100vw - 20px)',
               overflowX: 'auto',
@@ -9954,10 +10348,9 @@ function App() {
             onTouchStart={e => e.stopPropagation()}
           >
             <span style={{ color: '#e0e0e0', fontSize: 11, whiteSpace: 'nowrap', padding: '0 4px', opacity: 0.9 }}>
-              📏 {Math.hypot(ruler.end.x - ruler.start.x, ruler.end.y - ruler.start.y).toFixed(2)} mm
+              📏 {Math.hypot(ruler.end.x - ruler.start.x, ruler.end.y - ruler.start.y).toFixed(2)} mm · dx {(ruler.end.x - ruler.start.x).toFixed(2)} · dy {(ruler.end.y - ruler.start.y).toFixed(2)}
             </span>
             <button title="Clear ruler measurement" onClick={() => setRuler(null)}>Clear</button>
-            <button title="Return to Edit mode" onClick={() => setTouchMode('edit')}>Edit</button>
           </div>
         )}
         {state.selected.length > 0 && !sidePanelOpen && (
@@ -10136,6 +10529,7 @@ function App() {
           const top  = Math.min(Math.max(52, componentMenu.y), window.innerHeight - 160);
           return (
             <div
+              className={isNarrowInitial ? 'component-context-menu-mobile' : ''}
               style={{
                 position: 'fixed',
                 left,
@@ -10156,6 +10550,7 @@ function App() {
                 {comp.label || comp.name}
               </div>
               <div className="btn-row" style={{ flexDirection: 'column' }}>
+                <button onClick={() => { dispatch({ type:'SELECT', ids:[comp.id], additive:false }); setRightPanelOpen(true); setComponentMenu(null); }}>Edit properties</button>
                 <button onClick={() => duplicateComponentFromMenu(comp.id)}>Duplicate</button>
                 <button onClick={() => rotateComponentFromMenu(comp.id)}>Rotate +90°</button>
                 <button onClick={() => { dispatch({ type: 'SET_COMPONENT_LOCKED', id: comp.id, locked: !comp.locked }); setComponentMenu(null); }}>{comp.locked ? 'Unlock' : 'Lock'}</button>
