@@ -1914,229 +1914,40 @@
     }
 
 
-    /* v16 delicate mobile workflow: contextual inspector, safer bottom spacing, bigger touch targets */
-    .mobile-precision-inspector { display: none; }
+
+    .hardware-style-mini {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 7px;
+      padding: 5px 6px;
+      border: 1px solid rgba(0,212,255,0.18);
+      border-radius: 12px;
+      background: rgba(12,16,20,0.68);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+    }
+    .hardware-style-mini span {
+      color: #8ea1ad;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-right: 2px;
+    }
+    .hardware-style-mini button {
+      min-height: 24px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+    }
+    .hardware-style-mini button.active {
+      background: rgba(0,160,195,0.38);
+      border-color: rgba(46,233,255,0.75);
+      color: #d9fbff;
+    }
     @media (max-width: 860px) {
-      :root { --mobile-inspector-bottom: calc(var(--mobile-dock-height) + 18px + var(--safe-bottom)); }
-
-      .mobile-precision-inspector {
-        display: block;
-        position: fixed;
-        left: calc(8px + var(--safe-left));
-        right: calc(8px + var(--safe-right));
-        bottom: var(--mobile-inspector-bottom);
-        z-index: 2240;
-        border: 1px solid rgba(46,233,255,0.22);
-        border-radius: 19px;
-        background: rgba(9, 12, 15, 0.78);
-        box-shadow: 0 14px 48px rgba(0,0,0,0.44), 0 0 0 1px rgba(255,255,255,0.035) inset;
-        -webkit-backdrop-filter: blur(14px);
-        backdrop-filter: blur(14px);
-        color: #e9f8fb;
-        padding: 7px;
-        touch-action: manipulation;
-      }
-      .mobile-precision-inspector.compact {
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
-        width: min(calc(100vw - 18px - var(--safe-left) - var(--safe-right)), 430px);
-      }
-      .mobile-inspector-top {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto auto auto;
-        align-items: center;
-        gap: 6px;
-      }
-      .mobile-inspector-title {
-        min-width: 0;
-        display: flex;
-        align-items: baseline;
-        gap: 6px;
-        overflow: hidden;
-      }
-      .mobile-inspector-title strong {
-        color: #fff;
-        font-size: 12px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .mobile-inspector-title span {
-        color: #86a6af;
-        font-size: 10px;
-        white-space: nowrap;
-      }
-      .mobile-precision-inspector button {
-        min-height: 36px;
-        border-radius: 12px;
-        padding: 5px 9px;
-        font-size: 12px;
-      }
-      .mobile-precision-inspector .ghost {
-        background: rgba(255,255,255,0.045);
-        border-color: rgba(255,255,255,0.10);
-      }
-      .mobile-inspector-body {
-        margin-top: 7px;
-        padding-top: 7px;
-        border-top: 1px solid rgba(255,255,255,0.07);
-        display: grid;
-        gap: 8px;
-      }
-      .mobile-inspector-stats {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 5px;
-      }
-      .mobile-inspector-stats span {
-        min-width: 0;
-        padding: 5px 6px;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.045);
-        color: #a8bdc4;
-        font-size: 10px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .mobile-nudge-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 6px;
-        align-items: stretch;
-      }
-      .mobile-nudge-grid .pad {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(3, 38px);
-        gap: 4px;
-        grid-column: span 2;
-      }
-      .mobile-nudge-grid .pad button { min-height: 38px; padding: 0; font-size: 16px; }
-      .mobile-nudge-grid .stepper { display: grid; gap: 4px; }
-      .mobile-nudge-grid .stepper button.active {
-        background: rgba(0,132,170,0.62);
-        border-color: rgba(46,233,255,0.62);
-        color: #fff;
-      }
-      .mobile-action-mini-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 6px;
-      }
-      .mobile-action-mini-grid button.danger { color: #ffc7c7; }
-
-      /* Old floating selected toolbar stays available on desktop; on phone v16 inspector replaces it. */
-      .mobile-selection-actions,
-      .mobile-selected-count,
-      .mobile-nudge-pad { display: none !important; }
-
-      .mobile-bottom-sheet {
-        bottom: calc(var(--mobile-dock-height) + 16px + var(--safe-bottom));
-        max-height: calc(100dvh - var(--mobile-dock-height) - var(--safe-top) - var(--safe-bottom) - 50px);
-      }
-      .mobile-main-dock { z-index: 2310; }
-      .mobile-sheet-backdrop { z-index: 2260; }
-
-      .component-context-menu-mobile {
-        left: calc(10px + var(--safe-left)) !important;
-        right: calc(10px + var(--safe-right)) !important;
-        bottom: calc(var(--mobile-dock-height) + 18px + var(--safe-bottom)) !important;
-        top: auto !important;
-        width: auto !important;
-        max-width: none !important;
-        border-radius: 18px !important;
-        padding: 10px !important;
-        background: rgba(15,18,21,0.96) !important;
-        -webkit-backdrop-filter: blur(14px);
-        backdrop-filter: blur(14px);
-      }
-      .component-context-menu-mobile .btn-row {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0,1fr));
-        gap: 7px !important;
-      }
-      .component-context-menu-mobile button { min-height: 42px; border-radius: 13px; }
-
-      .shortcut-help, .export-dialog-panel, .mobile-bottom-sheet {
-        overscroll-behavior: contain;
-      }
+      .hardware-style-mini { display: none; }
     }
-
-    @media (max-width: 430px) {
-      .mobile-inspector-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .mobile-action-mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .mobile-nudge-grid { grid-template-columns: 1fr; }
-      .mobile-nudge-grid .pad { grid-column: auto; }
-      .mobile-inspector-top { grid-template-columns: minmax(0, 1fr) auto auto; }
-      .mobile-inspector-top .hide-small { display: none; }
-    }
-
-
-    /* v17 preserve-functionality mobile optimization: full library, less obstruction while editing */
-    @media (max-width: 860px) {
-      .mobile-add-grid.compact button {
-        min-height: 46px;
-        padding-top: 7px;
-        padding-bottom: 7px;
-      }
-      .mobile-add-grid.compact button span {
-        font-size: 12px;
-      }
-      .mobile-add-grid.compact button small {
-        font-size: 9.5px;
-      }
-      .mobile-bottom-sheet .mobile-sheet-section:first-of-type {
-        margin-top: 4px;
-      }
-      .mobile-bottom-sheet {
-        overscroll-behavior: contain;
-        scroll-padding-bottom: 18px;
-      }
-      .mobile-sheet-backdrop {
-        touch-action: none;
-      }
-      .mobile-bottom-sheet,
-      .mobile-bottom-sheet * {
-        touch-action: manipulation;
-      }
-      .mobile-layer-grid label,
-      .mobile-action-grid button,
-      .mobile-segment-grid button,
-      .mobile-add-grid button {
-        -webkit-tap-highlight-color: rgba(46,233,255,0.14);
-      }
-      .mobile-main-dock button:active,
-      .mobile-bottom-sheet button:active,
-      .mobile-precision-inspector button:active {
-        transform: translateY(1px) scale(0.99);
-      }
-      .mobile-precision-inspector.compact {
-        max-width: calc(100vw - 18px - var(--safe-left) - var(--safe-right));
-      }
-      .mobile-precision-inspector.expanded {
-        max-height: calc(100dvh - var(--mobile-dock-height) - var(--safe-top) - var(--safe-bottom) - 76px);
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-      .mobile-inspector-body {
-        scroll-padding-bottom: 10px;
-      }
-    }
-
-    @media (max-width: 430px) {
-      .mobile-bottom-sheet {
-        max-height: calc(100dvh - var(--mobile-dock-height) - var(--safe-top) - var(--safe-bottom) - 42px);
-      }
-      .mobile-sheet-head strong {
-        font-size: 15px;
-      }
-      .mobile-sheet-note {
-        font-size: 11px;
-      }
-    }
-
 
   </style>
 </head>
@@ -2187,10 +1998,11 @@ const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
 
 type ComponentType = 'pot9mm' | 'pot16mm' | 'jack' | 'slimjack' |
                      'toggle' | 'led3mm' | 'encoder' | 'custom' |
-                     'fader20' | 'fader35' | 'fader45' | 'tact6mm' | 'momentary12' | 'tactled' |
-                     'pot9mm_ra' | 'customrect';
+                     'fader20' | 'fader20led' | 'fader35' | 'fader45' | 'tact6mm' | 'momentary12' | 'tactled' |
+                     'pot9mm_ra' | 'trimmer6mm' | 'slideSwitchMini' | 'customrect';
 
 type ViewMode = 'front' | 'rear' | 'drill' | 'combined';
+type TopHardwareStyle = 'classic' | 'realistic';
 
 type PartVerificationStatus = 'approximate' | 'datasheet' | 'measured' | 'production';
 
@@ -2426,6 +2238,7 @@ interface AppState {
   selectedArtwork: string | null;
   selectedText: string | null;
   viewMode: ViewMode;
+  topHardwareStyle: TopHardwareStyle;
   grid: GridConfig;
   pcb: PCBConfig;
   mountingHoles: MountingHoleConfig;
@@ -2445,12 +2258,12 @@ interface AppState {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function inferCategoryForType(type: ComponentType): ComponentDef['category'] {
-  if (type === 'pot9mm' || type === 'pot16mm' || type === 'pot9mm_ra') return 'potentiometer';
+  if (type === 'pot9mm' || type === 'pot16mm' || type === 'pot9mm_ra' || type === 'trimmer6mm') return 'potentiometer';
   if (type === 'jack' || type === 'slimjack') return 'jack';
-  if (type === 'toggle' || type === 'tact6mm' || type === 'momentary12' || type === 'tactled') return 'switch';
+  if (type === 'toggle' || type === 'slideSwitchMini' || type === 'tact6mm' || type === 'momentary12' || type === 'tactled') return 'switch';
   if (type === 'led3mm') return 'led';
   if (type === 'encoder') return 'encoder';
-  if (type === 'fader20' || type === 'fader35' || type === 'fader45') return 'fader';
+  if (type === 'fader20' || type === 'fader20led' || type === 'fader35' || type === 'fader45') return 'fader';
   return 'custom';
 }
 
@@ -2459,28 +2272,31 @@ function isSamePartType(a: ComponentDef, b: ComponentDef): boolean {
 }
 
 const COMPONENT_LIBRARY: ComponentDef[] = [
-  { type: 'pot9mm',   name: 'Alpha 9mm Pot',    holeDiameter: 7.0, frontDiameter: 10.0, knobEnabled: true, knobDiameter: 10.0, rearBodyW: 9.5,  rearBodyH: 10.5, rearDepth: 7.5,  keepoutW: 12.0, keepoutH: 13.0, minSpacing: 1.5 },
-  { type: 'pot16mm',  name: 'Alpha 16mm Pot',   holeDiameter: 7.0, frontDiameter: 10.0, knobEnabled: true, knobDiameter: 10.0, rearBodyW: 16.5, rearBodyH: 17.0, rearDepth: 10.0, keepoutW: 19.0, keepoutH: 20.0, minSpacing: 2.0 },
-  { type: 'jack',     name: 'Thonkiconn Jack',  holeDiameter: 6.0, frontDiameter: 8.0,  rearBodyW: 8.5,  rearBodyH: 10.5, rearDepth: 12.0, keepoutW: 10.5, keepoutH: 12.5, minSpacing: 1.5 },
-  { type: 'slimjack', name: 'Slim Jack 3.5mm',  holeDiameter: 6.0, frontDiameter: 7.5,  rearBodyW: 7.0,  rearBodyH: 9.0,  rearDepth: 11.0, keepoutW: 8.5,  keepoutH: 10.5, minSpacing: 1.0 },
-  { type: 'toggle',   name: 'Toggle Switch',    holeDiameter: 6.0, frontDiameter: 8.0,  rearBodyW: 8.0,  rearBodyH: 13.0, rearDepth: 13.0, keepoutW: 10.0, keepoutH: 15.0, minSpacing: 1.5 },
-  { type: 'led3mm',   name: '3mm LED',          holeDiameter: 3.2, frontDiameter: 5.0,  rearBodyW: 4.0,  rearBodyH: 4.0,  rearDepth: 7.0,  keepoutW: 5.0,  keepoutH: 5.0,  minSpacing: 1.0 },
-  { type: 'encoder',  name: 'Encoder',          holeDiameter: 7.0, frontDiameter: 10.0, knobEnabled: true, knobDiameter: 16.0, rearBodyW: 12.0, rearBodyH: 14.0, rearDepth: 12.0, keepoutW: 15.0, keepoutH: 17.0, minSpacing: 2.0 },
-  { type: 'custom',      name: 'Custom Hole',        holeDiameter: 5.0,  frontDiameter: 7.0,  rearBodyW: 0,    rearBodyH: 0,    rearDepth: 0,    keepoutW: 8.0,  keepoutH: 8.0,  minSpacing: 1.0 },
-  { type: 'customrect',  name: 'Custom Rectangle',   holeDiameter: 5.0,  frontDiameter: 8.0,  rearBodyW: 0,    rearBodyH: 0,    rearDepth: 0,    keepoutW: 10.0, keepoutH: 8.0,  minSpacing: 1.0, holeType: 'rect', holeW: 10.0, holeH: 6.0, frontShape: 'rect', frontW: 10.0, frontH: 6.0 },
-  { type: 'fader20',    name: 'Fader / Slider 20mm',  holeDiameter: 3.2,  frontDiameter: 8.0,  rearBodyW: 6.5,  rearBodyH: 35.0, rearDepth: 12.0, keepoutW: 9.0,  keepoutH: 38.0, minSpacing: 1.5, holeType: 'slot', slotLength: 25.0, frontShape: 'slot', frontW: 8, frontH: 34, faderHandleW: 8.5, faderHandleH: 4.5 },
-  { type: 'fader35',    name: 'Alps Fader 35mm',    holeDiameter: 4.0,  frontDiameter: 9.0,  rearBodyW: 6.7,  rearBodyH: 55.0, rearDepth: 15.0, keepoutW: 9.0,  keepoutH: 58.0, minSpacing: 2.0, holeType: 'slot', slotLength: 41.0, frontShape: 'slot', frontW: 9, frontH: 55, faderHandleW: 10.5, faderHandleH: 5.0 },
-  { type: 'fader45',    name: 'Alps Fader 45mm',    holeDiameter: 4.0,  frontDiameter: 9.0,  rearBodyW: 6.7,  rearBodyH: 65.0, rearDepth: 15.0, keepoutW: 9.0,  keepoutH: 68.0, minSpacing: 2.0, holeType: 'slot', slotLength: 51.0, frontShape: 'slot', frontW: 9, frontH: 65, faderHandleW: 10.5, faderHandleH: 5.0 },
-  { type: 'tact6mm',    name: 'Tact 6mm',           holeDiameter: 3.5,  frontDiameter: 6.0,  rearBodyW: 6.0,  rearBodyH: 6.0,  rearDepth: 8.0,  keepoutW: 8.0,  keepoutH: 8.0,  minSpacing: 1.0 },
-  { type: 'momentary12',name: 'Momentary 12mm',     holeDiameter: 12.0, frontDiameter: 16.0, rearBodyW: 12.0, rearBodyH: 12.0, rearDepth: 20.0, keepoutW: 16.0, keepoutH: 16.0, minSpacing: 2.0 },
-  { type: 'tactled',    name: 'LED Tact 7.5mm',     holeDiameter: 6.0,  frontDiameter: 5.5,  rearBodyW: 7.5,  rearBodyH: 7.5,  rearDepth: 14.0, keepoutW: 10.0, keepoutH: 10.0, minSpacing: 1.5 },
+  { type: 'pot9mm',   name: 'Alpha RD901F 9mm Pot', holeDiameter: 7.0, frontDiameter: 10.0, knobEnabled: true, knobDiameter: 10.0, rearBodyW: 9.5, rearBodyH: 10.5, rearDepth: 7.5, keepoutW: 12.0, keepoutH: 13.0, minSpacing: 1.5, manufacturer: 'Taiwan Alpha', partNumber: 'RD901F 9mm series reference', category: 'potentiometer', verificationStatus: 'datasheet', verification: 'Alpha RD901F 9mm rotary potentiometer candidate: 6mm shaft family, 9mm body class, 300°±5° rotation. Body/keepout are datasheet-class defaults; verify exact shaft/bushing option before production.' },
+  { type: 'pot16mm',  name: 'Alpha RV16AF 16mm Pot', holeDiameter: 7.0, frontDiameter: 10.0, knobEnabled: true, knobDiameter: 10.0, rearBodyW: 16.5, rearBodyH: 17.0, rearDepth: 10.0, keepoutW: 19.0, keepoutH: 20.0, minSpacing: 2.0, manufacturer: 'Taiwan Alpha', partNumber: 'RV16AF 16mm series reference', category: 'potentiometer', verificationStatus: 'approximate', verification: 'Approximate Alpha RV16AF-style 16mm panel pot. Dimensions are practical Eurorack defaults; choose a specific shaft/bushing/terminal variant before production.' },
+  { type: 'jack',     name: 'Thonkiconn Jack', holeDiameter: 6.1, frontDiameter: 8.0, rearBodyW: 8.5, rearBodyH: 10.5, rearDepth: 12.0, keepoutW: 10.5, keepoutH: 12.5, minSpacing: 1.5, manufacturer: 'Thonk / QingPu', partNumber: 'PJ398SM / Thonkiconn-style', category: 'jack', verificationStatus: 'datasheet', verification: 'Thonkiconn/PJ398SM-style Eurorack jack reference: use Ø6.0–6.1mm panel hole, visible hardware about Ø8mm, rear body about 8.5×10.5mm. Verify exact vendor revision.' },
+  { type: 'slimjack', name: 'Slim Jack 3.5mm', holeDiameter: 6.0, frontDiameter: 7.5, rearBodyW: 7.0, rearBodyH: 9.0, rearDepth: 11.0, keepoutW: 8.5, keepoutH: 10.5, minSpacing: 1.0, category: 'jack', verificationStatus: 'approximate', verification: 'Generic slim 3.5mm jack placeholder. Replace with a concrete manufacturer/MPN before production.' },
+  { type: 'toggle',   name: 'Toggle Switch', holeDiameter: 6.0, frontDiameter: 8.0, rearBodyW: 8.0, rearBodyH: 13.0, rearDepth: 13.0, keepoutW: 10.0, keepoutH: 15.0, minSpacing: 1.5, category: 'switch', verificationStatus: 'approximate', verification: 'Generic miniature toggle placeholder. Real MTS/C&K/NKK/Dailywell toggles vary significantly in thread, body and depth.' },
+  { type: 'led3mm',   name: '3mm LED', holeDiameter: 3.2, frontDiameter: 3.2, rearBodyW: 3.2, rearBodyH: 3.2, rearDepth: 5.5, keepoutW: 4.5, keepoutH: 4.5, minSpacing: 1.0, category: 'led', verificationStatus: 'datasheet', verification: 'Generic 3mm through-panel LED / low-profile lightpipe reference: Ø3.0–3.2mm visible lens, Ø3.2mm practical panel hole. Use holder-specific dimensions if using a metal/plastic bezel.' },
+  { type: 'encoder',  name: 'ALPS EC12E Encoder', holeDiameter: 6.8, frontDiameter: 10.0, knobEnabled: true, knobDiameter: 16.0, rearBodyW: 12.4, rearBodyH: 13.2, rearDepth: 8.2, keepoutW: 14.0, keepoutH: 15.0, minSpacing: 2.0, manufacturer: 'ALPS Alpine', partNumber: 'EC12E / EC12D 12mm series reference', category: 'encoder', verificationStatus: 'datasheet', verification: 'ALPS EC12E/EC12D 12mm encoder reference: Ø6.6–6.8mm shaft/panel opening class, 12.4×13.2mm body class, 7.5/5mm pin pitch family. Verify exact push/non-push and shaft variant.' },
+  { type: 'trimmer6mm', name: 'Song Huei R0904N 9mm Trim Pot', holeDiameter: 6.4, frontDiameter: 6.3, knobEnabled: true, knobDiameter: 6.3, rearBodyW: 9.7, rearBodyH: 11.4, rearDepth: 7.0, keepoutW: 10.6, keepoutH: 12.0, minSpacing: 1.2, manufacturer: 'Song Huei / Thonk', partNumber: 'R0904N-B50K,L-25KQ', category: 'potentiometer', verificationStatus: 'datasheet', verification: 'Thonk R0904N 9mm snap-in insulated shaft potentiometer: Ø6-0.3 shaft, 25mm shaft length, 9.7mm body width, 11.4mm body height, 10.6×7mm PCB layout reference, 280°±10° travel.' },
+  { type: 'slideSwitchMini', name: 'Mini Slide Switch', holeDiameter: 2.0, frontDiameter: 6.0, rearBodyW: 8.5, rearBodyH: 5.2, rearDepth: 3.0, keepoutW: 10.0, keepoutH: 7.0, minSpacing: 1.0, holeType: 'rect', holeW: 8.5, holeH: 3.0, frontShape: 'rect', frontW: 8.5, frontH: 5.2, manufacturer: 'C&K PCM-style candidate', partNumber: 'PCM/ultraminiature visual reference', category: 'switch', verificationStatus: 'approximate', verification: 'Mini slide switch visual/mechanical placeholder. It is styled after ultraminiature slide switches, but panel cutout/body must be replaced by your exact part.' },
+  { type: 'custom',      name: 'Custom Hole', holeDiameter: 5.0, frontDiameter: 7.0, rearBodyW: 0, rearBodyH: 0, rearDepth: 0, keepoutW: 8.0, keepoutH: 8.0, minSpacing: 1.0, category: 'custom', verificationStatus: 'approximate', verification: 'User-defined circular cutout.' },
+  { type: 'customrect',  name: 'Custom Rectangle', holeDiameter: 5.0, frontDiameter: 8.0, rearBodyW: 0, rearBodyH: 0, rearDepth: 0, keepoutW: 10.0, keepoutH: 8.0, minSpacing: 1.0, holeType: 'rect', holeW: 10.0, holeH: 6.0, frontShape: 'rect', frontW: 10.0, frontH: 6.0, category: 'custom', verificationStatus: 'approximate', verification: 'User-defined rectangular cutout.' },
+  { type: 'fader20',    name: 'Alpha RA2045F 20mm Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 32.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 6.0, faderHandleH: 5.5, manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20 mechanical reference', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha illuminated slide series outline: 20mm travel, PC board vertical terminal, 7mm mounting height, T=20mm; outline uses T+10/T+11 body/rail class.' },
+  { type: 'fader20led', name: 'Alpha RA2045F-20 LED Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 32.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 6.0, faderHandleH: 5.5, topColor: '#ff2b2b', manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20R-15LC-B10K-C', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha RA2045F-20 illuminated slide: single unit, 20mm travel, PC board vertical terminal, LED colors A/B/G/R, 7mm mounting height, LC insulated lever length 10/15mm.' },
+  { type: 'fader35',    name: 'Alps Fader 35mm', holeDiameter: 4.0, frontDiameter: 9.0, rearBodyW: 6.7, rearBodyH: 55.0, rearDepth: 15.0, keepoutW: 9.0, keepoutH: 58.0, minSpacing: 2.0, holeType: 'slot', slotLength: 41.0, frontShape: 'slot', frontW: 9, frontH: 55, faderHandleW: 10.5, faderHandleH: 5.0, category: 'fader', verificationStatus: 'approximate', verification: 'Generic 35mm fader placeholder. Replace with exact ALPS/Bourns/Alpha part before production.' },
+  { type: 'fader45',    name: 'Alps Fader 45mm', holeDiameter: 4.0, frontDiameter: 9.0, rearBodyW: 6.7, rearBodyH: 65.0, rearDepth: 15.0, keepoutW: 9.0, keepoutH: 68.0, minSpacing: 2.0, holeType: 'slot', slotLength: 51.0, frontShape: 'slot', frontW: 9, frontH: 65, faderHandleW: 10.5, faderHandleH: 5.0, category: 'fader', verificationStatus: 'approximate', verification: 'Generic 45mm fader placeholder. Replace with exact ALPS/Bourns/Alpha part before production.' },
+  { type: 'tact6mm',    name: 'Tact 6mm', holeDiameter: 3.5, frontDiameter: 6.0, rearBodyW: 6.0, rearBodyH: 6.0, rearDepth: 8.0, keepoutW: 8.0, keepoutH: 8.0, minSpacing: 1.0, category: 'switch', verificationStatus: 'approximate', verification: 'Generic 6mm tactile switch placeholder. Use exact cap/stem/hole dimensions for production.' },
+  { type: 'momentary12',name: 'Momentary 12mm', holeDiameter: 12.0, frontDiameter: 16.0, rearBodyW: 12.0, rearBodyH: 12.0, rearDepth: 20.0, keepoutW: 16.0, keepoutH: 16.0, minSpacing: 2.0, category: 'switch', verificationStatus: 'approximate', verification: 'Generic 12mm momentary button placeholder.' },
+  { type: 'tactled',    name: 'Low Profile LED Button 7.5mm', holeDiameter: 6.0, frontDiameter: 5.5, rearBodyW: 7.5, rearBodyH: 7.5, rearDepth: 14.0, keepoutW: 10.0, keepoutH: 10.0, minSpacing: 1.5, topColor: '#ff7a2a', manufacturer: 'Thonk / PB01-109TL style', partNumber: 'Low-Profile LED Button', category: 'switch', verificationStatus: 'datasheet', verification: 'Thonk datasheet: 7.5mm square cover/body reference, Ø5.5mm visible round button, 14.0±0.25mm height, 5.08mm pitch, momentary OFF-(ON).' },
 ];
 
 
 const REF_PREFIX_BY_TYPE: Record<ComponentType, string> = {
   pot9mm: 'RV', pot16mm: 'RV', pot9mm_ra: 'RV', encoder: 'ENC',
-  jack: 'J', slimjack: 'J', toggle: 'SW', tact6mm: 'SW', momentary12: 'SW', tactled: 'SW',
-  led3mm: 'LED', fader20: 'FDR', fader35: 'FDR', fader45: 'FDR', custom: 'H', customrect: 'CUT'
+  jack: 'J', slimjack: 'J', toggle: 'SW', slideSwitchMini: 'SW', tact6mm: 'SW', momentary12: 'SW', tactled: 'SW',
+  led3mm: 'LED', fader20: 'FDR', fader20led: 'FDR', fader35: 'FDR', fader45: 'FDR', trimmer6mm: 'TR', custom: 'H', customrect: 'CUT'
 };
 
 function refPrefixForType(type: ComponentType): string {
@@ -2542,7 +2358,7 @@ function verificationColor(v?: PartVerificationStatus): string {
 }
 
 function isPartVerified(c: ComponentDef): boolean {
-  return c.verificationStatus === 'measured' || c.verificationStatus === 'production';
+  return c.verificationStatus === 'datasheet' || c.verificationStatus === 'measured' || c.verificationStatus === 'production';
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -3158,6 +2974,7 @@ type AppAction =
   | { type: 'MOVE_COMPONENT'; id: string; x: number; y: number }
   | { type: 'MOVE_COMPONENTS'; moves: { id: string; x: number; y: number }[] }
   | { type: 'SET_VIEW_MODE'; mode: ViewMode }
+  | { type: 'SET_TOP_HARDWARE_STYLE'; style: TopHardwareStyle }
   | { type: 'SET_GRID_SIZE'; size: GridSize }
   | { type: 'TOGGLE_MAJOR_GRID' }
   | { type: 'SET_PCB'; patch: Partial<PCBConfig> }
@@ -3235,6 +3052,7 @@ function makeInitialState(): AppState {
     selectedArtwork: null,
     selectedText: null,
     viewMode: 'front',
+    topHardwareStyle: 'classic',
     grid: { size: 1, showMajor: true },
     pcb: { enabled: false, x: 0, y: 9, width: widthMM, height: 110, depthLimit: 50 },
     mountingHoles: defaultMountingHoleConfig(widthMM),
@@ -3262,6 +3080,22 @@ function snapshot(s: AppState): Omit<AppState,'history'|'future'> {
 function withHistory(prev: AppState, next: Omit<AppState,'history'|'future'>): AppState {
   const history = [...prev.history.slice(-MAX_UNDO + 1), snapshot(prev)];
   return { ...next, history, future: [] };
+}
+
+
+function layerVisibilityForViewMode(prev: LayerVisibility, mode: ViewMode): LayerVisibility {
+  // View switching should expose the relevant engineering layers automatically,
+  // while preserving optional artwork/text/grid choices where possible.
+  if (mode === 'front') {
+    return { ...prev, componentHoles: true, frontShapes: true, topHardware: true, rearBodies: false, rearKeepouts: false, labels: true };
+  }
+  if (mode === 'rear') {
+    return { ...prev, componentHoles: true, frontShapes: false, topHardware: false, rearBodies: true, rearKeepouts: true, pcb: true, labels: true };
+  }
+  if (mode === 'drill') {
+    return { ...prev, componentHoles: true, frontShapes: false, topHardware: false, rearBodies: false, rearKeepouts: false, pcb: false, labels: false, artwork: false, text: false };
+  }
+  return { ...prev, componentHoles: true, frontShapes: true, topHardware: true, rearBodies: true, rearKeepouts: true, labels: true };
 }
 
 function appReducer(state: AppState, action: AppAction): AppState {
@@ -3451,7 +3285,10 @@ function appReducer(state: AppState, action: AppAction): AppState {
     }
 
     case 'SET_VIEW_MODE':
-      return { ...state, viewMode: action.mode };
+      return { ...state, viewMode: action.mode, layerVisibility: layerVisibilityForViewMode(state.layerVisibility, action.mode) };
+
+    case 'SET_TOP_HARDWARE_STYLE':
+      return { ...state, topHardwareStyle: action.style };
 
     case 'SET_GRID_SIZE':
       return { ...state, grid: { ...state.grid, size: action.size } };
@@ -4122,12 +3959,12 @@ const TEXT_FONT_OPTIONS = [
 ];
 
 function defaultTopColor(c: ComponentDef): string {
-  if (c.type === 'led3mm' || c.type === 'tactled') return '#ef4444';
+  if (c.type === 'led3mm' || c.type === 'tactled' || c.type === 'fader20led') return '#ef4444';
   if (c.type === 'jack' || c.type === 'slimjack') return '#111827';
-  if (c.type === 'toggle') return '#d1d5db';
+  if (c.type === 'toggle' || c.type === 'slideSwitchMini') return '#f3f4f6';
   if (c.type === 'tact6mm' || c.type === 'momentary12') return '#3b82f6';
   if (c.type === 'fader20' || c.type === 'fader35' || c.type === 'fader45') return '#e5e7eb';
-  if (c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'encoder') return '#202020';
+  if (c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'encoder' || c.type === 'trimmer6mm') return '#202020';
   return '#9ca3af';
 }
 function topColor(c: ComponentDef): string { return c.topColor || defaultTopColor(c); }
@@ -4138,14 +3975,16 @@ function topHardwareVisible(c: ComponentDef): boolean {
   if (isPotLike(c)) return !!c.knobEnabled;
   return true;
 }
-function isPotLike(c: ComponentDef): boolean { return c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'encoder'; }
+function isPotLike(c: ComponentDef): boolean { return c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'encoder' || c.type === 'trimmer6mm'; }
 function isScaleEligibleComponent(c: ComponentDef): boolean {
-  return c.category === 'potentiometer' || c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra';
+  return c.category === 'potentiometer' || c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'trimmer6mm';
 }
 function isJackLike(c: ComponentDef): boolean { return c.type === 'jack' || c.type === 'slimjack'; }
 function isButtonLike(c: ComponentDef): boolean { return c.type === 'tact6mm' || c.type === 'momentary12' || c.type === 'tactled'; }
 function isLedLike(c: ComponentDef): boolean { return c.type === 'led3mm' || c.type === 'tactled'; }
-function isFaderLike(c: ComponentDef): boolean { return c.type === 'fader20' || c.type === 'fader35' || c.type === 'fader45' || c.holeType === 'slot'; }
+function isFaderLike(c: ComponentDef): boolean { return c.type === 'fader20' || c.type === 'fader20led' || c.type === 'fader35' || c.type === 'fader45' || c.holeType === 'slot'; }
+function isMiniSlideSwitch(c: ComponentDef): boolean { return c.type === 'slideSwitchMini'; }
+function isTrimPot(c: ComponentDef): boolean { return c.type === 'trimmer6mm'; }
 function hasNutWasherHardware(c: ComponentDef): boolean {
   // PCB/tact/LED-style buttons and faders do not have panel nuts or washers.
   if (isFaderLike(c)) return false;
@@ -4154,6 +3993,7 @@ function hasNutWasherHardware(c: ComponentDef): boolean {
 function visualKnobDiameter(c: ComponentDef): number {
   if (c.knobDiameter && c.knobDiameter > 0) return c.knobDiameter;
   if (c.type === 'tactled') return 5.5;
+  if (c.type === 'trimmer6mm') return 6.3;
   if (c.type === 'pot16mm' || c.type === 'pot9mm' || c.type === 'pot9mm_ra') return 10;
   if (c.type === 'encoder') return 16;
   return Math.max(c.frontDiameter, c.holeDiameter + 4);
@@ -4173,8 +4013,9 @@ function ergonomicDiameter(c: ComponentDef): number {
   return 0;
 }
 
-const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, dragPreview, viewMode }: { components: PlacedComponent[]; dragPreview: Map<string, { x: number; y: number }> | null; viewMode: ViewMode }) {
+const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, dragPreview, viewMode, style }: { components: PlacedComponent[]; dragPreview: Map<string, { x: number; y: number }> | null; viewMode: ViewMode; style: TopHardwareStyle }) {
   if (viewMode === 'rear' || viewMode === 'drill') return null;
+  const realistic = style === 'realistic';
   return <g style={{ pointerEvents: 'none' }}>{components.filter(topHardwareVisible).map(c => {
     const preview = dragPreview?.get(c.id);
     const cx = preview?.x ?? c.x;
@@ -4182,49 +4023,160 @@ const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, drag
     const color = topColor(c);
     const rot = `rotate(${c.rotation}, ${cx}, ${cy})`;
     const hwOpacity = preview ? 0.4 : 1;
+    if (!realistic) {
+      if (isPotLike(c)) {
+        const d = visualKnobDiameter(c);
+        return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
+          <circle cx={cx} cy={cy} r={d/2} fill={color} stroke="rgba(255,255,255,0.28)" strokeWidth={0.28}/>
+          <line x1={cx} y1={cy} x2={cx} y2={cy-d*0.36} stroke="rgba(255,255,255,0.62)" strokeWidth={0.35} strokeLinecap="round"/>
+        </g>;
+      }
+      if (isFaderLike(c)) {
+        const capW = c.faderHandleW ?? Math.max(7, (c.frontW ?? 9) * 1.15);
+        const capH = c.faderHandleH ?? 5;
+        return <g key={c.id} data-top-hardware-id={c.id} transform={rot} opacity={hwOpacity}>
+          <rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={1.2} fill={color} stroke="rgba(0,0,0,0.6)" strokeWidth={0.3}/>
+        </g>;
+      }
+      if (isJackLike(c)) {
+        const outer = Math.max(c.frontDiameter, 8) / 2;
+        return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
+          <circle cx={cx} cy={cy} r={outer} fill={color} stroke="rgba(255,255,255,0.25)" strokeWidth={0.25}/>
+          <circle cx={cx} cy={cy} r={Math.max(1.5, c.holeDiameter*0.32)} fill="#050505"/>
+        </g>;
+      }
+      if (isButtonLike(c) || isLedLike(c)) {
+        // Keep 3mm indicator LEDs visually true to size. `frontDiameter`
+        // may describe a bezel/keepout, but the visible LED lens should be
+        // around the real 3.0–3.2mm dome, so it must be smaller than the
+        // 5.5mm low-profile LED button cap.
+        const r = isButtonLike(c) ? visualButtonRadius(c) : Math.max(1.5, Math.min(1.65, c.holeDiameter / 2));
+        return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
+          <circle cx={cx} cy={cy} r={r} fill={color} stroke="rgba(255,255,255,0.32)" strokeWidth={0.25}/>
+        </g>;
+      }
+      if (c.type === 'toggle') {
+        return <g key={c.id} data-top-hardware-id={c.id} transform={rot} opacity={hwOpacity}>
+          <circle cx={cx} cy={cy} r={c.frontDiameter/2} fill={color} stroke="rgba(0,0,0,0.55)" strokeWidth={0.25}/>
+          <line x1={cx} y1={cy} x2={cx} y2={cy-8} stroke={color} strokeWidth={1.05} strokeLinecap="round"/>
+        </g>;
+      }
+    }
+    if (isMiniSlideSwitch(c)) {
+      const b = getFrontBounds(c);
+      const knobW = Math.max(2.2, b.w * 0.28);
+      const knobH = Math.max(3.0, b.h * 0.62);
+      const knobX = cx + b.w * 0.18;
+      return <g key={c.id} data-top-hardware-id={c.id} transform={rot} opacity={hwOpacity}>
+        <rect x={cx-b.w/2} y={cy-b.h/2} width={b.w} height={b.h} rx={0.45} fill="#f2f2ee" stroke="#0b0b0b" strokeWidth={0.28}/>
+        <rect x={cx-b.w/2+0.55} y={cy-b.h/2+0.55} width={b.w-1.1} height={b.h-1.1} rx={0.25} fill="#151515" stroke="#a8a8a8" strokeWidth={0.12}/>
+        <rect x={knobX-knobW/2} y={cy-knobH/2} width={knobW} height={knobH} rx={0.2} fill="#d9d9d5" stroke="#ffffff" strokeWidth={0.12}/>
+      </g>;
+    }
     if (isPotLike(c)) {
       const d = visualKnobDiameter(c);
+      const r = d / 2;
+      if (isTrimPot(c)) {
+        const ribCount = 10;
+        const ribs = Array.from({ length: ribCount }, (_, i) => {
+          const a = (i / ribCount) * Math.PI * 2;
+          const x1 = cx + Math.cos(a) * r * 0.76;
+          const y1 = cy + Math.sin(a) * r * 0.76;
+          const x2 = cx + Math.cos(a) * r * 0.98;
+          const y2 = cy + Math.sin(a) * r * 0.98;
+          return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,255,255,0.14)" strokeWidth={0.12} strokeLinecap="round"/>;
+        });
+        return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
+          <circle cx={cx} cy={cy} r={r + 0.28} fill="#080808" stroke="rgba(255,255,255,0.28)" strokeWidth={0.16}/>
+          <circle cx={cx} cy={cy} r={r} fill="#111" stroke="#050505" strokeWidth={0.35}/>
+          {ribs}
+          <circle cx={cx-r*0.26} cy={cy-r*0.34} r={r*0.26} fill="rgba(255,255,255,0.20)" stroke="none"/>
+          <line x1={cx} y1={cy-r*0.06} x2={cx} y2={cy-r*0.82} stroke="#f4f4ee" strokeWidth={0.42} strokeLinecap="round"/>
+        </g>;
+      }
+      const pointerLen = r * 0.76;
       return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
-        <circle cx={cx} cy={cy} r={d/2} fill={color} stroke="rgba(255,255,255,0.35)" strokeWidth={0.35}/>
-        <circle cx={cx-d*0.13} cy={cy-d*0.13} r={d*0.18} fill="rgba(255,255,255,0.18)" stroke="none"/>
-        <line x1={cx} y1={cy} x2={cx} y2={cy-d*0.38} stroke="rgba(255,255,255,0.65)" strokeWidth={0.45} strokeLinecap="round"/>
+        <circle cx={cx} cy={cy} r={r + 0.85} fill="#050505" stroke="#f6f6f2" strokeWidth={0.22}/>
+        <circle cx={cx} cy={cy} r={r + 0.25} fill="#111" stroke="#2b2b2b" strokeWidth={0.42}/>
+        <circle cx={cx} cy={cy} r={r * 0.82} fill="#1a1a1a" stroke="#3f3f3f" strokeWidth={0.18}/>
+        <circle cx={cx-r*0.28} cy={cy-r*0.36} r={r*0.32} fill="rgba(255,255,255,0.34)" stroke="none"/>
+        <path d={`M ${cx-r*0.48} ${cy-r*0.2} C ${cx-r*0.32} ${cy-r*0.58}, ${cx+r*0.12} ${cy-r*0.72}, ${cx+r*0.38} ${cy-r*0.46}`} fill="none" stroke="rgba(255,255,255,0.32)" strokeWidth={0.18} strokeLinecap="round"/>
+        <circle cx={cx} cy={cy} r={r*0.98} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth={0.16} strokeDasharray="1.1 1.0"/>
+        <line x1={cx} y1={cy-r*0.15} x2={cx} y2={cy-pointerLen} stroke="#f7f7f2" strokeWidth={0.52} strokeLinecap="round"/>
       </g>;
     }
     if (isFaderLike(c)) {
-      const capW = c.faderHandleW ?? Math.max(7, (c.frontW ?? 9) * 1.15);
-      const capH = c.faderHandleH ?? 5;
+      const b = getFrontBounds(c);
+      const slotW = Math.max(2.1, b.w * 0.32);
+      const slotH = Math.max(10, b.h * 0.86);
+      const led = c.type === 'fader20led';
+      const capW = led ? (c.faderHandleW ?? 6.0) : (c.faderHandleW ?? Math.max(7, b.w * 1.08));
+      const capH = led ? (c.faderHandleH ?? 5.5) : (c.faderHandleH ?? 4.8);
+      const capFill = led ? (c.topColor || '#ff2b2b') : '#bfc2c4';
       return <g key={c.id} data-top-hardware-id={c.id} transform={rot} opacity={hwOpacity}>
-        <rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={1.5} fill={color} stroke="rgba(0,0,0,0.7)" strokeWidth={0.35}/>
-        <line x1={cx-capW*0.28} y1={cy} x2={cx+capW*0.28} y2={cy} stroke="rgba(255,255,255,0.45)" strokeWidth={0.25}/>
+        {/* Front panel view: only the actual slot/lever is visible. The long RA2045F body belongs to Rear/Combined engineering layers, not top hardware. */}
+        <rect x={cx-slotW/2} y={cy-slotH/2} width={slotW} height={slotH} rx={slotW/2} fill="#050505" stroke="rgba(255,255,255,0.22)" strokeWidth={0.14}/>
+        {led && <line x1={cx-b.w*0.30} y1={cy-slotH/2-0.8} x2={cx+b.w*0.30} y2={cy-slotH/2-0.8} stroke="rgba(255,255,255,0.22)" strokeWidth={0.12}/>}
+        {led ? <g>
+            <rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={0.45} fill={capFill} stroke="#ffb0b0" strokeWidth={0.16}/>
+            <rect x={cx-capW*0.25} y={cy-capH*0.32} width={capW*0.28} height={capH*0.20} rx={0.12} fill="rgba(255,255,255,0.38)"/>
+            <rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={0.45} fill="none" stroke="rgba(120,0,0,0.32)" strokeWidth={0.10}/>
+          </g>
+             : <g><rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={1.1} fill={capFill} stroke="#f6f6f2" strokeWidth={0.18}/><line x1={cx-capW*0.28} y1={cy} x2={cx+capW*0.28} y2={cy} stroke="rgba(0,0,0,0.45)" strokeWidth={0.16}/></g>}
       </g>;
     }
     if (isJackLike(c)) {
       const outer = Math.max(c.frontDiameter, 8) / 2;
+      const hole = Math.max(1.45, c.holeDiameter * 0.34);
       return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
-        <circle cx={cx} cy={cy} r={outer} fill={color} stroke="rgba(255,255,255,0.35)" strokeWidth={0.3}/>
-        <circle cx={cx} cy={cy} r={Math.max(1.5, c.holeDiameter*0.32)} fill="#050505" stroke="rgba(255,255,255,0.35)" strokeWidth={0.18}/>
+        <circle cx={cx} cy={cy} r={outer+0.65} fill="#f3f3ee" stroke="#080808" strokeWidth={0.18}/>
+        <circle cx={cx} cy={cy} r={outer+0.25} fill="#9ca2a8" stroke="#ffffff" strokeWidth={0.18}/>
+        <circle cx={cx} cy={cy} r={outer*0.78} fill="#22262b" stroke="#f2f2ee" strokeWidth={0.18}/>
+        <circle cx={cx} cy={cy} r={hole} fill="#020202" stroke="#8b8f94" strokeWidth={0.18}/>
+        <path d={`M ${cx-outer*0.55} ${cy-outer*0.35} C ${cx-outer*0.25} ${cy-outer*0.75}, ${cx+outer*0.45} ${cy-outer*0.55}, ${cx+outer*0.62} ${cy-outer*0.16}`} fill="none" stroke="rgba(255,255,255,0.72)" strokeWidth={0.22} strokeLinecap="round"/>
+      </g>;
+    }
+    if (c.type === 'tactled') {
+      // Thonk low-profile LED button / PB01-109TL style front view:
+      // the visible front-panel hardware is only the round translucent cap.
+      // The 7.5mm square body is a rear/PCB body reference, not a front-face frame.
+      const r = 5.5 / 2;
+      const ledColor = color || '#ff7a2a';
+      return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
+        <circle cx={cx} cy={cy} r={r*1.18} fill="rgba(12,14,16,0.34)" stroke="rgba(255,255,255,0.10)" strokeWidth={0.14}/>
+        <circle cx={cx} cy={cy} r={r*1.02} fill="#7d858d" opacity={0.74} stroke="rgba(230,238,244,0.38)" strokeWidth={0.16}/>
+        <circle cx={cx} cy={cy} r={r*0.78} fill={ledColor} opacity={0.38} stroke="none"/>
+        <circle cx={cx} cy={cy} r={r*0.38} fill={ledColor} opacity={0.68} stroke="none"/>
+        <circle cx={cx-r*0.25} cy={cy-r*0.32} r={r*0.28} fill="rgba(255,255,255,0.42)" stroke="none"/>
+        <path d={`M ${cx-r*0.52} ${cy-r*0.08} C ${cx-r*0.34} ${cy-r*0.55}, ${cx+r*0.18} ${cy-r*0.58}, ${cx+r*0.42} ${cy-r*0.22}`} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth={0.14} strokeLinecap="round"/>
+      </g>;
+    }
+    if (isLedLike(c)) {
+      // True 3mm indicator LED: small lens with a subtle halo.
+      // Do not use frontDiameter here, because that can represent a front
+      // keepout/bezel and made the 3mm LED look larger than the 5.5mm button.
+      const lensR = Math.max(1.45, Math.min(1.6, c.holeDiameter / 2));
+      const bezelR = lensR * 1.18;
+      return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
+        <circle cx={cx} cy={cy} r={lensR*1.38} fill={color} opacity={0.16} stroke="none"/>
+        <circle cx={cx} cy={cy} r={bezelR} fill="rgba(55,22,22,0.78)" stroke="rgba(255,255,255,0.14)" strokeWidth={0.12}/>
+        <circle cx={cx} cy={cy} r={lensR} fill={color} stroke="#f6f6f2" strokeWidth={0.16}/>
+        <circle cx={cx-lensR*0.24} cy={cy-lensR*0.28} r={lensR*0.25} fill="rgba(255,255,255,0.78)" stroke="none"/>
       </g>;
     }
     if (isButtonLike(c)) {
       const r = visualButtonRadius(c);
       return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
-        <circle cx={cx} cy={cy} r={r} fill={color} stroke="rgba(255,255,255,0.45)" strokeWidth={0.3}/>
-        <circle cx={cx-r*0.25} cy={cy-r*0.25} r={r*0.22} fill="rgba(255,255,255,0.25)" stroke="none"/>
-      </g>;
-    }
-    if (isLedLike(c)) {
-      const r = Math.max(2, c.frontDiameter / 2);
-      return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
-        <circle cx={cx} cy={cy} r={r*1.7} fill={color} opacity={0.16} stroke="none"/>
-        <circle cx={cx} cy={cy} r={r} fill={color} stroke="rgba(255,255,255,0.6)" strokeWidth={0.25}/>
-        <circle cx={cx-r*0.25} cy={cy-r*0.25} r={r*0.25} fill="rgba(255,255,255,0.55)" stroke="none"/>
+        <rect x={cx-r} y={cy-r} width={r*2} height={r*2} rx={0.65} fill="#f2f2ee" stroke="#111" strokeWidth={0.2}/>
+        <rect x={cx-r*0.72} y={cy-r*0.72} width={r*1.44} height={r*1.44} rx={0.35} fill="#ffffff" stroke="rgba(0,0,0,0.35)" strokeWidth={0.12}/>
       </g>;
     }
     if (c.type === 'toggle') {
       return <g key={c.id} data-top-hardware-id={c.id} transform={rot} opacity={hwOpacity}>
-        <circle cx={cx} cy={cy} r={c.frontDiameter/2} fill={color} stroke="rgba(0,0,0,0.6)" strokeWidth={0.25}/>
-        <line x1={cx} y1={cy} x2={cx} y2={cy-8} stroke={color} strokeWidth={1.2} strokeLinecap="round"/>
-        <circle cx={cx} cy={cy-8} r={1.2} fill={color} stroke="rgba(255,255,255,0.4)" strokeWidth={0.2}/>
+        <circle cx={cx} cy={cy} r={c.frontDiameter/2 + 0.45} fill="#f0f0ec" stroke="#0b0b0b" strokeWidth={0.18}/>
+        <circle cx={cx} cy={cy} r={c.frontDiameter/2 - 0.35} fill="#bfc5c8" stroke="#ffffff" strokeWidth={0.16}/>
+        <line x1={cx} y1={cy+1.2} x2={cx+2.1} y2={cy-8.2} stroke="#dce2e6" strokeWidth={1.15} strokeLinecap="round"/>
+        <circle cx={cx+2.1} cy={cy-8.2} r={1.05} fill="#dce2e6" stroke="#f8f8f4" strokeWidth={0.16}/>
       </g>;
     }
     if (getFrontShape(c) !== 'circle') {
@@ -4371,8 +4323,8 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
               </g>
             )}
 
-            {/* Rear body — rear view only */}
-            {layers.rearBodies && viewMode === 'rear' && c.rearBodyW > 0 && (
+            {/* Rear body — rear and combined views */}
+            {layers.rearBodies && (viewMode === 'rear' || viewMode === 'combined') && c.rearBodyW > 0 && (
               <g transform={`rotate(${c.rotation}, ${cx}, ${cy})`}>
                 <rect
                   x={cx - c.rearBodyW / 2} y={cy - c.rearBodyH / 2}
@@ -4385,9 +4337,9 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Front face — circle for normal components, rect for faders */}
-            {layers.frontShapes && (viewMode === 'front' || viewMode === 'combined' || viewMode === 'drill') && (
+            {layers.frontShapes && (viewMode === 'front' || viewMode === 'combined') && (
               getFrontShape(c) !== 'circle'
-                ? (
+                ? (isFaderLike(c) ? null : (
                   <g transform={`rotate(${c.rotation}, ${cx}, ${cy})`}>
                     <rect
                       x={cx - getFrontBounds(c).w / 2} y={cy - getFrontBounds(c).h / 2}
@@ -4397,7 +4349,7 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
                       strokeWidth={0.25}
                     />
                   </g>
-                )
+                ))
                 : c.holeType !== 'slot' && (
                   <circle cx={cx} cy={cy} r={c.frontDiameter / 2}
                     fill={isErr ? 'rgba(255,50,50,0.12)' : 'rgba(200,200,200,0.07)'}
@@ -4751,6 +4703,11 @@ function CanvasLayerPanel() {
   return (
     <div className={`canvas-layer-panel ${open ? 'open' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
       <button className="layer-panel-trigger" onClick={() => setOpen(v => !v)}>☷ Layers</button>
+      <div className="hardware-style-mini">
+        <span>Top HW</span>
+        <button className={state.topHardwareStyle === 'classic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'classic' })}>Classic</button>
+        <button className={state.topHardwareStyle === 'realistic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'realistic' })}>Boutique</button>
+      </div>
       {open && <div className="layer-panel-body">
         <div className="layer-preset-row">
           <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button>
@@ -5059,7 +5016,7 @@ function SVGCanvas({
             layers={state.layerVisibility}
           />
 
-          {state.layerVisibility.topHardware && <TopHardwareLayer components={state.components} dragPreview={dragPreview} viewMode={state.viewMode} />}
+          {state.layerVisibility.topHardware && <TopHardwareLayer components={state.components} dragPreview={dragPreview} viewMode={state.viewMode} style={state.topHardwareStyle} />}
 
           {state.layerVisibility.text && <ScaleLayer items={state.scaleItems} components={state.components} layer="foreground" viewMode={state.viewMode} />}
           {state.layerVisibility.text && <TextLayer items={state.textItems} layer="foreground" selectedText={state.selectedText} textDragPreview={textDragPreview} viewMode={state.viewMode} />}
@@ -6067,7 +6024,7 @@ function TextPropertiesPanel() {
     </div>
   );
 }
-function LayersPanel(){ const state=useAppState(); const dispatch=useAppDispatch(); const labels:[keyof LayerVisibility,string][]=[['grid','Grid'],['panelOutline','Panel outline'],['mountingHoles','Mounting holes'],['artwork','Artwork'],['text','Text/scales'],['labels','Labels'],['componentHoles','Component holes'],['frontShapes','Front shapes'],['topHardware','Top hardware'],['rearBodies','Rear bodies'],['rearKeepouts','Rear keepouts'],['pcb','PCB']]; return <div className="section"><div className="section-title">Layers</div><div className="btn-row" style={{ marginBottom: 8 }}><button title="Mechanical view: holes, rear bodies, keepouts, PCB" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mechanical</button><button title="Visual view: artwork, labels, text, top hardware" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button><button title="Production view: outline and cut/drill geometry only" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Production</button><button title="Show all layers" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>Debug</button></div>{labels.map(([k,l])=><label key={k}><input type="checkbox" checked={state.layerVisibility[k]} onChange={e=>dispatch({type:'SET_LAYER_VISIBILITY',key:k,value:e.target.checked})}/> {l}</label>)}</div>; }
+function LayersPanel(){ const state=useAppState(); const dispatch=useAppDispatch(); const labels:[keyof LayerVisibility,string][]=[['grid','Grid'],['panelOutline','Panel outline'],['mountingHoles','Mounting holes'],['artwork','Artwork'],['text','Text/scales'],['labels','Labels'],['componentHoles','Component holes'],['frontShapes','Front shapes'],['topHardware','Top hardware'],['rearBodies','Rear bodies'],['rearKeepouts','Rear keepouts'],['pcb','PCB']]; return <div className="section"><div className="section-title">Layers</div><div className="field-row"><label>Top hardware style</label><select value={state.topHardwareStyle} onChange={e=>dispatch({type:'SET_TOP_HARDWARE_STYLE',style:e.target.value as TopHardwareStyle})}><option value="classic">Classic / clean</option><option value="realistic">Boutique / Sofia-like</option></select></div><div className="btn-row" style={{ marginBottom: 8 }}><button title="Mechanical view: holes, rear bodies, keepouts, PCB" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mechanical</button><button title="Visual view: artwork, labels, text, top hardware" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button><button title="Production view: outline and cut/drill geometry only" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Production</button><button title="Show all layers" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>Debug</button></div>{labels.map(([k,l])=><label key={k}><input type="checkbox" checked={state.layerVisibility[k]} onChange={e=>dispatch({type:'SET_LAYER_VISIBILITY',key:k,value:e.target.checked})}/> {l}</label>)}</div>; }
 function DepthViewPanel(){ const state=useAppState(); const dispatch=useAppDispatch(); const d=state.depthSettings; const maxDepth=computeMaxDepth(state.components); const scale=2; const w=Math.max(120,(d.caseDepthLimitMm+10)*scale); return <div className="field-row" style={{ marginTop: 10 }}><div className="section-title">Depth / Skiff Check</div><div className="field-row"><label>Case depth limit mm</label><input type="number" value={d.caseDepthLimitMm} onChange={e=>dispatch({type:'SET_DEPTH_SETTINGS',patch:{caseDepthLimitMm:+e.target.value}})}/></div><div className="field-row"><label>PCB distance mm</label><input type="number" value={d.pcbDistanceBehindPanelMm} onChange={e=>dispatch({type:'SET_DEPTH_SETTINGS',patch:{pcbDistanceBehindPanelMm:+e.target.value}})}/></div><label><input type="checkbox" checked={d.showPCBPlane} onChange={e=>dispatch({type:'SET_DEPTH_SETTINGS',patch:{showPCBPlane:e.target.checked}})}/> Show PCB plane</label><svg viewBox={`0 0 ${w} 70`} style={{width:'100%',height:70,background:'#101010',border:'1px solid #333',marginTop:6}}><line x1={10} y1={5} x2={10} y2={65} stroke="#ccc"/><line x1={10+d.caseDepthLimitMm*scale} y1={5} x2={10+d.caseDepthLimitMm*scale} y2={65} stroke="#f66" strokeDasharray="3 2"/>{d.showPCBPlane&&<line x1={10+d.pcbDistanceBehindPanelMm*scale} y1={5} x2={10+d.pcbDistanceBehindPanelMm*scale} y2={65} stroke="#4af" strokeDasharray="3 2"/>}{state.components.slice(0,12).map((c,i)=><rect key={c.id} x={10} y={8+i*4.5} width={Math.max(1,c.rearDepth*scale)} height={3} fill={c.rearDepth>d.caseDepthLimitMm?'#f55':'#0af'}/>)}</svg><div className="measurement-row"><span>Max depth</span><span>{maxDepth.toFixed(1)} mm</span></div>{maxDepth>d.caseDepthLimitMm&&<div className="warning-item warn">Max depth exceeds case limit by {(maxDepth-d.caseDepthLimitMm).toFixed(1)} mm.</div>}</div>; }
 function LayoutAssistantPanel({warnings}:{warnings:CollisionWarning[]}){
   const state=useAppState(); const dispatch=useAppDispatch(); const widthMM=panelWidthMM(state.panel);
@@ -6156,7 +6113,7 @@ function buildSelfCheckItems(state: AppState, warnings: CollisionWarning[]): { l
   if (warn > 0) items.push({ level: 'warn', message: `${warn} warning(s) in layout warnings.` });
   const badDims = state.components.filter(c => !isFinite(c.x) || !isFinite(c.y) || c.holeDiameter <= 0 || c.rearBodyW < 0 || c.rearBodyH < 0 || c.keepoutW < 0 || c.keepoutH < 0);
   if (badDims.length) items.push({ level: 'error', message: `${badDims.length} component(s) have invalid coordinates or dimensions.` });
-  const unverified = state.components.filter(c => (c.verification ?? 'approximate') === 'approximate').length;
+  const unverified = state.components.filter(c => (c.verificationStatus || 'approximate') === 'approximate').length;
   if (unverified) items.push({ level: 'warn', message: `${unverified} part(s) are still marked Approximate.` });
   const orphanScales = state.scaleItems.filter(sc => sc.componentId && !ids.has(sc.componentId)).length;
   if (orphanScales) items.push({ level: 'warn', message: `${orphanScales} scale item(s) are attached to missing components.` });
@@ -6787,6 +6744,7 @@ function validateAndNormalize(raw: unknown): ValidationResult {
     viewMode: (['front','rear','drill','combined'] as ViewMode[]).includes(obj.viewMode as ViewMode)
       ? (obj.viewMode as ViewMode)
       : 'front',
+    topHardwareStyle: (obj.topHardwareStyle === 'realistic' || obj.topHardwareStyle === 'classic') ? obj.topHardwareStyle as TopHardwareStyle : 'classic',
     grid: objOrDefault<GridConfig>('grid', { size: 1, showMajor: true }),
     pcb: objOrDefault<PCBConfig>('pcb', { enabled: false, x: 0, y: 9, width: widthMM, height: 110, depthLimit: 50 }),
     mountingHoles: normalizeMountingHoleConfig(obj.mountingHoles, widthMM),
@@ -7773,7 +7731,7 @@ function ExportDialog({ options, onChange, onExport, onExportMode, onExportCSV, 
   const state = useAppState();
   const warnings = computeWarnings(state.components, panelWidthMM(state.panel), state.mountingHoles, state.pcb);
   const hard = warnings.filter(w => w.severity === 'error').length;
-  const unverified = state.components.filter(c => (c.verificationStatus || c.verification || 'Approximate') === 'Approximate').length;
+  const unverified = state.components.filter(c => (c.verificationStatus || 'approximate') === 'approximate').length;
   const [showChecklist, setShowChecklist] = useState(false);
   const checklist = [
     ['Panel HP confirmed', true],
@@ -8258,7 +8216,7 @@ function LocalProjectsDialog({ onClose }: { onClose: () => void }) {
 
 
 
-function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts, touchMode, onSetTouchMode, onOpenExport, onOpenTemplates, onToggleLeftPanel, onToggleRightPanel, leftPanelOpen, rightPanelOpen, warnings, onFitView, onZoomSelected }: {
+function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts, touchMode, onSetTouchMode, onOpenExport, onOpenTemplates, onToggleLeftPanel, onToggleRightPanel, leftPanelOpen, rightPanelOpen, warnings }: {
   hidden: boolean;
   focusMode: boolean;
   onToggleFocus: () => void;
@@ -8272,23 +8230,16 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
   leftPanelOpen: boolean;
   rightPanelOpen: boolean;
   warnings: CollisionWarning[];
-  onFitView: () => void;
-  onZoomSelected: () => void;
 }) {
   const state = useAppState();
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [mobileSheet, setMobileSheet] = useState<null | 'add' | 'view' | 'more'>(null);
   const widthMM = panelWidthMM(state.panel);
-  const commonTypes: ComponentType[] = ['pot9mm', 'jack', 'slimjack', 'toggle', 'led3mm', 'encoder', 'fader20', 'customrect'];
+  const commonTypes: ComponentType[] = ['pot9mm', 'jack', 'slimjack', 'toggle', 'led3mm', 'encoder', 'fader20', 'fader20led', 'customrect'];
   const commonParts = commonTypes
     .map(t => COMPONENT_LIBRARY.find(c => c.type === t))
     .filter(Boolean) as ComponentDef[];
-  // Mobile must not be a reduced editor: expose the full built-in library
-  // plus user custom parts inside Add, while keeping the common quick list first.
-  const commonKeys = new Set(commonParts.map(def => `${def.type}:${def.name}`));
-  const allMobileParts = [...COMPONENT_LIBRARY, ...state.customParts];
-  const extraMobileParts = allMobileParts.filter(def => !commonKeys.has(`${def.type}:${def.name}`));
   const hard = warnings.filter(w => w.severity === 'error').length;
   const warn = warnings.length - hard;
   const unverified = state.components.filter(c => !isPartVerified(c)).length;
@@ -8315,28 +8266,6 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
   }
 
   const sheetTitle = mobileSheet === 'add' ? 'Add component' : mobileSheet === 'view' ? 'View & layers' : 'More tools';
-
-  function setLayerPack(values: Partial<LayerVisibility>) {
-    (Object.keys(values) as (keyof LayerVisibility)[]).forEach(key => dispatch({ type:'SET_LAYER_VISIBILITY', key, value: !!values[key] }));
-  }
-
-  function applyMobileViewPreset(preset: 'design' | 'drill' | 'rear' | 'artwork' | 'clean') {
-    if (preset === 'design') {
-      dispatch({ type:'SET_VIEW_MODE', mode:'front' });
-      setLayerPack({ grid:true, panelOutline:true, mountingHoles:true, artwork:true, text:true, labels:true, componentHoles:true, frontShapes:true, topHardware:true, rearBodies:false, rearKeepouts:false, pcb:false });
-    } else if (preset === 'drill') {
-      dispatch({ type:'SET_VIEW_MODE', mode:'drill' });
-      setLayerPack({ grid:true, panelOutline:true, mountingHoles:true, artwork:false, text:false, labels:false, componentHoles:true, frontShapes:false, topHardware:false, rearBodies:false, rearKeepouts:false, pcb:false });
-    } else if (preset === 'rear') {
-      dispatch({ type:'SET_VIEW_MODE', mode:'rear' });
-      setLayerPack({ grid:true, panelOutline:true, mountingHoles:true, artwork:false, text:false, labels:true, componentHoles:true, frontShapes:false, topHardware:false, rearBodies:true, rearKeepouts:true, pcb:true });
-    } else if (preset === 'artwork') {
-      dispatch({ type:'SET_VIEW_MODE', mode:'front' });
-      setLayerPack({ grid:false, panelOutline:true, mountingHoles:false, artwork:true, text:true, labels:true, componentHoles:false, frontShapes:true, topHardware:true, rearBodies:false, rearKeepouts:false, pcb:false });
-    } else {
-      setLayerPack({ grid:false, panelOutline:true, mountingHoles:false, artwork:false, text:false, labels:false, componentHoles:false, frontShapes:true, topHardware:true, rearBodies:false, rearKeepouts:false, pcb:false });
-    }
-  }
 
   return (
     <>
@@ -8378,31 +8307,15 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
 
             {mobileSheet === 'add' && (
               <>
-                <div className="mobile-sheet-note">Adds the part at the center of the current panel. Common parts are first; the full library is below, so mobile does not lose desktop functionality.</div>
-                <div className="mobile-sheet-section">
-                  <div className="mobile-sheet-label">Common</div>
-                  <div className="mobile-add-grid">
-                    {commonParts.map(def => (
-                      <button key={def.type} onClick={() => add(def)}>
-                        <span>{def.name}</span>
-                        <small>{def.category || def.type} · {def.holeType === 'slot' ? `${def.holeDiameter} × ${def.slotLength ?? def.holeDiameter} mm slot` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW ?? def.holeDiameter} × ${def.holeH ?? def.frontH ?? def.holeDiameter} mm cut` : `Ø ${def.holeDiameter} mm`}</small>
-                      </button>
-                    ))}
-                  </div>
+                <div className="mobile-sheet-note">Adds the part at the center of the current panel. Drag it after placement.</div>
+                <div className="mobile-add-grid">
+                  {commonParts.map(def => (
+                    <button key={def.type} onClick={() => add(def)}>
+                      <span>{def.name}</span>
+                      <small>{def.category || def.type} · {def.holeType === 'slot' ? `${def.holeDiameter} × ${def.slotLength ?? def.holeDiameter} mm slot` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW ?? def.holeDiameter} × ${def.holeH ?? def.frontH ?? def.holeDiameter} mm cut` : `Ø ${def.holeDiameter} mm`}</small>
+                    </button>
+                  ))}
                 </div>
-                {extraMobileParts.length > 0 && (
-                  <div className="mobile-sheet-section">
-                    <div className="mobile-sheet-label">Full library</div>
-                    <div className="mobile-add-grid compact">
-                      {extraMobileParts.map((def, i) => (
-                        <button key={`${def.type}-${def.name}-${i}`} onClick={() => add(def)}>
-                          <span>{def.name}</span>
-                          <small>{def.category || def.type} · {def.holeType === 'slot' ? `${def.holeDiameter} × ${def.slotLength ?? def.holeDiameter} mm slot` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW ?? def.holeDiameter} × ${def.holeH ?? def.frontH ?? def.holeDiameter} mm cut` : `Ø ${def.holeDiameter} mm`}</small>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </>
             )}
 
@@ -8412,26 +8325,25 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                   {(['front','rear','drill','combined'] as ViewMode[]).map(m => <button key={m} className={state.viewMode === m ? 'active' : ''} onClick={() => dispatch({ type:'SET_VIEW_MODE', mode:m })}>{m}</button>)}
                 </div>
                 <div className="mobile-sheet-section">
+                  <div className="mobile-sheet-label">Top hardware style</div>
+                  <div className="mobile-segment-grid two">
+                    <button className={state.topHardwareStyle === 'classic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'classic' })}>Classic</button>
+                    <button className={state.topHardwareStyle === 'realistic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'realistic' })}>Boutique</button>
+                  </div>
+                </div>
+                <div className="mobile-sheet-section">
                   <div className="mobile-sheet-label">Grid size</div>
                   <div className="mobile-segment-grid five">
                     {([0.25,0.5,1,2.5,5] as GridSize[]).map(g => <button key={g} className={state.grid.size === g ? 'active' : ''} onClick={() => dispatch({ type:'SET_GRID_SIZE', size:g })}>{g}</button>)}
                   </div>
                 </div>
                 <div className="mobile-sheet-section">
-                  <div className="mobile-sheet-label">Mobile view presets</div>
-                  <div className="mobile-segment-grid five">
-                    <button onClick={() => applyMobileViewPreset('design')}>Design</button>
-                    <button onClick={() => applyMobileViewPreset('drill')}>Drill</button>
-                    <button onClick={() => applyMobileViewPreset('rear')}>Rear</button>
-                    <button onClick={() => applyMobileViewPreset('artwork')}>Art</button>
-                    <button onClick={() => applyMobileViewPreset('clean')}>Clean</button>
-                  </div>
-                </div>
-                <div className="mobile-sheet-section">
-                  <div className="mobile-sheet-label">Zoom</div>
-                  <div className="mobile-action-grid">
-                    <button onClick={onFitView}>Fit panel</button>
-                    <button onClick={onZoomSelected} disabled={state.selected.length === 0}>Zoom selected</button>
+                  <div className="mobile-sheet-label">Layer presets</div>
+                  <div className="mobile-segment-grid four">
+                    <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button>
+                    <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mech</button>
+                    <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Prod</button>
+                    <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>All</button>
                   </div>
                 </div>
                 <div className="mobile-layer-grid">
@@ -8446,25 +8358,15 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                   <strong>{hard ? 'DFM CHECK' : warn || unverified ? 'DFM CAUTION' : 'DFM OK'}</strong>
                   <span>{hard} errors · {warn} warnings · {unverified} unverified</span>
                 </div>
-                <div className="mobile-sheet-label">Primary tools</div>
                 <div className="mobile-action-grid">
                   <button className={focusMode ? 'active' : ''} onClick={onToggleFocus}>{focusMode ? 'Exit focus' : 'Focus mode'}</button>
                   <button onClick={onOpenExport}>Export preview</button>
                   <button onClick={onOpenTemplates}>Templates</button>
                   <button onClick={onOpenShortcuts}>Shortcuts</button>
-                </div>
-                <div className="mobile-sheet-section">
-                  <div className="mobile-sheet-label">Advanced / desktop panels</div>
-                  <div className="mobile-action-grid">
                   <button className={leftPanelOpen ? 'active' : ''} onClick={onToggleLeftPanel}>Left panel</button>
                   <button className={rightPanelOpen ? 'active' : ''} onClick={onToggleRightPanel}>Right panel</button>
                   <button onClick={() => onSetTouchMode('ruler')}>Ruler mode</button>
-                  <button onClick={onFitView}>Fit panel</button>
-                  <button onClick={onZoomSelected} disabled={state.selected.length === 0}>Zoom selected</button>
-                  <button onClick={() => dispatch({ type:'UNDO' })}>Undo</button>
-                  <button onClick={() => dispatch({ type:'REDO' })}>Redo</button>
                   <button onClick={() => dispatch({ type:'DESELECT_ALL' })}>Clear select</button>
-                  </div>
                 </div>
               </>
             )}
@@ -8477,8 +8379,8 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
 
 function ShortcutHelpOverlay({ onClose }: { onClose: () => void }) {
   const groups = [
-    { title: 'Navigation', rows: [['Ctrl/Cmd + K', 'Command palette'], ['F', 'Focus mode'], ['?', 'This help'], ['Pinch', 'Zoom on mobile'], ['Fit / Zoom', 'View sheet or selection card']] },
-    { title: 'Selection', rows: [['Tap', 'Select component'], ['Long press', 'Component actions'], ['Precision card', 'Nudge / rotate / duplicate'], ['Esc', 'Clear selection / cancel']] },
+    { title: 'Navigation', rows: [['Ctrl/Cmd + K', 'Command palette'], ['F', 'Focus mode'], ['?', 'This help'], ['Mouse wheel', 'Zoom']] },
+    { title: 'Selection', rows: [['Click', 'Select component'], ['Shift + click', 'Add/remove selection'], ['Right click', 'Component edit menu'], ['Esc', 'Clear selection / cancel']] },
     { title: 'Editing', rows: [['D', 'Duplicate selected'], ['R', 'Rotate selected 90°'], ['Delete / Backspace', 'Delete selected'], ['Arrow keys', 'Nudge by grid'], ['Shift + Arrow', 'Fine nudge 0.1 mm']] },
     { title: 'Project', rows: [['Ctrl/Cmd + S', 'Export JSON project'], ['Ctrl/Cmd + E', 'Open export preview'], ['Ctrl/Cmd + Z', 'Undo'], ['Ctrl/Cmd + Shift + Z', 'Redo']] },
   ];
@@ -8518,95 +8420,6 @@ function SelectionInfoStrip({ hidden }: { hidden: boolean }) {
 
 function avg(values: number[]): number {
   return values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
-}
-
-
-function MobileSelectionInspector({ hidden, onOpenProperties, onFitView, onZoomSelected }: {
-  hidden: boolean;
-  onOpenProperties: () => void;
-  onFitView: () => void;
-  onZoomSelected: () => void;
-}) {
-  const state = useAppState();
-  const dispatch = useAppDispatch();
-  const [expanded, setExpanded] = useState(false);
-  const [step, setStep] = useState<0.25 | 0.5 | 1>(0.25);
-  const selected = state.components.filter(c => state.selected.includes(c.id));
-  if (hidden || selected.length === 0) return null;
-
-  const xs = selected.map(c => c.x);
-  const ys = selected.map(c => c.y);
-  const label = selected.length === 1 ? (selected[0].ref || selected[0].label || selected[0].name) : `${selected.length} parts`;
-  const details = selected.length === 1
-    ? `${selected[0].name} · ${selected[0].rotation || 0}°`
-    : `avg ${avg(xs).toFixed(2)} / ${avg(ys).toFixed(2)} mm`;
-  const locked = selected.filter(c => c.locked).length;
-
-  function nudge(dx: number, dy: number) {
-    const moves = selected.filter(c => !c.locked).map(c => ({ id: c.id, x: c.x + dx, y: c.y + dy }));
-    if (moves.length) dispatch({ type:'MOVE_COMPONENTS', moves });
-  }
-  function rotate(delta: number) {
-    selected.filter(c => !c.locked).forEach(c => dispatch({ type:'UPDATE_COMPONENT', id:c.id, patch:{ rotation: ((c.rotation || 0) + delta + 360) % 360 } }));
-  }
-  function center(axis: 'x' | 'y' | 'both') {
-    const widthMM = panelWidthMM(state.panel);
-    const targetX = widthMM / 2;
-    const targetY = PANEL_HEIGHT_MM / 2;
-    const dx = targetX - avg(xs);
-    const dy = targetY - avg(ys);
-    const moves = selected.filter(c => !c.locked).map(c => ({ id:c.id, x:c.x + (axis === 'x' || axis === 'both' ? dx : 0), y:c.y + (axis === 'y' || axis === 'both' ? dy : 0) }));
-    if (moves.length) dispatch({ type:'MOVE_COMPONENTS', moves });
-  }
-
-  return (
-    <div className={`mobile-precision-inspector ${expanded ? 'expanded' : 'compact'}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
-      <div className="mobile-inspector-top">
-        <div className="mobile-inspector-title"><strong>{label}</strong><span>{details}</span></div>
-        <button className="ghost hide-small" onClick={onOpenProperties}>Edit</button>
-        <button className={expanded ? 'active' : 'ghost'} onClick={() => setExpanded(v => !v)}>{expanded ? 'Hide' : 'Precise'}</button>
-        <button className="ghost" onClick={() => dispatch({ type:'DESELECT_ALL' })}>×</button>
-      </div>
-      {expanded && (
-        <div className="mobile-inspector-body">
-          <div className="mobile-inspector-stats">
-            <span>x {avg(xs).toFixed(2)}</span>
-            <span>y {avg(ys).toFixed(2)}</span>
-            <span>grid {state.grid.size}mm</span>
-            <span>{locked ? `${locked} locked` : 'unlocked'}</span>
-          </div>
-          <div className="mobile-nudge-grid">
-            <div className="pad">
-              <span />
-              <button onClick={() => nudge(0, -step)}>↑</button>
-              <span />
-              <button onClick={() => nudge(-step, 0)}>←</button>
-              <button onClick={() => center('both')}>◎</button>
-              <button onClick={() => nudge(step, 0)}>→</button>
-              <span />
-              <button onClick={() => nudge(0, step)}>↓</button>
-              <span />
-            </div>
-            <div className="stepper">
-              {([0.25, 0.5, 1] as (0.25 | 0.5 | 1)[]).map(v => <button key={v} className={step === v ? 'active' : ''} onClick={() => setStep(v)}>{v}mm</button>)}
-            </div>
-          </div>
-          <div className="mobile-action-mini-grid">
-            <button onClick={() => rotate(-15)}>⟲ 15°</button>
-            <button onClick={() => rotate(15)}>15° ⟳</button>
-            <button onClick={() => dispatch({ type:'DUPLICATE_SELECTED' })}>Duplicate</button>
-            <button onClick={() => dispatch({ type:'LOCK_SELECTED', locked: locked !== selected.length })}>{locked === selected.length ? 'Unlock' : 'Lock'}</button>
-            <button onClick={() => center('x')}>Center X</button>
-            <button onClick={() => center('y')}>Center Y</button>
-            <button onClick={onZoomSelected}>Zoom</button>
-            <button onClick={onFitView}>Fit</button>
-            <button className="danger" onClick={() => dispatch({ type:'DELETE_SELECTED' })}>Delete</button>
-            <button onClick={onOpenProperties}>Properties</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -8657,23 +8470,6 @@ function App() {
     setShowMobileNudge(false);
     setComponentMenu(null);
   }, [focusMode]);
-
-  function fitPanelView() {
-    setZoom(isNarrowInitial ? 1.1 : 1.25);
-    setPan({ x: 0, y: 0 });
-  }
-
-  function zoomToSelectedView() {
-    const selected = state.components.filter(c => state.selected.includes(c.id));
-    if (!selected.length) { fitPanelView(); return; }
-    const widthMM = panelWidthMM(state.panel);
-    const cx = avg(selected.map(c => c.x));
-    const cy = avg(selected.map(c => c.y));
-    const nextZoom = isNarrowInitial ? 2.05 : 1.8;
-    setZoom(nextZoom);
-    // SVG is rendered at roughly 4 px/mm before CSS scale. This centers the selected average without changing the canvas model.
-    setPan({ x: (widthMM / 2 - cx) * 4 * nextZoom, y: (PANEL_HEIGHT_MM / 2 - cy) * 4 * nextZoom });
-  }
 
   // Export dialog
   useEffect(() => {
@@ -10301,9 +10097,8 @@ function App() {
           coordReadout={coordReadout}
           warnings={warnings}
         />
-        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} onToggleFocus={() => setFocusMode(v => !v)} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} onFitView={fitPanelView} onZoomSelected={zoomToSelectedView} />
+        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} onToggleFocus={() => setFocusMode(v => !v)} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} />
         <SelectionInfoStrip hidden={sidePanelOpen && isNarrowInitial} />
-        <MobileSelectionInspector hidden={isNarrowInitial && (sidePanelOpen || !!dragging || !!rotatingComponent || touchMode === 'ruler' || !!componentMenu)} onOpenProperties={() => setRightPanelOpen(true)} onFitView={fitPanelView} onZoomSelected={zoomToSelectedView} />
         {!sidePanelOpen && (
         <div
           className="mobile-mode-switch"
@@ -10329,15 +10124,15 @@ function App() {
             style={{
               position: 'fixed',
               right: 10,
-              bottom: isNarrowInitial ? `calc(env(safe-area-inset-bottom, 0px) + ${state.selected.length > 0 ? 196 : 128}px)` : (state.selected.length > 0 ? 112 : 42),
+              bottom: isNarrowInitial ? (state.selected.length > 0 ? 128 : 62) : (state.selected.length > 0 ? 82 : 12),
               zIndex: 1100,
               background: 'rgba(18,18,18,0.62)',
               border: '1px solid rgba(210,210,210,0.45)',
               borderRadius: 8,
               boxShadow: '0 8px 22px rgba(0,0,0,0.28)',
-              padding: '7px 9px',
+              padding: '6px 7px',
               display: 'flex',
-              gap: 6,
+              gap: 5,
               alignItems: 'center',
               maxWidth: 'calc(100vw - 20px)',
               overflowX: 'auto',
@@ -10348,9 +10143,10 @@ function App() {
             onTouchStart={e => e.stopPropagation()}
           >
             <span style={{ color: '#e0e0e0', fontSize: 11, whiteSpace: 'nowrap', padding: '0 4px', opacity: 0.9 }}>
-              📏 {Math.hypot(ruler.end.x - ruler.start.x, ruler.end.y - ruler.start.y).toFixed(2)} mm · dx {(ruler.end.x - ruler.start.x).toFixed(2)} · dy {(ruler.end.y - ruler.start.y).toFixed(2)}
+              📏 {Math.hypot(ruler.end.x - ruler.start.x, ruler.end.y - ruler.start.y).toFixed(2)} mm
             </span>
             <button title="Clear ruler measurement" onClick={() => setRuler(null)}>Clear</button>
+            <button title="Return to Edit mode" onClick={() => setTouchMode('edit')}>Edit</button>
           </div>
         )}
         {state.selected.length > 0 && !sidePanelOpen && (
@@ -10529,7 +10325,6 @@ function App() {
           const top  = Math.min(Math.max(52, componentMenu.y), window.innerHeight - 160);
           return (
             <div
-              className={isNarrowInitial ? 'component-context-menu-mobile' : ''}
               style={{
                 position: 'fixed',
                 left,
@@ -10550,7 +10345,6 @@ function App() {
                 {comp.label || comp.name}
               </div>
               <div className="btn-row" style={{ flexDirection: 'column' }}>
-                <button onClick={() => { dispatch({ type:'SELECT', ids:[comp.id], additive:false }); setRightPanelOpen(true); setComponentMenu(null); }}>Edit properties</button>
                 <button onClick={() => duplicateComponentFromMenu(comp.id)}>Duplicate</button>
                 <button onClick={() => rotateComponentFromMenu(comp.id)}>Rotate +90°</button>
                 <button onClick={() => { dispatch({ type: 'SET_COMPONENT_LOCKED', id: comp.id, locked: !comp.locked }); setComponentMenu(null); }}>{comp.locked ? 'Unlock' : 'Lock'}</button>
