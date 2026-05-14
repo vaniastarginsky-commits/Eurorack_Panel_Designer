@@ -2317,7 +2317,7 @@ const COMPONENT_LIBRARY: ComponentDef[] = [
   { type: 'custom',      name: 'Custom Hole', holeDiameter: 5.0, frontDiameter: 7.0, rearBodyW: 0, rearBodyH: 0, rearDepth: 0, keepoutW: 8.0, keepoutH: 8.0, minSpacing: 1.0, category: 'custom', verificationStatus: 'approximate', verification: 'User-defined circular cutout.' },
   { type: 'customrect',  name: 'Custom Rectangle', holeDiameter: 5.0, frontDiameter: 8.0, rearBodyW: 0, rearBodyH: 0, rearDepth: 0, keepoutW: 10.0, keepoutH: 8.0, minSpacing: 1.0, holeType: 'rect', holeW: 10.0, holeH: 6.0, frontShape: 'rect', frontW: 10.0, frontH: 6.0, category: 'custom', verificationStatus: 'approximate', verification: 'User-defined rectangular cutout.' },
   { type: 'fader20',    name: 'Alpha RA2045F 20mm Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 32.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 6.0, faderHandleH: 5.5, manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20 mechanical reference', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha illuminated slide series outline: 20mm travel, PC board vertical terminal, 7mm mounting height, T=20mm; outline uses T+10/T+11 body/rail class.' },
-  { type: 'fader20led', name: 'Alpha RA2045F-20 LED Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 32.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 6.0, faderHandleH: 5.5, topColor: '#ff2b2b', manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20R-15LC-B10K-C', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha RA2045F-20 illuminated slide: single unit, 20mm travel, PC board vertical terminal, LED colors A/B/G/R, 7mm mounting height, LC insulated lever length 10/15mm.' },
+  { type: 'fader20led', name: 'Alpha RA2045F-20 LED Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 32.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 3.2, faderHandleH: 4.4, topColor: '#ff2b2b', manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20R-15LC-B10K-C', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha RA2045F-20 illuminated slide: single unit, 20mm travel, PC board vertical terminal, LED colors A/B/G/R, 7mm mounting height, LC insulated lever length 10/15mm.' },
   { type: 'fader35',    name: 'Alps Fader 35mm', holeDiameter: 4.0, frontDiameter: 9.0, rearBodyW: 6.7, rearBodyH: 55.0, rearDepth: 15.0, keepoutW: 9.0, keepoutH: 58.0, minSpacing: 2.0, holeType: 'slot', slotLength: 41.0, frontShape: 'slot', frontW: 9, frontH: 55, faderHandleW: 10.5, faderHandleH: 5.0, category: 'fader', verificationStatus: 'approximate', verification: 'Generic 35mm fader placeholder. Replace with exact ALPS/Bourns/Alpha part before production.' },
   { type: 'fader45',    name: 'Alps Fader 45mm', holeDiameter: 4.0, frontDiameter: 9.0, rearBodyW: 6.7, rearBodyH: 65.0, rearDepth: 15.0, keepoutW: 9.0, keepoutH: 68.0, minSpacing: 2.0, holeType: 'slot', slotLength: 51.0, frontShape: 'slot', frontW: 9, frontH: 65, faderHandleW: 10.5, faderHandleH: 5.0, category: 'fader', verificationStatus: 'approximate', verification: 'Generic 45mm fader placeholder. Replace with exact ALPS/Bourns/Alpha part before production.' },
   { type: 'tact6mm',    name: 'Tact 6mm', holeDiameter: 3.5, frontDiameter: 6.0, rearBodyW: 6.0, rearBodyH: 6.0, rearDepth: 8.0, keepoutW: 8.0, keepoutH: 8.0, minSpacing: 1.0, category: 'switch', verificationStatus: 'approximate', verification: 'Generic 6mm tactile switch placeholder. Use exact cap/stem/hole dimensions for production.' },
@@ -2874,7 +2874,7 @@ function makeCompactKnobScale(c: PlacedComponent, labelMode: '0-10' | '-5+5'): S
 }
 
 function makeFaderScale(c: PlacedComponent, side: 'left' | 'right', labelMode: '0-10' | '-5+5'): ScaleItem {
-  const b = getFrontBounds(c);
+  const slotH = c.slotLength ?? getFrontBounds(c).h;
   return {
     id: crypto.randomUUID(),
     kind: 'fader',
@@ -2882,14 +2882,14 @@ function makeFaderScale(c: PlacedComponent, side: 'left' | 'right', labelMode: '
     componentId: c.id,
     x: c.x,
     y: c.y,
-    radius: Math.max(b.h / 2, 1),
+    radius: Math.max(slotH / 2, 1),
     startAngle: 0,
     endAngle: 0,
     ticks: 11,
     majorEvery: 2,
-    tickLength: 1.25,
+    tickLength: 1.0,
     labelMode,
-    fontSizeMm: 1.2,
+    fontSizeMm: 1.1,
     layer: 'foreground',
     visible: true,
     locked: false,
@@ -4140,22 +4140,31 @@ const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, drag
     }
     if (isFaderLike(c)) {
       const b = getFrontBounds(c);
-      const slotW = Math.max(2.1, b.w * 0.32);
-      const slotH = Math.max(10, b.h * 0.86);
       const led = c.type === 'fader20led';
-      const capW = led ? (c.faderHandleW ?? 6.0) : (c.faderHandleW ?? Math.max(7, b.w * 1.08));
-      const capH = led ? (c.faderHandleH ?? 5.5) : (c.faderHandleH ?? 4.8);
-      const capFill = led ? (c.topColor || '#ff2b2b') : '#bfc2c4';
+      const alpha20 = c.type === 'fader20' || c.type === 'fader20led';
+      const slotW = alpha20 ? Math.max(1.7, b.w * 0.22) : Math.max(2.0, b.w * 0.30);
+      const slotH = Math.max(10, b.h * 0.88);
+      const capFill = led ? (c.topColor || '#ff2b2b') : '#202224';
+      const capW = alpha20 ? Math.max(2.7, Math.min(3.4, b.w * 0.40)) : (c.faderHandleW ?? Math.max(6.8, b.w * 0.96));
+      const capH = alpha20 ? Math.max(3.6, Math.min(4.7, b.w * 0.58)) : (c.faderHandleH ?? 4.8);
+      const stemW = alpha20 ? Math.max(1.15, slotW * 0.72) : Math.max(1.65, slotW * 0.86);
+      const stemH = alpha20 ? Math.max(capH + 1.4, 5.0) : Math.max(capH + 0.8, 5.2);
       return <g key={c.id} data-top-hardware-id={c.id} transform={rot} opacity={hwOpacity}>
         {/* Front panel view: only the actual slot/lever is visible. The long RA2045F body belongs to Rear/Combined engineering layers, not top hardware. */}
-        <rect x={cx-slotW/2} y={cy-slotH/2} width={slotW} height={slotH} rx={slotW/2} fill="#050505" stroke="rgba(255,255,255,0.22)" strokeWidth={0.14}/>
-        {led && <line x1={cx-b.w*0.30} y1={cy-slotH/2-0.8} x2={cx+b.w*0.30} y2={cy-slotH/2-0.8} stroke="rgba(255,255,255,0.22)" strokeWidth={0.12}/>}
+        <rect x={cx-slotW/2} y={cy-slotH/2} width={slotW} height={slotH} rx={slotW/2} fill="#050505" stroke="rgba(255,255,255,0.20)" strokeWidth={0.13}/>
         {led ? <g>
-            <rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={0.45} fill={capFill} stroke="#ffb0b0" strokeWidth={0.16}/>
-            <rect x={cx-capW*0.25} y={cy-capH*0.32} width={capW*0.28} height={capH*0.20} rx={0.12} fill="rgba(255,255,255,0.38)"/>
-            <rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={0.45} fill="none" stroke="rgba(120,0,0,0.32)" strokeWidth={0.10}/>
+            {/* Real LED slider cap: a black carrier riding in the slot with a small translucent LED window, not a large square block. */}
+            <rect x={cx-stemW/2} y={cy-stemH/2} width={stemW} height={stemH} rx={0.28} fill="#111" stroke="#2d2d2d" strokeWidth={0.12}/>
+            <rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={0.34} fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.55)" strokeWidth={0.15}/>
+            <rect x={cx-capW*0.22} y={cy-capH*0.20} width={capW*0.44} height={capH*0.40} rx={0.12} fill={capFill} opacity={0.95}/>
+            <circle cx={cx-capW*0.14} cy={cy-capH*0.26} r={Math.max(0.24, capW*0.11)} fill="rgba(255,255,255,0.72)" stroke="none"/>
           </g>
-             : <g><rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={1.1} fill={capFill} stroke="#f6f6f2" strokeWidth={0.18}/><line x1={cx-capW*0.28} y1={cy} x2={cx+capW*0.28} y2={cy} stroke="rgba(0,0,0,0.45)" strokeWidth={0.16}/></g>}
+             : <g>
+                 <rect x={cx-stemW/2} y={cy-stemH/2} width={stemW} height={stemH} rx={0.28} fill="#111" stroke="#2d2d2d" strokeWidth={0.12}/>
+                 <rect x={cx-capW/2} y={cy-capH/2} width={capW} height={capH} rx={0.34} fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.42)" strokeWidth={0.14}/>
+                 <rect x={cx-capW*0.22} y={cy-capH*0.20} width={capW*0.44} height={capH*0.40} rx={0.12} fill={capFill} opacity={0.95}/>
+                 <circle cx={cx-capW*0.14} cy={cy-capH*0.26} r={Math.max(0.22, capW*0.10)} fill="rgba(255,255,255,0.34)" stroke="none"/>
+               </g>}
       </g>;
     }
     if (isJackLike(c)) {
@@ -4236,23 +4245,26 @@ const ScaleLayer = React.memo(function ScaleLayer({ items, components, layer, vi
     const ticks: React.ReactNode[] = [];
     const n = Math.max(2, sc.ticks);
 
-    // Fader scales: a compact vertical ruler on the left or right side of the fader slot.
+    // Fader scales: a tight vertical ruler next to the actual slot opening.
     if ((sc.kind === 'fader' || (c && isFaderLike(c) && sc.side)) && c) {
       const b = getFrontBounds(c);
       const side = sc.side === 'left' ? 'left' : 'right';
       const dir = side === 'left' ? -1 : 1;
-      const x0 = cx + dir * (b.w / 2 + 2.0);
-      const top = cy - b.h / 2;
-      const bottom = cy + b.h / 2;
+      const slotW = c.holeDiameter || Math.max(2, b.w * 0.32);
+      const slotH = c.slotLength ?? b.h;
+      const gap = 0.65;
+      const x0 = cx + dir * (slotW / 2 + gap);
+      const top = cy - slotH / 2;
+      const bottom = cy + slotH / 2;
       for (let i = 0; i < n; i++) {
         const t = i / (n - 1);
-        const y = bottom - t * b.h;
+        const y = bottom - t * slotH;
         const major = i % Math.max(1, sc.majorEvery) === 0;
-        const len = major ? Math.max(1.6, sc.tickLength * 1.25) : Math.max(0.9, sc.tickLength * 0.75);
-        ticks.push(<line key={`ft${i}`} x1={x0} y1={y} x2={x0 + dir * len} y2={y} stroke="#ddd" strokeWidth={major ? 0.24 : 0.15}/>);
+        const len = major ? Math.max(1.25, sc.tickLength * 1.0) : Math.max(0.72, sc.tickLength * 0.58);
+        ticks.push(<line key={`ft${i}`} x1={x0} y1={y} x2={x0 + dir * len} y2={y} stroke="#ddd" strokeWidth={major ? 0.22 : 0.13}/>);
         if (major && sc.labelMode !== 'none') {
           const value = sc.labelMode === '0-10' ? Math.round(t * 10) : Math.round(-5 + t * 10);
-          ticks.push(<text key={`fl${i}`} x={x0 + dir * (len + 1.2)} y={y} fontSize={sc.fontSizeMm} textAnchor={side === 'left' ? 'end' : 'start'} dominantBaseline="middle" fill="#ddd">{String(value)}</text>);
+          ticks.push(<text key={`fl${i}`} x={x0 + dir * (len + 0.85)} y={y} fontSize={Math.min(sc.fontSizeMm, 1.1)} textAnchor={side === 'left' ? 'end' : 'start'} dominantBaseline="middle" fill="#ddd">{String(value)}</text>);
         }
       }
       return <g key={sc.id} transform={`rotate(${c.rotation || 0}, ${cx}, ${cy})`}>{ticks}</g>;
@@ -7208,9 +7220,11 @@ function buildScaleSVGLines(items: ScaleItem[], components: PlacedComponent[], l
       const b = getFrontBounds(c);
       const side = sc.side === 'left' ? 'left' : 'right';
       const dir = side === 'left' ? -1 : 1;
-      const x0 = cx + dir * (b.w / 2 + 2.0);
-      const top = cy - b.h / 2;
-      const bottom = cy + b.h / 2;
+      const slotW = c.holeDiameter || Math.max(2, b.w * 0.32);
+      const slotH = c.slotLength ?? b.h;
+      const x0 = cx + dir * (slotW / 2 + 0.65);
+      const top = cy - slotH / 2;
+      const bottom = cy + slotH / 2;
       const rot = c.rotation ? ` transform="rotate(${c.rotation}, ${cx.toFixed(3)}, ${cy.toFixed(3)})"` : '';
       out.push(`  <g${rot}>`);
       for (let i=0;i<n;i++) {
@@ -8857,6 +8871,40 @@ function App() {
     return guides;
   }
 
+
+  function snapDragDeltaToComponentCenters(primaryId: string, primaryOrig: { x: number; y: number }, dx: number, dy: number): { dx: number; dy: number; guides: SnapGuide[] } {
+    if (!snapSettings.componentCenters) return { dx, dy, guides: [] };
+    const tol = Math.max(0.25, snapSettings.distance);
+    let outDx = dx;
+    let outDy = dy;
+    const guides: SnapGuide[] = [];
+    const currentX = primaryOrig.x + outDx;
+    const currentY = primaryOrig.y + outDy;
+    let bestX: { pos: number; label: string; dist: number } | null = null;
+    let bestY: { pos: number; label: string; dist: number } | null = null;
+    const candidates = [
+      { x: widthMM / 2, y: PANEL_HEIGHT_MM / 2, labelX: 'panel center X', labelY: 'panel center Y' },
+      ...state.components
+        .filter(c => c.id !== primaryId && !selectedIdSet.has(c.id))
+        .map(c => ({ x: c.x, y: c.y, labelX: c.label || c.name, labelY: c.label || c.name })),
+    ];
+    for (const c of candidates) {
+      const dxAbs = Math.abs(currentX - c.x);
+      if (dxAbs <= tol && (!bestX || dxAbs < bestX.dist)) bestX = { pos: c.x, label: c.labelX, dist: dxAbs };
+      const dyAbs = Math.abs(currentY - c.y);
+      if (dyAbs <= tol && (!bestY || dyAbs < bestY.dist)) bestY = { pos: c.y, label: c.labelY, dist: dyAbs };
+    }
+    if (bestX) {
+      outDx += bestX.pos - currentX;
+      guides.push({ axis: 'x', pos: bestX.pos, label: bestX.label });
+    }
+    if (bestY) {
+      outDy += bestY.pos - currentY;
+      guides.push({ axis: 'y', pos: bestY.pos, label: bestY.label });
+    }
+    return { dx: outDx, dy: outDy, guides };
+  }
+
   function getRearBodySnapExtents(c: PlacedComponent, x: number, y: number): { x1: number; x2: number; y1: number; y2: number } {
     return getRearBodyFootprintExtentsAt(c, x, y);
   }
@@ -9588,23 +9636,29 @@ function App() {
       let snappedX = snapSettings.grid ? snapToGrid(mm.x - dragging.offX, state.grid.size) : (mm.x - dragging.offX);
       const snappedY = snapSettings.grid ? snapToGrid(mm.y - dragging.offY, state.grid.size) : (mm.y - dragging.offY);
       let dx = snappedX - primaryOrig.x;
-      const dy = snappedY - primaryOrig.y;
+      let dy = snappedY - primaryOrig.y;
 
       // Smart edge snap: the dragged component/selection snaps by its physical
       // REAR component body footprint, not by decorative top hardware/knobs.
       // This is especially useful for pots with large knobs and fader caps.
       const edgeSnap = snapDragDeltaToPanelEdges(dragStartPositions, dx, dy);
       dx = edgeSnap.dx;
-      const snappedDy = edgeSnap.dy;
+      dy = edgeSnap.dy;
+
+      // Center snap is now hard, not just a visual guide. If the UI says
+      // “panel center X”, the component center is exactly on that X coordinate.
+      const centerSnap = snapDragDeltaToComponentCenters(dragging.id, primaryOrig, dx, dy);
+      dx = centerSnap.dx;
+      dy = centerSnap.dy;
       snappedX = primaryOrig.x + dx;
-      const snappedGuideY = primaryOrig.y + snappedDy;
+      const snappedGuideY = primaryOrig.y + dy;
 
       const newPreview = new Map<string, { x: number; y: number }>();
       dragStartPositions.forEach((origPos, cid) => {
-        newPreview.set(cid, { x: origPos.x + dx, y: origPos.y + snappedDy });
+        newPreview.set(cid, { x: origPos.x + dx, y: origPos.y + dy });
       });
       setDragPreview(newPreview);
-      const nextGuides = [...computeSnapGuidesFor(dragging.id, snappedX, snappedGuideY), ...edgeSnap.guides];
+      const nextGuides = [...centerSnap.guides, ...edgeSnap.guides, ...computeSnapGuidesFor(dragging.id, snappedX, snappedGuideY).filter(g => !centerSnap.guides.some(s => s.axis === g.axis && Math.abs(s.pos - g.pos) < 0.001 && s.label === g.label))];
       setSnapGuidesIfChanged(nextGuides);
       const snapKey = snapGuidesSignature(nextGuides);
       if (snapKey && snapKey !== lastSnapHapticKeyRef.current) {
