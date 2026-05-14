@@ -2536,6 +2536,249 @@
   }
 }
 
+
+/* v52 ZIP export package */
+.export-package-card button.primary::after {
+  content: ' .zip';
+  opacity: .75;
+  font-size: 11px;
+}
+
+
+/* v53 mobile selected component edit sheet */
+@media (max-width: 860px) {
+  .mobile-main-dock {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .mobile-main-dock button:disabled {
+    opacity: .42;
+  }
+  .mobile-selected-card {
+    display: grid;
+    gap: 3px;
+    margin-bottom: 10px;
+    padding: 11px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(255,255,255,0.10);
+  }
+  .mobile-selected-card.ok { border-color: rgba(87,242,139,0.28); }
+  .mobile-selected-card.warn { border-color: rgba(255,209,102,0.40); }
+  .mobile-selected-card strong {
+    color: #f5fcff;
+    font-size: 15px;
+  }
+  .mobile-selected-card span {
+    color: #cde6ec;
+    font-size: 12px;
+  }
+  .mobile-selected-card small {
+    color: #93aab2;
+    font-size: 11px;
+  }
+  .mobile-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 8px;
+  }
+  .mobile-edit-grid label {
+    display: grid;
+    gap: 4px;
+    color: #94abb3;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  .mobile-edit-grid input {
+    min-height: 42px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.13);
+    background: rgba(255,255,255,0.055);
+    color: #eef8fb;
+    padding: 8px 10px;
+    font-size: 15px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .mobile-dim-list {
+    display: grid;
+    gap: 6px;
+  }
+  .mobile-dim-list div {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 11px;
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .mobile-dim-list span {
+    color: #94abb3;
+    font-size: 11px;
+  }
+  .mobile-dim-list b {
+    color: #eef8fb;
+    font-size: 12px;
+    text-align: right;
+  }
+  .mobile-sheet-note.warn {
+    color: #ffd166;
+    border-color: rgba(255,209,102,0.30);
+    background: rgba(255,209,102,0.08);
+  }
+}
+
+
+/* v55 component library audit */
+.library-audit-summary {
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap:6px;
+  margin: 8px 0;
+}
+.library-audit-summary > div {
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.045);
+  border-radius:10px;
+  padding:7px 6px;
+}
+.library-audit-summary > div.warn { border-color:rgba(255,209,102,.35); background:rgba(255,209,102,.07); }
+.library-audit-summary b { display:block; color:#eef8fb; font-size:15px; }
+.library-audit-summary span { color:#8fa6ad; font-size:9px; text-transform:uppercase; letter-spacing:.05em; }
+.part-status-badge {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  padding:2px 6px;
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  margin-left:6px;
+  vertical-align:middle;
+}
+.part-status-badge.approximate { background:rgba(255,209,102,.18); color:#ffd166; border:1px solid rgba(255,209,102,.35); }
+.part-status-badge.datasheet { background:rgba(79,179,255,.15); color:#8fd6ff; border:1px solid rgba(79,179,255,.30); }
+.part-status-badge.measured { background:rgba(46,233,255,.14); color:#b9f6ff; border:1px solid rgba(46,233,255,.28); }
+.part-status-badge.production { background:rgba(87,242,139,.14); color:#75f0a0; border:1px solid rgba(87,242,139,.30); }
+.comp-lib-item.approx { border-color:rgba(255,209,102,.20); }
+.component-audit-table { display:grid; gap:4px; margin-top:8px; }
+.component-audit-head,
+.component-audit-row {
+  display:grid;
+  grid-template-columns: minmax(130px,1.7fr) 76px 54px 62px 48px;
+  gap:6px;
+  align-items:center;
+}
+.component-audit-head {
+  color:#7fdff0;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  padding:0 5px;
+}
+.component-audit-row {
+  width:100%;
+  text-align:left;
+  padding:7px 6px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);
+  color:#dcecf1;
+  font-size:10px;
+}
+.component-audit-row.warn { border-color:rgba(255,209,102,.25); background:rgba(255,209,102,.045); }
+.component-audit-row:hover { border-color:rgba(46,233,255,.35); }
+.audit-part-name b { display:block; color:#eef8fb; font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.audit-part-name small { display:block; color:#849aa3; font-size:9px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+@media (max-width: 860px) {
+  .component-audit-head,
+  .component-audit-row {
+    grid-template-columns: minmax(120px,1.7fr) 72px 50px 56px 46px;
+  }
+  .component-audit-row { min-height:42px; }
+}
+
+
+/* v56 final regression pass */
+.roadmap-status-card {
+  border: 1px solid rgba(46,233,255,.18);
+  background: rgba(46,233,255,.045);
+  border-radius: 12px;
+  padding: 8px;
+  margin: 8px 0 10px;
+}
+.roadmap-status-title {
+  color: #b9f6ff;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.roadmap-status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 5px;
+}
+.roadmap-status-grid div {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 6px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.035);
+  color: #8fa6ad;
+  font-size: 10px;
+}
+.roadmap-status-grid div.done b {
+  color: #57f28b;
+}
+.roadmap-status-grid span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* v57 mobile fixes: file import, top info hide, dock restore swipe */
+@media (max-width: 860px) {
+  .selection-info-strip,
+  .canvas-info-strip,
+  .canvas-status-strip,
+  .viewport-info-strip,
+  .panel-info-strip,
+  .canvas-hud-info,
+  .coord-readout:not(.ruler-readout),
+  [data-mobile-info-strip],
+  [data-canvas-info-strip] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+  .mobile-main-dock.collapsed {
+    transform: translateX(calc(-100% + 20px));
+  }
+  .mobile-dock-restore {
+    left: max(18px, calc(var(--safe-left) + 18px));
+    bottom: calc(18px + var(--safe-bottom));
+    width: 34px;
+    height: 60px;
+    border-radius: 17px;
+    border-left: 1px solid rgba(46,233,255,0.42);
+    touch-action: pan-y;
+    font-size: 28px;
+  }
+  .mobile-dock-restore::after {
+    content: '';
+    position: absolute;
+    inset: -14px -18px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -5977,13 +6220,23 @@ function ComponentLibraryPanel() {
   const [replaceMode, setReplaceMode] = useState(false);
   const [partSearch, setPartSearch] = useState('');
   const [partCategory, setPartCategory] = useState<'all' | NonNullable<ComponentDef['category']>>('all');
+  const [auditOpen, setAuditOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<'all' | PartVerificationStatus>('all');
   const visibleParts = allParts.filter(def => {
     const q = partSearch.trim().toLowerCase();
     const cat = def.category ?? inferCategoryForType(def.type);
     const matchesCat = partCategory === 'all' || cat === partCategory;
-    const hay = `${def.name} ${def.manufacturer || ''} ${def.partNumber || ''} ${cat || ''}`.toLowerCase();
-    return matchesCat && (!q || hay.includes(q));
+    const status = def.verificationStatus || 'approximate';
+    const matchesStatus = statusFilter === 'all' || status === statusFilter;
+    const hay = `${def.name} ${def.type} ${def.manufacturer || ''} ${def.partNumber || ''} ${cat || ''} ${status}`.toLowerCase();
+    return matchesCat && matchesStatus && (!q || hay.includes(q));
   });
+  const counts = allParts.reduce((acc, p) => {
+    const s = p.verificationStatus || 'approximate';
+    acc[s] = (acc[s] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  const approxCount = counts.approximate || 0;
   function addComponent(def: ComponentDef) {
     if (replaceMode && state.selected.length > 0) {
       dispatch({ type: 'REPLACE_SELECTED_WITH_PART', def });
@@ -6005,41 +6258,90 @@ function ComponentLibraryPanel() {
     const blob = new Blob([JSON.stringify({ projectVersion: 4, customParts: state.customParts }, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'eurorack-parts-library.json'; a.click(); URL.revokeObjectURL(url);
   }
+  function exportAuditCSV() {
+    const header = ['Name','Type','Category','Status','Manufacturer','Part number','Hole','Front','Rear body','Depth','Keepout','Datasheet'];
+    const rows = allParts.map(def => {
+      const hole = def.holeType === 'slot' ? `${def.holeDiameter}x${def.slotLength ?? def.holeDiameter}` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW ?? def.holeDiameter}x${def.holeH ?? def.frontH ?? def.holeDiameter}` : `Ø${def.holeDiameter}`;
+      const front = getFrontShape(def as any) === 'circle' ? `Ø${def.frontDiameter}` : `${def.frontW ?? def.frontDiameter}x${def.frontH ?? def.frontDiameter}`;
+      return [def.name, def.type, def.category ?? inferCategoryForType(def.type), def.verificationStatus || 'approximate', def.manufacturer || '', def.partNumber || '', hole, front, `${def.rearBodyW}x${def.rearBodyH}`, def.rearDepth, `${def.keepoutW}x${def.keepoutH}`, def.datasheetUrl || ''].map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
+    });
+    downloadTextFile('component-library-audit.csv', [header.join(','), ...rows].join('\n'), 'text/csv');
+  }
   function importParts(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = ev => { try { const raw = JSON.parse(ev.target!.result as string); const arr = Array.isArray(raw) ? raw : (Array.isArray(raw.customParts) ? raw.customParts : []); dispatch({ type: 'IMPORT_CUSTOM_PARTS', items: arr.map((x: ComponentDef) => sanitizePart(x)) }); } catch { alert('Could not import parts JSON.'); } };
     reader.readAsText(file); e.target.value = '';
   }
+  function statusBadge(def: ComponentDef) {
+    const s = def.verificationStatus || 'approximate';
+    return <span className={`part-status-badge ${s}`}>{s}</span>;
+  }
+  function holeText(def: ComponentDef) {
+    return def.holeType === 'slot' ? `${def.holeDiameter}×${def.slotLength ?? def.holeDiameter}` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW}×${def.holeH ?? def.frontH}` : `Ø${def.holeDiameter}`;
+  }
   return (
     <div className="section">
-      <div className="section-title">Add Component / Parts</div>
+      <div className="section-title">Component Library / Audit</div>
+      <div className="library-audit-summary">
+        <div><b>{allParts.length}</b><span>parts</span></div>
+        <div><b>{counts.datasheet || 0}</b><span>datasheet</span></div>
+        <div><b>{counts.measured || 0}</b><span>measured</span></div>
+        <div className={approxCount ? 'warn' : ''}><b>{approxCount}</b><span>approx</span></div>
+      </div>
       <label style={{ display:'flex', alignItems:'center', gap:6, marginBottom:6 }} title="When enabled, clicking a part replaces the selected components while keeping their ref/label/position/rotation.">
         <input type="checkbox" checked={replaceMode} disabled={state.selected.length === 0} onChange={e => setReplaceMode(e.target.checked)} />
         Replace selected with clicked part
       </label>
       <div className="btn-row" style={{ marginBottom: 6 }}>
-        <button onClick={saveSelectedAsPart}>Save selected part</button><button onClick={exportParts} disabled={state.customParts.length === 0}>Export parts</button><button onClick={() => document.getElementById('parts-import-input')!.click()}>Import parts</button><button className="danger" disabled={state.customParts.length === 0} onClick={() => confirm('Reset custom parts?') && dispatch({ type:'RESET_CUSTOM_PARTS' })}>Reset</button>
+        <button onClick={saveSelectedAsPart}>Save selected part</button><button onClick={exportParts} disabled={state.customParts.length === 0}>Export custom</button><button onClick={exportAuditCSV}>Export audit CSV</button><button onClick={() => setAuditOpen(v => !v)}>{auditOpen ? 'Compact list' : 'Audit table'}</button>
+        <button onClick={() => document.getElementById('parts-import-input')!.click()}>Import</button><button className="danger" disabled={state.customParts.length === 0} onClick={() => confirm('Reset custom parts?') && dispatch({ type:'RESET_CUSTOM_PARTS' })}>Reset</button>
         <input id="parts-import-input" type="file" accept=".json" style={{ display: 'none' }} onChange={importParts} />
       </div>
       <input className="mini-input" type="text" placeholder="Search parts…" value={partSearch} onChange={e => setPartSearch(e.target.value)} />
-      <select className="mini-input" value={partCategory} onChange={e => setPartCategory(e.target.value as any)}>
-        <option value="all">All categories</option>
-        <option value="potentiometer">Potentiometers</option>
-        <option value="jack">Jacks</option>
-        <option value="switch">Switches/buttons</option>
-        <option value="led">LED</option>
-        <option value="encoder">Encoders</option>
-        <option value="fader">Faders</option>
-        <option value="custom">Custom</option>
-      </select>
+      <div className="field-pair">
+        <select className="mini-input" value={partCategory} onChange={e => setPartCategory(e.target.value as any)}>
+          <option value="all">All categories</option>
+          <option value="potentiometer">Potentiometers</option>
+          <option value="jack">Jacks</option>
+          <option value="switch">Switches/buttons</option>
+          <option value="led">LED</option>
+          <option value="encoder">Encoders</option>
+          <option value="fader">Faders</option>
+          <option value="custom">Custom</option>
+        </select>
+        <select className="mini-input" value={statusFilter} onChange={e => setStatusFilter(e.target.value as any)}>
+          <option value="all">All statuses</option>
+          <option value="approximate">Approximate</option>
+          <option value="datasheet">Datasheet</option>
+          <option value="measured">Measured</option>
+          <option value="production">Production</option>
+        </select>
+      </div>
       {visibleParts.length === 0 && <div style={{ color:'#777', fontSize:12, padding:'8px 0' }}>No parts match the filter.</div>}
-      {visibleParts.map((def, idx) => (
-        <div key={`${def.name}-${idx}`} className="comp-lib-item" title={replaceMode ? 'Replace selected component(s) with this part' : 'Add this part to the panel'} onClick={() => addComponent(def)}>
-          {def.name}<span style={{ color: '#555', fontSize: 10, marginLeft: 6 }}>{def.holeType === 'slot' ? `${def.holeDiameter}×${def.slotLength}mm` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW}×${def.holeH ?? def.frontH}mm` : `Ø${def.holeDiameter}mm`}</span>
-          {state.customParts.some(p => p.name === def.name) && <button style={{ float:'right', padding:'0 4px', fontSize:10 }} onClick={e => { e.stopPropagation(); dispatch({ type:'DELETE_CUSTOM_PART', name:def.name }); }}>×</button>}
+      {auditOpen ? (
+        <div className="component-audit-table">
+          <div className="component-audit-head"><span>Part</span><span>Status</span><span>Hole</span><span>Rear</span><span>Depth</span></div>
+          {visibleParts.map((def, idx) => (
+            <button key={`${def.name}-${idx}`} className={`component-audit-row ${(def.verificationStatus || 'approximate') === 'approximate' ? 'warn' : ''}`} title={replaceMode ? 'Replace selected component(s) with this part' : 'Add this part to the panel'} onClick={() => addComponent(def)}>
+              <span className="audit-part-name"><b>{def.name}</b><small>{def.manufacturer || inferCategoryForType(def.type)} {def.partNumber || ''}</small></span>
+              {statusBadge(def)}
+              <span>{holeText(def)}</span>
+              <span>{def.rearBodyW}×{def.rearBodyH}</span>
+              <span>{def.rearDepth}mm</span>
+            </button>
+          ))}
         </div>
-      ))}
+      ) : (
+        visibleParts.map((def, idx) => (
+          <div key={`${def.name}-${idx}`} className={`comp-lib-item ${(def.verificationStatus || 'approximate') === 'approximate' ? 'approx' : ''}`} title={replaceMode ? 'Replace selected component(s) with this part' : 'Add this part to the panel'} onClick={() => addComponent(def)}>
+            <span>{def.name}</span>
+            <span style={{ color: '#555', fontSize: 10, marginLeft: 6 }}>{holeText(def)}mm · {def.rearDepth}mm deep</span>
+            {statusBadge(def)}
+            {state.customParts.some(p => p.name === def.name) && <button style={{ float:'right', padding:'0 4px', fontSize:10 }} onClick={e => { e.stopPropagation(); dispatch({ type:'DELETE_CUSTOM_PART', name:def.name }); }}>×</button>}
+          </div>
+        ))
+      )}
     </div>
   );
 }
@@ -6802,7 +7104,7 @@ function LayersPanel(){
         <button title={`Show only ${l}`} onClick={()=>solo(k)}>Solo</button>
       </div>)}
     </div>
-    <div className="menu-note" style={{marginTop:8}}>Export flags are stored now and will be used by the next export-package presets. Visibility and opacity affect the editor immediately.</div>
+    <div className="menu-note" style={{marginTop:8}}>Export flags are used by Export Package / SVG exports. Visibility and opacity affect the editor immediately.</div>
   </div>;
 }
 
@@ -6920,7 +7222,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     if (Number.isFinite(widthMM) && widthMM > 0) ok(`Panel width resolves to ${widthMM.toFixed(2)} mm.`); else err('Panel width is invalid.');
 
     const types = new Set(COMPONENT_LIBRARY.map(c => c.type));
-    ['jack','pot9mm','fader20','fader20led','slideSwitchMini','tactled'].forEach(t => {
+    ['jack','pot9mm','fader20','fader20led','slideSwitchMini','tactled','trimmer6mm','led3mm'].forEach(t => {
       types.has(t as ComponentType) ? ok(`Library contains ${t}.`) : err(`Library missing ${t}.`);
     });
 
@@ -6933,6 +7235,9 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     const drillSvg = exportSVGString(state,{drillOnly:true,labels:false,rearKeepout:false,rearBody:false,centerMarks:true,mountingKeepouts:true,includeArtwork:false});
     drillSvg.includes('<svg') && drillSvg.includes('</svg>') ? ok('Drill/Cut SVG generation works.') : err('Drill/Cut SVG generation failed.');
 
+    const rearSvg = exportSVGString(state,{drillOnly:false,labels:true,rearKeepout:true,rearBody:true,centerMarks:true,mountingKeepouts:true,includeArtwork:false});
+    rearSvg.includes('<svg') && rearSvg.includes('</svg>') ? ok('Rear/keepout SVG generation works.') : err('Rear/keepout SVG generation failed.');
+
     const csv = drillTableCSVString(state, warnings);
     csv.includes('Ref,Label,Type') ? ok('Component CSV generation works.') : err('Component CSV generation failed.');
 
@@ -6940,13 +7245,24 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     report.includes('Manufacturing') || report.includes('Panel') ? ok('Manufacturing report generation works.') : warn('Manufacturing report generated but header looked unusual.');
 
     const prodItems = buildProductionCheckItems(state, warnings);
-    prodItems.length ? ok(`Production Check returns ${prodItems.length} items.`) : err('Production Check returned no items.');
+    prodItems.length >= 8 ? ok(`Production Check v2 returns ${prodItems.length} items.`) : warn(`Production Check returned only ${prodItems.length} items.`);
+
+    const pkgFiles = exportPackageFiles(state, warnings);
+    pkgFiles.length >= 7 ? ok(`Export package lists ${pkgFiles.length} files.`) : err('Export package file list is incomplete.');
+    const zip = createZipBlob(pkgFiles);
+    zip.size > 100 ? ok(`ZIP package generation works (${zip.size} bytes).`) : err('ZIP package generation returned an empty/suspicious file.');
+
+    const hasLayerState = !!state.layerVisibility && !!state.layerOpacity && !!state.layerExport;
+    hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
 
     const classicOk = state.topHardwareStyle === 'classic' || state.topHardwareStyle === 'realistic';
     classicOk ? ok(`Hardware style state is valid: ${state.topHardwareStyle}.`) : err('Hardware style state is invalid.');
 
     const badComponents = state.components.filter(c => !Number.isFinite(c.x) || !Number.isFinite(c.y) || !Number.isFinite(c.rotation));
     badComponents.length ? err(`${badComponents.length} component(s) have invalid coordinates/rotation.`) : ok('All placed components have finite coordinates.');
+
+    const duplicateRefs = Array.from(new Set(state.components.map(c=>c.ref).filter(ref => ref && state.components.filter(cc=>cc.ref === ref).length > 1)));
+    duplicateRefs.length ? warn(`Duplicate refs present: ${duplicateRefs.join(', ')}.`) : ok('No duplicate refs detected.');
 
     if (warnings.some(w => w.severity === 'error')) warn('Current layout has DFM errors; runtime is OK but production is blocked.');
   } catch (e:any) {
@@ -6955,7 +7271,6 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
 
   return out;
 }
-
 function RuntimeSelfTestDialog({ items, onClose }: { items: RuntimeSelfTestItem[]; onClose: () => void }) {
   const errors = items.filter(i => i.level === 'error').length;
   const warns = items.filter(i => i.level === 'warn').length;
@@ -6978,6 +7293,34 @@ function RuntimeSelfTestDialog({ items, onClose }: { items: RuntimeSelfTestItem[
   );
 }
 
+
+function RoadmapStatusPanel() {
+  const items = [
+    ['v43', 'Production Check', true],
+    ['v44', 'Export Package', true],
+    ['v45', 'Component Source / Status', true],
+    ['v46', 'Layout Tools', true],
+    ['v47', 'ErrorBoundary + Self-test', true],
+    ['v48', 'Better Snap', true],
+    ['v49', 'Layer Manager v2', true],
+    ['v50', 'Mobile dock / MORE fix', true],
+    ['v51', 'Layer export flags', true],
+    ['v52', 'ZIP package', true],
+    ['v53', 'Mobile edit sheet', true],
+    ['v54', 'Production Check v2', true],
+    ['v55', 'Component Library Audit', true],
+    ['v56', 'Final regression pass', true],
+  ] as const;
+  return (
+    <div className="roadmap-status-card">
+      <div className="roadmap-status-title">Roadmap status</div>
+      <div className="roadmap-status-grid">
+        {items.map(([v, label, done]) => <div key={v} className={done ? 'done' : ''}><b>{v}</b><span>{label}</span></div>)}
+      </div>
+    </div>
+  );
+}
+
 function SelfCheckPanel({ warnings }: { warnings: CollisionWarning[] }) {
   const state = useAppState();
   const items = buildSelfCheckItems(state, warnings);
@@ -6991,6 +7334,7 @@ function SelfCheckPanel({ warnings }: { warnings: CollisionWarning[] }) {
   return (
     <div className="section">
       <div className="section-title">Self Check</div>
+      <RoadmapStatusPanel />
       <div className="measurement-row"><span>Status</span><span>{errors ? 'ERROR' : warns ? 'WARN' : 'OK'}</span></div>
       <div className="measurement-row"><span>Errors</span><span>{errors}</span></div>
       <div className="measurement-row"><span>Warnings</span><span>{warns}</span></div>
@@ -8292,8 +8636,9 @@ function exportSVGString(state: AppState, opts: ExportOptions): string {
   function escapeXml(s: string): string {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
+  const exportLayer = (k: keyof LayerVisibility) => state.layerExport?.[k] !== false;
   const lines: string[] = [];
-  if (opts.mountingKeepouts && state.mountingHoles.enabled) {
+  if (opts.mountingKeepouts && state.mountingHoles.enabled && exportLayer('mountingHoles')) {
     const kr = Math.max(0, state.mountingHoles.keepoutRadius ?? MOUNTING_HOLE_KEEPOUT_R_MM);
     for (const h of state.mountingHoles.holes) {
       if (!opts.drillOnly && state.mountingHoles.showKeepouts !== false && kr > 0) lines.push(`  <circle cx="${h.x.toFixed(3)}" cy="${h.y.toFixed(3)}" r="${kr.toFixed(3)}" fill="none" stroke="#aaa" stroke-width="0.2" stroke-dasharray="1 0.5"/>`);
@@ -8308,34 +8653,34 @@ function exportSVGString(state: AppState, opts: ExportOptions): string {
   for (const c of state.components) {
     lines.push(`  <!-- ${escapeXml((c.ref ? c.ref + ' ' : '') + (c.label || c.name))} | ${c.type} | x=${c.x.toFixed(2)} y=${c.y.toFixed(2)} | hole Ø${c.holeDiameter}mm${c.holeType === 'slot' ? ` slot ${c.holeDiameter}×${c.slotLength ?? '?'}mm` : ''} | depth ${c.rearDepth}mm -->`);
     if (!opts.drillOnly) {
-      if (opts.rearKeepout && c.keepoutW > 0) {
+      if (opts.rearKeepout && c.keepoutW > 0 && exportLayer('rearKeepouts')) {
         lines.push(`  <g transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})">`);
         lines.push(`    <rect x="${(c.x - c.keepoutW/2).toFixed(3)}" y="${(c.y - c.keepoutH/2).toFixed(3)}" width="${c.keepoutW.toFixed(3)}" height="${c.keepoutH.toFixed(3)}" fill="none" stroke="#f80" stroke-width="0.2" stroke-dasharray="1 0.5"/>`);
         lines.push(`  </g>`);
       }
-      if (opts.rearBody && c.rearBodyW > 0) {
+      if (opts.rearBody && c.rearBodyW > 0 && exportLayer('rearBodies')) {
         lines.push(`  <g transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})">`);
         lines.push(`    <rect x="${(c.x - c.rearBodyW/2).toFixed(3)}" y="${(c.y - c.rearBodyH/2).toFixed(3)}" width="${c.rearBodyW.toFixed(3)}" height="${c.rearBodyH.toFixed(3)}" fill="none" stroke="#f60" stroke-width="0.3"/>`);
         lines.push(`  </g>`);
       }
-      if (getFrontShape(c) !== 'circle' && !isFaderLike(c)) {
+      if (exportLayer('frontShapes') && getFrontShape(c) !== 'circle' && !isFaderLike(c)) {
         const b = getFrontBounds(c);
         const rot = c.rotation !== 0 ? ` transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})"` : '';
         lines.push(`  <rect x="${(c.x - b.w/2).toFixed(3)}" y="${(c.y - b.h/2).toFixed(3)}" width="${b.w.toFixed(3)}" height="${b.h.toFixed(3)}" fill="none" stroke="#999" stroke-width="0.25"${rot}/>`);
-      } else if (getFrontShape(c) === 'circle') {
+      } else if (exportLayer('frontShapes') && getFrontShape(c) === 'circle') {
         lines.push(`  <circle cx="${c.x.toFixed(3)}" cy="${c.y.toFixed(3)}" r="${(c.frontDiameter/2).toFixed(3)}" fill="none" stroke="#999" stroke-width="0.25"/>`);
       }
     }
-    if (c.holeType === 'slot') {
+    if (exportLayer('componentHoles') && c.holeType === 'slot') {
       const sl = c.slotLength ?? c.holeDiameter;
       const rot = c.rotation !== 0 ? ` transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})"` : '';
       lines.push(`  <rect x="${(c.x - c.holeDiameter/2).toFixed(3)}" y="${(c.y - sl/2).toFixed(3)}" width="${c.holeDiameter.toFixed(3)}" height="${sl.toFixed(3)}" rx="${(c.holeDiameter/2).toFixed(3)}" fill="white" stroke="#333" stroke-width="0.3"${rot}/>`);
-    } else if (c.holeType === 'rect') {
+    } else if (exportLayer('componentHoles') && c.holeType === 'rect') {
       const hw = c.holeW ?? c.frontW ?? c.holeDiameter;
       const hh = c.holeH ?? c.frontH ?? c.holeDiameter;
       const rot = c.rotation !== 0 ? ` transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})"` : '';
       lines.push(`  <rect x="${(c.x - hw/2).toFixed(3)}" y="${(c.y - hh/2).toFixed(3)}" width="${hw.toFixed(3)}" height="${hh.toFixed(3)}" fill="white" stroke="#333" stroke-width="0.3"${rot}/>`);
-    } else {
+    } else if (exportLayer('componentHoles')) {
       lines.push(`  <circle cx="${c.x.toFixed(3)}" cy="${c.y.toFixed(3)}" r="${(c.holeDiameter/2).toFixed(3)}" fill="white" stroke="#333" stroke-width="0.3"/>`);
     }
     if (opts.centerMarks && !opts.drillOnly) {
@@ -8343,26 +8688,25 @@ function exportSVGString(state: AppState, opts: ExportOptions): string {
       lines.push(`  <line x1="${(c.x-cm).toFixed(3)}" y1="${c.y.toFixed(3)}" x2="${(c.x+cm).toFixed(3)}" y2="${c.y.toFixed(3)}" stroke="#555" stroke-width="0.12"/>`);
       lines.push(`  <line x1="${c.x.toFixed(3)}" y1="${(c.y-cm).toFixed(3)}" x2="${c.x.toFixed(3)}" y2="${(c.y+cm).toFixed(3)}" stroke="#555" stroke-width="0.12"/>`);
     }
-    if (opts.labels && !opts.drillOnly) {
+    if (opts.labels && !opts.drillOnly && exportLayer('labels')) {
       const ly = (c.y + getFrontBottomOffset(c) + 2.5).toFixed(3);
       lines.push(`  <text x="${c.x.toFixed(3)}" y="${ly}" text-anchor="middle" font-size="2" fill="#333">${escapeXml(c.label || c.name)}</text>`);
     }
   }
-  const bgArtLines = (opts.includeArtwork && !opts.drillOnly) ? buildArtworkSVGLines(state.artworks, 'background', widthMM, heightMM, state.clipArtworkToPanel) : [];
-  const fgArtLines = (opts.includeArtwork && !opts.drillOnly) ? buildArtworkSVGLines(state.artworks, 'foreground', widthMM, heightMM, state.clipArtworkToPanel) : [];
-  const bgTextLines = !opts.drillOnly ? buildTextSVGLines(state.textItems, 'background') : [];
-  const fgTextLines = !opts.drillOnly ? buildTextSVGLines(state.textItems, 'foreground') : [];
-  const bgScaleLines = !opts.drillOnly ? buildScaleSVGLines(state.scaleItems, state.components, 'background') : [];
-  const fgScaleLines = !opts.drillOnly ? buildScaleSVGLines(state.scaleItems, state.components, 'foreground') : [];
-  const topHardwareLines = !opts.drillOnly ? buildTopHardwareSVGLines(state.components) : [];
+  const bgArtLines = (opts.includeArtwork && !opts.drillOnly && exportLayer('artwork')) ? buildArtworkSVGLines(state.artworks, 'background', widthMM, heightMM, state.clipArtworkToPanel) : [];
+  const fgArtLines = (opts.includeArtwork && !opts.drillOnly && exportLayer('artwork')) ? buildArtworkSVGLines(state.artworks, 'foreground', widthMM, heightMM, state.clipArtworkToPanel) : [];
+  const bgTextLines = (!opts.drillOnly && exportLayer('text')) ? buildTextSVGLines(state.textItems, 'background') : [];
+  const fgTextLines = (!opts.drillOnly && exportLayer('text')) ? buildTextSVGLines(state.textItems, 'foreground') : [];
+  const bgScaleLines = (!opts.drillOnly && exportLayer('text')) ? buildScaleSVGLines(state.scaleItems, state.components, 'background') : [];
+  const fgScaleLines = (!opts.drillOnly && exportLayer('text')) ? buildScaleSVGLines(state.scaleItems, state.components, 'foreground') : [];
+  const topHardwareLines = (!opts.drillOnly && exportLayer('topHardware')) ? buildTopHardwareSVGLines(state.components) : [];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <!-- Eurorack Panel Designer export -->
 <!-- Panel: ${state.panel.widthHP}HP = ${widthMM.toFixed(2)}mm x ${heightMM}mm -->
 <!-- WARNING: Dimensions are planning estimates. Verify all parts with datasheets/calipers before manufacturing. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${widthMM.toFixed(3)} ${heightMM.toFixed(3)}" width="${widthMM.toFixed(3)}mm" height="${heightMM.toFixed(3)}mm">
   <rect x="0" y="0" width="${widthMM.toFixed(3)}" height="${heightMM.toFixed(3)}" fill="#ccc"/>
-${bgArtLines.join('\n')}${bgArtLines.length ? '\n' : ''}${bgTextLines.join('\n')}${bgTextLines.length ? '\n' : ''}${bgScaleLines.join('\n')}${bgScaleLines.length ? '\n' : ''}  <rect x="0" y="0" width="${widthMM.toFixed(3)}" height="${heightMM.toFixed(3)}" fill="none" stroke="black" stroke-width="0.5"/>
-${lines.join('\n')}
+${bgArtLines.join('\n')}${bgArtLines.length ? '\n' : ''}${bgTextLines.join('\n')}${bgTextLines.length ? '\n' : ''}${bgScaleLines.join('\n')}${bgScaleLines.length ? '\n' : ''}${exportLayer('panelOutline') ? `  <rect x="0" y="0" width="${widthMM.toFixed(3)}" height="${heightMM.toFixed(3)}" fill="none" stroke="black" stroke-width="0.5"/>\n` : ''}${lines.join('\n')}
 ${fgTextLines.join('\n')}${fgTextLines.length ? '\n' : ''}${fgScaleLines.join('\n')}${fgScaleLines.length ? '\n' : ''}${topHardwareLines.join('\n')}${topHardwareLines.length ? '\n' : ''}${fgArtLines.join('\n')}${fgArtLines.length ? '\n' : ''}</svg>`;
 }
 
@@ -8372,17 +8716,138 @@ function drillTableCSVString(state: AppState, warnings: CollisionWarning[]): str
   return [header.join(','), ...rows].join('\n');
 }
 
-function downloadExportPackage(state: AppState, warnings: CollisionWarning[]) {
+function disabledExportLayers(state: AppState): string[] {
+  const labels: [keyof LayerVisibility, string][] = [
+    ['panelOutline','panel outline'], ['mountingHoles','mounting holes'], ['artwork','artwork'], ['text','text/scales'],
+    ['labels','component labels'], ['componentHoles','component holes'], ['frontShapes','front shapes'],
+    ['topHardware','top hardware'], ['rearBodies','rear bodies'], ['rearKeepouts','rear keepouts'], ['pcb','PCB']
+  ];
+  return labels.filter(([k]) => state.layerExport?.[k] === false).map(([,label]) => label);
+}
+
+type ExportPackageFile = readonly [string, string, string];
+
+function exportPackageFiles(state: AppState, warnings: CollisionWarning[]): ExportPackageFile[] {
   const base = safeProjectFileName(state.projectMeta?.name || 'panel-layout').replace(/\.json$/i, '');
-  const files = [
+  return [
     [`${base}__front-artwork.svg`, exportSVGString(state,{drillOnly:false,labels:true,rearKeepout:false,rearBody:false,centerMarks:false,mountingKeepouts:false,includeArtwork:true}), 'image/svg+xml'],
     [`${base}__drill-cut.svg`, exportSVGString(state,{drillOnly:true,labels:false,rearKeepout:false,rearBody:false,centerMarks:true,mountingKeepouts:true,includeArtwork:false}), 'image/svg+xml'],
     [`${base}__rear-keepout.svg`, exportSVGString(state,{drillOnly:false,labels:true,rearKeepout:true,rearBody:true,centerMarks:true,mountingKeepouts:true,includeArtwork:false}), 'image/svg+xml'],
     [`${base}__component-table.csv`, drillTableCSVString(state,warnings), 'text/csv'],
     [`${base}__manufacturing-report.md`, manufacturingReportText(state,warnings), 'text/markdown'],
+    [`${base}__export-readme.txt`, `Eurorack Panel Designer export package\n\nLayer export flags respected. Disabled layers: ${disabledExportLayers(state).join(', ') || 'none'}\n\nFiles:\n- front-artwork.svg\n- drill-cut.svg\n- rear-keepout.svg\n- component-table.csv\n- manufacturing-report.md\n- project.json\n\nAlways verify scale 1:1 before manufacturing.`, 'text/plain'],
     [`${base}__project.json`, serializeProject(state,true), 'application/json'],
   ] as const;
-  files.forEach(([name, content, mime], idx) => {
+}
+
+const ZIP_CRC_TABLE = (() => {
+  const table = new Uint32Array(256);
+  for (let i=0; i<256; i++) {
+    let c = i;
+    for (let k=0; k<8; k++) c = (c & 1) ? (0xedb88320 ^ (c >>> 1)) : (c >>> 1);
+    table[i] = c >>> 0;
+  }
+  return table;
+})();
+
+function crc32(bytes: Uint8Array): number {
+  let c = 0xffffffff;
+  for (let i=0; i<bytes.length; i++) c = ZIP_CRC_TABLE[(c ^ bytes[i]) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+}
+
+function dosDateTime(date = new Date()): { time: number; date: number } {
+  const year = Math.max(1980, date.getFullYear());
+  const dosTime = (date.getHours() << 11) | (date.getMinutes() << 5) | Math.floor(date.getSeconds() / 2);
+  const dosDate = ((year - 1980) << 9) | ((date.getMonth() + 1) << 5) | date.getDate();
+  return { time: dosTime, date: dosDate };
+}
+
+function writeU16(arr: number[], v: number) { arr.push(v & 255, (v >>> 8) & 255); }
+function writeU32(arr: number[], v: number) { arr.push(v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255); }
+
+function createZipBlob(files: ExportPackageFile[]): Blob {
+  const encoder = new TextEncoder();
+  const localParts: Uint8Array[] = [];
+  const centralParts: Uint8Array[] = [];
+  let offset = 0;
+  const now = dosDateTime();
+
+  for (const [name, content] of files) {
+    const safeName = name.replace(/^\/+/, '').replace(/\\/g, '/');
+    const nameBytes = encoder.encode(safeName);
+    const data = encoder.encode(content);
+    const crc = crc32(data);
+
+    const local: number[] = [];
+    writeU32(local, 0x04034b50);
+    writeU16(local, 20);
+    writeU16(local, 0x0800); // UTF-8 names
+    writeU16(local, 0);      // store, no compression
+    writeU16(local, now.time);
+    writeU16(local, now.date);
+    writeU32(local, crc);
+    writeU32(local, data.length);
+    writeU32(local, data.length);
+    writeU16(local, nameBytes.length);
+    writeU16(local, 0);
+    localParts.push(new Uint8Array(local), nameBytes, data);
+
+    const central: number[] = [];
+    writeU32(central, 0x02014b50);
+    writeU16(central, 20);
+    writeU16(central, 20);
+    writeU16(central, 0x0800);
+    writeU16(central, 0);
+    writeU16(central, now.time);
+    writeU16(central, now.date);
+    writeU32(central, crc);
+    writeU32(central, data.length);
+    writeU32(central, data.length);
+    writeU16(central, nameBytes.length);
+    writeU16(central, 0);
+    writeU16(central, 0);
+    writeU16(central, 0);
+    writeU16(central, 0);
+    writeU32(central, 0);
+    writeU32(central, offset);
+    centralParts.push(new Uint8Array(central), nameBytes);
+
+    offset += local.length + nameBytes.length + data.length;
+  }
+
+  const centralSize = centralParts.reduce((sum,p)=>sum+p.length,0);
+  const end: number[] = [];
+  writeU32(end, 0x06054b50);
+  writeU16(end, 0);
+  writeU16(end, 0);
+  writeU16(end, files.length);
+  writeU16(end, files.length);
+  writeU32(end, centralSize);
+  writeU32(end, offset);
+  writeU16(end, 0);
+
+  return new Blob([...localParts, ...centralParts, new Uint8Array(end)], { type: 'application/zip' });
+}
+
+function downloadExportPackageZip(state: AppState, warnings: CollisionWarning[]) {
+  const base = safeProjectFileName(state.projectMeta?.name || 'panel-layout').replace(/\.json$/i, '');
+  const blob = createZipBlob(exportPackageFiles(state, warnings));
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = `${base}__manufacturing-package.zip`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadExportPackage(state: AppState, warnings: CollisionWarning[]) {
+  // v52 default: one ZIP file. Much cleaner on mobile/Safari than many downloads.
+  downloadExportPackageZip(state, warnings);
+}
+
+function downloadExportPackageLooseFiles(state: AppState, warnings: CollisionWarning[]) {
+  exportPackageFiles(state, warnings).forEach(([name, content, mime], idx) => {
     window.setTimeout(() => downloadTextFile(name, content, mime), idx * 180);
   });
 }
@@ -8773,8 +9238,8 @@ function ExportDialog({ options, onChange, onExport, onExportMode, onExportPacka
     ['1:1 print template checked', false],
   ] as [string, boolean][];
   return <div className="export-dialog-backdrop"><div className="export-dialog-panel"><div className="export-dialog-title">Export</div><div className="export-sanity"><strong>Export sanity:</strong><br/>Hard errors: {hard} · Warnings: {warn} · Approximate parts: {unverified}<br/>Scale: 1:1 mm. Drill/Cut and DXF exclude decorative top hardware/artwork unless the mode explicitly includes them.</div><ExportPreviewMini state={state} warnings={warnings} />
-  <div className="export-package-card"><div><strong>Manufacturing package</strong><p>Downloads front artwork SVG, drill/cut SVG, rear keepout SVG, component CSV, DFM report and project JSON.</p></div><button className="primary" onClick={onExportPackage}>Export package</button></div>
-  <button style={{marginBottom:10}} onClick={() => setShowChecklist(!showChecklist)}>Production checklist</button>{showChecklist && <div className="export-sanity">{checklist.map(([label, ok]) => <div key={label} className="checklist-row"><span>{ok ? '✓' : '○'}</span><span>{label}</span></div>)}</div>}<div className="section-title">Quick modes</div><div className="btn-row" style={{marginBottom:12}}><button onClick={()=>onExportMode('preview')}>Preview SVG</button><button onClick={()=>onExportMode('drill')}>Drill/Cut SVG</button><button onClick={()=>onExportMode('artwork')}>Artwork SVG</button><button onClick={()=>onExportMode('debug')}>Debug SVG</button><button onClick={onExportCSV}>CSV Drill Table</button><button onClick={onExportKiCad}>KiCad placement CSV</button><button onClick={onExportPrintTemplate}>1:1 Print Template</button><button onClick={onExportDXF}>DXF Cut/Drill</button><button onClick={onExportReport}>DFM Report</button></div><div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>Preview SVG is for layout review. Use Drill/Cut SVG or the 1:1 template for fabrication checks.</div><div className="section-title">Custom SVG options</div>{rows.map(([key,label])=><div key={key} style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}><input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/><span style={{fontSize:12,color:'#ccc'}}>{label}</span></div>)}<div className="export-dialog-actions"><button onClick={onCancel}>Cancel</button><button className="primary" onClick={onExport}>Export SVG</button></div></div></div>;
+  <div className="export-package-card"><div><strong>Manufacturing package ZIP</strong><p>Downloads one .zip with front artwork SVG, drill/cut SVG, rear keepout SVG, component CSV, DFM report and project JSON. Respects Layer Manager export flags.</p></div><button className="primary" onClick={onExportPackage}>Export ZIP</button></div>
+  <button style={{marginBottom:10}} onClick={() => setShowChecklist(!showChecklist)}>Production checklist</button>{showChecklist && <div className="export-sanity">{checklist.map(([label, ok]) => <div key={label} className="checklist-row"><span>{ok ? '✓' : '○'}</span><span>{label}</span></div>)}</div>}<div className="section-title">Quick modes</div><div className="btn-row" style={{marginBottom:12}}><button onClick={()=>onExportMode('preview')}>Preview SVG</button><button onClick={()=>onExportMode('drill')}>Drill/Cut SVG</button><button onClick={()=>onExportMode('artwork')}>Artwork SVG</button><button onClick={()=>onExportMode('debug')}>Debug SVG</button><button onClick={onExportCSV}>CSV Drill Table</button><button onClick={onExportKiCad}>KiCad placement CSV</button><button onClick={onExportPrintTemplate}>1:1 Print Template</button><button onClick={onExportDXF}>DXF Cut/Drill</button><button onClick={onExportReport}>DFM Report</button><button onClick={() => downloadExportPackageLooseFiles(state, warnings)}>Loose package files</button></div><div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>Preview SVG is for layout review. Use Drill/Cut SVG or the 1:1 template for fabrication checks.</div><div className="section-title">Custom SVG options</div>{rows.map(([key,label])=><div key={key} style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}><input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/><span style={{fontSize:12,color:'#ccc'}}>{label}</span></div>)}<div className="export-dialog-actions"><button onClick={onCancel}>Cancel</button><button className="primary" onClick={onExport}>Export SVG</button></div></div></div>;
 }
 
 interface CommandItem { id: string; label: string; hint: string; run: () => void; }
@@ -9282,9 +9747,10 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
   const state = useAppState();
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
-  const [mobileSheet, setMobileSheet] = useState<null | 'add' | 'view' | 'more'>(null);
+  const [mobileSheet, setMobileSheet] = useState<null | 'add' | 'view' | 'more' | 'edit'>(null);
   const [dockCollapsed, setDockCollapsed] = useState(false);
   const [dockSwipeStart, setDockSwipeStart] = useState<{x:number;y:number}|null>(null);
+  const [restoreSwipeStart, setRestoreSwipeStart] = useState<{x:number;y:number}|null>(null);
   const widthMM = panelWidthMM(state.panel);
   const [mobileAddQuery, setMobileAddQuery] = useState('');
   const commonTypes: ComponentType[] = ['pot9mm', 'jack', 'slimjack', 'toggle', 'led3mm', 'encoder', 'fader20', 'fader20led', 'tactled', 'trimmer6mm', 'slideSwitchMini', 'customrect'];
@@ -9343,6 +9809,8 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
     ['grid','Grid'], ['componentHoles','Holes'], ['frontShapes','Front'], ['topHardware','Hardware'],
     ['rearBodies','Bodies'], ['rearKeepouts','Keepouts'], ['pcb','PCB'], ['text','Text'], ['artwork','Artwork'], ['labels','Labels']
   ];
+  const selectedMobile = state.selected.length === 1 ? state.components.find(c => c.id === state.selected[0]) || null : null;
+  const selectedMobileCount = state.selected.length;
 
   function add(def: ComponentDef) {
     dispatch({
@@ -9356,7 +9824,7 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
     onSetTouchMode('edit');
   }
 
-  function openSheet(sheet: 'add' | 'view' | 'more') {
+  function openSheet(sheet: 'add' | 'view' | 'more' | 'edit') {
     setOpen(false);
     setDockCollapsed(false);
     setMobileSheet(v => v === sheet ? null : sheet);
@@ -9382,7 +9850,23 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
     }
   }
 
-  const sheetTitle = mobileSheet === 'add' ? 'Add component' : mobileSheet === 'view' ? 'View & layers' : 'More tools';
+  function onRestoreTouchStart(e: React.TouchEvent<HTMLButtonElement>) {
+    const t = e.touches[0];
+    if (!t) return;
+    setRestoreSwipeStart({ x: t.clientX, y: t.clientY });
+  }
+
+  function onRestoreTouchEnd(e: React.TouchEvent<HTMLButtonElement>) {
+    if (!restoreSwipeStart) return;
+    const t = e.changedTouches[0];
+    setRestoreSwipeStart(null);
+    if (!t) return;
+    const dx = t.clientX - restoreSwipeStart.x;
+    const dy = t.clientY - restoreSwipeStart.y;
+    if (dx > 28 && Math.abs(dx) > Math.abs(dy) * 1.15) setDockCollapsed(false);
+  }
+
+  const sheetTitle = mobileSheet === 'add' ? 'Add component' : mobileSheet === 'view' ? 'View & layers' : mobileSheet === 'edit' ? 'Edit selected' : 'More tools';
 
   return (
     <>
@@ -9409,11 +9893,19 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
       <div className={`mobile-main-dock ${hidden ? 'hidden' : ''} ${dockCollapsed ? 'collapsed' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => { e.stopPropagation(); onDockTouchStart(e); }} onTouchEnd={e => { e.stopPropagation(); onDockTouchEnd(e); }}>
         <button className={mobileSheet === 'add' ? 'active' : ''} onClick={() => openSheet('add')}><b>＋</b><span>Add</span></button>
         <button className={touchMode === 'select' ? 'active' : ''} onClick={() => onSetTouchMode(touchMode === 'select' ? 'edit' : 'select')}><b>☑</b><span>{touchMode === 'select' ? 'Edit' : 'Select'}</span></button>
+        <button className={mobileSheet === 'edit' ? 'active' : ''} disabled={!selectedMobile && selectedMobileCount !== 1} onClick={() => openSheet('edit')}><b>✎</b><span>Part</span></button>
         <button className={mobileSheet === 'view' ? 'active' : ''} onClick={() => openSheet('view')}><b>◉</b><span>View</span></button>
         <button className={mobileSheet === 'more' ? 'active' : ''} onClick={() => openSheet('more')}><b>•••</b><span>More</span></button>
       </div>
       {dockCollapsed && !hidden && (
-        <button className="mobile-dock-restore" onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onClick={() => setDockCollapsed(false)} title="Show bottom toolbar">‹</button>
+        <button
+          className="mobile-dock-restore"
+          onMouseDown={e => e.stopPropagation()}
+          onTouchStart={e => { e.stopPropagation(); onRestoreTouchStart(e); }}
+          onTouchEnd={e => { e.stopPropagation(); onRestoreTouchEnd(e); }}
+          onClick={() => setDockCollapsed(false)}
+          title="Show bottom toolbar"
+        >›</button>
       )}
 
       {mobileSheet && (
@@ -9487,6 +9979,47 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
               </>
             )}
 
+            {mobileSheet === 'edit' && (
+              <>
+                {!selectedMobile ? (
+                  <div className="mobile-sheet-note">Select exactly one component to edit it here.</div>
+                ) : (
+                  <>
+                    <div className={`mobile-selected-card ${(selectedMobile.verificationStatus || 'approximate') === 'approximate' ? 'warn' : 'ok'}`}>
+                      <strong>{selectedMobile.ref || selectedMobile.label || selectedMobile.name}</strong>
+                      <span>{selectedMobile.name}</span>
+                      <small>{selectedMobile.manufacturer || 'Unknown maker'}{selectedMobile.partNumber ? ` · ${selectedMobile.partNumber}` : ''} · {selectedMobile.verificationStatus || 'approximate'}</small>
+                    </div>
+                    <div className="mobile-action-grid">
+                      <button onClick={() => dispatch({ type:'DUPLICATE_COMPONENT', id:selectedMobile.id })}>Duplicate</button>
+                      <button onClick={() => dispatch({ type:'ROTATE_SELECTED', degrees:90 })}>Rotate +90°</button>
+                      <button onClick={() => dispatch({ type:'SET_COMPONENT_LOCKED', id:selectedMobile.id, locked:!selectedMobile.locked })}>{selectedMobile.locked ? 'Unlock' : 'Lock'}</button>
+                      <button className="danger" onClick={() => { dispatch({ type:'DELETE_COMPONENT', id:selectedMobile.id }); setMobileSheet(null); }}>Delete</button>
+                    </div>
+                    <div className="mobile-sheet-section">
+                      <div className="mobile-sheet-label">Position</div>
+                      <div className="mobile-edit-grid">
+                        <label>X mm<input type="number" step={state.grid.size} value={Number(selectedMobile.x.toFixed(3))} onChange={e => dispatch({ type:'UPDATE_COMPONENT', id:selectedMobile.id, patch:{ x: parseFloat(e.target.value) || 0 } })}/></label>
+                        <label>Y mm<input type="number" step={state.grid.size} value={Number(selectedMobile.y.toFixed(3))} onChange={e => dispatch({ type:'UPDATE_COMPONENT', id:selectedMobile.id, patch:{ y: parseFloat(e.target.value) || 0 } })}/></label>
+                        <label>Rotation<input type="number" step={5} value={Number((selectedMobile.rotation || 0).toFixed(1))} onChange={e => dispatch({ type:'UPDATE_COMPONENT', id:selectedMobile.id, patch:{ rotation: parseFloat(e.target.value) || 0 } })}/></label>
+                        <label>Label<input type="text" value={selectedMobile.label || ''} onChange={e => dispatch({ type:'UPDATE_COMPONENT', id:selectedMobile.id, patch:{ label:e.target.value } })}/></label>
+                      </div>
+                    </div>
+                    <div className="mobile-sheet-section">
+                      <div className="mobile-sheet-label">Mechanical summary</div>
+                      <div className="mobile-dim-list">
+                        <div><span>Hole</span><b>{selectedMobile.holeType === 'slot' ? `${selectedMobile.holeDiameter} × ${selectedMobile.slotLength ?? selectedMobile.holeDiameter} mm` : selectedMobile.holeType === 'rect' ? `${selectedMobile.holeW ?? selectedMobile.frontW ?? selectedMobile.holeDiameter} × ${selectedMobile.holeH ?? selectedMobile.frontH ?? selectedMobile.holeDiameter} mm` : `Ø ${selectedMobile.holeDiameter} mm`}</b></div>
+                        <div><span>Rear body</span><b>{selectedMobile.rearBodyW} × {selectedMobile.rearBodyH} mm</b></div>
+                        <div><span>Depth</span><b>{selectedMobile.rearDepth} mm</b></div>
+                        <div><span>Keepout</span><b>{selectedMobile.keepoutW} × {selectedMobile.keepoutH} mm</b></div>
+                      </div>
+                    </div>
+                    {(selectedMobile.verificationStatus || 'approximate') === 'approximate' && <div className="mobile-sheet-note warn">Approximate part — verify datasheet/measured dimensions before production.</div>}
+                  </>
+                )}
+              </>
+            )}
+
             {mobileSheet === 'more' && (
               <>
                 <div className={`mobile-dfm-card ${hard ? 'error' : warn || unverified ? 'warn' : 'ok'}`}>
@@ -9497,7 +10030,7 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                   <div className="mobile-sheet-label">Project files</div>
                   <div className="mobile-action-grid">
                     <button onClick={() => exportJSON(state)}>Save project file</button>
-                    <button onClick={() => { setMobileSheet(null); onRequestProjectFileImport(); }}>Load project file</button>
+                    <button onClick={() => { onRequestProjectFileImport(); window.setTimeout(() => setMobileSheet(null), 250); }}>Load project file</button>
                     <button onClick={() => saveProjectToBrowser(state)}>Save to browser</button>
                     <button onClick={() => { setMobileSheet(null); onOpenLocalProjects(); }}>Open local projects</button>
                   </div>
@@ -9534,6 +10067,52 @@ type ProductionCheckItem = {
 
 function productionSeverityRank(s: ProductionCheckItem['severity']): number {
   return s === 'error' ? 0 : s === 'warning' ? 1 : s === 'info' ? 2 : 3;
+}
+
+
+type ProductionRect = { x1: number; x2: number; y1: number; y2: number };
+
+function productionRectsOverlap(a: ProductionRect, b: ProductionRect, pad = 0): boolean {
+  return a.x1 - pad <= b.x2 && a.x2 + pad >= b.x1 && a.y1 - pad <= b.y2 && a.y2 + pad >= b.y1;
+}
+
+function productionRectInsidePanel(r: ProductionRect, widthMM: number): boolean {
+  return r.x1 >= -0.01 && r.y1 >= -0.01 && r.x2 <= widthMM + 0.01 && r.y2 <= PANEL_HEIGHT_MM + 0.01;
+}
+
+function textApproxBounds(t: TextItem): ProductionRect {
+  const w = Math.max(1, (t.text || '').length * t.fontSizeMm * 0.55);
+  const h = Math.max(0.6, t.fontSizeMm * 1.15);
+  // Conservative axis-aligned bound for rotated text.
+  const a = Math.abs(((t.rotation || 0) % 180) * Math.PI / 180);
+  const ca = Math.abs(Math.cos(a));
+  const sa = Math.abs(Math.sin(a));
+  const bw = w * ca + h * sa;
+  const bh = w * sa + h * ca;
+  return { x1: t.x - bw/2, x2: t.x + bw/2, y1: t.y - bh/2, y2: t.y + bh/2 };
+}
+
+function scaleApproxBounds(sc: ScaleItem, components: PlacedComponent[]): ProductionRect {
+  const c = sc.componentId ? components.find(cc => cc.id === sc.componentId) : null;
+  if ((sc.kind === 'fader' || (c && isFaderLike(c))) && c) {
+    const b = getFrontBounds(c);
+    const slotW = c.holeDiameter || Math.max(2, b.w * 0.32);
+    const slotH = c.slotLength ?? b.h;
+    const side = sc.side === 'left' ? -1 : 1;
+    const gap = 0.65;
+    const tick = Math.max(0.7, sc.tickLength || 1);
+    const label = sc.labelMode === 'none' ? 0 : Math.max(2.2, (sc.fontSizeMm || 1.1) * 1.8);
+    const x0 = c.x + side * (slotW / 2 + gap);
+    const x1 = side < 0 ? x0 - tick - label : x0;
+    const x2 = side < 0 ? x0 : x0 + tick + label;
+    return { x1: Math.min(x1,x2), x2: Math.max(x1,x2), y1: c.y - slotH/2 - 0.8, y2: c.y + slotH/2 + 0.8 };
+  }
+  const r = Math.max(1, sc.radius || 1) + Math.max(0.5, sc.tickLength || 1) + (sc.labelMode === 'none' ? 0 : Math.max(2, (sc.fontSizeMm || 1.2) * 1.8));
+  return { x1: sc.x - r, x2: sc.x + r, y1: sc.y - r, y2: sc.y + r };
+}
+
+function componentProductionFrontRect(c: PlacedComponent): ProductionRect {
+  return getFrontExtents(c);
 }
 
 function buildProductionCheckItems(state: AppState, warnings: CollisionWarning[]): ProductionCheckItem[] {
@@ -9597,6 +10176,61 @@ function buildProductionCheckItems(state: AppState, warnings: CollisionWarning[]
     items.push({ severity: 'ok', title: 'Text size', detail: 'No visible text below 1.2 mm.' });
   }
 
+
+  const textOutside = state.textItems.filter(t => t.visible && !productionRectInsidePanel(textApproxBounds(t), widthMM));
+  if (textOutside.length) {
+    items.push({ severity: 'warning', title: 'Text outside panel', detail: `${textOutside.length} visible text item${textOutside.length === 1 ? '' : 's'} extend beyond the panel boundary.` });
+  } else {
+    items.push({ severity: 'ok', title: 'Text bounds', detail: 'Visible text appears inside the panel boundary.' });
+  }
+
+  const hardwareRects = state.components.map(c => ({ c, r: componentProductionFrontRect(c) }));
+  let textHardwareOverlaps = 0;
+  for (const t of state.textItems.filter(t => t.visible)) {
+    const tb = textApproxBounds(t);
+    for (const { c, r } of hardwareRects) {
+      if (t.componentId === c.id) continue;
+      if (productionRectsOverlap(tb, r, 0.25)) { textHardwareOverlaps++; break; }
+    }
+  }
+  if (textHardwareOverlaps) {
+    items.push({ severity: 'warning', title: 'Text overlaps hardware', detail: `${textHardwareOverlaps} visible text item${textHardwareOverlaps === 1 ? '' : 's'} may overlap component hardware/cutouts.` });
+  } else {
+    items.push({ severity: 'ok', title: 'Text clearance', detail: 'No obvious text-to-hardware overlaps detected.' });
+  }
+
+  const visibleScales = state.scaleItems.filter(sc => sc.visible);
+  const scaleOutside = visibleScales.filter(sc => !productionRectInsidePanel(scaleApproxBounds(sc, state.components), widthMM));
+  if (scaleOutside.length) {
+    items.push({ severity: 'warning', title: 'Scales outside panel', detail: `${scaleOutside.length} scale${scaleOutside.length === 1 ? '' : 's'} extend beyond the panel boundary.` });
+  } else {
+    items.push({ severity: 'ok', title: 'Scale bounds', detail: 'Visible scales appear inside the panel boundary.' });
+  }
+
+  let scaleHardwareOverlaps = 0;
+  for (const sc of visibleScales) {
+    const sb = scaleApproxBounds(sc, state.components);
+    for (const { c, r } of hardwareRects) {
+      if (sc.componentId === c.id && (sc.kind === 'fader' || isFaderLike(c))) continue;
+      if (productionRectsOverlap(sb, r, 0.20)) { scaleHardwareOverlaps++; break; }
+    }
+  }
+  if (scaleHardwareOverlaps) {
+    items.push({ severity: 'warning', title: 'Scale overlaps hardware', detail: `${scaleHardwareOverlaps} scale${scaleHardwareOverlaps === 1 ? '' : 's'} may overlap component hardware/cutouts.` });
+  } else {
+    items.push({ severity: 'ok', title: 'Scale clearance', detail: 'No obvious scale-to-hardware overlaps detected.' });
+  }
+
+  const longFaderTicks = visibleScales.filter(sc => {
+    const c = sc.componentId ? state.components.find(cc => cc.id === sc.componentId) : null;
+    return c && (sc.kind === 'fader' || isFaderLike(c)) && (sc.tickLength || 0) > 1.15;
+  });
+  if (longFaderTicks.length) {
+    items.push({ severity: 'warning', title: 'Fader scale tick length', detail: `${longFaderTicks.length} fader scale${longFaderTicks.length === 1 ? '' : 's'} use long ticks. Consider shorter ticks for compact Eurorack panels.` });
+  } else {
+    items.push({ severity: 'ok', title: 'Fader scales', detail: 'Fader scale tick lengths look compact.' });
+  }
+
   const shortSlots = state.components.filter(c => c.holeType === 'slot' && (c.slotLength ?? 0) < 10);
   if (shortSlots.length) {
     items.push({ severity: 'warning', title: 'Short slots', detail: `${shortSlots.length} slot${shortSlots.length === 1 ? '' : 's'} shorter than 10 mm. Check milling limitations.`, ids: shortSlots.map(c => c.id) });
@@ -9637,6 +10271,8 @@ function ProductionCheckDialog({ warnings, onClose, onOpenExport }: { warnings: 
         <div className="production-summary">
           <div><b>{state.panel.widthHP}HP</b><span>{panelWidthMM(state.panel).toFixed(2)} × {PANEL_HEIGHT_MM} mm</span></div>
           <div><b>{state.components.length}</b><span>components</span></div>
+          <div><b>{state.textItems.filter(t=>t.visible).length}</b><span>text</span></div>
+          <div><b>{state.scaleItems.filter(s=>s.visible).length}</b><span>scales</span></div>
           <div><b>{errors}</b><span>errors</span></div>
           <div><b>{warns}</b><span>warnings</span></div>
         </div>
@@ -9728,6 +10364,7 @@ function App() {
   const [ruler, setRuler] = useState<RulerState | null>(null);
   useEffect(() => { (window as any).__PANEL_RULER_DISTANCE_MM = ruler ? Math.hypot(ruler.end.x - ruler.start.x, ruler.end.y - ruler.start.y) : null; }, [ruler]);
   const projectFileInputRef = useRef<HTMLInputElement>(null);
+  const pendingFileOpenRef = useRef(false);
   const [showLocalProjectsDialog, setShowLocalProjectsDialog] = useState(false);
   const [showTemplatesDialog, setShowTemplatesDialog] = useState(false);
   const [pendingTemplatePlacement, setPendingTemplatePlacement] = useState<{ template: UserTemplate; components: PlacedComponent[]; anchor: {x:number;y:number}; rotation: number } | null>(null);
@@ -11338,6 +11975,17 @@ function App() {
     e.target.value = '';
   }
 
+  function requestProjectFileImport() {
+    pendingFileOpenRef.current = true;
+    // Mobile Safari is picky: invoke the file input directly from the user click,
+    // then retry on the next frame if the sheet closing swallowed focus.
+    projectFileInputRef.current?.click();
+    window.requestAnimationFrame(() => {
+      if (pendingFileOpenRef.current) projectFileInputRef.current?.click();
+      window.setTimeout(() => { pendingFileOpenRef.current = false; }, 900);
+    });
+  }
+
   const renderedDistanceGuides = useMemo(() => {
     if (dragging) return distanceGuides;
     if (!clearanceMode) return distanceGuides;
@@ -11372,7 +12020,7 @@ function App() {
       <Toolbar
         onImport={onImport}
         onExportSVGClick={() => setShowExportDialog(true)}
-        onRequestProjectFileImport={() => projectFileInputRef.current?.click()}
+        onRequestProjectFileImport={requestProjectFileImport}
         onOpenLocalProjects={() => setShowLocalProjectsDialog(true)}
         onOpenProductionCheck={() => setShowProductionCheck(true)}
         leftPanelOpen={leftPanelOpen}
@@ -11396,7 +12044,7 @@ function App() {
         type="file"
         accept=".json,.epanel,application/json"
         style={{ display: 'none' }}
-        onChange={onImport}
+        onChange={e => { pendingFileOpenRef.current = false; onImport(e); }}
       />
 
       {showLocalProjectsDialog && <LocalProjectsDialog onClose={() => setShowLocalProjectsDialog(false)} />}
