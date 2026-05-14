@@ -2053,6 +2053,489 @@
   }
 }
 
+
+/* v43 production check */
+.production-check-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 4300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0,0,0,0.56);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.production-check-dialog {
+  width: min(760px, 94vw);
+  max-height: min(82vh, 760px);
+  overflow: auto;
+  border-radius: 18px;
+  background: rgba(17,20,23,0.98);
+  border: 1px solid rgba(46,233,255,0.34);
+  box-shadow: 0 28px 90px rgba(0,0,0,0.7);
+  color: #eaf8fb;
+}
+.production-check-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  position: sticky;
+  top: 0;
+  background: rgba(17,20,23,0.98);
+  z-index: 1;
+}
+.production-check-head strong { font-size: 18px; margin-right: 10px; }
+.production-status {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+.production-status.ready { color: #052d16; background: #57f28b; }
+.production-status.warnings { color: #2d2100; background: #ffd166; }
+.production-status.blocked { color: #fff; background: #ef4444; }
+.production-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px 16px;
+}
+.production-summary > div {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.045);
+  border-radius: 14px;
+  padding: 10px;
+}
+.production-summary b { display: block; font-size: 18px; }
+.production-summary span { color: #9eb4bd; font-size: 11px; }
+.production-check-list { padding: 0 16px 12px; display: grid; gap: 8px; }
+.production-check-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  text-align: left;
+  align-items: start;
+  border-radius: 14px;
+  padding: 11px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.09);
+}
+.production-check-item:disabled { opacity: 1; cursor: default; }
+.production-check-item b { display: block; color: #f7fbfc; margin-bottom: 2px; }
+.production-check-item small { display: block; color: #9eb4bd; line-height: 1.35; }
+.production-dot {
+  width: 22px; height: 22px; border-radius: 999px;
+  display: inline-grid; place-items: center;
+  font-size: 12px; font-weight: 900;
+}
+.production-check-item.error .production-dot { background: #ef4444; color: #fff; }
+.production-check-item.warning .production-dot { background: #ffd166; color: #2d2100; }
+.production-check-item.ok .production-dot { background: #57f28b; color: #052d16; }
+.production-check-item.info .production-dot { background: #4fb3ff; color: #041727; }
+.production-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 12px 16px 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+@media (max-width: 860px) {
+  .production-check-backdrop {
+    align-items: flex-end;
+    padding: 8px calc(8px + var(--safe-right)) calc(8px + var(--safe-bottom)) calc(8px + var(--safe-left));
+  }
+  .production-check-dialog {
+    width: 100%;
+    max-height: 82dvh;
+    border-radius: 22px;
+  }
+  .production-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .production-actions { position: sticky; bottom: 0; background: rgba(17,20,23,0.98); }
+}
+
+
+/* v44 export package */
+.export-package-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0 12px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(46,233,255,0.32);
+  background: rgba(46,233,255,0.08);
+}
+.export-package-card strong { color: #f5fcff; }
+.export-package-card p { margin: 4px 0 0; color: #9fb5bd; font-size: 12px; line-height: 1.35; }
+@media (max-width: 860px) {
+  .export-package-card { flex-direction: column; align-items: stretch; }
+  .export-package-card button { min-height: 46px; }
+}
+
+
+/* v45 component source/status card */
+.component-source-card {
+  margin: 8px 0 10px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.045);
+}
+.component-source-card.ok { border-color: rgba(87,242,139,0.34); background: rgba(87,242,139,0.055); }
+.component-source-card.info { border-color: rgba(79,179,255,0.30); background: rgba(79,179,255,0.045); }
+.component-source-card.warn { border-color: rgba(255,209,102,0.42); background: rgba(255,209,102,0.07); }
+.component-source-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.component-source-head strong {
+  color: #f4fbfd;
+  font-size: 13px;
+}
+.component-source-head span {
+  color: #9eb4bd;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.component-source-title {
+  color: #dcecf1;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.component-source-url {
+  color: #7fdff0;
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 6px;
+}
+.component-source-warning {
+  margin: 6px 0;
+  color: #ffd166;
+  font-size: 11px;
+  line-height: 1.3;
+}
+.component-dim-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+.component-dim-grid > div {
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(0,0,0,0.16);
+  border-radius: 9px;
+  padding: 6px;
+}
+.component-dim-grid b {
+  display: block;
+  color: #9eb4bd;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 2px;
+}
+.component-dim-grid span {
+  color: #edf8fb;
+  font-size: 11px;
+}
+.component-source-note {
+  margin-top: 8px;
+  color: #9eb4bd;
+  font-size: 11px;
+  line-height: 1.35;
+}
+.field-row textarea {
+  width: 100%;
+  min-height: 58px;
+  resize: vertical;
+  border-radius: 8px;
+  background: #111;
+  color: #ddd;
+  border: 1px solid #444;
+  padding: 7px 8px;
+  font-family: inherit;
+  font-size: 12px;
+}
+@media (max-width: 860px) {
+  .component-dim-grid { grid-template-columns: 1fr; }
+}
+
+
+/* v46 layout tools */
+.layout-tools-note {
+  color: #8ea2aa;
+  font-size: 11px;
+  margin: 0 0 8px;
+}
+.layout-tools-subtitle {
+  color: #7fdff0;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 800;
+  margin: 10px 0 6px;
+}
+.layout-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.layout-tools-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.layout-tools-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.layout-tools-grid button {
+  min-width: 0;
+  min-height: 34px;
+  padding: 6px 7px;
+  font-size: 11px;
+}
+.field-pair.compact {
+  margin-top: 8px;
+  gap: 6px;
+}
+@media (max-width: 860px) {
+  .layout-tools-grid button { min-height: 42px; }
+}
+
+
+/* v47 error boundary + runtime self-test */
+.error-boundary-screen {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: radial-gradient(circle at top, #142027, #050607 70%);
+  color: #eaf8fb;
+}
+.error-boundary-card {
+  max-width: 760px;
+  width: min(760px, 96vw);
+  border-radius: 22px;
+  padding: 22px;
+  border: 1px solid rgba(239,68,68,0.55);
+  background: rgba(18,20,23,0.96);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.7);
+}
+.error-boundary-card h1 { margin: 0 0 8px; font-size: 22px; }
+.error-boundary-message {
+  margin: 12px 0;
+  padding: 10px;
+  border-radius: 12px;
+  color: #ffd0d0;
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.35);
+}
+.error-boundary-actions { display: flex; gap: 8px; margin: 12px 0; }
+.error-boundary-card pre {
+  max-height: 260px;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: #9eb4bd;
+  background: #08090a;
+  padding: 10px;
+  border-radius: 12px;
+}
+.selftest-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 4600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0,0,0,0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.selftest-dialog {
+  width: min(680px, 94vw);
+  max-height: min(82vh, 720px);
+  overflow: auto;
+  border-radius: 18px;
+  background: rgba(17,20,23,0.98);
+  border: 1px solid rgba(46,233,255,0.34);
+  color: #eaf8fb;
+  box-shadow: 0 28px 90px rgba(0,0,0,0.7);
+}
+.selftest-head {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 13px 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  position: sticky;
+  top: 0;
+  background: rgba(17,20,23,0.98);
+}
+.selftest-head span {
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 900;
+}
+.selftest-head span.ok { background: #57f28b; color: #052d16; }
+.selftest-head span.warn { background: #ffd166; color: #2d2100; }
+.selftest-head span.bad { background: #ef4444; color: #fff; }
+.selftest-list { padding: 12px 15px; display: grid; gap: 7px; }
+.selftest-item {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 8px;
+  align-items: start;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #dcecf1;
+  font-size: 12px;
+}
+.selftest-item.ok b { color: #57f28b; }
+.selftest-item.warn b { color: #ffd166; }
+.selftest-item.error b { color: #ef4444; }
+.selftest-actions {
+  padding: 0 15px 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+@media (max-width: 860px) {
+  .selftest-backdrop { align-items: flex-end; padding: 8px; }
+  .selftest-dialog { width: 100%; max-height: 82dvh; border-radius: 22px; }
+}
+
+
+/* v49 layer manager */
+.layer-manager-summary {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  color:#8fa6ad;
+  font-size:10px;
+  margin:4px 0 8px;
+}
+.layer-manager-presets button { min-height: 30px; }
+.layer-manager-table {
+  display:grid;
+  gap:5px;
+  margin-top:8px;
+}
+.layer-manager-head,
+.layer-manager-row {
+  display:grid;
+  grid-template-columns: minmax(86px,1fr) 38px minmax(70px,0.75fr) 44px 42px;
+  gap:5px;
+  align-items:center;
+}
+.layer-manager-head {
+  color:#7fdff0;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  padding:0 2px;
+}
+.layer-manager-row {
+  padding:6px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.04);
+}
+.layer-manager-row.off {
+  opacity:.62;
+  background:rgba(255,255,255,0.025);
+}
+.layer-manager-name b {
+  display:block;
+  color:#eaf8fb;
+  font-size:11px;
+}
+.layer-manager-name small {
+  display:block;
+  color:#8297a0;
+  font-size:9px;
+  line-height:1.2;
+}
+.layer-toggle {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.layer-opacity {
+  width:100%;
+  min-width:0;
+  accent-color:#2ee9ff;
+}
+.layer-manager-row button {
+  min-height:28px;
+  padding:4px 5px;
+  font-size:10px;
+}
+@media (max-width: 860px) {
+  .layer-manager-head,
+  .layer-manager-row {
+    grid-template-columns: minmax(96px,1fr) 42px minmax(76px,.8fr) 44px 46px;
+  }
+  .layer-manager-row { padding:8px 6px; }
+  .layer-manager-row button { min-height:36px; }
+}
+
+
+/* v50 mobile cleanup: hide info strip and collapsible bottom dock */
+@media (max-width: 860px) {
+  .selection-info-strip {
+    display: none !important;
+  }
+  .mobile-main-dock {
+    transition: transform 180ms ease, opacity 180ms ease;
+    will-change: transform;
+  }
+  .mobile-main-dock.collapsed {
+    transform: translateX(calc(-100% + 22px));
+    opacity: 0.82;
+    pointer-events: none;
+  }
+  .mobile-main-dock.collapsed button {
+    pointer-events: none;
+  }
+  .mobile-dock-restore {
+    position: fixed;
+    left: max(4px, var(--safe-left));
+    bottom: calc(18px + var(--safe-bottom));
+    z-index: 2205;
+    width: 30px;
+    height: 58px;
+    border-radius: 0 16px 16px 0;
+    border: 1px solid rgba(46,233,255,0.42);
+    border-left: 0;
+    background: rgba(14,18,22,0.94);
+    color: #b9f6ff;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.45);
+    font-size: 24px;
+    font-weight: 900;
+    display: grid;
+    place-items: center;
+    touch-action: manipulation;
+  }
+  .mobile-dock-restore:active {
+    transform: translateX(1px);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2282,6 +2765,8 @@ interface LayerVisibility {
   componentHoles: boolean; frontShapes: boolean; topHardware: boolean; rearBodies: boolean; rearKeepouts: boolean; pcb: boolean;
 }
 interface DepthSettings { caseDepthLimitMm: number; pcbDistanceBehindPanelMm: number; showPCBPlane: boolean; }
+type LayerOpacity = Partial<Record<keyof LayerVisibility, number>>;
+type LayerExport = Partial<Record<keyof LayerVisibility, boolean>>;
 interface SnapGuide { axis: 'x' | 'y'; pos: number; label: string; }
 interface DistanceGuide { id: string; axis: 'h' | 'v'; x1: number; y1: number; x2: number; y2: number; label: string; kind: 'nearest' | 'similar'; }
 interface RulerState { start: { x: number; y: number }; end: { x: number; y: number }; dragging: boolean; snappedStart?: boolean; snappedEnd?: boolean; }
@@ -2351,6 +2836,8 @@ interface AppState {
   showArtworkInDrillView: boolean;
   drillArtworkOpacity: number;
   layerVisibility: LayerVisibility;
+  layerOpacity: LayerOpacity;
+  layerExport: LayerExport;
   depthSettings: DepthSettings;
   dfmProfile: DFMProfileKey;
   history: Omit<AppState, 'history' | 'future'>[];
@@ -3087,6 +3574,8 @@ type AppAction =
   | { type: 'ALIGN'; axis: 'left'|'right'|'top'|'bottom'|'centerH'|'centerV' }
   | { type: 'DISTRIBUTE'; axis: 'h'|'v' }
   | { type: 'SET_SELECTED_SPACING'; axis: 'h'|'v'; spacing: number }
+  | { type: 'MIRROR_SELECTED'; axis: 'x'|'y'; around: 'selection'|'panel' }
+  | { type: 'DUPLICATE_SELECTED_PATTERN'; axis: 'h'|'v'; spacing: number; count: number }
   | { type: 'LOAD_PRESET'; components: PlacedComponent[] }
   | { type: 'LOAD_STATE'; state: Omit<AppState,'history'|'future'> }
   | { type: 'UNDO' }
@@ -3116,6 +3605,9 @@ type AppAction =
   | { type: 'IMPORT_CUSTOM_PARTS'; items: ComponentDef[] }
   | { type: 'RESET_CUSTOM_PARTS' }
   | { type: 'SET_LAYER_VISIBILITY'; key: keyof LayerVisibility; value: boolean }
+  | { type: 'SET_LAYER_OPACITY'; key: keyof LayerVisibility; value: number }
+  | { type: 'SET_LAYER_EXPORT'; key: keyof LayerVisibility; value: boolean }
+  | { type: 'SET_LAYER_VISIBILITY_BULK'; patch: Partial<LayerVisibility> }
   | { type: 'SET_DEPTH_SETTINGS'; patch: Partial<DepthSettings> }
   | { type: 'AUTO_NUMBER_REFS' }
   | { type: 'APPLY_TO_SAME_TYPE'; sourceId: string; patch: Partial<PlacedComponent> }
@@ -3165,6 +3657,8 @@ function makeInitialState(): AppState {
     showArtworkInDrillView: false,
     drillArtworkOpacity: 0.3,
     layerVisibility: defaultLayerVisibility(),
+    layerOpacity: {},
+    layerExport: {},
     depthSettings: { caseDepthLimitMm: 45, pcbDistanceBehindPanelMm: 12, showPCBPlane: true },
     dfmProfile: 'generic',
     history: [],
@@ -3497,6 +3991,42 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return withHistory(state, { ...snapshot(state), components: state.components.map(c => yMap.has(c.id) ? { ...c, y: yMap.get(c.id)! } : c) });
     }
 
+
+    case 'MIRROR_SELECTED': {
+      if (state.selected.length < 1) return state;
+      const sel = state.components.filter(c => state.selected.includes(c.id));
+      const widthMM = panelWidthMM(state.panel);
+      const xs = sel.map(c => c.x), ys = sel.map(c => c.y);
+      const centerX = action.around === 'panel' ? widthMM / 2 : (Math.min(...xs) + Math.max(...xs)) / 2;
+      const centerY = action.around === 'panel' ? PANEL_HEIGHT_MM / 2 : (Math.min(...ys) + Math.max(...ys)) / 2;
+      return withHistory(state, {
+        ...snapshot(state),
+        components: state.components.map(c => {
+          if (!state.selected.includes(c.id)) return c;
+          if (action.axis === 'x') return { ...c, x: centerX * 2 - c.x, rotation: (360 - (c.rotation || 0)) % 360 };
+          return { ...c, y: centerY * 2 - c.y, rotation: (180 - (c.rotation || 0) + 360) % 360 };
+        }),
+      });
+    }
+
+    case 'DUPLICATE_SELECTED_PATTERN': {
+      if (state.selected.length < 1 || !isFinite(action.spacing) || action.spacing === 0 || action.count < 1) return state;
+      const selected = state.components.filter(c => state.selected.includes(c.id));
+      const comps: PlacedComponent[] = [];
+      for (let step = 1; step <= action.count; step++) {
+        for (const c of selected) {
+          comps.push({
+            ...c,
+            id: crypto.randomUUID(),
+            ref: nextRefForComponent(c.type, [...state.components, ...comps]),
+            x: c.x + (action.axis === 'h' ? action.spacing * step : 0),
+            y: c.y + (action.axis === 'v' ? action.spacing * step : 0),
+          });
+        }
+      }
+      return withHistory(state, { ...snapshot(state), components: [...state.components, ...comps], selected: comps.map(c => c.id) });
+    }
+
     case 'LOAD_PRESET':
       return withHistory(state, { ...snapshot(state), components: action.components, selected: [] });
 
@@ -3651,6 +4181,12 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return withHistory(state, { ...snapshot(state), customParts: [] });
     case 'SET_LAYER_VISIBILITY':
       return { ...state, layerVisibility: { ...state.layerVisibility, [action.key]: action.value } };
+    case 'SET_LAYER_VISIBILITY_BULK':
+      return { ...state, layerVisibility: { ...state.layerVisibility, ...action.patch } };
+    case 'SET_LAYER_OPACITY':
+      return { ...state, layerOpacity: { ...state.layerOpacity, [action.key]: Math.max(0.05, Math.min(1, action.value)) } };
+    case 'SET_LAYER_EXPORT':
+      return { ...state, layerExport: { ...state.layerExport, [action.key]: action.value } };
     case 'SET_DEPTH_SETTINGS':
       return { ...state, depthSettings: { ...state.depthSettings, ...action.patch } };
 
@@ -3762,6 +4298,45 @@ function appReducer(state: AppState, action: AppAction): AppState {
 
 const AppStateCtx = createContext<AppState>(null!);
 const AppDispatchCtx = createContext<React.Dispatch<AppAction>>(null!);
+
+
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { error: Error | null; info: React.ErrorInfo | null }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { error: null, info: null };
+  }
+  static getDerivedStateFromError(error: Error) {
+    return { error, info: null };
+  }
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    console.error('Panel Designer render error:', error, info);
+    this.setState({ error, info });
+  }
+  render() {
+    if (this.state.error) {
+      const message = this.state.error.message || String(this.state.error);
+      const stack = this.state.error.stack || '';
+      return (
+        <div className="error-boundary-screen">
+          <div className="error-boundary-card">
+            <h1>Panel Designer crashed safely</h1>
+            <p>The app hit a render error, but the page did not go black. Your browser autosave/local project data should still be available.</p>
+            <div className="error-boundary-message">{message}</div>
+            <div className="error-boundary-actions">
+              <button onClick={() => window.location.reload()}>Reload app</button>
+              <button onClick={() => {
+                const text = `Panel Designer crash\n\n${message}\n\n${stack}`;
+                if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).catch(()=>{});
+              }}>Copy error</button>
+            </div>
+            {stack && <pre>{stack}</pre>}
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, undefined, makeInitialState);
@@ -4994,6 +5569,7 @@ function SVGCanvas({
   const [hoverTip, setHoverTip] = useState<{ id: string; x: number; y: number } | null>(null);
   const hoverTipRef = useRef<{ id: string; x: number; y: number } | null>(null);
   hoverTipRef.current = hoverTip;
+  const lop = (k: keyof LayerVisibility) => state.layerOpacity?.[k] ?? 1;
 
   function updateHoverTip(e: React.MouseEvent<SVGSVGElement>) {
     const target = e.target as Element | null;
@@ -5077,8 +5653,8 @@ function SVGCanvas({
           <rect x={0.6} y={heightMM - 9.5} width={Math.max(0.1, widthMM - 1.2)} height={8.5} rx={0.45} fill="rgba(0,0,0,0.13)" opacity={0.75} />
 
           {/* Visible grid anchored to panel center */}
-          {state.layerVisibility.grid && <GridLayer widthMM={widthMM} heightMM={heightMM} grid={state.grid} />}
-          {state.layerVisibility.grid && <HPGuideLayer widthHP={state.panel.widthHP} heightMM={heightMM} />}
+          {state.layerVisibility.grid && <g opacity={lop('grid')}><GridLayer widthMM={widthMM} heightMM={heightMM} grid={state.grid} /></g>}
+          {state.layerVisibility.grid && <g opacity={lop('grid')}><HPGuideLayer widthHP={state.panel.widthHP} heightMM={heightMM} /></g>}
 
           {/* Background artwork — after fill, before outline so outline stays on top */}
           {state.layerVisibility.artwork && <ArtworksLayer
@@ -5096,11 +5672,11 @@ function SVGCanvas({
             drillOpacity={state.drillArtworkOpacity}
           />}
 
-          {state.layerVisibility.text && <TextLayer items={state.textItems} layer="background" selectedText={state.selectedText} textDragPreview={textDragPreview} viewMode={state.viewMode} />}
-          {state.layerVisibility.text && <ScaleLayer items={state.scaleItems} components={state.components} layer="background" viewMode={state.viewMode} />}
+          {state.layerVisibility.text && <g opacity={lop('text')}><TextLayer items={state.textItems} layer="background" selectedText={state.selectedText} textDragPreview={textDragPreview} viewMode={state.viewMode} /></g>}
+          {state.layerVisibility.text && <g opacity={lop('text')}><ScaleLayer items={state.scaleItems} components={state.components} layer="background" viewMode={state.viewMode} /></g>}
 
           {/* Panel outline — always above background artwork */}
-          {state.layerVisibility.panelOutline && <g style={{ pointerEvents: 'none' }}>
+          {state.layerVisibility.panelOutline && <g opacity={lop('panelOutline')} style={{ pointerEvents: 'none' }}>
             <rect x={0} y={0} width={widthMM} height={heightMM}
               fill="none" stroke="#a9b7bf" strokeWidth={0.46} />
             <rect x={0.45} y={0.45} width={Math.max(0.1, widthMM - 0.9)} height={Math.max(0.1, heightMM - 0.9)}
@@ -5111,17 +5687,18 @@ function SVGCanvas({
 
           {/* Smart snap guides while dragging */}
           {snapGuides.map((g, i) => g.axis === 'x'
-            ? <g key={`gx-${i}`} style={{ pointerEvents: 'none' }}><line x1={g.pos} y1={0} x2={g.pos} y2={heightMM} stroke="#2ee9ff" strokeWidth={0.16} strokeDasharray="1.2 0.9" opacity={0.82}/><text x={g.pos+0.55} y={3+i*2.1} fontSize={1.08} fill="#b9f6ff" opacity={0.9}>{g.label}</text></g>
-            : <g key={`gy-${i}`} style={{ pointerEvents: 'none' }}><line x1={0} y1={g.pos} x2={widthMM} y2={g.pos} stroke="#2ee9ff" strokeWidth={0.16} strokeDasharray="1.2 0.9" opacity={0.82}/><text x={0.8} y={Math.max(2, g.pos-0.8)} fontSize={1.08} fill="#b9f6ff" opacity={0.9}>{g.label}</text></g>
+            ? <g key={`gx-${i}`} style={{ pointerEvents: 'none' }}><line x1={g.pos} y1={0} x2={g.pos} y2={heightMM} stroke="#2ee9ff" strokeWidth={0.18} strokeDasharray="1.2 0.9" opacity={0.82}/><text x={g.pos+0.55} y={3+i*2.1} fontSize={1.08} fill="#b9f6ff" opacity={0.96}>{g.label}</text></g>
+            : <g key={`gy-${i}`} style={{ pointerEvents: 'none' }}><line x1={0} y1={g.pos} x2={widthMM} y2={g.pos} stroke="#2ee9ff" strokeWidth={0.18} strokeDasharray="1.2 0.9" opacity={0.82}/><text x={0.8} y={Math.max(2, g.pos-0.8)} fontSize={1.08} fill="#b9f6ff" opacity={0.96}>{g.label}</text></g>
           )}
 
           {/* Mounting holes */}
-          {state.layerVisibility.mountingHoles && <MountingHolesLayer config={state.mountingHoles} />}
+          {state.layerVisibility.mountingHoles && <g opacity={lop('mountingHoles')}><MountingHolesLayer config={state.mountingHoles} /></g>}
 
           {/* PCB outline */}
-          {state.layerVisibility.pcb && <PCBLayer pcb={state.pcb} />}
+          {state.layerVisibility.pcb && <g opacity={lop('pcb')}><PCBLayer pcb={state.pcb} /></g>}
 
           {/* Components */}
+          <g opacity={Math.min(lop('componentHoles'), lop('frontShapes'), lop('rearBodies'), lop('rearKeepouts'))}>
           <ComponentsLayer
             components={state.components}
             selectedIdSet={selectedIdSet}
@@ -5131,11 +5708,12 @@ function SVGCanvas({
             warnings={warnings}
             layers={state.layerVisibility}
           />
+          </g>
 
-          {state.layerVisibility.topHardware && <TopHardwareLayer components={state.components} dragPreview={dragPreview} viewMode={state.viewMode} style={state.topHardwareStyle} />}
+          {state.layerVisibility.topHardware && <g opacity={lop('topHardware')}><TopHardwareLayer components={state.components} dragPreview={dragPreview} viewMode={state.viewMode} style={state.topHardwareStyle} /></g>}
 
-          {state.layerVisibility.text && <ScaleLayer items={state.scaleItems} components={state.components} layer="foreground" viewMode={state.viewMode} />}
-          {state.layerVisibility.text && <TextLayer items={state.textItems} layer="foreground" selectedText={state.selectedText} textDragPreview={textDragPreview} viewMode={state.viewMode} />}
+          {state.layerVisibility.text && <g opacity={lop('text')}><ScaleLayer items={state.scaleItems} components={state.components} layer="foreground" viewMode={state.viewMode} /></g>}
+          {state.layerVisibility.text && <g opacity={lop('text')}><TextLayer items={state.textItems} layer="foreground" selectedText={state.selectedText} textDragPreview={textDragPreview} viewMode={state.viewMode} /></g>}
 
           {/* Template placement preview */}
           <TemplateGhostLayer pending={pendingTemplatePlacement} />
@@ -5664,6 +6242,44 @@ function NumField({ label, value, onChange, step = 0.1, min = 0 }: {
   );
 }
 
+
+function ComponentSourceCard({ c }: { c: PlacedComponent }) {
+  const status = c.verificationStatus || 'approximate';
+  const statusLabel = status === 'datasheet' ? 'Datasheet' : status === 'measured' ? 'Measured' : status === 'production' ? 'Production' : 'Approximate';
+  const statusClass = status === 'approximate' ? 'warn' : status === 'production' ? 'ok' : 'info';
+  const front = getFrontBounds(c);
+  const hole =
+    c.holeType === 'slot' ? `${c.holeDiameter.toFixed(2)} × ${(c.slotLength ?? c.holeDiameter).toFixed(2)} mm slot`
+    : c.holeType === 'rect' ? `${(c.holeW ?? c.frontW ?? c.holeDiameter).toFixed(2)} × ${(c.holeH ?? c.frontH ?? c.holeDiameter).toFixed(2)} mm rectangular cut`
+    : `Ø ${c.holeDiameter.toFixed(2)} mm`;
+  const frontText = getFrontShape(c) === 'circle'
+    ? `Ø ${c.frontDiameter.toFixed(2)} mm visible/front`
+    : `${front.w.toFixed(2)} × ${front.h.toFixed(2)} mm front bounds`;
+  const source = [c.manufacturer, c.partNumber].filter(Boolean).join(' · ') || 'No source set';
+  return (
+    <div className={`component-source-card ${statusClass}`}>
+      <div className="component-source-head">
+        <strong>{statusLabel}</strong>
+        <span>{c.category || inferCategoryForType(c.type)}</span>
+      </div>
+      <div className="component-source-title">{source}</div>
+      {c.datasheetUrl && <div className="component-source-url" title={c.datasheetUrl}>{c.datasheetUrl}</div>}
+      {status === 'approximate' && (
+        <div className="component-source-warning">Approximate part: verify panel hole, rear body, depth and keepouts before production.</div>
+      )}
+      <div className="component-dim-grid">
+        <div><b>Hole</b><span>{hole}</span></div>
+        <div><b>Front</b><span>{frontText}</span></div>
+        <div><b>Rear body</b><span>{c.rearBodyW.toFixed(2)} × {c.rearBodyH.toFixed(2)} mm</span></div>
+        <div><b>Rear depth</b><span>{c.rearDepth.toFixed(2)} mm</span></div>
+        <div><b>Keepout</b><span>{c.keepoutW.toFixed(2)} × {c.keepoutH.toFixed(2)} mm</span></div>
+        <div><b>Spacing</b><span>{c.minSpacing.toFixed(2)} mm min</span></div>
+      </div>
+      <div className="component-source-note">{c.verification || 'No verification note yet.'}</div>
+    </div>
+  );
+}
+
 function PropertiesPanel() {
   const state    = useAppState();
   const dispatch = useAppDispatch();
@@ -5700,6 +6316,7 @@ function PropertiesPanel() {
   return (
     <div className="section" data-component-properties="true">
       <div className="section-title">{c.name}</div>
+      <ComponentSourceCard c={c} />
 
       <div className="field-pair">
         <div className="field-row">
@@ -5731,6 +6348,7 @@ function PropertiesPanel() {
         <div className="field-row"><label>Category</label><select value={category || 'custom'} onChange={e => patch({ category: e.target.value as any })}><option value="potentiometer">Potentiometer</option><option value="jack">Jack</option><option value="switch">Switch</option><option value="led">LED</option><option value="encoder">Encoder</option><option value="fader">Fader</option><option value="custom">Custom</option></select></div>
         <div className="field-row"><label>Verification</label><select value={c.verificationStatus || 'approximate'} onChange={e => patch({ verificationStatus: e.target.value as PartVerificationStatus })}><option value="approximate">Approximate</option><option value="datasheet">From datasheet</option><option value="measured">Measured</option><option value="production">Production verified</option></select></div>
       </div>
+      <div className="field-row"><label>Verification note</label><textarea value={c.verification || ''} onChange={e => patch({ verification: e.target.value })} placeholder="e.g. dimensions from datasheet page 2, measured with calipers, production verified…"/></div>
       <div className="btn-row" style={{ marginBottom: 6 }}>
         <button title="Apply manufacturer, part number, datasheet, category, verification and panel-thickness data to all matching parts of the same type." onClick={() => applyToSameType({ manufacturer: c.manufacturer, partNumber: c.partNumber, datasheetUrl: c.datasheetUrl, category: c.category, verificationStatus: c.verificationStatus, panelThicknessMin: c.panelThicknessMin, panelThicknessMax: c.panelThicknessMax })}>Apply part info to same type</button>
         <button title="Apply hole, front, rear body, keepout and pin keepout dimensions to all matching parts of the same type." onClick={() => applyToSameType({ holeDiameter: c.holeDiameter, holeType: c.holeType, slotLength: c.slotLength, holeW: c.holeW, holeH: c.holeH, frontDiameter: c.frontDiameter, frontShape: c.frontShape, frontW: c.frontW, frontH: c.frontH, rearBodyW: c.rearBodyW, rearBodyH: c.rearBodyH, rearDepth: c.rearDepth, keepoutW: c.keepoutW, keepoutH: c.keepoutH, pinKeepoutW: c.pinKeepoutW, pinKeepoutH: c.pinKeepoutH, minSpacing: c.minSpacing })}>Apply dimensions to same type</button>
@@ -6140,7 +6758,54 @@ function TextPropertiesPanel() {
     </div>
   );
 }
-function LayersPanel(){ const state=useAppState(); const dispatch=useAppDispatch(); const labels:[keyof LayerVisibility,string][]=[['grid','Grid'],['panelOutline','Panel outline'],['mountingHoles','Mounting holes'],['artwork','Artwork'],['text','Text/scales'],['labels','Labels'],['componentHoles','Component holes'],['frontShapes','Front shapes'],['topHardware','Top hardware'],['rearBodies','Rear bodies'],['rearKeepouts','Rear keepouts'],['pcb','PCB']]; return <div className="section"><div className="section-title">Layers</div><div className="field-row"><label>Top hardware style</label><select value={state.topHardwareStyle} onChange={e=>dispatch({type:'SET_TOP_HARDWARE_STYLE',style:e.target.value as TopHardwareStyle})}><option value="classic">Classic / clean</option><option value="realistic">Boutique / Sofia-like</option></select></div><div className="btn-row" style={{ marginBottom: 8 }}><button title="Mechanical view: holes, rear bodies, keepouts, PCB" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mechanical</button><button title="Visual view: artwork, labels, text, top hardware" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button><button title="Production view: outline and cut/drill geometry only" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Production</button><button title="Show all layers" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>Debug</button></div>{labels.map(([k,l])=><label key={k}><input type="checkbox" checked={state.layerVisibility[k]} onChange={e=>dispatch({type:'SET_LAYER_VISIBILITY',key:k,value:e.target.checked})}/> {l}</label>)}</div>; }
+function LayersPanel(){
+  const state=useAppState();
+  const dispatch=useAppDispatch();
+  const labels:[keyof LayerVisibility,string,string][]=[
+    ['grid','Grid','visible grid + HP guide'],
+    ['panelOutline','Panel','panel border / edge'],
+    ['mountingHoles','Mount','mounting holes'],
+    ['artwork','Artwork','imported images'],
+    ['text','Text','labels and scales'],
+    ['labels','Labels','component labels'],
+    ['componentHoles','Holes','drill/cut holes'],
+    ['frontShapes','Front','front visible shapes'],
+    ['topHardware','Hardware','knobs, jacks, caps'],
+    ['rearBodies','Bodies','rear physical bodies'],
+    ['rearKeepouts','Keepout','rear keepout zones'],
+    ['pcb','PCB','PCB outline']
+  ];
+  const visibleCount=labels.filter(([k])=>state.layerVisibility[k]).length;
+  const exportEnabled = (k:keyof LayerVisibility) => state.layerExport?.[k] !== false;
+  const opacity = (k:keyof LayerVisibility) => state.layerOpacity?.[k] ?? 1;
+  function setAll(value:boolean){ const patch:Partial<LayerVisibility>={}; labels.forEach(([k])=>patch[k]=value); dispatch({type:'SET_LAYER_VISIBILITY_BULK',patch}); }
+  function solo(k:keyof LayerVisibility){ const patch:Partial<LayerVisibility>={}; labels.forEach(([key])=>patch[key]=key===k); dispatch({type:'SET_LAYER_VISIBILITY_BULK',patch}); }
+  return <div className="section"><div className="section-title">Layer Manager</div>
+    <div className="field-row"><label>Top hardware style</label><select value={state.topHardwareStyle} onChange={e=>dispatch({type:'SET_TOP_HARDWARE_STYLE',style:e.target.value as TopHardwareStyle})}><option value="classic">Classic / clean</option><option value="realistic">Boutique / Sofia-like</option></select></div>
+    <div className="layer-manager-summary"><span>{visibleCount}/{labels.length} visible</span><span>Opacity is saved in project JSON</span></div>
+    <div className="btn-row layer-manager-presets" style={{ marginBottom: 8 }}>
+      <button title="Mechanical view: holes, rear bodies, keepouts, PCB" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mechanical</button>
+      <button title="Visual view: artwork, labels, text, top hardware" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button>
+      <button title="Production view: outline and cut/drill geometry only" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Production</button>
+      <button title="Show all layers" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>Debug</button>
+    </div>
+    <div className="btn-row layer-manager-presets" style={{ marginBottom: 8 }}>
+      <button onClick={()=>setAll(true)}>All on</button><button onClick={()=>setAll(false)}>All off</button>
+    </div>
+    <div className="layer-manager-table">
+      <div className="layer-manager-head"><span>Layer</span><span>Show</span><span>Opacity</span><span>Export</span><span>Solo</span></div>
+      {labels.map(([k,l,hint])=><div key={k} className={`layer-manager-row ${state.layerVisibility[k]?'on':'off'}`}>
+        <div className="layer-manager-name"><b>{l}</b><small>{hint}</small></div>
+        <label className="layer-toggle"><input type="checkbox" checked={state.layerVisibility[k]} onChange={e=>dispatch({type:'SET_LAYER_VISIBILITY',key:k,value:e.target.checked})}/></label>
+        <input className="layer-opacity" type="range" min={0.1} max={1} step={0.05} value={opacity(k)} onChange={e=>dispatch({type:'SET_LAYER_OPACITY',key:k,value:+e.target.value})}/>
+        <label className="layer-toggle" title="Export include/exclude flag for future export package presets"><input type="checkbox" checked={exportEnabled(k)} onChange={e=>dispatch({type:'SET_LAYER_EXPORT',key:k,value:e.target.checked})}/></label>
+        <button title={`Show only ${l}`} onClick={()=>solo(k)}>Solo</button>
+      </div>)}
+    </div>
+    <div className="menu-note" style={{marginTop:8}}>Export flags are stored now and will be used by the next export-package presets. Visibility and opacity affect the editor immediately.</div>
+  </div>;
+}
+
 function DepthViewPanel(){ const state=useAppState(); const dispatch=useAppDispatch(); const d=state.depthSettings; const maxDepth=computeMaxDepth(state.components); const scale=2; const w=Math.max(120,(d.caseDepthLimitMm+10)*scale); return <div className="field-row" style={{ marginTop: 10 }}><div className="section-title">Depth / Skiff Check</div><div className="field-row"><label>Case depth limit mm</label><input type="number" value={d.caseDepthLimitMm} onChange={e=>dispatch({type:'SET_DEPTH_SETTINGS',patch:{caseDepthLimitMm:+e.target.value}})}/></div><div className="field-row"><label>PCB distance mm</label><input type="number" value={d.pcbDistanceBehindPanelMm} onChange={e=>dispatch({type:'SET_DEPTH_SETTINGS',patch:{pcbDistanceBehindPanelMm:+e.target.value}})}/></div><label><input type="checkbox" checked={d.showPCBPlane} onChange={e=>dispatch({type:'SET_DEPTH_SETTINGS',patch:{showPCBPlane:e.target.checked}})}/> Show PCB plane</label><svg viewBox={`0 0 ${w} 70`} style={{width:'100%',height:70,background:'#101010',border:'1px solid #333',marginTop:6}}><line x1={10} y1={5} x2={10} y2={65} stroke="#ccc"/><line x1={10+d.caseDepthLimitMm*scale} y1={5} x2={10+d.caseDepthLimitMm*scale} y2={65} stroke="#f66" strokeDasharray="3 2"/>{d.showPCBPlane&&<line x1={10+d.pcbDistanceBehindPanelMm*scale} y1={5} x2={10+d.pcbDistanceBehindPanelMm*scale} y2={65} stroke="#4af" strokeDasharray="3 2"/>}{state.components.slice(0,12).map((c,i)=><rect key={c.id} x={10} y={8+i*4.5} width={Math.max(1,c.rearDepth*scale)} height={3} fill={c.rearDepth>d.caseDepthLimitMm?'#f55':'#0af'}/>)}</svg><div className="measurement-row"><span>Max depth</span><span>{maxDepth.toFixed(1)} mm</span></div>{maxDepth>d.caseDepthLimitMm&&<div className="warning-item warn">Max depth exceeds case limit by {(maxDepth-d.caseDepthLimitMm).toFixed(1)} mm.</div>}</div>; }
 function LayoutAssistantPanel({warnings}:{warnings:CollisionWarning[]}){
   const state=useAppState(); const dispatch=useAppDispatch(); const widthMM=panelWidthMM(state.panel);
@@ -6241,9 +6906,82 @@ function buildSelfCheckItems(state: AppState, warnings: CollisionWarning[]): { l
   return items;
 }
 
+
+type RuntimeSelfTestItem = { level: 'ok'|'warn'|'error'; message: string };
+
+function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): RuntimeSelfTestItem[] {
+  const out: RuntimeSelfTestItem[] = [];
+  function ok(message: string) { out.push({ level:'ok', message }); }
+  function warn(message: string) { out.push({ level:'warn', message }); }
+  function err(message: string) { out.push({ level:'error', message }); }
+
+  try {
+    const widthMM = panelWidthMM(state.panel);
+    if (Number.isFinite(widthMM) && widthMM > 0) ok(`Panel width resolves to ${widthMM.toFixed(2)} mm.`); else err('Panel width is invalid.');
+
+    const types = new Set(COMPONENT_LIBRARY.map(c => c.type));
+    ['jack','pot9mm','fader20','fader20led','slideSwitchMini','tactled'].forEach(t => {
+      types.has(t as ComponentType) ? ok(`Library contains ${t}.`) : err(`Library missing ${t}.`);
+    });
+
+    const normalized = validateAndNormalize(JSON.parse(serializeProject(state, true)));
+    normalized.ok ? ok('Project JSON serialize/load validation passes.') : err(`Project JSON validation failed: ${normalized.error}`);
+
+    const frontSvg = exportSVGString(state,{drillOnly:false,labels:true,rearKeepout:false,rearBody:false,centerMarks:false,mountingKeepouts:false,includeArtwork:true});
+    frontSvg.includes('<svg') && frontSvg.includes('</svg>') ? ok('Front SVG generation works.') : err('Front SVG generation failed.');
+
+    const drillSvg = exportSVGString(state,{drillOnly:true,labels:false,rearKeepout:false,rearBody:false,centerMarks:true,mountingKeepouts:true,includeArtwork:false});
+    drillSvg.includes('<svg') && drillSvg.includes('</svg>') ? ok('Drill/Cut SVG generation works.') : err('Drill/Cut SVG generation failed.');
+
+    const csv = drillTableCSVString(state, warnings);
+    csv.includes('Ref,Label,Type') ? ok('Component CSV generation works.') : err('Component CSV generation failed.');
+
+    const report = manufacturingReportText(state, warnings);
+    report.includes('Manufacturing') || report.includes('Panel') ? ok('Manufacturing report generation works.') : warn('Manufacturing report generated but header looked unusual.');
+
+    const prodItems = buildProductionCheckItems(state, warnings);
+    prodItems.length ? ok(`Production Check returns ${prodItems.length} items.`) : err('Production Check returned no items.');
+
+    const classicOk = state.topHardwareStyle === 'classic' || state.topHardwareStyle === 'realistic';
+    classicOk ? ok(`Hardware style state is valid: ${state.topHardwareStyle}.`) : err('Hardware style state is invalid.');
+
+    const badComponents = state.components.filter(c => !Number.isFinite(c.x) || !Number.isFinite(c.y) || !Number.isFinite(c.rotation));
+    badComponents.length ? err(`${badComponents.length} component(s) have invalid coordinates/rotation.`) : ok('All placed components have finite coordinates.');
+
+    if (warnings.some(w => w.severity === 'error')) warn('Current layout has DFM errors; runtime is OK but production is blocked.');
+  } catch (e:any) {
+    err(`Self-test crashed: ${e?.message || String(e)}`);
+  }
+
+  return out;
+}
+
+function RuntimeSelfTestDialog({ items, onClose }: { items: RuntimeSelfTestItem[]; onClose: () => void }) {
+  const errors = items.filter(i => i.level === 'error').length;
+  const warns = items.filter(i => i.level === 'warn').length;
+  const status = errors ? 'ERROR' : warns ? 'WARN' : 'OK';
+  function copy() {
+    const text = ['Runtime self-test', `Status: ${status}`, '', ...items.map(i => `[${i.level.toUpperCase()}] ${i.message}`)].join('\n');
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text)); else fallbackCopy(text);
+  }
+  return ReactDOM.createPortal(
+    <div className="selftest-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="selftest-dialog" onMouseDown={e => e.stopPropagation()}>
+        <div className="selftest-head"><strong>Runtime self-test</strong><span className={errors ? 'bad' : warns ? 'warn' : 'ok'}>{status}</span><button onClick={onClose}>Close</button></div>
+        <div className="selftest-list">
+          {items.map((item, i) => <div key={i} className={`selftest-item ${item.level}`}><b>{item.level === 'ok' ? '✓' : item.level === 'warn' ? '△' : '!'}</b><span>{item.message}</span></div>)}
+        </div>
+        <div className="selftest-actions"><button onClick={copy}>Copy result</button></div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 function SelfCheckPanel({ warnings }: { warnings: CollisionWarning[] }) {
   const state = useAppState();
   const items = buildSelfCheckItems(state, warnings);
+  const [runtimeItems, setRuntimeItems] = useState<RuntimeSelfTestItem[] | null>(null);
   const errors = items.filter(i => i.level === 'error').length;
   const warns  = items.filter(i => i.level === 'warn').length;
   function copySelfCheck() {
@@ -6261,7 +6999,11 @@ function SelfCheckPanel({ warnings }: { warnings: CollisionWarning[] }) {
           <div key={i} className={`warning-item ${item.level === 'error' ? '' : 'warn'}`} style={item.level === 'ok' ? { color:'#8ee88e', borderColor:'rgba(80,220,80,0.35)', background:'rgba(80,220,80,0.08)' } : undefined}>{item.message}</div>
         ))}
       </div>
-      <button style={{ width:'100%' }} onClick={copySelfCheck}>Copy self-check</button>
+      <div className="btn-row" style={{ marginTop: 8 }}>
+        <button style={{ flex: 1 }} onClick={copySelfCheck}>Copy self-check</button>
+        <button style={{ flex: 1 }} onClick={() => setRuntimeItems(runRuntimeSelfTest(state, warnings))}>Run self-test</button>
+      </div>
+      {runtimeItems && <RuntimeSelfTestDialog items={runtimeItems} onClose={() => setRuntimeItems(null)} />}
     </div>
   );
 }
@@ -6348,22 +7090,88 @@ function AlignTools() {
   const dispatch = useAppDispatch();
   const state    = useAppState();
   const selCount = state.selected.length;
+  const [spacing, setSpacing] = useState(10);
+  const [dupCount, setDupCount] = useState(1);
+  const selected = state.components.filter(c => state.selected.includes(c.id));
+  const widthMM = panelWidthMM(state.panel);
+
+  function centerSelected(axis: 'x'|'y'|'both') {
+    if (!selected.length) return;
+    const ex = selected.map(getFrontExtents);
+    const minX = Math.min(...ex.map(e=>e.x1)), maxX = Math.max(...ex.map(e=>e.x2));
+    const minY = Math.min(...ex.map(e=>e.y1)), maxY = Math.max(...ex.map(e=>e.y2));
+    const dx = axis === 'y' ? 0 : widthMM / 2 - (minX + maxX) / 2;
+    const dy = axis === 'x' ? 0 : PANEL_HEIGHT_MM / 2 - (minY + maxY) / 2;
+    dispatch({ type: 'MOVE_COMPONENTS', moves: selected.map(c => ({ id: c.id, x: c.x + dx, y: c.y + dy })) });
+  }
+
+  function makeStereoPair() {
+    if (selected.length !== 1) return;
+    const c = selected[0];
+    const clone: PlacedComponent = {
+      ...c,
+      id: crypto.randomUUID(),
+      ref: nextRefForComponent(c.type, state.components),
+      label: c.label && !/[LR]$/i.test(c.label) ? `${c.label} R` : c.label,
+      x: Math.min(widthMM - 2, c.x + spacing),
+    };
+    dispatch({ type: 'ADD_COMPONENTS', components: [clone], selectedIds: [c.id, clone.id] });
+  }
 
   return (
     <div className="section">
-      <div className="section-title">Align (2+ selected)</div>
-      <div className="btn-row">
-        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'left' })}>⊢ L</button>
-        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'right' })}>R ⊣</button>
-        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'top' })}>⊤ Top</button>
-        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'bottom' })}>Bot ⊥</button>
-        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'centerH' })}>— CtrH</button>
-        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'centerV' })}>| CtrV</button>
+      <div className="section-title">Layout tools</div>
+      <div className="layout-tools-note">{selCount} selected · align uses visible front bounds</div>
+
+      <div className="layout-tools-subtitle">Align edges / centers</div>
+      <div className="layout-tools-grid">
+        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'left' })}>Left</button>
+        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'centerV' })}>Center X</button>
+        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'right' })}>Right</button>
+        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'top' })}>Top</button>
+        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'centerH' })}>Center Y</button>
+        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'bottom' })}>Bottom</button>
       </div>
-      <div className="section-title" style={{ marginTop: 8 }}>Distribute (3+ selected)</div>
-      <div className="btn-row">
-        <button disabled={selCount < 3} onClick={() => dispatch({ type: 'DISTRIBUTE', axis: 'h' })}>⇔ Horiz</button>
-        <button disabled={selCount < 3} onClick={() => dispatch({ type: 'DISTRIBUTE', axis: 'v' })}>⇕ Vert</button>
+
+      <div className="layout-tools-subtitle">Center in panel</div>
+      <div className="layout-tools-grid three">
+        <button disabled={selCount < 1} onClick={() => centerSelected('x')}>Panel X</button>
+        <button disabled={selCount < 1} onClick={() => centerSelected('y')}>Panel Y</button>
+        <button disabled={selCount < 1} onClick={() => centerSelected('both')}>Both</button>
+      </div>
+
+      <div className="layout-tools-subtitle">Distribute / spacing</div>
+      <div className="layout-tools-grid two">
+        <button disabled={selCount < 3} onClick={() => dispatch({ type: 'DISTRIBUTE', axis: 'h' })}>Distribute H</button>
+        <button disabled={selCount < 3} onClick={() => dispatch({ type: 'DISTRIBUTE', axis: 'v' })}>Distribute V</button>
+      </div>
+      <div className="field-pair compact">
+        <NumField label="Spacing mm" value={spacing} min={0} step={0.5} onChange={setSpacing} />
+        <NumField label="Copies" value={dupCount} min={1} step={1} onChange={v => setDupCount(Math.max(1, Math.round(v)))} />
+      </div>
+      <div className="layout-tools-grid two">
+        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'SET_SELECTED_SPACING', axis: 'h', spacing })}>Set H spacing</button>
+        <button disabled={selCount < 2} onClick={() => dispatch({ type: 'SET_SELECTED_SPACING', axis: 'v', spacing })}>Set V spacing</button>
+      </div>
+
+      <div className="layout-tools-subtitle">Duplicate pattern</div>
+      <div className="layout-tools-grid two">
+        <button disabled={selCount < 1} onClick={() => dispatch({ type: 'DUPLICATE_SELECTED_PATTERN', axis: 'h', spacing, count: dupCount })}>Duplicate →</button>
+        <button disabled={selCount < 1} onClick={() => dispatch({ type: 'DUPLICATE_SELECTED_PATTERN', axis: 'v', spacing, count: dupCount })}>Duplicate ↓</button>
+      </div>
+
+      <div className="layout-tools-subtitle">Mirror</div>
+      <div className="layout-tools-grid two">
+        <button disabled={selCount < 1} onClick={() => dispatch({ type: 'MIRROR_SELECTED', axis: 'x', around: 'selection' })}>Mirror X / selection</button>
+        <button disabled={selCount < 1} onClick={() => dispatch({ type: 'MIRROR_SELECTED', axis: 'x', around: 'panel' })}>Mirror X / panel</button>
+        <button disabled={selCount < 1} onClick={() => dispatch({ type: 'MIRROR_SELECTED', axis: 'y', around: 'selection' })}>Mirror Y / selection</button>
+        <button disabled={selCount < 1} onClick={() => dispatch({ type: 'MIRROR_SELECTED', axis: 'y', around: 'panel' })}>Mirror Y / panel</button>
+      </div>
+
+      <div className="layout-tools-subtitle">Eurorack helpers</div>
+      <div className="layout-tools-grid two">
+        <button disabled={selCount !== 1} onClick={makeStereoPair}>Make stereo pair →</button>
+        <button disabled={selCount < 1} onClick={() => dispatch({ type: 'ROTATE_SELECTED', degrees: 90 })}>Rotate +90°</button>
       </div>
     </div>
   );
@@ -6869,6 +7677,8 @@ function validateAndNormalize(raw: unknown): ValidationResult {
     showArtworkInDrillView,
     drillArtworkOpacity,
     layerVisibility: { ...defaultLayerVisibility(), ...(obj.layerVisibility && typeof obj.layerVisibility === 'object' ? obj.layerVisibility as Partial<LayerVisibility> : {}) },
+    layerOpacity: obj.layerOpacity && typeof obj.layerOpacity === 'object' ? obj.layerOpacity as LayerOpacity : {},
+    layerExport: obj.layerExport && typeof obj.layerExport === 'object' ? obj.layerExport as LayerExport : {},
     depthSettings: { caseDepthLimitMm: 45, pcbDistanceBehindPanelMm: 12, showPCBPlane: true, ...(obj.depthSettings && typeof obj.depthSettings === 'object' ? obj.depthSettings as Partial<DepthSettings> : {}) },
     dfmProfile: (['generic','cnc_aluminum','laser_acrylic','fr4_panel'] as DFMProfileKey[]).includes(obj.dfmProfile as DFMProfileKey) ? obj.dfmProfile as DFMProfileKey : 'generic',
   };
@@ -7383,10 +8193,7 @@ function drillTableRows(state: AppState, warnings: CollisionWarning[]): Array<Ar
 }
 
 function exportCSVDrillTable(state: AppState, warnings: CollisionWarning[]) {
-  const header = ['Ref','Label','Type','Part name','Manufacturer','Part number','Verification','X mm','Y mm','Rotation deg','Hole type','Hole W/Ø','Hole H/Slot L','Front shape','Front W','Front H','Rear body W','Rear body H','Rear depth','Keepout W','Keepout H','Warning count'];
-  const rows = drillTableRows(state, warnings).map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
-  const blob = new Blob([[header.join(','), ...rows].join('\n')], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='drill-table.csv'; a.click(); URL.revokeObjectURL(url);
+  downloadTextFile('drill-table.csv', drillTableCSVString(state, warnings), 'text/csv');
 }
 
 function exportKiCadPlacementCSV(state: AppState) {
@@ -7478,7 +8285,112 @@ function copyManufacturingReport(state: AppState, warnings: CollisionWarning[]) 
 
 function exportSVGMode(state: AppState, mode: 'preview'|'drill'|'artwork'|'debug', warnings: CollisionWarning[]) { if(mode==='drill') return exportSVG(state,{drillOnly:true,labels:false,rearKeepout:false,rearBody:false,centerMarks:true,mountingKeepouts:true,includeArtwork:false}); if(mode==='artwork') return exportSVG(state,{drillOnly:false,labels:true,rearKeepout:false,rearBody:false,centerMarks:false,mountingKeepouts:false,includeArtwork:true}); if(mode==='debug') return exportSVG(state,{drillOnly:false,labels:true,rearKeepout:true,rearBody:true,centerMarks:true,mountingKeepouts:true,includeArtwork:true}); return exportSVG(state,{drillOnly:false,labels:true,rearKeepout:false,rearBody:false,centerMarks:true,mountingKeepouts:true,includeArtwork:true}); }
 
+
+function exportSVGString(state: AppState, opts: ExportOptions): string {
+  const widthMM  = panelWidthMM(state.panel);
+  const heightMM = PANEL_HEIGHT_MM;
+  function escapeXml(s: string): string {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  const lines: string[] = [];
+  if (opts.mountingKeepouts && state.mountingHoles.enabled) {
+    const kr = Math.max(0, state.mountingHoles.keepoutRadius ?? MOUNTING_HOLE_KEEPOUT_R_MM);
+    for (const h of state.mountingHoles.holes) {
+      if (!opts.drillOnly && state.mountingHoles.showKeepouts !== false && kr > 0) lines.push(`  <circle cx="${h.x.toFixed(3)}" cy="${h.y.toFixed(3)}" r="${kr.toFixed(3)}" fill="none" stroke="#aaa" stroke-width="0.2" stroke-dasharray="1 0.5"/>`);
+      if (state.mountingHoles.holeShape === 'oval') {
+        const ow = Math.max(state.mountingHoles.ovalLength ?? 4.8, MOUNTING_HOLE_DIAMETER_MM);
+        lines.push(`  <rect x="${(h.x - ow/2).toFixed(3)}" y="${(h.y - MOUNTING_HOLE_DIAMETER_MM/2).toFixed(3)}" width="${ow.toFixed(3)}" height="${MOUNTING_HOLE_DIAMETER_MM.toFixed(3)}" rx="${(MOUNTING_HOLE_DIAMETER_MM/2).toFixed(3)}" fill="white" stroke="#333" stroke-width="0.3"/>`);
+      } else {
+        lines.push(`  <circle cx="${h.x.toFixed(3)}" cy="${h.y.toFixed(3)}" r="${(MOUNTING_HOLE_DIAMETER_MM/2).toFixed(3)}" fill="white" stroke="#333" stroke-width="0.3"/>`);
+      }
+    }
+  }
+  for (const c of state.components) {
+    lines.push(`  <!-- ${escapeXml((c.ref ? c.ref + ' ' : '') + (c.label || c.name))} | ${c.type} | x=${c.x.toFixed(2)} y=${c.y.toFixed(2)} | hole Ø${c.holeDiameter}mm${c.holeType === 'slot' ? ` slot ${c.holeDiameter}×${c.slotLength ?? '?'}mm` : ''} | depth ${c.rearDepth}mm -->`);
+    if (!opts.drillOnly) {
+      if (opts.rearKeepout && c.keepoutW > 0) {
+        lines.push(`  <g transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})">`);
+        lines.push(`    <rect x="${(c.x - c.keepoutW/2).toFixed(3)}" y="${(c.y - c.keepoutH/2).toFixed(3)}" width="${c.keepoutW.toFixed(3)}" height="${c.keepoutH.toFixed(3)}" fill="none" stroke="#f80" stroke-width="0.2" stroke-dasharray="1 0.5"/>`);
+        lines.push(`  </g>`);
+      }
+      if (opts.rearBody && c.rearBodyW > 0) {
+        lines.push(`  <g transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})">`);
+        lines.push(`    <rect x="${(c.x - c.rearBodyW/2).toFixed(3)}" y="${(c.y - c.rearBodyH/2).toFixed(3)}" width="${c.rearBodyW.toFixed(3)}" height="${c.rearBodyH.toFixed(3)}" fill="none" stroke="#f60" stroke-width="0.3"/>`);
+        lines.push(`  </g>`);
+      }
+      if (getFrontShape(c) !== 'circle' && !isFaderLike(c)) {
+        const b = getFrontBounds(c);
+        const rot = c.rotation !== 0 ? ` transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})"` : '';
+        lines.push(`  <rect x="${(c.x - b.w/2).toFixed(3)}" y="${(c.y - b.h/2).toFixed(3)}" width="${b.w.toFixed(3)}" height="${b.h.toFixed(3)}" fill="none" stroke="#999" stroke-width="0.25"${rot}/>`);
+      } else if (getFrontShape(c) === 'circle') {
+        lines.push(`  <circle cx="${c.x.toFixed(3)}" cy="${c.y.toFixed(3)}" r="${(c.frontDiameter/2).toFixed(3)}" fill="none" stroke="#999" stroke-width="0.25"/>`);
+      }
+    }
+    if (c.holeType === 'slot') {
+      const sl = c.slotLength ?? c.holeDiameter;
+      const rot = c.rotation !== 0 ? ` transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})"` : '';
+      lines.push(`  <rect x="${(c.x - c.holeDiameter/2).toFixed(3)}" y="${(c.y - sl/2).toFixed(3)}" width="${c.holeDiameter.toFixed(3)}" height="${sl.toFixed(3)}" rx="${(c.holeDiameter/2).toFixed(3)}" fill="white" stroke="#333" stroke-width="0.3"${rot}/>`);
+    } else if (c.holeType === 'rect') {
+      const hw = c.holeW ?? c.frontW ?? c.holeDiameter;
+      const hh = c.holeH ?? c.frontH ?? c.holeDiameter;
+      const rot = c.rotation !== 0 ? ` transform="rotate(${c.rotation}, ${c.x.toFixed(3)}, ${c.y.toFixed(3)})"` : '';
+      lines.push(`  <rect x="${(c.x - hw/2).toFixed(3)}" y="${(c.y - hh/2).toFixed(3)}" width="${hw.toFixed(3)}" height="${hh.toFixed(3)}" fill="white" stroke="#333" stroke-width="0.3"${rot}/>`);
+    } else {
+      lines.push(`  <circle cx="${c.x.toFixed(3)}" cy="${c.y.toFixed(3)}" r="${(c.holeDiameter/2).toFixed(3)}" fill="white" stroke="#333" stroke-width="0.3"/>`);
+    }
+    if (opts.centerMarks && !opts.drillOnly) {
+      const cm = 1.5;
+      lines.push(`  <line x1="${(c.x-cm).toFixed(3)}" y1="${c.y.toFixed(3)}" x2="${(c.x+cm).toFixed(3)}" y2="${c.y.toFixed(3)}" stroke="#555" stroke-width="0.12"/>`);
+      lines.push(`  <line x1="${c.x.toFixed(3)}" y1="${(c.y-cm).toFixed(3)}" x2="${c.x.toFixed(3)}" y2="${(c.y+cm).toFixed(3)}" stroke="#555" stroke-width="0.12"/>`);
+    }
+    if (opts.labels && !opts.drillOnly) {
+      const ly = (c.y + getFrontBottomOffset(c) + 2.5).toFixed(3);
+      lines.push(`  <text x="${c.x.toFixed(3)}" y="${ly}" text-anchor="middle" font-size="2" fill="#333">${escapeXml(c.label || c.name)}</text>`);
+    }
+  }
+  const bgArtLines = (opts.includeArtwork && !opts.drillOnly) ? buildArtworkSVGLines(state.artworks, 'background', widthMM, heightMM, state.clipArtworkToPanel) : [];
+  const fgArtLines = (opts.includeArtwork && !opts.drillOnly) ? buildArtworkSVGLines(state.artworks, 'foreground', widthMM, heightMM, state.clipArtworkToPanel) : [];
+  const bgTextLines = !opts.drillOnly ? buildTextSVGLines(state.textItems, 'background') : [];
+  const fgTextLines = !opts.drillOnly ? buildTextSVGLines(state.textItems, 'foreground') : [];
+  const bgScaleLines = !opts.drillOnly ? buildScaleSVGLines(state.scaleItems, state.components, 'background') : [];
+  const fgScaleLines = !opts.drillOnly ? buildScaleSVGLines(state.scaleItems, state.components, 'foreground') : [];
+  const topHardwareLines = !opts.drillOnly ? buildTopHardwareSVGLines(state.components) : [];
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<!-- Eurorack Panel Designer export -->
+<!-- Panel: ${state.panel.widthHP}HP = ${widthMM.toFixed(2)}mm x ${heightMM}mm -->
+<!-- WARNING: Dimensions are planning estimates. Verify all parts with datasheets/calipers before manufacturing. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${widthMM.toFixed(3)} ${heightMM.toFixed(3)}" width="${widthMM.toFixed(3)}mm" height="${heightMM.toFixed(3)}mm">
+  <rect x="0" y="0" width="${widthMM.toFixed(3)}" height="${heightMM.toFixed(3)}" fill="#ccc"/>
+${bgArtLines.join('\n')}${bgArtLines.length ? '\n' : ''}${bgTextLines.join('\n')}${bgTextLines.length ? '\n' : ''}${bgScaleLines.join('\n')}${bgScaleLines.length ? '\n' : ''}  <rect x="0" y="0" width="${widthMM.toFixed(3)}" height="${heightMM.toFixed(3)}" fill="none" stroke="black" stroke-width="0.5"/>
+${lines.join('\n')}
+${fgTextLines.join('\n')}${fgTextLines.length ? '\n' : ''}${fgScaleLines.join('\n')}${fgScaleLines.length ? '\n' : ''}${topHardwareLines.join('\n')}${topHardwareLines.length ? '\n' : ''}${fgArtLines.join('\n')}${fgArtLines.length ? '\n' : ''}</svg>`;
+}
+
+function drillTableCSVString(state: AppState, warnings: CollisionWarning[]): string {
+  const header = ['Ref','Label','Type','Part name','Manufacturer','Part number','Verification','X mm','Y mm','Rotation deg','Hole type','Hole W/Ø','Hole H/Slot L','Front shape','Front W','Front H','Rear body W','Rear body H','Rear depth','Keepout W','Keepout H','Warning count'];
+  const rows = drillTableRows(state, warnings).map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+  return [header.join(','), ...rows].join('\n');
+}
+
+function downloadExportPackage(state: AppState, warnings: CollisionWarning[]) {
+  const base = safeProjectFileName(state.projectMeta?.name || 'panel-layout').replace(/\.json$/i, '');
+  const files = [
+    [`${base}__front-artwork.svg`, exportSVGString(state,{drillOnly:false,labels:true,rearKeepout:false,rearBody:false,centerMarks:false,mountingKeepouts:false,includeArtwork:true}), 'image/svg+xml'],
+    [`${base}__drill-cut.svg`, exportSVGString(state,{drillOnly:true,labels:false,rearKeepout:false,rearBody:false,centerMarks:true,mountingKeepouts:true,includeArtwork:false}), 'image/svg+xml'],
+    [`${base}__rear-keepout.svg`, exportSVGString(state,{drillOnly:false,labels:true,rearKeepout:true,rearBody:true,centerMarks:true,mountingKeepouts:true,includeArtwork:false}), 'image/svg+xml'],
+    [`${base}__component-table.csv`, drillTableCSVString(state,warnings), 'text/csv'],
+    [`${base}__manufacturing-report.md`, manufacturingReportText(state,warnings), 'text/markdown'],
+    [`${base}__project.json`, serializeProject(state,true), 'application/json'],
+  ] as const;
+  files.forEach(([name, content, mime], idx) => {
+    window.setTimeout(() => downloadTextFile(name, content, mime), idx * 180);
+  });
+}
+
+
 function exportSVG(state: AppState, opts: ExportOptions) {
+  downloadTextFile('panel-export.svg', exportSVGString(state, opts), 'image/svg+xml');
+  return;
   const widthMM  = panelWidthMM(state.panel);
   const heightMM = PANEL_HEIGHT_MM;
 
@@ -7844,11 +8756,12 @@ function ExportPreviewMini({ state, warnings }: { state: AppState; warnings: Col
   );
 }
 
-function ExportDialog({ options, onChange, onExport, onExportMode, onExportCSV, onExportKiCad, onExportPrintTemplate, onExportDXF, onExportReport, onCancel }: { options: ExportOptions; onChange: (o: ExportOptions) => void; onExport: () => void; onExportMode: (mode: 'preview'|'drill'|'artwork'|'debug') => void; onExportCSV: () => void; onExportKiCad: () => void; onExportPrintTemplate: () => void; onExportDXF: () => void; onExportReport: () => void; onCancel: () => void; }) {
+function ExportDialog({ options, onChange, onExport, onExportMode, onExportPackage, onExportCSV, onExportKiCad, onExportPrintTemplate, onExportDXF, onExportReport, onCancel }: { options: ExportOptions; onChange: (o: ExportOptions) => void; onExport: () => void; onExportMode: (mode: 'preview'|'drill'|'artwork'|'debug') => void; onExportPackage: () => void; onExportPackage: () => void; onExportCSV: () => void; onExportKiCad: () => void; onExportPrintTemplate: () => void; onExportDXF: () => void; onExportReport: () => void; onCancel: () => void; }) {
   const rows: [keyof ExportOptions, string][] = [['drillOnly','Drill holes only'],['labels','Include labels'],['includeArtwork','Include artwork images'],['rearKeepout','Include rear keepout zones'],['rearBody','Include rear body outlines'],['centerMarks','Include center marks'],['mountingKeepouts','Include mounting hole keepouts']];
   const state = useAppState();
   const warnings = computeWarnings(state.components, panelWidthMM(state.panel), state.mountingHoles, state.pcb);
   const hard = warnings.filter(w => w.severity === 'error').length;
+  const warn = warnings.length - hard;
   const unverified = state.components.filter(c => (c.verificationStatus || 'approximate') === 'approximate').length;
   const [showChecklist, setShowChecklist] = useState(false);
   const checklist = [
@@ -7859,9 +8772,10 @@ function ExportDialog({ options, onChange, onExport, onExportMode, onExportCSV, 
     ['PCB outline checked', state.pcb.enabled],
     ['1:1 print template checked', false],
   ] as [string, boolean][];
-  return <div className="export-dialog-backdrop"><div className="export-dialog-panel"><div className="export-dialog-title">Export</div><div className="export-sanity"><strong>Export sanity:</strong><br/>Hard errors: {hard} · Warnings: {warnings.length - hard} · Approximate parts: {unverified}<br/>Scale: 1:1 mm. Drill/Cut and DXF exclude decorative top hardware/artwork unless the mode explicitly includes them.</div><ExportPreviewMini state={state} warnings={warnings} /><button style={{marginBottom:10}} onClick={() => setShowChecklist(!showChecklist)}>Production checklist</button>{showChecklist && <div className="export-sanity">{checklist.map(([label, ok]) => <div key={label} className="checklist-row"><span>{ok ? '✓' : '○'}</span><span>{label}</span></div>)}</div>}<div className="section-title">Quick modes</div><div className="btn-row" style={{marginBottom:12}}><button onClick={()=>onExportMode('preview')}>Preview SVG</button><button onClick={()=>onExportMode('drill')}>Drill/Cut SVG</button><button onClick={()=>onExportMode('artwork')}>Artwork SVG</button><button onClick={()=>onExportMode('debug')}>Debug SVG</button><button onClick={onExportCSV}>CSV Drill Table</button><button onClick={onExportKiCad}>KiCad placement CSV</button><button onClick={onExportPrintTemplate}>1:1 Print Template</button><button onClick={onExportDXF}>DXF Cut/Drill</button><button onClick={onExportReport}>DFM Report</button></div><div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>Preview SVG is for layout review. Use Drill/Cut SVG or the 1:1 template for fabrication checks.</div><div className="section-title">Custom SVG options</div>{rows.map(([key,label])=><div key={key} style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}><input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/><span style={{fontSize:12,color:'#ccc'}}>{label}</span></div>)}<div className="export-dialog-actions"><button onClick={onCancel}>Cancel</button><button className="primary" onClick={onExport}>Export SVG</button></div></div></div>;
+  return <div className="export-dialog-backdrop"><div className="export-dialog-panel"><div className="export-dialog-title">Export</div><div className="export-sanity"><strong>Export sanity:</strong><br/>Hard errors: {hard} · Warnings: {warn} · Approximate parts: {unverified}<br/>Scale: 1:1 mm. Drill/Cut and DXF exclude decorative top hardware/artwork unless the mode explicitly includes them.</div><ExportPreviewMini state={state} warnings={warnings} />
+  <div className="export-package-card"><div><strong>Manufacturing package</strong><p>Downloads front artwork SVG, drill/cut SVG, rear keepout SVG, component CSV, DFM report and project JSON.</p></div><button className="primary" onClick={onExportPackage}>Export package</button></div>
+  <button style={{marginBottom:10}} onClick={() => setShowChecklist(!showChecklist)}>Production checklist</button>{showChecklist && <div className="export-sanity">{checklist.map(([label, ok]) => <div key={label} className="checklist-row"><span>{ok ? '✓' : '○'}</span><span>{label}</span></div>)}</div>}<div className="section-title">Quick modes</div><div className="btn-row" style={{marginBottom:12}}><button onClick={()=>onExportMode('preview')}>Preview SVG</button><button onClick={()=>onExportMode('drill')}>Drill/Cut SVG</button><button onClick={()=>onExportMode('artwork')}>Artwork SVG</button><button onClick={()=>onExportMode('debug')}>Debug SVG</button><button onClick={onExportCSV}>CSV Drill Table</button><button onClick={onExportKiCad}>KiCad placement CSV</button><button onClick={onExportPrintTemplate}>1:1 Print Template</button><button onClick={onExportDXF}>DXF Cut/Drill</button><button onClick={onExportReport}>DFM Report</button></div><div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>Preview SVG is for layout review. Use Drill/Cut SVG or the 1:1 template for fabrication checks.</div><div className="section-title">Custom SVG options</div>{rows.map(([key,label])=><div key={key} style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}><input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/><span style={{fontSize:12,color:'#ccc'}}>{label}</span></div>)}<div className="export-dialog-actions"><button onClick={onCancel}>Cancel</button><button className="primary" onClick={onExport}>Export SVG</button></div></div></div>;
 }
-
 
 interface CommandItem { id: string; label: string; hint: string; run: () => void; }
 function CommandPalette({ commands, onClose }: { commands: CommandItem[]; onClose: () => void }) {
@@ -7889,11 +8803,12 @@ function CommandPalette({ commands, onClose }: { commands: CommandItem[]; onClos
 // TOOLBAR
 // ═══════════════════════════════════════════════════════════════════════════
 
-function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpenLocalProjects, leftPanelOpen, rightPanelOpen, onToggleLeftPanel, onToggleRightPanel, touchMode, onSetTouchMode, onFitView, onResetView, snapSettings, onSnapSettingsChange, clearanceMode, onToggleClearanceMode }: {
+function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpenLocalProjects, onOpenProductionCheck, leftPanelOpen, rightPanelOpen, onToggleLeftPanel, onToggleRightPanel, touchMode, onSetTouchMode, onFitView, onResetView, snapSettings, onSnapSettingsChange, clearanceMode, onToggleClearanceMode }: {
   onImport: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onExportSVGClick: () => void;
   onRequestProjectFileImport: () => void;
   onOpenLocalProjects: () => void;
+  onOpenProductionCheck: () => void;
   leftPanelOpen: boolean;
   rightPanelOpen: boolean;
   onToggleLeftPanel: () => void;
@@ -8030,6 +8945,7 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
                 <button className={touchMode === 'pan' ? 'active' : ''} onClick={() => onSetTouchMode('pan')}>✋ Pan</button>
                 <button className={touchMode === 'select' ? 'active' : ''} onClick={() => onSetTouchMode('select')}>☑ Select</button>
                 <button className={touchMode === 'ruler' ? 'active' : ''} onClick={() => onSetTouchMode('ruler')}>📏 Ruler</button><button className={clearanceMode ? 'active' : ''} onClick={onToggleClearanceMode}>Clearance</button>
+                <button onClick={() => { onOpenProductionCheck(); setOpenMenu(null); }}>Production check</button>
                 <button onClick={() => { onFitView(); setOpenMenu(null); }}>Fit to screen</button>
                 <button onClick={() => { onResetView(); setOpenMenu(null); }}>Reset view</button>
               </div>
@@ -8055,6 +8971,7 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
           {openMenu === 'grid' && (
             <>
               <div className="menu-title">Grid</div>
+              <div className="menu-note" style={{ marginBottom: 8 }}>Snap priority: panel/PCB edges → centers/rows → grid. If a guide says SNAP, the coordinate is actually locked.</div>
               <div className="menu-grid">
                 <select className="tb-select"
                   value={state.grid.size}
@@ -8346,7 +9263,7 @@ function LocalProjectsDialog({ onClose }: { onClose: () => void }) {
 
 
 
-function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts, touchMode, onSetTouchMode, onOpenExport, onOpenTemplates, onToggleLeftPanel, onToggleRightPanel, leftPanelOpen, rightPanelOpen, warnings }: {
+function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts, touchMode, onSetTouchMode, onOpenExport, onOpenTemplates, onOpenProductionCheck, onToggleLeftPanel, onToggleRightPanel, leftPanelOpen, rightPanelOpen, warnings }: {
   hidden: boolean;
   focusMode: boolean;
   onToggleFocus: () => void;
@@ -8355,6 +9272,7 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
   onSetTouchMode: (mode: 'edit' | 'pan' | 'select' | 'ruler') => void;
   onOpenExport: () => void;
   onOpenTemplates: () => void;
+  onOpenProductionCheck: () => void;
   onToggleLeftPanel: () => void;
   onToggleRightPanel: () => void;
   leftPanelOpen: boolean;
@@ -8365,6 +9283,8 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [mobileSheet, setMobileSheet] = useState<null | 'add' | 'view' | 'more'>(null);
+  const [dockCollapsed, setDockCollapsed] = useState(false);
+  const [dockSwipeStart, setDockSwipeStart] = useState<{x:number;y:number}|null>(null);
   const widthMM = panelWidthMM(state.panel);
   const [mobileAddQuery, setMobileAddQuery] = useState('');
   const commonTypes: ComponentType[] = ['pot9mm', 'jack', 'slimjack', 'toggle', 'led3mm', 'encoder', 'fader20', 'fader20led', 'tactled', 'trimmer6mm', 'slideSwitchMini', 'customrect'];
@@ -8438,7 +9358,28 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
 
   function openSheet(sheet: 'add' | 'view' | 'more') {
     setOpen(false);
+    setDockCollapsed(false);
     setMobileSheet(v => v === sheet ? null : sheet);
+  }
+
+  function onDockTouchStart(e: React.TouchEvent<HTMLDivElement>) {
+    const t = e.touches[0];
+    if (!t) return;
+    setDockSwipeStart({ x: t.clientX, y: t.clientY });
+  }
+
+  function onDockTouchEnd(e: React.TouchEvent<HTMLDivElement>) {
+    if (!dockSwipeStart) return;
+    const t = e.changedTouches[0];
+    setDockSwipeStart(null);
+    if (!t) return;
+    const dx = t.clientX - dockSwipeStart.x;
+    const dy = t.clientY - dockSwipeStart.y;
+    if (dx < -46 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+      setDockCollapsed(true);
+      setMobileSheet(null);
+      setOpen(false);
+    }
   }
 
   const sheetTitle = mobileSheet === 'add' ? 'Add component' : mobileSheet === 'view' ? 'View & layers' : 'More tools';
@@ -8465,15 +9406,18 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
         )}
       </div>
 
-      <div className={`mobile-main-dock ${hidden ? 'hidden' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
+      <div className={`mobile-main-dock ${hidden ? 'hidden' : ''} ${dockCollapsed ? 'collapsed' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => { e.stopPropagation(); onDockTouchStart(e); }} onTouchEnd={e => { e.stopPropagation(); onDockTouchEnd(e); }}>
         <button className={mobileSheet === 'add' ? 'active' : ''} onClick={() => openSheet('add')}><b>＋</b><span>Add</span></button>
         <button className={touchMode === 'select' ? 'active' : ''} onClick={() => onSetTouchMode(touchMode === 'select' ? 'edit' : 'select')}><b>☑</b><span>{touchMode === 'select' ? 'Edit' : 'Select'}</span></button>
         <button className={mobileSheet === 'view' ? 'active' : ''} onClick={() => openSheet('view')}><b>◉</b><span>View</span></button>
         <button className={mobileSheet === 'more' ? 'active' : ''} onClick={() => openSheet('more')}><b>•••</b><span>More</span></button>
       </div>
+      {dockCollapsed && !hidden && (
+        <button className="mobile-dock-restore" onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onClick={() => setDockCollapsed(false)} title="Show bottom toolbar">‹</button>
+      )}
 
       {mobileSheet && (
-        <div className="mobile-sheet-backdrop" onMouseDown={() => setMobileSheet(null)} onTouchStart={() => setMobileSheet(null)}>
+        <div className="mobile-sheet-backdrop" onMouseDown={() => setMobileSheet(null)}>
           <div className="mobile-bottom-sheet" onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
             <div className="mobile-sheet-handle" />
             <div className="mobile-sheet-head">
@@ -8553,18 +9497,19 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                   <div className="mobile-sheet-label">Project files</div>
                   <div className="mobile-action-grid">
                     <button onClick={() => exportJSON(state)}>Save project file</button>
-                    <button onClick={onRequestProjectFileImport}>Load project file</button>
+                    <button onClick={() => { setMobileSheet(null); onRequestProjectFileImport(); }}>Load project file</button>
                     <button onClick={() => saveProjectToBrowser(state)}>Save to browser</button>
-                    <button onClick={onOpenLocalProjects}>Open local projects</button>
+                    <button onClick={() => { setMobileSheet(null); onOpenLocalProjects(); }}>Open local projects</button>
                   </div>
                 </div>
                 <div className="mobile-sheet-section">
                   <div className="mobile-sheet-label">Tools</div>
                   <div className="mobile-action-grid">
                     <button className={focusMode ? 'active' : ''} onClick={onToggleFocus}>{focusMode ? 'Exit focus' : 'Focus mode'}</button>
-                    <button onClick={onOpenExport}>Export preview</button>
-                    <button onClick={onOpenTemplates}>Templates / presets</button>
-                    <button onClick={onOpenShortcuts}>Shortcuts</button>
+                    <button onClick={() => { setMobileSheet(null); onOpenExport(); }}>Export preview</button>
+                    <button onClick={() => { setMobileSheet(null); onOpenTemplates(); }}>Templates / presets</button>
+                    <button onClick={() => { setMobileSheet(null); onOpenProductionCheck(); }}>Production check</button>
+                    <button onClick={() => { setMobileSheet(null); onOpenShortcuts(); }}>Shortcuts</button>
                     <button className={leftPanelOpen ? 'active' : ''} onClick={onToggleLeftPanel}>Left panel</button>
                     <button className={rightPanelOpen ? 'active' : ''} onClick={onToggleRightPanel}>Right panel</button>
                     <button onClick={() => onSetTouchMode('ruler')}>Ruler mode</button>
@@ -8577,6 +9522,140 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
         </div>
       )}
     </>
+  );
+}
+
+type ProductionCheckItem = {
+  severity: 'error' | 'warning' | 'info' | 'ok';
+  title: string;
+  detail: string;
+  ids?: string[];
+};
+
+function productionSeverityRank(s: ProductionCheckItem['severity']): number {
+  return s === 'error' ? 0 : s === 'warning' ? 1 : s === 'info' ? 2 : 3;
+}
+
+function buildProductionCheckItems(state: AppState, warnings: CollisionWarning[]): ProductionCheckItem[] {
+  const widthMM = panelWidthMM(state.panel);
+  const items: ProductionCheckItem[] = [];
+  const errorWarnings = warnings.filter(w => w.severity === 'error');
+  const warnWarnings = warnings.filter(w => w.severity !== 'error');
+
+  if (errorWarnings.length) {
+    items.push({ severity: 'error', title: 'DFM errors', detail: `${errorWarnings.length} blocking geometry issue${errorWarnings.length === 1 ? '' : 's'} found. Resolve red warnings before production.` });
+  } else {
+    items.push({ severity: 'ok', title: 'DFM errors', detail: 'No blocking component/body/keepout collisions detected.' });
+  }
+
+  if (warnWarnings.length) {
+    items.push({ severity: 'warning', title: 'DFM warnings', detail: `${warnWarnings.length} non-blocking warning${warnWarnings.length === 1 ? '' : 's'} found. Review before ordering panels.` });
+  } else {
+    items.push({ severity: 'ok', title: 'DFM warnings', detail: 'No non-blocking warnings detected.' });
+  }
+
+  const unverified = state.components.filter(c => !isPartVerified(c));
+  if (unverified.length) {
+    items.push({ severity: 'warning', title: 'Approximate parts', detail: `${unverified.length} component${unverified.length === 1 ? '' : 's'} are approximate/unverified. Verify datasheets or measure before production.`, ids: unverified.map(c => c.id) });
+  } else {
+    items.push({ severity: 'ok', title: 'Part verification', detail: 'All placed parts are datasheet/measured/production status.' });
+  }
+
+  const outside = state.components.filter(c => {
+    const f = getFrontExtents(c);
+    const rear = obbEdgeExtents(makeBodyOBB(c));
+    const keep = obbEdgeExtents(makeKeepoutOBB(c));
+    const minX = Math.min(f.x1, rear.x1, keep.x1);
+    const maxX = Math.max(f.x2, rear.x2, keep.x2);
+    const minY = Math.min(f.y1, rear.y1, keep.y1);
+    const maxY = Math.max(f.y2, rear.y2, keep.y2);
+    return minX < -0.01 || maxX > widthMM + 0.01 || minY < -0.01 || maxY > PANEL_HEIGHT_MM + 0.01;
+  });
+  if (outside.length) {
+    items.push({ severity: 'error', title: 'Parts outside panel', detail: `${outside.length} component${outside.length === 1 ? '' : 's'} extend beyond the panel boundary.`, ids: outside.map(c => c.id) });
+  } else {
+    items.push({ severity: 'ok', title: 'Panel boundary', detail: 'All component front/rear/keepout extents stay within panel bounds.' });
+  }
+
+  if (state.pcb.enabled) {
+    const pcbBottom = state.pcb.y + state.pcb.height;
+    if (state.pcb.y < 0 || pcbBottom > PANEL_HEIGHT_MM) {
+      items.push({ severity: 'error', title: 'PCB outside panel height', detail: `PCB y=${state.pcb.y.toFixed(1)}…${pcbBottom.toFixed(1)} mm exceeds the panel height.` });
+    } else if (state.pcb.height > 110) {
+      items.push({ severity: 'warning', title: 'PCB height near practical limit', detail: `PCB height is ${state.pcb.height.toFixed(1)} mm. 110 mm is a safer practical maximum for many 3U Eurorack cases.` });
+    } else {
+      items.push({ severity: 'ok', title: 'PCB envelope', detail: `PCB height ${state.pcb.height.toFixed(1)} mm is within the 110 mm practical target.` });
+    }
+  } else {
+    items.push({ severity: 'info', title: 'PCB envelope disabled', detail: 'Enable PCB outline to check rear body fit against your board envelope.' });
+  }
+
+  const tinyText = state.textItems.filter(t => t.visible && t.fontSizeMm < 1.2);
+  if (tinyText.length) {
+    items.push({ severity: 'warning', title: 'Small text', detail: `${tinyText.length} text item${tinyText.length === 1 ? '' : 's'} below 1.2 mm. Confirm readability and manufacturer minimums.` });
+  } else {
+    items.push({ severity: 'ok', title: 'Text size', detail: 'No visible text below 1.2 mm.' });
+  }
+
+  const shortSlots = state.components.filter(c => c.holeType === 'slot' && (c.slotLength ?? 0) < 10);
+  if (shortSlots.length) {
+    items.push({ severity: 'warning', title: 'Short slots', detail: `${shortSlots.length} slot${shortSlots.length === 1 ? '' : 's'} shorter than 10 mm. Check milling limitations.`, ids: shortSlots.map(c => c.id) });
+  } else {
+    items.push({ severity: 'ok', title: 'Slots', detail: 'No unusually short slot cutouts detected.' });
+  }
+
+  if (!state.components.length) {
+    items.push({ severity: 'info', title: 'Empty layout', detail: 'No components placed yet.' });
+  }
+
+  return items.sort((a, b) => productionSeverityRank(a.severity) - productionSeverityRank(b.severity));
+}
+
+function ProductionCheckDialog({ warnings, onClose, onOpenExport }: { warnings: CollisionWarning[]; onClose: () => void; onOpenExport: () => void }) {
+  const state = useAppState();
+  const dispatch = useAppDispatch();
+  const items = useMemo(() => buildProductionCheckItems(state, warnings), [state, warnings]);
+  const errors = items.filter(i => i.severity === 'error').length;
+  const warns = items.filter(i => i.severity === 'warning').length;
+  const status = errors ? 'BLOCKED' : warns ? 'WARNINGS' : 'READY';
+
+  function selectIds(ids?: string[]) {
+    if (!ids || !ids.length) return;
+    dispatch({ type: 'SELECT', ids, additive: false });
+  }
+
+  return ReactDOM.createPortal(
+    <div className="production-check-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="production-check-dialog" onMouseDown={e => e.stopPropagation()}>
+        <div className="production-check-head">
+          <div>
+            <strong>Production Check</strong>
+            <span className={`production-status ${status.toLowerCase()}`}>{status}</span>
+          </div>
+          <button onClick={onClose}>Close</button>
+        </div>
+        <div className="production-summary">
+          <div><b>{state.panel.widthHP}HP</b><span>{panelWidthMM(state.panel).toFixed(2)} × {PANEL_HEIGHT_MM} mm</span></div>
+          <div><b>{state.components.length}</b><span>components</span></div>
+          <div><b>{errors}</b><span>errors</span></div>
+          <div><b>{warns}</b><span>warnings</span></div>
+        </div>
+        <div className="production-check-list">
+          {items.map((item, idx) => (
+            <button key={`${item.title}-${idx}`} className={`production-check-item ${item.severity}`} onClick={() => selectIds(item.ids)} disabled={!item.ids?.length}>
+              <span className="production-dot">{item.severity === 'error' ? '!' : item.severity === 'warning' ? '△' : item.severity === 'ok' ? '✓' : 'i'}</span>
+              <span><b>{item.title}</b><small>{item.detail}</small></span>
+            </button>
+          ))}
+        </div>
+        <div className="production-actions">
+          <button onClick={onOpenExport}>Open export</button>
+          <button onClick={() => exportManufacturingReport(state, warnings)}>Export report</button>
+          <button onClick={() => exportCSVDrillTable(state, warnings)}>Export CSV</button>
+        </div>
+      </div>
+    </div>,
+    document.body
   );
 }
 
@@ -8683,6 +9762,7 @@ function App() {
   }, [sidePanelOpen]);
 
   const [showExportDialog, setShowExportDialog] = useState(false);
+  const [showProductionCheck, setShowProductionCheck] = useState(false);
   const [showCommandPalette, setShowCommandPalette] = useState(false);
   const [exportOptions,    setExportOptions]    = useState<ExportOptions>(DEFAULT_EXPORT_OPTIONS);
 
@@ -8955,12 +10035,13 @@ function App() {
     const tol = Math.max(0.25, snapSettings.distance);
     const panelCenterX = widthMM / 2;
     const panelCenterY = PANEL_HEIGHT_MM / 2;
-    if (snapSettings.componentCenters && Math.abs(x - panelCenterX) <= tol) guides.push({ axis: 'x', pos: panelCenterX, label: 'panel center X' });
-    if (snapSettings.componentCenters && Math.abs(y - panelCenterY) <= tol) guides.push({ axis: 'y', pos: panelCenterY, label: 'panel center Y' });
+    if (snapSettings.componentCenters && Math.abs(x - panelCenterX) <= tol) guides.push({ axis: 'x', pos: panelCenterX, label: 'SNAP: panel center X' });
+    if (snapSettings.componentCenters && Math.abs(y - panelCenterY) <= tol) guides.push({ axis: 'y', pos: panelCenterY, label: 'SNAP: panel center Y' });
     for (const c of state.components) {
       if (c.id === id || selectedIdSet.has(c.id)) continue;
-      if (snapSettings.componentCenters && Math.abs(x - c.x) <= tol) guides.push({ axis: 'x', pos: c.x, label: c.label || c.name });
-      if (snapSettings.componentCenters && Math.abs(y - c.y) <= tol) guides.push({ axis: 'y', pos: c.y, label: c.label || c.name });
+      const name = c.ref || c.label || c.name;
+      if (snapSettings.componentCenters && Math.abs(x - c.x) <= tol) guides.push({ axis: 'x', pos: c.x, label: `SNAP: same X as ${name}` });
+      if (snapSettings.componentCenters && Math.abs(y - c.y) <= tol) guides.push({ axis: 'y', pos: c.y, label: `SNAP: same Y as ${name}` });
       if (guides.length >= 4) break;
     }
     return guides;
@@ -8978,10 +10059,13 @@ function App() {
     let bestX: { pos: number; label: string; dist: number } | null = null;
     let bestY: { pos: number; label: string; dist: number } | null = null;
     const candidates = [
-      { x: widthMM / 2, y: PANEL_HEIGHT_MM / 2, labelX: 'panel center X', labelY: 'panel center Y' },
+      { x: widthMM / 2, y: PANEL_HEIGHT_MM / 2, labelX: 'SNAP: panel center X', labelY: 'SNAP: panel center Y' },
       ...state.components
         .filter(c => c.id !== primaryId && !selectedIdSet.has(c.id))
-        .map(c => ({ x: c.x, y: c.y, labelX: c.label || c.name, labelY: c.label || c.name })),
+        .map(c => {
+          const name = c.ref || c.label || c.name;
+          return { x: c.x, y: c.y, labelX: `SNAP: same X as ${name}`, labelY: `SNAP: same Y as ${name}` };
+        }),
     ];
     for (const c of candidates) {
       const dxAbs = Math.abs(currentX - c.x);
@@ -8998,6 +10082,30 @@ function App() {
       guides.push({ axis: 'y', pos: bestY.pos, label: bestY.label });
     }
     return { dx: outDx, dy: outDy, guides };
+  }
+
+  function gridSnapGuidesForPosition(x: number, y: number): SnapGuide[] {
+    if (!snapSettings.grid) return [];
+    const guides: SnapGuide[] = [];
+    const step = state.grid.size;
+    const gx = snapToGrid(x, step);
+    const gy = snapToGrid(y, step);
+    if (Math.abs(x - gx) < 0.0001) guides.push({ axis: 'x', pos: gx, label: `SNAP: grid ${step} mm` });
+    if (Math.abs(y - gy) < 0.0001) guides.push({ axis: 'y', pos: gy, label: `SNAP: grid ${step} mm` });
+    return guides;
+  }
+
+  function uniqueSnapGuides(guides: SnapGuide[]): SnapGuide[] {
+    const out: SnapGuide[] = [];
+    const seen = new Set<string>();
+    for (const g of guides) {
+      const key = `${g.axis}:${g.pos.toFixed(3)}:${g.label}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(g);
+      if (out.length >= 6) break;
+    }
+    return out;
   }
 
   function getRearBodySnapExtents(c: PlacedComponent, x: number, y: number): { x1: number; x2: number; y1: number; y2: number } {
@@ -9035,10 +10143,10 @@ function App() {
         const rightD = Math.abs(widthMM - extX.x2);
         if (leftD <= tol && leftD <= rightD) {
           outDx = outDx - extX.x1;
-          guides.push({ axis: 'x', pos: 0, label: 'rear body → left panel edge' });
+          guides.push({ axis: 'x', pos: 0, label: 'SNAP: rear body → left edge' });
         } else if (rightD <= tol) {
           outDx = outDx + (widthMM - extX.x2);
-          guides.push({ axis: 'x', pos: widthMM, label: 'rear body → right panel edge' });
+          guides.push({ axis: 'x', pos: widthMM, label: 'SNAP: rear body → right edge' });
         }
       }
     }
@@ -9054,10 +10162,10 @@ function App() {
         const bottomD = Math.abs(pcbBottom - extY.y2);
         if (topD <= tol && topD <= bottomD) {
           outDy = outDy + (pcbTop - extY.y1);
-          guides.push({ axis: 'y', pos: pcbTop, label: 'rear body → PCB top edge' });
+          guides.push({ axis: 'y', pos: pcbTop, label: 'SNAP: rear body → PCB top' });
         } else if (bottomD <= tol) {
           outDy = outDy + (pcbBottom - extY.y2);
-          guides.push({ axis: 'y', pos: pcbBottom, label: 'rear body → PCB bottom edge' });
+          guides.push({ axis: 'y', pos: pcbBottom, label: 'SNAP: rear body → PCB bottom' });
         }
       }
     }
@@ -9753,7 +10861,10 @@ function App() {
         newPreview.set(cid, { x: origPos.x + dx, y: origPos.y + dy });
       });
       setDragPreview(newPreview);
-      const nextGuides = [...centerSnap.guides, ...edgeSnap.guides, ...computeSnapGuidesFor(dragging.id, snappedX, snappedGuideY).filter(g => !centerSnap.guides.some(s => s.axis === g.axis && Math.abs(s.pos - g.pos) < 0.001 && s.label === g.label))];
+      const gridGuides = gridSnapGuidesForPosition(snappedX, snappedGuideY);
+      const visualCenterGuides = computeSnapGuidesFor(dragging.id, snappedX, snappedGuideY)
+        .filter(g => !centerSnap.guides.some(s => s.axis === g.axis && Math.abs(s.pos - g.pos) < 0.001 && s.label === g.label));
+      const nextGuides = uniqueSnapGuides([...centerSnap.guides, ...edgeSnap.guides, ...visualCenterGuides, ...gridGuides]);
       setSnapGuidesIfChanged(nextGuides);
       const snapKey = snapGuidesSignature(nextGuides);
       if (snapKey && snapKey !== lastSnapHapticKeyRef.current) {
@@ -10250,6 +11361,8 @@ function App() {
     { id:'select-all', label:'Select all components', hint:'Ctrl/Cmd+A', run:() => dispatch({ type:'SELECT', ids: state.components.map(c => c.id), additive:false }) },
     { id:'clear-selection', label:'Clear selection', hint:'Escape', run:() => dispatch({ type:'DESELECT_ALL' }) },
     { id:'fit-view', label:'Fit view', hint:'Zoom to comfortable panel view', run:() => { setZoom(1.25); setPan({x:0,y:0}); } },
+    { id:'production-check', label:'Production check', hint:'Manufacturing readiness report', run:() => setShowProductionCheck(true) },
+    { id:'runtime-self-test', label:'Run runtime self-test', hint:'Check export, library, validation and report generators', run:() => alert(runRuntimeSelfTest(state, warnings).map(i => `[${i.level.toUpperCase()}] ${i.message}`).join('\n')) },
     { id:'reset-view', label:'Reset view', hint:'100% zoom and centered pan', run:() => { setZoom(1); setPan({x:0,y:0}); } },
   ];
 
@@ -10261,6 +11374,7 @@ function App() {
         onExportSVGClick={() => setShowExportDialog(true)}
         onRequestProjectFileImport={() => projectFileInputRef.current?.click()}
         onOpenLocalProjects={() => setShowLocalProjectsDialog(true)}
+        onOpenProductionCheck={() => setShowProductionCheck(true)}
         leftPanelOpen={leftPanelOpen}
         rightPanelOpen={rightPanelOpen}
         onToggleLeftPanel={() => { setLeftPanelOpen(v => !v); }}
@@ -10276,6 +11390,7 @@ function App() {
       />
       {showCommandPalette && <CommandPalette commands={commandItems} onClose={() => setShowCommandPalette(false)} />}
       {showShortcutHelp && <ShortcutHelpOverlay onClose={() => setShowShortcutHelp(false)} />}
+      {showProductionCheck && <ProductionCheckDialog warnings={warnings} onClose={() => setShowProductionCheck(false)} onOpenExport={() => { setShowProductionCheck(false); setShowExportDialog(true); }} />}
       <input
         ref={projectFileInputRef}
         type="file"
@@ -10294,6 +11409,7 @@ function App() {
           onChange={setExportOptions}
           onExport={() => { exportSVG(state, exportOptions); setShowExportDialog(false); }}
           onExportMode={(mode) => { exportSVGMode(state, mode, warnings); setShowExportDialog(false); }}
+          onExportPackage={() => { downloadExportPackage(state, warnings); setShowExportDialog(false); }}
           onExportCSV={() => { exportCSVDrillTable(state, warnings); setShowExportDialog(false); }}
           onExportKiCad={() => { exportKiCadPlacementCSV(state); setShowExportDialog(false); }}
           onExportPrintTemplate={() => { exportPrintableTemplate(state); setShowExportDialog(false); }}
@@ -10343,8 +11459,8 @@ function App() {
           coordReadout={coordReadout}
           warnings={warnings}
         />
-        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} onToggleFocus={() => setFocusMode(v => !v)} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} />
-        <SelectionInfoStrip hidden={sidePanelOpen && isNarrowInitial} />
+        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} onToggleFocus={() => setFocusMode(v => !v)} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onOpenProductionCheck={() => setShowProductionCheck(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} />
+        <SelectionInfoStrip hidden={(sidePanelOpen && isNarrowInitial) || isNarrowInitial} />
         {!sidePanelOpen && (
         <div
           className="mobile-mode-switch"
@@ -10607,7 +11723,7 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <AppProvider><App /></AppProvider>
+  <ErrorBoundary><AppProvider><App /></AppProvider></ErrorBoundary>
 );
   
   </script>
