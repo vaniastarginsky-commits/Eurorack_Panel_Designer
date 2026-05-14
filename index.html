@@ -1982,6 +1982,77 @@
   .mobile-segment-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+
+/* v40 mobile top toolbar quick actions */
+.mobile-toolbar-quick { display: none; }
+@media (max-width: 860px) {
+  .toolbar {
+    display: grid;
+    grid-template-columns: 38px minmax(74px, auto) minmax(74px, auto) minmax(54px, auto) minmax(50px, auto);
+    align-items: center;
+  }
+  .toolbar .app-brand {
+    justify-self: start;
+    max-width: 38px !important;
+  }
+  .toolbar > button[title="Undo"],
+  .toolbar > button[title="Redo"],
+  .toolbar .mobile-toolbar-quick {
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .toolbar .mobile-toolbar-quick {
+    border-color: rgba(46,233,255,0.28);
+    color: #dff8ff;
+  }
+  .toolbar .tb-sep { display: none !important; }
+}
+@media (max-width: 390px) {
+  .toolbar {
+    grid-template-columns: 34px minmax(66px, auto) minmax(66px, auto) minmax(48px, auto) minmax(44px, auto);
+    gap: 4px;
+  }
+  .toolbar > button[title="Undo"],
+  .toolbar > button[title="Redo"],
+  .toolbar .mobile-toolbar-quick {
+    padding: 0 8px;
+    font-size: 12px;
+  }
+}
+
+
+/* v41 logo scale */
+.app-logo {
+  width: calc(var(--logo-size, 28px) * 1.15);
+  height: calc(var(--logo-size, 28px) * 1.15);
+}
+@media (max-width: 860px) {
+  .toolbar .app-logo {
+    width: calc(var(--logo-size, 28px) * 1.15);
+    height: calc(var(--logo-size, 28px) * 1.15);
+  }
+}
+
+
+/* v42 mobile grid picker */
+@media (max-width: 860px) {
+  .toolbar-popover {
+    max-width: calc(100vw - 18px);
+  }
+  .toolbar-popover .tb-select {
+    min-height: 42px;
+    font-size: 15px;
+  }
+  .toolbar-popover .menu-grid button {
+    min-height: 42px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -7928,6 +7999,18 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
         onClick={() => { setOpenMenu(null); dispatch({ type: 'REDO' }); }}>
         ↪ Redo
       </button>
+      <button
+        className={`mobile-toolbar-quick ${openMenu === 'grid' ? 'active' : ''}`}
+        title="Grid size / snap settings"
+        onClick={e => toggleMenu('grid', e)}>
+        Grid
+      </button>
+      <button
+        className="mobile-toolbar-quick"
+        title="Fit panel"
+        onClick={() => { setOpenMenu(null); onFitView(); }}>
+        Fit
+      </button>
       <div className="tb-sep" />
       {menuButton('tools', 'Tools')}
       {menuButton('view', 'View')}
@@ -8466,15 +8549,27 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                   <strong>{hard ? 'DFM CHECK' : warn || unverified ? 'DFM CAUTION' : 'DFM OK'}</strong>
                   <span>{hard} errors · {warn} warnings · {unverified} unverified</span>
                 </div>
-                <div className="mobile-action-grid">
-                  <button className={focusMode ? 'active' : ''} onClick={onToggleFocus}>{focusMode ? 'Exit focus' : 'Focus mode'}</button>
-                  <button onClick={onOpenExport}>Export preview</button>
-                  <button onClick={onOpenTemplates}>Templates</button>
-                  <button onClick={onOpenShortcuts}>Shortcuts</button>
-                  <button className={leftPanelOpen ? 'active' : ''} onClick={onToggleLeftPanel}>Left panel</button>
-                  <button className={rightPanelOpen ? 'active' : ''} onClick={onToggleRightPanel}>Right panel</button>
-                  <button onClick={() => onSetTouchMode('ruler')}>Ruler mode</button>
-                  <button onClick={() => dispatch({ type:'DESELECT_ALL' })}>Clear select</button>
+                <div className="mobile-sheet-section compact-first">
+                  <div className="mobile-sheet-label">Project files</div>
+                  <div className="mobile-action-grid">
+                    <button onClick={() => exportJSON(state)}>Save project file</button>
+                    <button onClick={onRequestProjectFileImport}>Load project file</button>
+                    <button onClick={() => saveProjectToBrowser(state)}>Save to browser</button>
+                    <button onClick={onOpenLocalProjects}>Open local projects</button>
+                  </div>
+                </div>
+                <div className="mobile-sheet-section">
+                  <div className="mobile-sheet-label">Tools</div>
+                  <div className="mobile-action-grid">
+                    <button className={focusMode ? 'active' : ''} onClick={onToggleFocus}>{focusMode ? 'Exit focus' : 'Focus mode'}</button>
+                    <button onClick={onOpenExport}>Export preview</button>
+                    <button onClick={onOpenTemplates}>Templates / presets</button>
+                    <button onClick={onOpenShortcuts}>Shortcuts</button>
+                    <button className={leftPanelOpen ? 'active' : ''} onClick={onToggleLeftPanel}>Left panel</button>
+                    <button className={rightPanelOpen ? 'active' : ''} onClick={onToggleRightPanel}>Right panel</button>
+                    <button onClick={() => onSetTouchMode('ruler')}>Ruler mode</button>
+                    <button onClick={() => dispatch({ type:'DESELECT_ALL' })}>Clear select</button>
+                  </div>
                 </div>
               </>
             )}
