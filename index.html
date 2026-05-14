@@ -2791,6 +2791,46 @@
   }
 }
 
+
+/* v68 factory presets */
+.template-preset-note {
+  color: #8fa6ad;
+  font-size: 11px;
+  margin: 6px 0 10px;
+  padding: 7px 9px;
+  border-radius: 10px;
+  background: rgba(46,233,255,.055);
+  border: 1px solid rgba(46,233,255,.14);
+}
+@media (max-width: 860px) {
+  .filter-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* v69 mobile file/local project hard fix */
+.mobile-action-grid .mobile-file-open-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.055);
+  color: #eef8fb;
+  font-size: 13px;
+  font-weight: 650;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+.mobile-action-grid .mobile-file-open-button:active {
+  transform: translateY(1px);
+}
+
 </style>
 </head>
 <body>
@@ -7296,6 +7336,9 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('Full regression sandbox is available and isolated from the current project.');
     ok('Final cleanup pass applied: stable autosave listeners and consolidated mobile HUD overrides.');
     ok('Mobile HUD is hidden and project file/local project openers use mobile-safe handlers.');
+    ok('Factory panel presets are bundled into the Templates dialog for desktop and mobile.');
+    ok('Mobile project file opener uses a native label/input path; local projects use normal click flow.');
+    ok('Mobile project save uses native Share/Files sheet when available to avoid JSON page navigation on cancel.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
 
     const classicOk = state.topHardwareStyle === 'classic' || state.topHardwareStyle === 'realistic';
@@ -8352,16 +8395,61 @@ function serializeProject(state: AppState, pretty = false): string {
   return JSON.stringify({ projectVersion: PROJECT_FILE_VERSION, ...clean, projectMeta: meta }, null, pretty ? 2 : 0);
 }
 
-function downloadTextFile(filename: string, text: string, mime = 'application/json') {
+function isIOSLike(): boolean {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && (navigator as any).maxTouchPoints > 1);
+}
+
+async function saveTextFile(filename: string, text: string, mime = 'application/json'): Promise<void> {
   const blob = new Blob([text], { type: mime });
+  const file = new File([blob], filename, { type: mime });
+  const nav: any = navigator;
+
+  // iOS/Safari can open blob JSON in the current tab after canceling download.
+  // Native Share/Files sheet avoids navigating away from the app.
+  if (isIOSLike() && nav.canShare && nav.share && nav.canShare({ files: [file] })) {
+    try {
+      await nav.share({ files: [file], title: filename });
+      return;
+    } catch (e: any) {
+      if (e?.name === 'AbortError') return; // user tapped Cancel; stay in app
+    }
+  }
+
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
-  a.href = url; a.download = filename; a.click();
-  URL.revokeObjectURL(url);
+  a.href = url;
+  a.download = filename;
+  a.rel = 'noopener';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  window.setTimeout(() => {
+    a.remove();
+    URL.revokeObjectURL(url);
+  }, 1500);
+}
+
+function downloadTextFile(filename: string, text: string, mime = 'application/json') {
+  saveTextFile(filename, text, mime).catch(() => {
+    try {
+      const blob = new Blob([text], { type: mime });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.rel = 'noopener';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      window.setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 1500);
+    } catch {
+      alert('Save failed. Try Save to browser or Export ZIP instead.');
+    }
+  });
 }
 
 function exportJSON(state: AppState) {
-  downloadTextFile(safeProjectFileName(state.projectMeta?.name || 'panel-layout'), serializeProject(state, true));
+  void saveTextFile(safeProjectFileName(state.projectMeta?.name || 'panel-layout'), serializeProject(state, true), 'application/json');
 }
 
 interface LocalProjectRecord {
@@ -9685,19 +9773,146 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
 
 
 
+
+function factoryPart(type: ComponentType, x: number, y: number, label = '', rotation = 0, existing: PlacedComponent[] = []): PlacedComponent {
+  const def = COMPONENT_LIBRARY.find(p => p.type === type) || COMPONENT_LIBRARY.find(p => p.type === 'custom')!;
+  const part = sanitizePart({ ...def, category: def.category ?? inferCategoryForType(def.type), verificationStatus: def.verificationStatus ?? 'approximate' });
+  return {
+    ...part,
+    id: `factory-${type}-${Math.round(x*10)}-${Math.round(y*10)}-${existing.length}`,
+    ref: nextRefForComponent(part.type, existing),
+    label: label || part.name,
+    x, y, rotation,
+    notes: 'Factory preset placement. Verify ergonomics and exact part dimensions before production.',
+    locked: false,
+  };
+}
+
+function makeFactoryTemplate(id: string, name: string, hp: number, description: string, placements: Array<[ComponentType, number, number, string?, number?]>): UserTemplate {
+  let comps: PlacedComponent[] = [];
+  for (const [type, x, y, label, rot] of placements) {
+    comps = [...comps, factoryPart(type, x, y, label || '', rot || 0, comps)];
+  }
+  const now = '2026-05-15T00:00:00.000Z';
+  return {
+    templateVersion: 1,
+    id,
+    name,
+    description,
+    kind: 'panel',
+    hp,
+    createdAt: now,
+    updatedAt: now,
+    includeText: false,
+    includeScales: false,
+    includeArtwork: false,
+    components: comps,
+    pcb: { enabled: true, x: 2, y: 9, width: hp * HP_TO_MM - 4, height: 110 },
+    mountingHoles: defaultMountingHoleConfig(hp * HP_TO_MM),
+    textItems: [],
+    scaleItems: [],
+    artworks: [],
+    customParts: [],
+  };
+}
+
+function templateRecordFromFactoryTemplate(t: UserTemplate): TemplateRecord & { factory?: boolean } {
+  const data = JSON.stringify(t);
+  return {
+    id: t.id,
+    name: t.name,
+    description: t.description,
+    kind: t.kind,
+    hp: t.hp,
+    updatedAt: t.updatedAt,
+    sizeBytes: data.length,
+    data,
+    factory: true,
+  };
+}
+
+function factoryPresetTemplates(): UserTemplate[] {
+  return [
+    makeFactoryTemplate('factory-6hp-utility-mix', '6HP Utility / Attenuverter', 6, 'Compact utility inspired by small Doepfer-style utility layouts: three knobs, mode switch, LED and four jacks.', [
+      ['pot9mm', 7.5, 24, 'A'], ['pot9mm', 22.5, 24, 'B'],
+      ['toggle', 15, 43, 'Mode'],
+      ['trimmer6mm', 15, 61, 'Bias'], ['led3mm', 15, 76, 'LED'],
+      ['jack', 7.5, 102, 'IN'], ['jack', 22.5, 102, 'CV'], ['jack', 7.5, 116, 'OUT'], ['jack', 22.5, 116, 'SUM'],
+    ]),
+    makeFactoryTemplate('factory-8hp-clock-mod', '8HP Clock / Modulator', 8, 'Pamela-style compact clock/modulation controller: encoder, buttons, clock inputs and eight outputs.', [
+      ['encoder', 20, 22, 'BPM'],
+      ['tactled', 11, 45, 'Start'], ['tactled', 29, 45, 'Reset'],
+      ['slideSwitchMini', 20, 63, 'Run'],
+      ['jack', 8, 82, 'CLK'], ['jack', 24, 82, 'RST'],
+      ['jack', 8, 96, '1'], ['jack', 24, 96, '2'],
+      ['jack', 8, 110, '3'], ['jack', 24, 110, '4'],
+      ['jack', 8, 124, '5'], ['jack', 24, 124, '6'],
+    ]),
+    makeFactoryTemplate('factory-10hp-macro-osc', '10HP Macro Oscillator Voice', 10, 'Macro oscillator / Plaits-inspired voice: large encoder, model buttons, timbre controls and audio/CV jacks.', [
+      ['encoder', 25.4, 20, 'Model'],
+      ['tactled', 12, 42, 'A'], ['tactled', 25.4, 42, 'Trig'], ['tactled', 39, 42, 'B'],
+      ['pot9mm', 12, 64, 'Freq'], ['pot9mm', 25.4, 64, 'Morph'], ['pot9mm', 39, 64, 'Timbre'],
+      ['led3mm', 25.4, 82, 'Mode'],
+      ['jack', 8, 105, 'V/OCT'], ['jack', 20, 105, 'FM'], ['jack', 32, 105, 'Trig'], ['jack', 44, 105, 'Model'],
+      ['jack', 14, 119, 'Out'], ['jack', 37, 119, 'Aux'],
+    ]),
+    makeFactoryTemplate('factory-12hp-quad-vca', '12HP Quad VCA / Mixer', 12, 'Quad VCA/mixer inspired by four-channel VCA modules: four repeated channels with level, CV attenuator and cascaded outputs.', [
+      ['pot9mm', 8, 23, 'L1'], ['pot9mm', 23, 23, 'CV1'], ['pot9mm', 38, 23, 'L2'], ['pot9mm', 53, 23, 'CV2'],
+      ['pot9mm', 8, 55, 'L3'], ['pot9mm', 23, 55, 'CV3'], ['pot9mm', 38, 55, 'L4'], ['pot9mm', 53, 55, 'CV4'],
+      ['led3mm', 15, 73, '1'], ['led3mm', 45, 73, '2'],
+      ['jack', 8, 94, 'IN1'], ['jack', 23, 94, 'CV1'], ['jack', 38, 94, 'IN2'], ['jack', 53, 94, 'CV2'],
+      ['jack', 8, 110, 'IN3'], ['jack', 23, 110, 'CV3'], ['jack', 38, 110, 'IN4'], ['jack', 53, 110, 'CV4'],
+      ['jack', 16, 124, 'OUT'], ['jack', 45, 124, 'MIX'],
+    ]),
+    makeFactoryTemplate('factory-14hp-performance-fader', '14HP Performance Fader Bank', 14, 'Hands-on fader bank inspired by performance sequencer/mixer modules with LED faders, mute buttons and bottom patch bay.', [
+      ['fader20led', 11, 60, 'A'], ['fader20led', 28, 60, 'B'], ['fader20led', 45, 60, 'C'], ['fader20led', 62, 60, 'D'],
+      ['tactled', 11, 28, 'M1'], ['tactled', 28, 28, 'M2'], ['tactled', 45, 28, 'M3'], ['tactled', 62, 28, 'M4'],
+      ['slideSwitchMini', 11, 88, 'A/B'], ['slideSwitchMini', 28, 88, 'A/B'], ['slideSwitchMini', 45, 88, 'A/B'], ['slideSwitchMini', 62, 88, 'A/B'],
+      ['jack', 7, 111, 'IN1'], ['jack', 20, 111, 'IN2'], ['jack', 33, 111, 'IN3'], ['jack', 46, 111, 'IN4'], ['jack', 59, 111, 'MIX'], ['jack', 72, 111, 'CV'],
+    ]),
+    makeFactoryTemplate('factory-16hp-stereo-processor', '16HP Stereo Processor', 16, 'Stereo processor layout: mirrored L/R controls, two faders, link switch and dense lower I/O.', [
+      ['pot16mm', 14, 23, 'Macro L'], ['pot16mm', 67, 23, 'Macro R'],
+      ['pot9mm', 14, 54, 'Tone L'], ['pot9mm', 32, 54, 'Fold L'], ['pot9mm', 49, 54, 'Fold R'], ['pot9mm', 67, 54, 'Tone R'],
+      ['fader20', 22, 82, 'Level L'], ['fader20', 59, 82, 'Level R'],
+      ['toggle', 40.5, 80, 'Link'],
+      ['jack', 8, 115, 'L In'], ['jack', 22, 115, 'L CV'], ['jack', 36, 115, 'L Out'], ['jack', 50, 115, 'R In'], ['jack', 64, 115, 'R CV'], ['jack', 78, 115, 'R Out'],
+    ]),
+    makeFactoryTemplate('factory-18hp-stages-seq', '18HP Segment / Stages-style Generator', 18, 'Multi-segment generator inspired by Stages/segment modules: six LED faders, buttons and gate/time patch rows.', [
+      ['pot9mm', 10, 20, 'S1'], ['pot9mm', 25, 20, 'S2'], ['pot9mm', 40, 20, 'S3'], ['pot9mm', 55, 20, 'S4'], ['pot9mm', 70, 20, 'S5'], ['pot9mm', 85, 20, 'S6'],
+      ['tactled', 10, 43, '1'], ['tactled', 25, 43, '2'], ['tactled', 40, 43, '3'], ['tactled', 55, 43, '4'], ['tactled', 70, 43, '5'], ['tactled', 85, 43, '6'],
+      ['fader20led', 10, 74, 'A'], ['fader20led', 25, 74, 'B'], ['fader20led', 40, 74, 'C'], ['fader20led', 55, 74, 'D'], ['fader20led', 70, 74, 'E'], ['fader20led', 85, 74, 'F'],
+      ['jack', 10, 113, 'G1'], ['jack', 25, 113, 'G2'], ['jack', 40, 113, 'G3'], ['jack', 55, 113, 'G4'], ['jack', 70, 113, 'G5'], ['jack', 85, 113, 'G6'],
+    ]),
+    makeFactoryTemplate('factory-20hp-function-generator', '20HP Dual Function Generator', 20, 'Maths-inspired dual function generator layout: two main channels, attenuverter center mixer and dense bottom outputs.', [
+      ['pot16mm', 14, 22, 'Rise A'], ['pot16mm', 39, 22, 'Fall A'], ['pot16mm', 62, 22, 'Rise B'], ['pot16mm', 87, 22, 'Fall B'],
+      ['pot9mm', 14, 52, 'Shape A'], ['pot9mm', 39, 52, 'Both A'], ['pot9mm', 62, 52, 'Both B'], ['pot9mm', 87, 52, 'Shape B'],
+      ['fader20', 25, 82, 'Ch A'], ['fader20', 76, 82, 'Ch B'],
+      ['toggle', 50.5, 72, 'Cycle'],
+      ['pot9mm', 50.5, 95, 'Sum'],
+      ['jack', 8, 116, 'Trig A'], ['jack', 20, 116, 'Rise CV'], ['jack', 32, 116, 'Fall CV'], ['jack', 44, 116, 'A Out'], ['jack', 57, 116, 'B Out'], ['jack', 69, 116, 'Rise CV'], ['jack', 81, 116, 'Fall CV'], ['jack', 93, 116, 'Trig B'],
+    ]),
+  ];
+}
+
+function loadFactoryTemplateRecords(): (TemplateRecord & { factory?: boolean })[] {
+  return factoryPresetTemplates().map(templateRecordFromFactoryTemplate);
+}
+
 function TemplatesDialog({ onClose, onPlaceBlock }: { onClose: () => void; onPlaceBlock: (template: UserTemplate) => void }) {
   const state = useAppState();
   const dispatch = useAppDispatch();
-  const [templates, setTemplates] = useState<TemplateRecord[]>(() => loadLocalTemplates());
+  const [templates, setTemplates] = useState<(TemplateRecord & { factory?: boolean })[]>(() => [...loadFactoryTemplateRecords(), ...loadLocalTemplates()]);
   const [templateSearch, setTemplateSearch] = useState('');
   const [templateKind, setTemplateKind] = useState<'all'|'panel'|'block'>('all');
+  const [templateSource, setTemplateSource] = useState<'all'|'factory'|'local'>('all');
   const visibleTemplates = templates.filter(t => {
     const q = templateSearch.trim().toLowerCase();
     const matchesKind = templateKind === 'all' || t.kind === templateKind;
-    const hay = `${t.name} ${t.description} ${t.kind} ${t.hp}HP`.toLowerCase();
-    return matchesKind && (!q || hay.includes(q));
+    const matchesSource = templateSource === 'all' || (templateSource === 'factory' ? !!(t as any).factory : !(t as any).factory);
+    const hay = `${t.name} ${t.description} ${t.kind} ${t.hp}HP ${(t as any).factory ? 'preset factory built-in' : 'local saved'}`.toLowerCase();
+    return matchesKind && matchesSource && (!q || hay.includes(q));
   });
-  function refresh() { setTemplates(loadLocalTemplates()); }
+  function refresh() { setTemplates([...loadFactoryTemplateRecords(), ...loadLocalTemplates()]); }
 
   function loadTemplate(record: TemplateRecord) {
     const t = normalizeTemplate(JSON.parse(record.data));
@@ -9740,26 +9955,26 @@ function TemplatesDialog({ onClose, onPlaceBlock }: { onClose: () => void; onPla
   }
 
   return ReactDOM.createPortal(
-    <div style={{ position:'fixed', inset:0, zIndex:4000, background:'rgba(0,0,0,0.55)', display:'flex', alignItems:'center', justifyContent:'center', padding:16 }} onPointerDown={e => { if (e.target === e.currentTarget) onClose(); }}>
+    <div style={{ position:'fixed', inset:0, zIndex:6500, background:'rgba(0,0,0,0.55)', display:'flex', alignItems:'center', justifyContent:'center', padding:16 }} onPointerDown={e => { if (e.target === e.currentTarget) onClose(); }}>
       <div style={{ width:'min(92vw, 620px)', maxHeight:'82vh', overflow:'auto', background:'#1b1b1b', border:'1px solid #444', borderRadius:8, boxShadow:'0 20px 60px rgba(0,0,0,0.55)' }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8, padding:'12px 14px', borderBottom:'1px solid #333' }}>
           <div>
             <div style={{ fontWeight:700, fontSize:15 }}>Templates</div>
-            <div style={{ color:'#888', fontSize:11, marginTop:2 }}>Saved in this browser. Panel templates replace the layout; block templates append reusable groups.</div>
+            <div style={{ color:'#888', fontSize:11, marginTop:2 }}>Built-in presets + saved browser templates. Panel presets replace the layout; block templates append reusable groups.</div>
           </div>
           <div className="btn-row"><button onClick={() => { importTemplatesLibraryFile(refresh); }}>Import</button><button onClick={exportTemplatesLibrary}>Export</button><button onClick={onClose}>Close</button></div>
         </div>
         <div style={{ padding:12 }}>
-          <div className="filter-row"><input type="text" placeholder="Search templates…" value={templateSearch} onChange={e => setTemplateSearch(e.target.value)} /><select value={templateKind} onChange={e => setTemplateKind(e.target.value as any)}><option value="all">All</option><option value="panel">Panel</option><option value="block">Block</option></select></div>
-          {templates.length === 0 ? (
-            <div style={{ color:'#888', fontSize:13, padding:12 }}>No templates saved yet. Use Templates → Save current panel or Save selected block.</div>
+          <div className="filter-row"><input type="text" placeholder="Search templates / presets…" value={templateSearch} onChange={e => setTemplateSearch(e.target.value)} /><select value={templateSource} onChange={e => setTemplateSource(e.target.value as any)}><option value="all">All sources</option><option value="factory">Factory presets</option><option value="local">Local templates</option></select><select value={templateKind} onChange={e => setTemplateKind(e.target.value as any)}><option value="all">All kinds</option><option value="panel">Panel</option><option value="block">Block</option></select></div>
+          <div className="template-preset-note">Factory presets: {templates.filter(t => (t as any).factory).length} · Local templates: {templates.filter(t => !(t as any).factory).length}</div>{templates.length === 0 ? (
+            <div style={{ color:'#888', fontSize:13, padding:12 }}>No templates found. Factory presets should always be available; try clearing the search/filter.</div>
           ) : visibleTemplates.length === 0 ? (
             <div style={{ color:'#888', fontSize:13, padding:12 }}>No templates match the filter.</div>
           ) : visibleTemplates.map(t => (
             <div key={t.id} style={{ border:'1px solid #333', borderRadius:6, padding:10, marginBottom:8, background:'#141414' }}>
               <div style={{ display:'flex', justifyContent:'space-between', gap:10, alignItems:'flex-start' }}>
                 <div style={{ minWidth:0 }}>
-                  <div style={{ fontWeight:700, color:'#ddd', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{t.kind === 'block' ? 'Block' : 'Panel'} · {t.name} <span style={{ color:'#777', fontWeight:400 }}>{t.hp}HP</span></div>
+                  <div style={{ fontWeight:700, color:'#ddd', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{(t as any).factory ? 'Preset' : (t.kind === 'block' ? 'Block' : 'Panel')} · {t.name} <span style={{ color:'#777', fontWeight:400 }}>{t.hp}HP</span></div>
                   {t.description && <div style={{ color:'#aaa', fontSize:12, marginTop:3 }}>{t.description}</div>}
                   <div style={{ color:'#888', fontSize:11, marginTop:3 }}>{new Date(t.updatedAt).toLocaleString()} · {(t.sizeBytes/1024).toFixed(0)} KB</div>
                 </div>
@@ -9822,7 +10037,7 @@ function LocalProjectsDialog({ onClose }: { onClose: () => void }) {
 
   return ReactDOM.createPortal(
     <div
-      style={{ position: 'fixed', inset: 0, zIndex: 6500, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+      style={{ position: 'fixed', inset: 0, zIndex: 9000, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
       onPointerDown={e => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div style={{ width: 'min(92vw, 560px)', maxHeight: '82vh', overflow: 'auto', background: '#1b1b1b', border: '1px solid #444', borderRadius: 8, boxShadow: '0 20px 60px rgba(0,0,0,0.55)' }}>
@@ -10168,10 +10383,10 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                 <div className="mobile-sheet-section compact-first">
                   <div className="mobile-sheet-label">Project files</div>
                   <div className="mobile-action-grid">
-                    <button onClick={() => exportJSON(state)}>Save project file</button>
-                    <button onPointerDown={e => { e.preventDefault(); onRequestProjectFileImport(); window.setTimeout(() => setMobileSheet(null), 350); }}>Load project file</button>
+                    <button onClick={() => { exportJSON(state); }}>Save project file</button>
+                    <label className="mobile-file-open-button" htmlFor="project-file-input" onClick={() => { window.setTimeout(() => setMobileSheet(null), 500); }}>Load project file</label>
                     <button onClick={() => saveProjectToBrowser(state)}>Save to browser</button>
-                    <button onPointerDown={e => { e.preventDefault(); setMobileSheet(null); window.setTimeout(onOpenLocalProjects, 40); }}>Open local projects</button>
+                    <button onClick={() => { onOpenLocalProjects(); setMobileSheet(null); }}>Open local projects</button>
                   </div>
                 </div>
                 <div className="mobile-sheet-section">
@@ -12302,8 +12517,7 @@ function App() {
         type="file"
         accept=".json,.epanel,application/json"
         tabIndex={-1}
-        aria-hidden="true"
-        style={{ position:'fixed', left:-10000, top:0, width:1, height:1, opacity:0, pointerEvents:'none' }}
+        style={{ position:'fixed', left:-10000, top:0, width:1, height:1, opacity:0 }}
         onChange={e => { pendingFileOpenRef.current = false; onImport(e); }}
       />
 
