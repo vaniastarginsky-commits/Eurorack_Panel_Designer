@@ -1949,7 +1949,40 @@
       .hardware-style-mini { display: none; }
     }
 
-  </style>
+  
+/* v36 restore complete feature branch + mobile add polish */
+@media (max-width: 860px) {
+  .mobile-add-search {
+    width: 100%;
+    margin: 0 0 8px;
+    min-height: 42px;
+    border-radius: 13px;
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(255,255,255,0.13);
+    color: #eef8fb;
+    padding: 8px 11px;
+    font-size: 14px;
+  }
+  .mobile-sheet-section.compact-first { margin-top: 0; }
+  .mobile-add-grid.full { margin-top: 8px; padding-bottom: 4px; }
+  .mobile-add-grid button span {
+    white-space: normal !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.12;
+    min-height: 2.2em;
+  }
+  .mobile-add-grid button small {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mobile-segment-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+</style>
 </head>
 <body>
   <div id="root"></div>
@@ -8236,10 +8269,56 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
   const [open, setOpen] = useState(false);
   const [mobileSheet, setMobileSheet] = useState<null | 'add' | 'view' | 'more'>(null);
   const widthMM = panelWidthMM(state.panel);
-  const commonTypes: ComponentType[] = ['pot9mm', 'jack', 'slimjack', 'toggle', 'led3mm', 'encoder', 'fader20', 'fader20led', 'customrect'];
+  const [mobileAddQuery, setMobileAddQuery] = useState('');
+  const commonTypes: ComponentType[] = ['pot9mm', 'jack', 'slimjack', 'toggle', 'led3mm', 'encoder', 'fader20', 'fader20led', 'tactled', 'trimmer6mm', 'slideSwitchMini', 'customrect'];
   const commonParts = commonTypes
     .map(t => COMPONENT_LIBRARY.find(c => c.type === t))
     .filter(Boolean) as ComponentDef[];
+  const allMobileParts = useMemo(() => {
+    const seen = new Set<string>();
+    const all = [...COMPONENT_LIBRARY, ...state.customParts].filter(def => {
+      const key = `${def.type}:${def.name}:${def.partNumber || ''}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    const q = mobileAddQuery.trim().toLowerCase();
+    if (!q) return all;
+    return all.filter(def => `${def.name} ${def.type} ${def.category || ''} ${def.manufacturer || ''} ${def.partNumber || ''}`.toLowerCase().includes(q));
+  }, [state.customParts, mobileAddQuery]);
+  function partKindLabel(def: ComponentDef): string {
+    if (def.type === 'fader20led') return 'LED Slider';
+    if (def.category === 'fader' || isFaderLike(def)) return 'Fader';
+    if (def.category === 'potentiometer' || def.type === 'trimmer6mm' || isPotLike(def)) return def.type === 'trimmer6mm' ? 'Trim Pot' : 'Pot';
+    if (def.category === 'jack' || isJackLike(def)) return 'Jack';
+    if (def.category === 'led' || def.type === 'led3mm') return 'LED';
+    if (def.type === 'tactled') return 'LED Button';
+    if (def.category === 'switch' || def.type === 'slideSwitchMini') return def.type === 'slideSwitchMini' ? 'Slide Switch' : 'Switch';
+    if (def.type === 'customrect') return 'Cutout';
+    if (def.type === 'custom') return 'Hole';
+    return def.category || def.type;
+  }
+  function mobilePartTitle(def: ComponentDef): string {
+    const kind = partKindLabel(def);
+    const cleaned = def.name
+      .replace(/^Alpha\s+/i, '')
+      .replace(/^Thonkiconn\s+/i, '')
+      .replace(/^Low Profile\s+/i, '')
+      .replace(/^(LED\s+)?Fader\s*\/\s*Slider\s*/i, '')
+      .replace(/^(Alpha\s*)?RA2045F-?20\s*/i, 'RA2045F-20 ')
+      .replace(/^(Alpha\s*)?RA2045F\s*/i, 'RA2045F ')
+      .trim();
+    return `${kind} — ${cleaned || def.name}`;
+  }
+  function partMeta(def: ComponentDef): string {
+    const status = def.verificationStatus === 'datasheet' ? 'datasheet' : def.verificationStatus === 'measured' ? 'measured' : def.verificationStatus === 'production' ? 'production' : 'approx';
+    const size = def.holeType === 'slot'
+      ? `${def.holeDiameter} × ${def.slotLength ?? def.holeDiameter} mm slot`
+      : def.holeType === 'rect'
+        ? `${def.holeW ?? def.frontW ?? def.holeDiameter} × ${def.holeH ?? def.frontH ?? def.holeDiameter} mm cut`
+        : `Ø ${def.holeDiameter} mm`;
+    return `${size} · ${status}`;
+  }
   const hard = warnings.filter(w => w.severity === 'error').length;
   const warn = warnings.length - hard;
   const unverified = state.components.filter(c => !isPartVerified(c)).length;
@@ -8280,8 +8359,8 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
             <div className="quick-pop-grid">
               {commonParts.map(def => (
                 <button key={def.type} onClick={() => add(def)}>
-                  <span>{def.name}</span>
-                  <small>{def.holeType === 'slot' ? `${def.holeDiameter} × ${def.slotLength ?? def.holeDiameter} mm slot` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW ?? def.holeDiameter} × ${def.holeH ?? def.frontH ?? def.holeDiameter} mm cut` : `Ø ${def.holeDiameter} mm`}</small>
+                  <span>{mobilePartTitle(def)}</span>
+                  <small>{partMeta(def)}</small>
                 </button>
               ))}
             </div>
@@ -8308,13 +8387,28 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
             {mobileSheet === 'add' && (
               <>
                 <div className="mobile-sheet-note">Adds the part at the center of the current panel. Drag it after placement.</div>
-                <div className="mobile-add-grid">
-                  {commonParts.map(def => (
-                    <button key={def.type} onClick={() => add(def)}>
-                      <span>{def.name}</span>
-                      <small>{def.category || def.type} · {def.holeType === 'slot' ? `${def.holeDiameter} × ${def.slotLength ?? def.holeDiameter} mm slot` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW ?? def.holeDiameter} × ${def.holeH ?? def.frontH ?? def.holeDiameter} mm cut` : `Ø ${def.holeDiameter} mm`}</small>
-                    </button>
-                  ))}
+                <div className="mobile-sheet-section compact-first">
+                  <div className="mobile-sheet-label">Common</div>
+                  <div className="mobile-add-grid">
+                    {commonParts.map(def => (
+                      <button key={`common-${def.type}`} title={mobilePartTitle(def)} onClick={() => add(def)}>
+                        <span>{mobilePartTitle(def)}</span>
+                        <small>{partMeta(def)}</small>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="mobile-sheet-section">
+                  <div className="mobile-sheet-label">Full library</div>
+                  <input className="mobile-add-search" value={mobileAddQuery} onChange={e => setMobileAddQuery(e.target.value)} placeholder="Search: fader, jack, led, pot…" />
+                  <div className="mobile-add-grid full">
+                    {allMobileParts.map(def => (
+                      <button key={`all-${def.type}-${def.name}-${def.partNumber || ''}`} title={mobilePartTitle(def)} onClick={() => add(def)}>
+                        <span>{mobilePartTitle(def)}</span>
+                        <small>{partMeta(def)}</small>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </>
             )}
@@ -8323,13 +8417,6 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
               <>
                 <div className="mobile-segment-grid four">
                   {(['front','rear','drill','combined'] as ViewMode[]).map(m => <button key={m} className={state.viewMode === m ? 'active' : ''} onClick={() => dispatch({ type:'SET_VIEW_MODE', mode:m })}>{m}</button>)}
-                </div>
-                <div className="mobile-sheet-section">
-                  <div className="mobile-sheet-label">Top hardware style</div>
-                  <div className="mobile-segment-grid two">
-                    <button className={state.topHardwareStyle === 'classic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'classic' })}>Classic</button>
-                    <button className={state.topHardwareStyle === 'realistic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'realistic' })}>Boutique</button>
-                  </div>
                 </div>
                 <div className="mobile-sheet-section">
                   <div className="mobile-sheet-label">Grid size</div>
@@ -8344,6 +8431,13 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                     <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mech</button>
                     <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Prod</button>
                     <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>All</button>
+                  </div>
+                </div>
+                <div className="mobile-sheet-section">
+                  <div className="mobile-sheet-label">Top hardware style</div>
+                  <div className="mobile-segment-grid two">
+                    <button className={state.topHardwareStyle === 'classic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'classic' })}>Classic</button>
+                    <button className={state.topHardwareStyle === 'realistic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'realistic' })}>Boutique</button>
                   </div>
                 </div>
                 <div className="mobile-layer-grid">
@@ -9043,6 +9137,9 @@ function App() {
   }
 
   function scheduleComponentLongPress(target: EventTarget, clientX: number, clientY: number) {
+    // On phones/tablets the long-press component menu duplicates the bottom action bar
+    // and can appear accidentally while dragging. Keep it desktop/right-click only.
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
     const el = target as Element;
     const group = el.closest('[data-id]') as SVGElement | null;
     if (!group) return;
