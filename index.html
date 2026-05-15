@@ -8451,6 +8451,1702 @@ body::after {
   }
 }
 
+
+/* v202 Mobile bottom overlay fix:
+   v201 used body::before/after as dark safe-area guards; on iOS Safari body::after
+   can paint over app content and hide the mobile dock. Keep dark backgrounds,
+   but never use pseudo overlays above the UI. */
+body::before,
+body::after {
+  display: none !important;
+  content: none !important;
+}
+
+@media (max-width: 860px), (pointer: coarse) {
+  html,
+  body,
+  #root {
+    background-color: #05090b !important;
+  }
+
+  .app {
+    background-color: #05090b !important;
+    z-index: 1;
+  }
+
+  .workspace {
+    background-color: #05090b !important;
+  }
+
+  .canvas-wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  .mobile-main-dock {
+    z-index: 3600 !important;
+    bottom: max(10px, calc(env(safe-area-inset-bottom, 0px) + 8px)) !important;
+  }
+
+  .mobile-bottom-sheet {
+    z-index: 3500 !important;
+    bottom: max(88px, calc(env(safe-area-inset-bottom, 0px) + 84px)) !important;
+  }
+
+  .toolbar {
+    z-index: 3700 !important;
+  }
+}
+
+
+/* v203: restore left-section collapse and redesign Component Library as icon grid */
+.sidebar-left .section.collapsible > .section-title {
+  cursor: pointer !important;
+}
+
+.sidebar-left .section.collapsible > .section-title::after {
+  content: "▾" !important;
+  margin-left: auto !important;
+  color: #55dff0 !important;
+  font-size: 11px !important;
+}
+
+.sidebar-left .section.collapsible.collapsed > .section-title::after {
+  content: "▸" !important;
+}
+
+/* Component Library icon-grid mode */
+.section[data-component-library="true"] {
+  overflow: hidden !important;
+}
+
+.section[data-component-library="true"] .library-search-compact {
+  margin-bottom: 8px !important;
+}
+
+.section[data-component-library="true"] .library-render-note {
+  display: flex !important;
+  justify-content: space-between !important;
+  color: #71878f !important;
+  font-size: 10px !important;
+  padding: 4px 2px 7px !important;
+  margin: 0 !important;
+}
+
+.section[data-component-library="true"] .component-icon-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 9px 7px !important;
+  max-height: min(52vh, 520px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 2px 2px 10px !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.section[data-component-library="true"] .component-icon-grid::-webkit-scrollbar {
+  width: 7px;
+}
+
+.section[data-component-library="true"] .component-icon-grid::-webkit-scrollbar-thumb {
+  background: rgba(46,233,255,.20);
+  border-radius: 999px;
+}
+
+.section[data-component-library="true"] .component-icon-card {
+  all: unset;
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows: 44px auto auto !important;
+  align-items: center !important;
+  justify-items: center !important;
+  min-width: 0 !important;
+  min-height: 78px !important;
+  padding: 7px 4px 6px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255,255,255,.075) !important;
+  background:
+    radial-gradient(circle at 45% 25%, rgba(46,233,255,.08), transparent 45%),
+    linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.055),
+    0 6px 16px rgba(0,0,0,.18) !important;
+  cursor: pointer !important;
+  color: #eaf8fb !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+.section[data-component-library="true"] .component-icon-card:hover,
+.section[data-component-library="true"] .component-icon-card:focus-visible {
+  border-color: rgba(46,233,255,.45) !important;
+  background:
+    radial-gradient(circle at 45% 25%, rgba(46,233,255,.18), transparent 50%),
+    linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.026)) !important;
+  outline: none !important;
+}
+
+.section[data-component-library="true"] .component-icon-card.approx {
+  opacity: .86;
+}
+
+.section[data-component-library="true"] .component-icon-preview {
+  width: 42px !important;
+  height: 42px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 12px !important;
+  background: rgba(0,0,0,.18) !important;
+}
+
+.section[data-component-library="true"] .component-icon-preview svg,
+.section[data-component-library="true"] .component-icon-preview canvas {
+  width: 38px !important;
+  height: 38px !important;
+  max-width: 38px !important;
+  max-height: 38px !important;
+}
+
+.section[data-component-library="true"] .component-icon-name {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: #f2fbff !important;
+  font-size: 9.5px !important;
+  font-weight: 900 !important;
+  line-height: 1.1 !important;
+  margin-top: 4px !important;
+}
+
+.section[data-component-library="true"] .component-icon-meta {
+  display: block !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: #829aa2 !important;
+  font-size: 8.5px !important;
+  line-height: 1.05 !important;
+  margin-top: 2px !important;
+}
+
+.section[data-component-library="true"] .component-icon-card .part-favorite-mini {
+  position: absolute !important;
+  top: 4px !important;
+  right: 5px !important;
+  width: 15px !important;
+  height: 15px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  color: rgba(255,255,255,.35) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  background: rgba(0,0,0,.18) !important;
+}
+
+.section[data-component-library="true"] .component-icon-card .part-favorite-mini.active {
+  color: #ffd166 !important;
+  background: rgba(255,209,102,.12) !important;
+}
+
+.section[data-component-library="true"] .component-icon-card .part-delete-mini {
+  position: absolute !important;
+  left: 5px !important;
+  top: 4px !important;
+  width: 15px !important;
+  height: 15px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  color: #ffc2c7 !important;
+  background: rgba(255,95,110,.13) !important;
+  font-size: 11px !important;
+}
+
+.section[data-component-library="true"] .library-memory-row {
+  margin-bottom: 8px !important;
+}
+
+.section[data-component-library="true"] .library-tools-footer {
+  margin-top: 9px !important;
+}
+
+/* Wider drawer/tablet: allow Finder-like larger grid. */
+@media (min-width: 861px) {
+  .sidebar-left { width: 280px; }
+  .section[data-component-library="true"] .component-icon-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Phone drawer: 4 columns, compact icons. */
+@media (max-width: 860px) {
+  .section[data-component-library="true"] .component-icon-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    max-height: min(54dvh, 520px) !important;
+    gap: 8px !important;
+  }
+  .section[data-component-library="true"] .component-icon-card {
+    min-height: 76px !important;
+  }
+}
+
+
+/* v204 Component Library popover grid */
+.section[data-component-library="true"].component-library-shell {
+  overflow: visible !important;
+}
+
+.section[data-component-library="true"] .component-library-launcher {
+  width: 100% !important;
+  min-height: 64px !important;
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 11px !important;
+  text-align: left !important;
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255,255,255,.085) !important;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(46,233,255,.12), transparent 46%),
+    linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018)) !important;
+}
+
+.section[data-component-library="true"] .component-library-launcher.active {
+  border-color: rgba(46,233,255,.55) !important;
+  box-shadow: 0 0 0 1px rgba(46,233,255,.12), 0 10px 30px rgba(46,233,255,.08) !important;
+}
+
+.launcher-icon-grid {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  background: rgba(46,233,255,.10);
+  border: 1px solid rgba(46,233,255,.22);
+  color: #c7fbff;
+  font-size: 22px;
+}
+
+.component-library-launcher b {
+  display: block;
+  color: #f0fbff;
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+.component-library-launcher small {
+  display: block;
+  color: #8aa0a7;
+  font-size: 10.5px;
+  margin-top: 3px;
+}
+
+.component-library-popover {
+  position: fixed;
+  z-index: 5600;
+  width: min(620px, calc(100vw - 24px));
+  max-height: min(78vh, 720px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 22px;
+  border: 1px solid rgba(46,233,255,.20);
+  background:
+    radial-gradient(circle at 20% 5%, rgba(46,233,255,.16), transparent 42%),
+    linear-gradient(180deg, rgba(18,24,28,.98), rgba(5,8,11,.98));
+  box-shadow:
+    0 28px 90px rgba(0,0,0,.62),
+    inset 0 1px 0 rgba(255,255,255,.055);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.component-library-popover-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.component-library-popover-head strong {
+  display: block;
+  color: #eaf8fb;
+  font-size: 15px;
+  font-weight: 1000;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.component-library-popover-head span {
+  display: block;
+  color: #8aa0a7;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+.component-library-popover-head button {
+  width: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+}
+
+.component-library-popover-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(160px, .8fr);
+  gap: 9px;
+}
+
+.component-library-popover .popover-memory-row {
+  max-height: 80px;
+  overflow: hidden;
+  margin: 0 !important;
+}
+
+.component-library-popover .popover-component-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  max-height: min(52vh, 520px) !important;
+  flex: 1 1 auto;
+  min-height: 220px;
+  padding: 3px 4px 12px !important;
+}
+
+.component-library-popover .component-icon-card {
+  min-height: 94px !important;
+  grid-template-rows: 52px auto auto !important;
+}
+
+.component-library-popover .component-icon-preview {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.component-library-popover .component-icon-preview svg,
+.component-library-popover .component-icon-preview canvas {
+  width: 46px !important;
+  height: 46px !important;
+  max-width: 46px !important;
+  max-height: 46px !important;
+}
+
+.component-library-popover .component-icon-name {
+  font-size: 10.5px !important;
+}
+
+.component-library-empty {
+  color: #7f939a;
+  font-size: 12px;
+  padding: 14px;
+  border: 1px dashed rgba(255,255,255,.12);
+  border-radius: 14px;
+}
+
+@media (max-width: 860px) {
+  .component-library-popover {
+    left: 10px !important;
+    right: 10px !important;
+    top: max(64px, env(safe-area-inset-top, 0px) + 58px) !important;
+    width: auto !important;
+    max-height: calc(var(--app-vvh, 100dvh) - 118px - env(safe-area-inset-bottom, 0px)) !important;
+    border-radius: 20px;
+  }
+
+  .component-library-popover-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .component-library-popover .popover-component-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    max-height: min(58vh, 560px) !important;
+  }
+
+  .component-library-popover .component-icon-card {
+    min-height: 84px !important;
+  }
+}
+
+
+/* v205 Component Library shelf layout */
+.component-library-popover {
+  width: min(760px, calc(100vw - 340px - 24px)) !important;
+  height: calc(100vh - 24px) !important;
+  max-height: calc(100vh - 24px) !important;
+  top: 8px !important;
+  background:
+    radial-gradient(circle at 16% 8%, rgba(46,233,255,.18), transparent 38%),
+    linear-gradient(180deg, rgba(18,24,28,.50), rgba(5,8,11,.50)) !important;
+  backdrop-filter: blur(18px) saturate(1.25) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.25) !important;
+  border-color: rgba(46,233,255,.28) !important;
+}
+
+.component-library-popover .popover-component-grid {
+  display: grid !important;
+  grid-auto-flow: column !important;
+  grid-template-rows: repeat(4, minmax(98px, 1fr)) !important;
+  grid-template-columns: none !important;
+  grid-auto-columns: minmax(96px, 112px) !important;
+  align-content: stretch !important;
+  justify-content: start !important;
+  gap: 12px !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 6px 8px 14px !important;
+  overscroll-behavior: contain !important;
+}
+
+.component-library-popover .component-icon-card {
+  min-height: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  grid-template-rows: minmax(52px, 1fr) auto auto !important;
+}
+
+.component-library-popover .component-icon-preview {
+  align-self: end !important;
+}
+
+.component-library-popover .component-library-popover-controls {
+  flex: 0 0 auto !important;
+}
+
+.component-library-popover .library-memory-row {
+  flex: 0 0 auto !important;
+}
+
+.component-library-popover .library-load-more {
+  flex: 0 0 auto !important;
+}
+
+.component-library-popover-head {
+  flex: 0 0 auto !important;
+}
+
+/* Desktop: start shelf immediately to the right of the left sidebar and occupy most height. */
+@media (min-width: 861px) {
+  .component-library-popover {
+    left: calc(280px + 16px) !important;
+  }
+}
+
+/* Smaller desktop widths: reduce columns but keep 4 vertical rows. */
+@media (max-width: 1180px) and (min-width: 861px) {
+  .component-library-popover {
+    width: min(650px, calc(100vw - 316px)) !important;
+  }
+  .component-library-popover .popover-component-grid {
+    grid-auto-columns: minmax(88px, 104px) !important;
+  }
+}
+
+/* Mobile: keep modal-style top sheet, but still use 4 vertical rows with horizontal scroll. */
+@media (max-width: 860px) {
+  .component-library-popover {
+    left: 10px !important;
+    right: 10px !important;
+    top: max(60px, env(safe-area-inset-top, 0px) + 54px) !important;
+    width: auto !important;
+    height: calc(var(--app-vvh, 100dvh) - 144px - env(safe-area-inset-bottom, 0px)) !important;
+    max-height: calc(var(--app-vvh, 100dvh) - 144px - env(safe-area-inset-bottom, 0px)) !important;
+    background:
+      radial-gradient(circle at 16% 8%, rgba(46,233,255,.20), transparent 38%),
+      linear-gradient(180deg, rgba(18,24,28,.72), rgba(5,8,11,.72)) !important;
+  }
+
+  .component-library-popover .popover-component-grid {
+    grid-template-rows: repeat(4, minmax(82px, 1fr)) !important;
+    grid-auto-columns: minmax(76px, 88px) !important;
+    gap: 9px !important;
+  }
+
+  .component-library-popover .component-icon-card {
+    min-height: 0 !important;
+  }
+}
+
+
+/* v206 Compact square Component Library picker */
+.component-library-popover {
+  width: min(500px, calc(100vw - 340px - 24px)) !important;
+  height: min(500px, calc(100vh - 42px)) !important;
+  max-height: min(500px, calc(100vh - 42px)) !important;
+  top: 12px !important;
+  padding: 10px !important;
+  gap: 8px !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at 16% 8%, rgba(46,233,255,.16), transparent 38%),
+    linear-gradient(180deg, rgba(18,24,28,.50), rgba(5,8,11,.50)) !important;
+}
+
+.component-library-popover-head strong {
+  font-size: 12px !important;
+}
+
+.component-library-popover-head span {
+  font-size: 9.5px !important;
+}
+
+.component-library-popover-head button {
+  width: 28px !important;
+  min-height: 28px !important;
+}
+
+.component-library-popover-controls {
+  grid-template-columns: 1.25fr .85fr !important;
+  gap: 7px !important;
+}
+
+.component-library-popover-controls .mini-input,
+.component-library-popover-controls select {
+  min-height: 30px !important;
+  height: 30px !important;
+  font-size: 10.5px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.component-library-popover .popover-memory-row {
+  display: none !important;
+}
+
+/* Square icon cards: fixed square cells, vertical scroll. */
+.component-library-popover .popover-component-grid {
+  display: grid !important;
+  grid-auto-flow: row !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-rows: none !important;
+  grid-auto-columns: unset !important;
+  grid-auto-rows: auto !important;
+  gap: 8px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 2px 3px 8px !important;
+  align-content: start !important;
+}
+
+.component-library-popover .component-icon-card {
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  width: 100% !important;
+  grid-template-rows: 1fr auto auto !important;
+  padding: 7px 4px 6px !important;
+  border-radius: 13px !important;
+}
+
+.component-library-popover .component-icon-preview {
+  width: 58px !important;
+  height: 58px !important;
+  align-self: center !important;
+}
+
+.component-library-popover .component-icon-preview svg,
+.component-library-popover .component-icon-preview canvas {
+  width: 54px !important;
+  height: 54px !important;
+  max-width: 54px !important;
+  max-height: 54px !important;
+}
+
+.component-library-popover .component-icon-name {
+  font-size: 8.8px !important;
+  line-height: 1.05 !important;
+  margin-top: 2px !important;
+  max-width: 100% !important;
+}
+
+.component-library-popover .component-icon-meta {
+  font-size: 7.5px !important;
+  line-height: 1 !important;
+  opacity: .82 !important;
+}
+
+.component-library-popover .component-icon-card .part-favorite-mini {
+  top: 4px !important;
+  right: 4px !important;
+  width: 13px !important;
+  height: 13px !important;
+  font-size: 9px !important;
+}
+
+.component-library-popover .component-icon-card .part-delete-mini {
+  left: 4px !important;
+  top: 4px !important;
+  width: 13px !important;
+  height: 13px !important;
+  font-size: 10px !important;
+}
+
+.component-library-popover .library-load-more {
+  min-height: 30px !important;
+  height: 30px !important;
+  font-size: 10px !important;
+  border-radius: 11px !important;
+}
+
+/* Desktop: compact square near the left sidebar */
+@media (min-width: 861px) {
+  .component-library-popover {
+    left: calc(280px + 16px) !important;
+  }
+}
+
+/* Mobile: still compact, but almost full-width square-ish */
+@media (max-width: 860px) {
+  .component-library-popover {
+    left: 10px !important;
+    right: 10px !important;
+    top: max(60px, env(safe-area-inset-top, 0px) + 54px) !important;
+    width: auto !important;
+    height: min(520px, calc(var(--app-vvh, 100dvh) - 150px - env(safe-area-inset-bottom, 0px))) !important;
+    max-height: min(520px, calc(var(--app-vvh, 100dvh) - 150px - env(safe-area-inset-bottom, 0px))) !important;
+  }
+
+  .component-library-popover .popover-component-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 7px !important;
+  }
+
+  .component-library-popover .component-icon-preview {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .component-library-popover .component-icon-preview svg,
+  .component-library-popover .component-icon-preview canvas {
+    width: 44px !important;
+    height: 44px !important;
+    max-width: 44px !important;
+    max-height: 44px !important;
+  }
+}
+
+
+/* v207 Component picker centered modal + non-overlapping square cards */
+.component-library-popover {
+  width: 520px !important;
+  height: 520px !important;
+  max-width: calc(100vw - 36px) !important;
+  max-height: calc(100vh - 126px) !important;
+  top: max(76px, 13vh) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  padding: 12px !important;
+  gap: 9px !important;
+  border-radius: 20px !important;
+}
+
+.component-library-popover-head {
+  min-height: 32px !important;
+}
+
+.component-library-popover-controls {
+  grid-template-columns: 1.2fr .8fr !important;
+  gap: 8px !important;
+  flex: 0 0 auto !important;
+}
+
+.component-library-popover .popover-component-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-auto-flow: row !important;
+  grid-auto-rows: auto !important;
+  gap: 10px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 3px 4px 10px !important;
+  align-content: start !important;
+}
+
+/* Kill older grid-row rules and use a simple flex card to avoid text/icon overlap. */
+.component-library-popover .component-icon-card {
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 3px !important;
+  padding: 9px 6px 7px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.component-library-popover .component-icon-preview {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  align-self: stretch !important;
+  margin-top: 8px !important;
+  background: transparent !important;
+}
+
+.component-library-popover .component-icon-preview svg,
+.component-library-popover .component-icon-preview canvas {
+  width: min(64px, 72%) !important;
+  height: min(64px, 72%) !important;
+  max-width: 64px !important;
+  max-height: 64px !important;
+}
+
+.component-library-popover .component-icon-name {
+  flex: 0 0 auto !important;
+  display: block !important;
+  width: 100% !important;
+  max-height: 20px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  color: #f2fbff !important;
+  font-size: 9px !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+.component-library-popover .component-icon-meta {
+  flex: 0 0 auto !important;
+  display: block !important;
+  width: 100% !important;
+  height: 9px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: #829aa2 !important;
+  font-size: 7.5px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+.component-library-popover .component-icon-card .part-favorite-mini {
+  z-index: 2 !important;
+}
+
+.component-library-popover .component-icon-card .part-delete-mini {
+  z-index: 2 !important;
+}
+
+/* prevent old sidebar tile CSS from leaking into popover cards */
+.component-library-popover .component-icon-card .part-card-main,
+.component-library-popover .component-icon-card .part-card-side {
+  display: none !important;
+}
+
+@media (min-width: 861px) {
+  .component-library-popover {
+    left: 50% !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .component-library-popover {
+    left: 10px !important;
+    right: 10px !important;
+    top: max(64px, env(safe-area-inset-top, 0px) + 58px) !important;
+    transform: none !important;
+    width: auto !important;
+    height: min(520px, calc(var(--app-vvh, 100dvh) - 154px - env(safe-area-inset-bottom, 0px))) !important;
+    max-height: min(520px, calc(var(--app-vvh, 100dvh) - 154px - env(safe-area-inset-bottom, 0px))) !important;
+  }
+
+  .component-library-popover .popover-component-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .component-library-popover .component-icon-preview svg,
+  .component-library-popover .component-icon-preview canvas {
+    width: min(52px, 70%) !important;
+    height: min(52px, 70%) !important;
+    max-width: 52px !important;
+    max-height: 52px !important;
+  }
+}
+
+
+/* v208 Component Library: true app-icon cards */
+.component-library-popover {
+  width: 520px !important;
+  height: 520px !important;
+  padding: 12px !important;
+}
+
+.component-library-popover .popover-component-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  padding: 2px 4px 10px !important;
+  align-content: start !important;
+}
+
+/* true square card, no horizontal text pill through the icon */
+.component-library-popover .component-icon-card {
+  aspect-ratio: 1 / 1 !important;
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows: 1fr auto auto !important;
+  align-items: center !important;
+  justify-items: center !important;
+  gap: 0 !important;
+  padding: 9px 7px 7px !important;
+  overflow: hidden !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(46,233,255,.16), transparent 43%),
+    linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018)) !important;
+}
+
+.component-library-popover .component-icon-card:hover,
+.component-library-popover .component-icon-card:focus-visible {
+  transform: translateY(-1px);
+}
+
+.component-library-popover .component-icon-preview {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  align-self: stretch !important;
+  margin: 3px 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.component-library-popover .component-icon-preview::before {
+  content: "";
+  position: absolute;
+  width: 54%;
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 45% 35%, rgba(180,255,255,.18), transparent 58%),
+    rgba(46,233,255,.08);
+  box-shadow: 0 0 20px rgba(46,233,255,.10);
+  pointer-events: none;
+}
+
+.component-library-popover .component-icon-preview svg,
+.component-library-popover .component-icon-preview canvas {
+  position: relative !important;
+  z-index: 1 !important;
+  width: min(68px, 68%) !important;
+  height: min(68px, 68%) !important;
+  max-width: 68px !important;
+  max-height: 68px !important;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.38));
+}
+
+/* label is now just bottom text, not a glass band */
+.component-library-popover .component-icon-name {
+  position: static !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  width: 100% !important;
+  max-height: 12px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  color: #effcff !important;
+  font-size: 9.3px !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  text-align: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,.65);
+}
+
+.component-library-popover .component-icon-meta {
+  position: static !important;
+  display: block !important;
+  width: 100% !important;
+  height: 9px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: rgba(181,213,220,.74) !important;
+  font-size: 7.4px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  margin: 2px 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.component-library-popover .component-icon-card .part-favorite-mini {
+  top: 7px !important;
+  right: 7px !important;
+  width: 14px !important;
+  height: 14px !important;
+  background: transparent !important;
+  color: rgba(210,230,235,.42) !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,.65);
+}
+
+.component-library-popover .component-icon-card .part-favorite-mini.active {
+  color: #ffd166 !important;
+}
+
+.component-library-popover .component-icon-card.approx {
+  opacity: .93 !important;
+}
+
+/* Remove any leftover badge/pill visuals from older library cards. */
+.component-library-popover .component-icon-card span:not(.part-favorite-mini):not(.part-delete-mini):not(.component-icon-preview):not(.component-icon-name):not(.component-icon-meta) {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+@media (max-width: 860px) {
+  .component-library-popover .popover-component-grid {
+    gap: 8px !important;
+  }
+
+  .component-library-popover .component-icon-preview svg,
+  .component-library-popover .component-icon-preview canvas {
+    width: min(56px, 66%) !important;
+    height: min(56px, 66%) !important;
+    max-width: 56px !important;
+    max-height: 56px !important;
+  }
+
+  .component-library-popover .component-icon-name {
+    font-size: 8.6px !important;
+  }
+}
+
+
+/* v209 Component Library: +20% panel, hard no-overlap icon-grid reset */
+.component-library-popover {
+  width: 624px !important;   /* v208 520px × 1.2 */
+  height: 624px !important;  /* v208 520px × 1.2 */
+  max-width: calc(100vw - 40px) !important;
+  max-height: calc(100vh - 104px) !important;
+  top: max(64px, 8vh) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  padding: 14px !important;
+  gap: 10px !important;
+}
+
+/* controls should not steal too much vertical space */
+.component-library-popover .component-library-popover-head {
+  min-height: 34px !important;
+  flex: 0 0 auto !important;
+}
+
+.component-library-popover .component-library-popover-controls {
+  flex: 0 0 auto !important;
+  min-height: 36px !important;
+}
+
+/* Hard reset the grid: no column-flow, no inherited tall row rules */
+.component-library-popover .popover-component-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-rows: none !important;
+  grid-auto-flow: row !important;
+  grid-auto-rows: 132px !important;
+  gap: 12px !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  align-content: start !important;
+  padding: 4px 6px 14px !important;
+  box-sizing: border-box !important;
+}
+
+/* Hard reset each card and all inherited vertical-column artifacts */
+.component-library-popover .component-icon-card,
+.component-library-popover .component-icon-card.comp-lib-item,
+.component-library-popover .component-icon-card.real-part-tile {
+  all: unset !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 132px !important;
+  min-height: 132px !important;
+  max-height: 132px !important;
+  aspect-ratio: auto !important;
+  display: grid !important;
+  grid-template-rows: 78px 24px 12px !important;
+  grid-template-columns: 1fr !important;
+  align-items: center !important;
+  justify-items: center !important;
+  gap: 3px !important;
+  padding: 9px 8px 8px !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  color: #edfaff !important;
+  text-align: center !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(46,233,255,.18), transparent 44%),
+    linear-gradient(180deg, rgba(255,255,255,.070), rgba(255,255,255,.020)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.065),
+    0 8px 22px rgba(0,0,0,.24) !important;
+}
+
+.component-library-popover .component-icon-card:hover,
+.component-library-popover .component-icon-card:focus-visible {
+  border-color: rgba(46,233,255,.50) !important;
+  outline: none !important;
+}
+
+/* The preview lives only in row 1 */
+.component-library-popover .component-icon-preview {
+  grid-row: 1 !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 78px !important;
+  min-height: 78px !important;
+  max-height: 78px !important;
+  display: grid !important;
+  place-items: center !important;
+  align-self: center !important;
+  justify-self: stretch !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  overflow: hidden !important;
+}
+
+.component-library-popover .component-icon-preview::before {
+  content: "";
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 45% 35%, rgba(190,255,255,.20), transparent 60%),
+    rgba(46,233,255,.09);
+  box-shadow: 0 0 22px rgba(46,233,255,.12);
+  pointer-events: none;
+}
+
+.component-library-popover .component-icon-preview svg,
+.component-library-popover .component-icon-preview canvas {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 62px !important;
+  height: 62px !important;
+  max-width: 62px !important;
+  max-height: 62px !important;
+  display: block !important;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.42));
+}
+
+/* Text is in row 2, never overlaying icon */
+.component-library-popover .component-icon-name {
+  grid-row: 2 !important;
+  position: static !important;
+  display: block !important;
+  width: 100% !important;
+  height: 22px !important;
+  max-height: 22px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  color: #f4fcff !important;
+  font-size: 9.8px !important;
+  font-weight: 950 !important;
+  line-height: 1.05 !important;
+  text-align: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,.68);
+}
+
+/* Meta is in row 3 */
+.component-library-popover .component-icon-meta {
+  grid-row: 3 !important;
+  position: static !important;
+  display: block !important;
+  width: 100% !important;
+  height: 10px !important;
+  max-height: 10px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: rgba(182,215,222,.76) !important;
+  font-size: 7.6px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+/* Star/delete are the only overlay elements */
+.component-library-popover .component-icon-card .part-favorite-mini {
+  all: unset !important;
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  z-index: 3 !important;
+  width: 15px !important;
+  height: 15px !important;
+  display: grid !important;
+  place-items: center !important;
+  color: rgba(210,230,235,.44) !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,.68);
+}
+
+.component-library-popover .component-icon-card .part-favorite-mini.active {
+  color: #ffd166 !important;
+}
+
+.component-library-popover .component-icon-card .part-delete-mini {
+  all: unset !important;
+  position: absolute !important;
+  left: 8px !important;
+  top: 8px !important;
+  z-index: 3 !important;
+  width: 15px !important;
+  height: 15px !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #ffc2c7 !important;
+  font-size: 11px !important;
+  cursor: pointer !important;
+}
+
+/* Nuke any old nested library visual leftovers */
+.component-library-popover .component-icon-card .part-card-main,
+.component-library-popover .component-icon-card .part-card-side,
+.component-library-popover .component-icon-card .part-picker-label {
+  display: none !important;
+}
+
+/* A little denser on smaller screens */
+@media (max-width: 860px) {
+  .component-library-popover {
+    width: auto !important;
+    height: min(560px, calc(var(--app-vvh, 100dvh) - 150px - env(safe-area-inset-bottom, 0px))) !important;
+    max-height: min(560px, calc(var(--app-vvh, 100dvh) - 150px - env(safe-area-inset-bottom, 0px))) !important;
+  }
+
+  .component-library-popover .popover-component-grid {
+    grid-auto-rows: 112px !important;
+    gap: 8px !important;
+  }
+
+  .component-library-popover .component-icon-card,
+  .component-library-popover .component-icon-card.comp-lib-item,
+  .component-library-popover .component-icon-card.real-part-tile {
+    height: 112px !important;
+    min-height: 112px !important;
+    max-height: 112px !important;
+    grid-template-rows: 64px 22px 10px !important;
+    padding: 8px 5px 7px !important;
+  }
+
+  .component-library-popover .component-icon-preview {
+    height: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
+  }
+
+  .component-library-popover .component-icon-preview::before {
+    width: 52px;
+    height: 52px;
+  }
+
+  .component-library-popover .component-icon-preview svg,
+  .component-library-popover .component-icon-preview canvas {
+    width: 50px !important;
+    height: 50px !important;
+    max-width: 50px !important;
+    max-height: 50px !important;
+  }
+
+  .component-library-popover .component-icon-name {
+    font-size: 8.6px !important;
+  }
+}
+
+
+/* v210 Component picker centered over SVG/workspace and opened by empty-canvas right click */
+.component-library-popover {
+  left: 50% !important;
+  top: calc(50% + 26px) !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+@media (min-width: 861px) {
+  .component-library-popover {
+    left: 50% !important;
+    top: calc(50% + 26px) !important;
+    transform: translate(-50%, -50%) !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .component-library-popover {
+    left: 10px !important;
+    right: 10px !important;
+    top: max(64px, env(safe-area-inset-top, 0px) + 58px) !important;
+    transform: none !important;
+  }
+}
+
+
+/* v211: headless component picker remains available in Focus mode via empty-canvas right click */
+.app.focus-mode .component-library-popover {
+  display: flex !important;
+}
+
+
+/* v212 multi-edit same component properties */
+.multi-edit-active {
+  border-color: rgba(46,233,255,.22) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 0 0 1px rgba(46,233,255,.05) !important;
+}
+
+.multi-edit-note {
+  margin: 6px 0 9px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  line-height: 1.35;
+  border: 1px solid rgba(255,255,255,.075);
+  background: rgba(255,255,255,.026);
+  color: #aebfc5;
+}
+
+.multi-edit-note.ok {
+  border-color: rgba(46,233,255,.24);
+  background: rgba(46,233,255,.070);
+  color: #d8fbff;
+}
+
+.multi-edit-note.warn {
+  border-color: rgba(255,209,102,.25);
+  background: rgba(255,209,102,.075);
+  color: #ffe5a3;
+}
+
+.multi-edit-note.subtle {
+  color: #8fa4ab;
+  background: rgba(255,255,255,.018);
+}
+
+
+/* v214 Compact Layer Manager */
+.compact-layer-manager {
+  padding-bottom: 10px !important;
+}
+
+.compact-layer-manager .section-title {
+  margin-bottom: 8px !important;
+}
+
+.compact-render-row {
+  margin-bottom: 7px !important;
+}
+
+.compact-render-row label {
+  font-size: 10.5px !important;
+  margin-bottom: 3px !important;
+}
+
+.compact-render-row select {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding: 5px 10px !important;
+  font-size: 12px !important;
+  border-radius: 13px !important;
+}
+
+.compact-layer-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #8fa4ab;
+  font-size: 10.5px;
+  margin: 4px 0 8px;
+}
+
+.perf-toggle.compact {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin: 0 !important;
+  font-size: 11px !important;
+  color: #c4d6dc !important;
+}
+
+.perf-toggle.compact input {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.layer-manager-presets.compact {
+  display: grid !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 5px !important;
+  margin: 0 0 8px !important;
+}
+
+.layer-manager-presets.compact button {
+  min-height: 28px !important;
+  height: 28px !important;
+  padding: 3px 5px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+}
+
+.layer-manager-table.compact {
+  display: grid !important;
+  gap: 0 !important;
+  padding: 7px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(46,233,255,.16) !important;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(46,233,255,.06), transparent 38%),
+    rgba(255,255,255,.022) !important;
+}
+
+.layer-manager-row.compact {
+  display: block !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.layer-manager-row.compact + .layer-manager-row.compact {
+  border-top: 1px solid rgba(255,255,255,.055) !important;
+}
+
+.layer-manager-line {
+  display: grid !important;
+  grid-template-columns: minmax(78px, .68fr) minmax(84px, 1fr) auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 1px !important;
+  min-height: 42px !important;
+}
+
+.layer-manager-row.compact.off {
+  opacity: .58;
+}
+
+.layer-manager-row.compact .layer-manager-name {
+  min-width: 0 !important;
+}
+
+.layer-manager-row.compact .layer-manager-name b {
+  display: block !important;
+  color: #edfaff !important;
+  font-size: 11.5px !important;
+  line-height: 1.05 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.layer-manager-row.compact .layer-manager-name small {
+  display: block !important;
+  color: #81969e !important;
+  font-size: 8.5px !important;
+  line-height: 1.1 !important;
+  margin-top: 2px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.layer-manager-row.compact .layer-opacity {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 18px !important;
+  margin: 0 !important;
+}
+
+.layer-manager-row.compact .layer-opacity::-webkit-slider-thumb {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.layer-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, auto) !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+.layer-toggle.mini {
+  display: grid !important;
+  grid-template-rows: 9px 16px !important;
+  justify-items: center !important;
+  align-items: center !important;
+  gap: 1px !important;
+  margin: 0 !important;
+  min-width: 24px !important;
+  color: #8fa4ab !important;
+  font-size: 7.5px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .04em !important;
+}
+
+.layer-toggle.mini input {
+  width: 15px !important;
+  height: 15px !important;
+  margin: 0 !important;
+}
+
+.layer-solo-mini {
+  min-height: 26px !important;
+  height: 26px !important;
+  padding: 2px 8px !important;
+  border-radius: 9px !important;
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+}
+
+.compact-note {
+  margin-top: 7px !important;
+  font-size: 9.5px !important;
+  line-height: 1.25 !important;
+  opacity: .72 !important;
+}
+
+@media (max-width: 560px) {
+  .layer-manager-presets.compact {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  .layer-manager-line {
+    grid-template-columns: minmax(64px, .62fr) minmax(70px, 1fr) auto !important;
+    gap: 5px !important;
+  }
+  .layer-toggle.mini span {
+    display: none !important;
+  }
+  .layer-toggle.mini {
+    grid-template-rows: 16px !important;
+    min-width: 17px !important;
+  }
+  .layer-solo-mini {
+    padding: 2px 6px !important;
+  }
+}
+
+
+/* v215 Layer Manager row layout fix:
+   one compact card, label on top, opacity slider below, show/export/solo on right */
+.layer-manager-table.compact {
+  padding: 7px 8px !important;
+  gap: 0 !important;
+}
+
+.layer-manager-row.compact {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.layer-manager-row.compact + .layer-manager-row.compact {
+  border-top: 1px solid rgba(255,255,255,.055) !important;
+}
+
+.layer-manager-line {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-rows: auto 24px !important;
+  grid-template-areas:
+    "name name"
+    "slider actions" !important;
+  gap: 3px 9px !important;
+  align-items: center !important;
+  min-height: 52px !important;
+  padding: 6px 0 !important;
+  overflow: hidden !important;
+}
+
+/* Force DOM order into the intended visual slots; old CSS was reordering visually */
+.layer-manager-line .layer-manager-name {
+  grid-area: name !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  display: block !important;
+  order: initial !important;
+}
+
+.layer-manager-line .layer-opacity {
+  grid-area: slider !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  justify-self: stretch !important;
+  order: initial !important;
+}
+
+.layer-manager-line .layer-actions {
+  grid-area: actions !important;
+  width: auto !important;
+  min-width: 112px !important;
+  justify-self: end !important;
+  order: initial !important;
+}
+
+/* Label: full readable line at the top */
+.layer-manager-row.compact .layer-manager-name b {
+  display: inline-block !important;
+  max-width: 100% !important;
+  color: #edfaff !important;
+  font-size: 12px !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  vertical-align: baseline !important;
+}
+
+.layer-manager-row.compact .layer-manager-name small {
+  display: inline-block !important;
+  margin-left: 6px !important;
+  color: #8398a0 !important;
+  font-size: 9px !important;
+  line-height: 1.1 !important;
+  max-width: calc(100% - 80px) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  vertical-align: baseline !important;
+}
+
+/* Slider: compact and not oversized */
+.layer-manager-row.compact .layer-opacity {
+  height: 18px !important;
+  margin: 0 !important;
+}
+
+.layer-manager-row.compact .layer-opacity::-webkit-slider-thumb {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* Right controls: smaller, single row */
+.layer-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 5px !important;
+}
+
+.layer-toggle.mini {
+  display: inline-grid !important;
+  grid-template-rows: 8px 14px !important;
+  justify-items: center !important;
+  gap: 1px !important;
+  min-width: 22px !important;
+  margin: 0 !important;
+  font-size: 7px !important;
+}
+
+.layer-toggle.mini input {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.layer-solo-mini {
+  min-height: 23px !important;
+  height: 23px !important;
+  padding: 1px 7px !important;
+  border-radius: 8px !important;
+  font-size: 8.8px !important;
+}
+
+/* Preset buttons slightly denser */
+.layer-manager-presets.compact {
+  gap: 4px !important;
+}
+
+.layer-manager-presets.compact button {
+  min-height: 25px !important;
+  height: 25px !important;
+  padding: 2px 4px !important;
+  font-size: 9.5px !important;
+  border-radius: 9px !important;
+}
+
+@media (max-width: 560px) {
+  .layer-manager-line {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-rows: auto 22px !important;
+    min-height: 48px !important;
+    gap: 2px 6px !important;
+  }
+
+  .layer-manager-line .layer-actions {
+    min-width: 84px !important;
+  }
+
+  .layer-toggle.mini span {
+    display: none !important;
+  }
+
+  .layer-toggle.mini {
+    grid-template-rows: 14px !important;
+    min-width: 15px !important;
+  }
+
+  .layer-solo-mini {
+    padding: 1px 5px !important;
+    font-size: 8px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -8465,7 +10161,7 @@ body::after {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v201-mobile-safari-hotfix';
+const APP_VERSION = 'v215-layer-manager-row-layout-fix';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -9019,6 +10715,12 @@ function LibraryPartPreview({ def }: { def: ComponentDef }) {
           <rect x={cx-8} y={cy-5} width="16" height="10" rx="1.5" fill="#f2f2ee" stroke="#050505" strokeWidth=".45"/>
           <rect x={cx-6.5} y={cy-3.5} width="13" height="7" rx=".8" fill="#111" stroke="#999" strokeWidth=".18"/>
           <rect x={cx+1.2} y={cy-2.6} width="4.5" height="5.2" rx=".8" fill="#d9d9d5" stroke="#fff" strokeWidth=".18"/>
+        </g>
+      ) : c.type === 'tact6mm' ? (
+        <g>
+          <circle cx={cx} cy={cy} r={2.55} fill="rgba(0,0,0,.45)" stroke="rgba(255,255,255,.18)" strokeWidth=".18" />
+          <circle cx={cx} cy={cy} r={1.75} fill={topColor(c)} stroke="rgba(255,255,255,.45)" strokeWidth=".16" />
+          <circle cx={cx - .42} cy={cy - .52} r=".46" fill="rgba(255,255,255,.42)" />
         </g>
       ) : isButtonLike(c) || isLedLike(c) ? (
         <g>
@@ -9708,6 +11410,7 @@ type AppAction =
   | { type: 'SET_PANEL_HP'; hp: number }
   | { type: 'ADD_COMPONENT'; def: ComponentDef; x: number; y: number }
   | { type: 'UPDATE_COMPONENT'; id: string; patch: Partial<PlacedComponent> }
+  | { type: 'UPDATE_COMPONENTS_PATCH'; ids: string[]; patch: Partial<PlacedComponent> }
   | { type: 'DELETE_SELECTED' }
   | { type: 'DELETE_COMPONENT'; id: string }
   | { type: 'CLEAR_PANEL' }
@@ -9899,6 +11602,17 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ...snapshot(state),
         components: state.components.map(c =>
           c.id === action.id ? { ...c, ...action.patch } : c
+        ),
+      });
+    }
+
+    case 'UPDATE_COMPONENTS_PATCH': {
+      const ids = new Set(action.ids);
+      if (!ids.size) return state;
+      return withHistory(state, {
+        ...snapshot(state),
+        components: state.components.map(c =>
+          ids.has(c.id) ? { ...c, ...action.patch } : c
         ),
       });
     }
@@ -10808,7 +12522,8 @@ function defaultTopColor(c: ComponentDef): string {
   if (c.type === 'led3mm' || c.type === 'tactled' || c.type === 'fader20led') return '#ef4444';
   if (c.type === 'jack' || c.type === 'slimjack') return '#111827';
   if (c.type === 'toggle' || c.type === 'slideSwitchMini') return '#f3f4f6';
-  if (c.type === 'tact6mm' || c.type === 'momentary12') return '#3b82f6';
+  if (c.type === 'tact6mm') return '#b9bec4';
+  if (c.type === 'momentary12') return '#3b82f6';
   if (c.type === 'fader20' || c.type === 'fader35' || c.type === 'fader45') return '#e5e7eb';
   if (c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'encoder' || c.type === 'trimmer6mm') return '#202020';
   return '#9ca3af';
@@ -10846,6 +12561,9 @@ function visualKnobDiameter(c: ComponentDef): number {
 }
 
 function visualButtonRadius(c: ComponentDef): number {
+  // Tact switches expose a small round actuator/plunger, not the whole square body.
+  // TE FSM2JSM actuator is roughly Ø3.5mm; frontDiameter/rearBody describe the body/envelope.
+  if (c.type === 'tact6mm') return 3.5 / 2;
   // LED Tact 7.5mm is a PCB tact button cap: 6mm panel/cut hole, but only
   // a small 5.5mm visible top cap. It has no nut/washer and must not expand
   // to holeDiameter + clearance like normal pushbuttons.
@@ -11000,6 +12718,20 @@ const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, drag
         <path d={`M ${cx-metalRing*0.52} ${cy-metalRing*0.35} C ${cx-metalRing*0.28} ${cy-metalRing*0.68}, ${cx+metalRing*0.34} ${cy-metalRing*0.58}, ${cx+metalRing*0.54} ${cy-metalRing*0.18}`} fill="none" stroke="rgba(255,255,255,0.34)" strokeWidth={0.15} strokeLinecap="round"/>
       </g>;
     }
+    if (c.type === 'tact6mm') {
+      // TE FSM2JSM-style tact switch front view:
+      // show only the small circular actuator/plunger. The 6×6mm square body
+      // belongs to rear/body/mechanical layers, not to front/top hardware.
+      const r = visualButtonRadius(c);
+      const cap = color || '#b9bec4';
+      return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
+        <circle cx={cx} cy={cy} r={r*1.42} fill="rgba(8,10,12,0.44)" stroke="rgba(255,255,255,0.10)" strokeWidth={0.10}/>
+        <circle cx={cx} cy={cy} r={r*1.12} fill="#343a40" stroke="rgba(0,0,0,0.72)" strokeWidth={0.16}/>
+        <circle cx={cx} cy={cy} r={r*0.92} fill={cap} stroke="rgba(245,248,250,0.36)" strokeWidth={0.14}/>
+        <circle cx={cx-r*0.25} cy={cy-r*0.30} r={r*0.30} fill="rgba(255,255,255,0.36)" stroke="none"/>
+        <path d={`M ${cx-r*0.62} ${cy-r*0.06} C ${cx-r*0.42} ${cy-r*0.62}, ${cx+r*0.22} ${cy-r*0.66}, ${cx+r*0.52} ${cy-r*0.20}`} fill="none" stroke="rgba(255,255,255,0.20)" strokeWidth={0.11} strokeLinecap="round"/>
+      </g>;
+    }
     if (c.type === 'tactled') {
       // Thonk low-profile LED button / PB01-109TL style front view:
       // the visible front-panel hardware is only the round translucent cap.
@@ -11031,8 +12763,9 @@ const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, drag
     if (isButtonLike(c)) {
       const r = visualButtonRadius(c);
       return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
-        <rect x={cx-r} y={cy-r} width={r*2} height={r*2} rx={0.65} fill="#f2f2ee" stroke="#111" strokeWidth={0.2}/>
-        <rect x={cx-r*0.72} y={cy-r*0.72} width={r*1.44} height={r*1.44} rx={0.35} fill="#ffffff" stroke="rgba(0,0,0,0.35)" strokeWidth={0.12}/>
+        <circle cx={cx} cy={cy} r={r*1.12} fill="rgba(12,14,16,0.40)" stroke="rgba(255,255,255,0.12)" strokeWidth={0.14}/>
+        <circle cx={cx} cy={cy} r={r} fill={color} stroke="rgba(255,255,255,0.30)" strokeWidth={0.16}/>
+        <circle cx={cx-r*0.25} cy={cy-r*0.30} r={r*0.28} fill="rgba(255,255,255,0.36)" stroke="none"/>
       </g>;
     }
     if (c.type === 'toggle') {
@@ -12472,18 +14205,61 @@ function MobileQuickAdd({ hidden }: { hidden: boolean }) {
   </>;
 }
 
-function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?: (def: ComponentDef, stamp: boolean) => void } = {}) {
+function ComponentLibraryPanel({ onStartPartPlacement, headless = false }: { onStartPartPlacement?: (def: ComponentDef, stamp: boolean) => void; headless?: boolean } = {}) {
   const dispatch = useAppDispatch();
   const state    = useAppState();
-  const widthMM  = panelWidthMM(state.panel);
   const allParts = [...COMPONENT_LIBRARY, ...state.customParts];
   const [replaceMode, setReplaceMode] = useState(false);
   const [partSearch, setPartSearch] = useState('');
   const [partCategory, setPartCategory] = useState<'all' | NonNullable<ComponentDef['category']>>('all');
-  const [renderLimit, setRenderLimit] = useState(36);
+  const [renderLimit, setRenderLimit] = useState(48);
+  const [libraryOpen, setLibraryOpen] = useState(false);
   const [favoriteKeys, setFavoriteKeys] = useState<string[]>(() => readStringListStorage(UX_FAVORITE_PARTS_KEY));
   const [recentKeys, setRecentKeys] = useState<string[]>(() => readStringListStorage(UX_RECENT_PARTS_KEY));
-  useEffect(() => { setRenderLimit(36); }, [partSearch, partCategory, state.customParts.length]);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const [popoverPos, setPopoverPos] = useState<{ left: number; top: number }>({ left: 330, top: 80 });
+
+  useEffect(() => { setRenderLimit(48); }, [partSearch, partCategory, state.customParts.length]);
+
+  useEffect(() => {
+    if (!headless) return;
+    function openLibraryFromCanvas() {
+      setLibraryOpen(true);
+      setRenderLimit(v => Math.max(v, 48));
+    }
+    window.addEventListener('open-component-library-picker', openLibraryFromCanvas as EventListener);
+    return () => window.removeEventListener('open-component-library-picker', openLibraryFromCanvas as EventListener);
+  }, [headless]);
+
+  useEffect(() => {
+    if (!libraryOpen) return;
+    function updatePos() {
+      const r = triggerRef.current?.getBoundingClientRect();
+      // v210: picker is centered over the SVG/workspace, not glued to toolbar/sidebar.
+      const left = Math.max(12, Math.round(window.innerWidth / 2 - 312));
+      const top = Math.max(96, Math.round(window.innerHeight / 2 - 312));
+      setPopoverPos({ left, top });
+    }
+    updatePos();
+    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') setLibraryOpen(false); }
+    function onPointerDown(e: PointerEvent) {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      if (target.closest('.component-library-popover') || target.closest('.component-library-launcher')) return;
+      setLibraryOpen(false);
+    }
+    window.addEventListener('resize', updatePos);
+    window.addEventListener('scroll', updatePos, true);
+    window.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onPointerDown, true);
+    return () => {
+      window.removeEventListener('resize', updatePos);
+      window.removeEventListener('scroll', updatePos, true);
+      window.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onPointerDown, true);
+    };
+  }, [libraryOpen]);
+
   const visibleParts = allParts.filter(def => {
     const q = partSearch.trim().toLowerCase();
     const cat = def.category ?? inferCategoryForType(def.type);
@@ -12495,7 +14271,6 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
   const sortedVisibleParts = sortComponentDefs(visibleParts);
   const displayedParts = sortedVisibleParts.slice(0, renderLimit);
   const hiddenPartCount = Math.max(0, sortedVisibleParts.length - displayedParts.length);
-  const suppressNextLibraryClickRef = useRef(false);
 
   function refreshLibraryMemory() {
     setRecentKeys(readStringListStorage(UX_RECENT_PARTS_KEY));
@@ -12512,21 +14287,21 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
 
   function startPlacement(def: ComponentDef) {
     rememberRecentPart(def);
-    if (onStartPartPlacement) {
-      onStartPartPlacement(def, false);
-    } else {
-      sendPartPlacementEvent(def, false);
-    }
+    setLibraryOpen(false);
+    if (onStartPartPlacement) onStartPartPlacement(def, false);
+    else sendPartPlacementEvent(def, false);
     refreshLibraryMemory();
   }
 
   function addComponent(def: ComponentDef) {
     if (replaceMode && state.selected.length > 0) {
+      setLibraryOpen(false);
       dispatch({ type: 'REPLACE_SELECTED_WITH_PART', def });
       return;
     }
     startPlacement(def);
   }
+
   function saveSelectedAsPart() {
     const c = state.components.find(cc => cc.id === state.selected[0]);
     if (!c) return alert('Select one component first.');
@@ -12557,11 +14332,25 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
   function holeText(def: ComponentDef) {
     return def.holeType === 'slot' ? `${def.holeDiameter}×${def.slotLength ?? def.holeDiameter}` : def.holeType === 'rect' ? `${def.holeW ?? def.frontW}×${def.holeH ?? def.frontH}` : `Ø${def.holeDiameter}`;
   }
-  return (
-    <div className="section" data-component-library="true">
-      <div className="section-title">Component Library</div>
-      <input className="mini-input library-search-compact" type="text" placeholder="Search parts…" value={partSearch} onChange={e => setPartSearch(e.target.value)} />
-      <div className="field-pair library-filter-row">
+
+  const popover = libraryOpen ? ReactDOM.createPortal(
+    <div
+      className="component-library-popover"
+      style={{ left: popoverPos.left, top: popoverPos.top }}
+      onPointerDown={e => e.stopPropagation()}
+      onClick={e => e.stopPropagation()}
+      onWheel={e => e.stopPropagation()}
+    >
+      <div className="component-library-popover-head">
+        <div>
+          <strong>Component Library</strong>
+          <span>{displayedParts.length}/{sortedVisibleParts.length} parts</span>
+        </div>
+        <button onClick={() => setLibraryOpen(false)}>×</button>
+      </div>
+
+      <div className="component-library-popover-controls">
+        <input className="mini-input library-search-compact" autoFocus type="text" placeholder="Search parts…" value={partSearch} onChange={e => setPartSearch(e.target.value)} />
         <select className="mini-input library-category-select-wide" value={partCategory} onChange={e => setPartCategory(e.target.value as any)}>
           <option value="all">All component types</option>
           <option value="potentiometer">Potentiometers</option>
@@ -12573,44 +14362,62 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
           <option value="custom">Custom</option>
         </select>
       </div>
-      {(partSearch.trim() || partCategory !== 'all') && (
-        <div className="library-active-filter-row">
-          <span>{sortedVisibleParts.length} match{sortedVisibleParts.length === 1 ? '' : 'es'}</span>
-          <button onClick={() => { setPartSearch(''); setPartCategory('all'); }}>Clear filters</button>
-        </div>
-      )}
+
       {(recentKeys.length > 0 || favoriteKeys.length > 0) && !partSearch.trim() && partCategory === 'all' && (
-        <div className="library-memory-row">
-          {favoriteKeys.length > 0 && <div><b>Favorites</b>{favoriteKeys.slice(0, 5).map(k => allParts.find(p => partStableKey(p) === k)).filter(Boolean).map((p:any) => <button key={partStableKey(p)} onClick={() => startPlacement(p)}>{shortPartName(p)}</button>)}</div>}
-          {recentKeys.length > 0 && <div><b>Recent</b>{recentKeys.slice(0, 5).map(k => allParts.find(p => partStableKey(p) === k)).filter(Boolean).map((p:any) => <button key={partStableKey(p)} onClick={() => startPlacement(p)}>{shortPartName(p)}</button>)}</div>}
+        <div className="library-memory-row popover-memory-row">
+          {favoriteKeys.length > 0 && <div><b>Favorites</b>{favoriteKeys.slice(0, 5).map(k => allParts.find(p => partStableKey(p) === k)).filter(Boolean).map((p:any) => <button key={partStableKey(p)} onClick={() => addComponent(p)}>{shortPartName(p)}</button>)}</div>}
+          {recentKeys.length > 0 && <div><b>Recent</b>{recentKeys.slice(0, 5).map(k => allParts.find(p => partStableKey(p) === k)).filter(Boolean).map((p:any) => <button key={partStableKey(p)} onClick={() => addComponent(p)}>{shortPartName(p)}</button>)}</div>}
         </div>
       )}
-      {visibleParts.length === 0 && <div style={{ color:'#777', fontSize:12, padding:'8px 0' }}>No parts match the filter.</div>}
-      {visibleParts.length > 0 && <div className="library-render-note">Rendering {displayedParts.length} of {sortedVisibleParts.length} matching parts. Use search/filter or Load more.</div>}
-      {displayedParts.map((def, idx) => (
-        <div
-          key={`${def.name}-${idx}`}
-          className={`comp-lib-item real-part-tile ${(def.verificationStatus || 'approximate') === 'approximate' ? 'approx' : ''}`}
-          title={`${replaceMode ? 'Replace selected component(s) with this part' : 'Click to choose, then click the panel to place. Use Repeat to place more.'}\n\n${partTooltip(def)}`}
-          onClick={() => addComponent(def)}
-        >
+
+      {visibleParts.length === 0 && <div className="component-library-empty">No parts match the filter.</div>}
+
+      <div className="component-icon-grid popover-component-grid" role="list" aria-label="Component library">
+        {displayedParts.map((def, idx) => (
           <button
-            className={`part-favorite-mini ${favoriteKeys.includes(partStableKey(def)) ? 'active' : ''}`}
-            title={favoriteKeys.includes(partStableKey(def)) ? 'Remove from favorites' : 'Add to favorites'}
-            onClick={e => { e.stopPropagation(); toggleFavorite(def); }}
-          >★</button>
-          <LibraryPartPreview def={def} />
-          <div className="part-card-main">
-            <strong>{shortPartName(def)}</strong>
-            <small>{def.name}</small>
-            <span>{holeText(def)} · {def.rearDepth}mm deep</span>
-          </div>
-          {state.customParts.some(p => p.name === def.name) && <button className="part-delete-mini" onClick={e => { e.stopPropagation(); dispatch({ type:'DELETE_CUSTOM_PART', name:def.name }); }}>×</button>}
-        </div>
-      ))}
+            key={`${def.name}-${idx}`}
+            type="button"
+            className={`component-icon-card comp-lib-item real-part-tile ${(def.verificationStatus || 'approximate') === 'approximate' ? 'approx' : ''}`}
+            title={`${replaceMode ? 'Replace selected component(s) with this part' : 'Click to choose, then click the panel to place. Use Repeat to place more.'}\n\n${partTooltip(def)}`}
+            onClick={() => addComponent(def)}
+          >
+            <span
+              className={`part-favorite-mini ${favoriteKeys.includes(partStableKey(def)) ? 'active' : ''}`}
+              title={favoriteKeys.includes(partStableKey(def)) ? 'Remove from favorites' : 'Add to favorites'}
+              onClick={e => { e.stopPropagation(); toggleFavorite(def); }}
+            >★</span>
+            <span className="component-icon-preview"><LibraryPartPreview def={def} /></span>
+            <span className="component-icon-name">{shortPartName(def)}</span>
+            <span className="component-icon-meta">{holeText(def)}</span>
+            {state.customParts.some(p => p.name === def.name) && <span className="part-delete-mini" onClick={e => { e.stopPropagation(); dispatch({ type:'DELETE_CUSTOM_PART', name:def.name }); }}>×</span>}
+          </button>
+        ))}
+      </div>
+
       {hiddenPartCount > 0 && (
-        <button className="library-load-more" onClick={() => setRenderLimit(v => v + 36)}>Load more ({hiddenPartCount} hidden)</button>
+        <button className="library-load-more" onClick={() => setRenderLimit(v => v + 48)}>Load more ({hiddenPartCount} hidden)</button>
       )}
+    </div>,
+    document.body
+  ) : null;
+
+  if (headless) return <>{popover}</>;
+
+  return (
+    <div className="section component-library-shell" data-component-library="true">
+      <div className="section-title">Component Library</div>
+      <button
+        ref={triggerRef}
+        className={`component-library-launcher ${libraryOpen ? 'active' : ''}`}
+        onClick={() => setLibraryOpen(v => !v)}
+      >
+        <span className="launcher-icon-grid">▦</span>
+        <span>
+          <b>Open component picker</b>
+          <small>{allParts.length} parts · icon grid</small>
+        </span>
+      </button>
+
       <details className="library-tools-compact library-tools-footer">
         <summary>Tools</summary>
         <label className="library-replace-compact" title="When enabled, clicking a part replaces the selected components while keeping their ref/label/position/rotation.">
@@ -12626,9 +14433,11 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
           <input id="parts-import-input" type="file" accept=".json" style={{ display: 'none' }} onChange={importParts} />
         </div>
       </details>
+      {popover}
     </div>
   );
 }
+
 
 function TextPanel() {
   const state = useAppState();
@@ -12940,19 +14749,31 @@ function PropertiesPanel() {
     );
   }
 
-  if (selComps.length > 1) {
+  const sameEditableKind = selComps.length <= 1 || selComps.every(c =>
+    c.type === selComps[0].type &&
+    c.name === selComps[0].name &&
+    c.holeType === selComps[0].holeType
+  );
+
+  if (selComps.length > 1 && !sameEditableKind) {
+    const types = [...new Set(selComps.map(c => c.name || c.type))].slice(0, 4).join(', ');
     return (
       <div className="section">
         <div className="section-title">{selComps.length} selected</div>
-        <div style={{ color: '#666', fontSize: 11 }}>Use align tools below.</div>
+        <div className="multi-edit-note warn">Mixed component types selected. Multi-edit is available when all selected parts are the same type.</div>
+        <div style={{ color: '#788b92', fontSize: 11, marginTop: 6 }}>Selected: {types}{selComps.length > 4 ? '…' : ''}</div>
+        <div style={{ color: '#666', fontSize: 11, marginTop: 8 }}>Use align/distribute tools below for mixed selections.</div>
       </div>
     );
   }
 
+  const isMultiEdit = selComps.length > 1;
   const c = selComps[0];
-  const linkedScales = state.scaleItems.filter(sc => sc.componentId === c.id);
+  const linkedScales = isMultiEdit ? [] : state.scaleItems.filter(sc => sc.componentId === c.id);
   const patch = (p: Partial<PlacedComponent>) =>
-    dispatch({ type: 'UPDATE_COMPONENT', id: c.id, patch: p });
+    isMultiEdit
+      ? dispatch({ type: 'UPDATE_COMPONENTS_PATCH', ids: selComps.map(c => c.id), patch: p })
+      : dispatch({ type: 'UPDATE_COMPONENT', id: c.id, patch: p });
   const category = c.category ?? inferCategoryForType(c.type);
   const showKnobControls = category === 'potentiometer' || category === 'encoder' || isPotLike(c);
   const showFaderControls = category === 'fader' || isFaderLike(c);
@@ -12960,14 +14781,20 @@ function PropertiesPanel() {
   const applyToSameType = (patchObj: Partial<PlacedComponent>) => dispatch({ type: 'APPLY_TO_SAME_TYPE', sourceId: c.id, patch: patchObj });
 
   return (
-    <div className="section" data-component-properties="true">
-      <div className="section-title">{c.name}</div>
-      <ComponentSourceCard c={c} />
+    <div className={`section ${isMultiEdit ? 'multi-edit-active' : ''}`} data-component-properties="true">
+      <div className="section-title">{isMultiEdit ? `${selComps.length} × ${shortPartName(c)}` : c.name}</div>
+      {isMultiEdit ? (
+        <div className="multi-edit-note ok">
+          Multi-edit mode: changes are applied to all {selComps.length} selected matching components.
+        </div>
+      ) : <ComponentSourceCard c={c} />}
 
       <div className="field-pair">
         <div className="field-row">
           <label>Reference</label>
-          <input type="text" value={c.ref || ''}
+          <input type="text" value={isMultiEdit ? '— multiple refs —' : (c.ref || '')}
+            disabled={isMultiEdit}
+            title={isMultiEdit ? 'References stay unique in multi-edit mode.' : 'Reference'}
             onChange={e => patch({ ref: e.target.value })} />
         </div>
         <div className="field-row">
@@ -12995,9 +14822,10 @@ function PropertiesPanel() {
         <div className="field-row"><label>Verification</label><select value={c.verificationStatus || 'approximate'} onChange={e => patch({ verificationStatus: e.target.value as PartVerificationStatus })}><option value="approximate">Approximate</option><option value="datasheet">From datasheet</option><option value="measured">Measured</option><option value="production">Production verified</option></select></div>
       </div>
       <div className="field-row"><label>Verification note</label><textarea value={c.verification || ''} onChange={e => patch({ verification: e.target.value })} placeholder="e.g. dimensions from datasheet page 2, measured with calipers, production verified…"/></div>
+      {isMultiEdit && <div className="multi-edit-note subtle">Reference is protected, but label, geometry, hardware, color, verification and manufacturing parameters apply to the whole selection.</div>}
       <div className="btn-row" style={{ marginBottom: 6 }}>
-        <button title="Apply manufacturer, part number, datasheet, category, verification and panel-thickness data to all matching parts of the same type." onClick={() => applyToSameType({ manufacturer: c.manufacturer, partNumber: c.partNumber, datasheetUrl: c.datasheetUrl, category: c.category, verificationStatus: c.verificationStatus, panelThicknessMin: c.panelThicknessMin, panelThicknessMax: c.panelThicknessMax })}>Apply part info to same type</button>
-        <button title="Apply hole, front, rear body, keepout and pin keepout dimensions to all matching parts of the same type." onClick={() => applyToSameType({ holeDiameter: c.holeDiameter, holeType: c.holeType, slotLength: c.slotLength, holeW: c.holeW, holeH: c.holeH, frontDiameter: c.frontDiameter, frontShape: c.frontShape, frontW: c.frontW, frontH: c.frontH, rearBodyW: c.rearBodyW, rearBodyH: c.rearBodyH, rearDepth: c.rearDepth, keepoutW: c.keepoutW, keepoutH: c.keepoutH, pinKeepoutW: c.pinKeepoutW, pinKeepoutH: c.pinKeepoutH, minSpacing: c.minSpacing })}>Apply dimensions to same type</button>
+        <button disabled={isMultiEdit} title={isMultiEdit ? 'Already editing selected matching parts.' : 'Apply manufacturer, part number, datasheet, category, verification and panel-thickness data to all matching parts of the same type.'} onClick={() => applyToSameType({ manufacturer: c.manufacturer, partNumber: c.partNumber, datasheetUrl: c.datasheetUrl, category: c.category, verificationStatus: c.verificationStatus, panelThicknessMin: c.panelThicknessMin, panelThicknessMax: c.panelThicknessMax })}>Apply part info to same type</button>
+        <button title="Apply hole, front, rear body, keepout and pin keepout dimensions to all matching parts of the same type." onClick={() => applyToSameType({ holeDiameter: c.holeDiameter, holeType: c.holeType, slotLength: c.slotLength, holeW: c.holeW, holeH: c.holeH, frontDiameter: c.frontDiameter, frontShape: c.frontShape, frontW: c.frontW, frontH: c.frontH, rearBodyW: c.rearBodyW, rearBodyH: c.rearBodyH, rearDepth: c.rearDepth, keepoutW: c.keepoutW, keepoutH: c.keepoutH, pinKeepoutW: c.pinKeepoutW, pinKeepoutH: c.pinKeepoutH, minSpacing: c.minSpacing })} disabled={isMultiEdit}>Apply dimensions to same type</button>
       </div>
 
       <div className="field-pair">
@@ -13426,30 +15254,34 @@ function LayersPanel(){
   const opacity = (k:keyof LayerVisibility) => state.layerOpacity?.[k] ?? 1;
   function setAll(value:boolean){ const patch:Partial<LayerVisibility>={}; labels.forEach(([k])=>patch[k]=value); dispatch({type:'SET_LAYER_VISIBILITY_BULK',patch}); }
   function solo(k:keyof LayerVisibility){ const patch:Partial<LayerVisibility>={}; labels.forEach(([key])=>patch[key]=key===k); dispatch({type:'SET_LAYER_VISIBILITY_BULK',patch}); }
-  return <div className="section"><div className="section-title">Layer Manager</div>
-    <div className="field-row"><label>Hardware render</label><select value={state.hardwareRenderMode || 'auto'} onChange={e=>dispatch({type:'SET_HARDWARE_RENDER_MODE',mode:e.target.value as HardwareRenderMode})}><option value="auto">Auto: realistic when idle</option><option value="classic">Classic / fastest</option><option value="realistic">Realistic / detailed</option><option value="off">Off</option></select></div>
-    <label className="perf-toggle"><input type="checkbox" checked={state.mobilePerformanceMode !== false} onChange={e=>dispatch({type:'SET_MOBILE_PERFORMANCE_MODE',value:e.target.checked})}/> Mobile performance mode</label>
-    <div className="layer-manager-summary"><span>{visibleCount}/{labels.length} visible</span><span>Opacity is saved in project JSON</span></div>
-    <div className="btn-row layer-manager-presets" style={{ marginBottom: 8 }}>
-      <button title="Mechanical view: holes, rear bodies, keepouts, PCB" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mechanical</button>
+  return <div className="section compact-layer-manager"><div className="section-title">Layer Manager</div>
+    <div className="field-row compact-render-row"><label>Hardware render</label><select value={state.hardwareRenderMode || 'auto'} onChange={e=>dispatch({type:'SET_HARDWARE_RENDER_MODE',mode:e.target.value as HardwareRenderMode})}><option value="auto">Auto: realistic when idle</option><option value="classic">Classic / fastest</option><option value="realistic">Realistic / detailed</option><option value="off">Off</option></select></div>
+    <div className="compact-layer-topline">
+      <label className="perf-toggle compact"><input type="checkbox" checked={state.mobilePerformanceMode !== false} onChange={e=>dispatch({type:'SET_MOBILE_PERFORMANCE_MODE',value:e.target.checked})}/> Mobile perf</label>
+      <span>{visibleCount}/{labels.length} visible</span>
+    </div>
+    <div className="btn-row layer-manager-presets compact">
+      <button title="Mechanical view: holes, rear bodies, keepouts, PCB" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mech</button>
       <button title="Visual view: artwork, labels, text, top hardware" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button>
       <button title="Production view: outline and cut/drill geometry only" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Prod</button>
       <button title="Show all layers" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>Debug</button>
+      <button onClick={()=>setAll(true)}>All</button>
+      <button onClick={()=>setAll(false)}>None</button>
     </div>
-    <div className="btn-row layer-manager-presets" style={{ marginBottom: 8 }}>
-      <button onClick={()=>setAll(true)}>All on</button><button onClick={()=>setAll(false)}>All off</button>
-    </div>
-    <div className="layer-manager-table">
-      <div className="layer-manager-head"><span>Layer</span><span>Show</span><span>Opacity</span><span>Export</span><span>Solo</span></div>
-      {labels.map(([k,l,hint])=><div key={k} className={`layer-manager-row ${state.layerVisibility[k]?'on':'off'}`}>
-        <div className="layer-manager-name"><b>{l}</b><small>{hint}</small></div>
-        <label className="layer-toggle"><input type="checkbox" checked={state.layerVisibility[k]} onChange={e=>dispatch({type:'SET_LAYER_VISIBILITY',key:k,value:e.target.checked})}/></label>
-        <input className="layer-opacity" type="range" min={0.1} max={1} step={0.05} value={opacity(k)} onChange={e=>dispatch({type:'SET_LAYER_OPACITY',key:k,value:+e.target.value})}/>
-        <label className="layer-toggle" title="Export include/exclude flag for future export package presets"><input type="checkbox" checked={exportEnabled(k)} onChange={e=>dispatch({type:'SET_LAYER_EXPORT',key:k,value:e.target.checked})}/></label>
-        <button title={`Show only ${l}`} onClick={()=>solo(k)}>Solo</button>
+    <div className="layer-manager-table compact">
+      {labels.map(([k,l,hint])=><div key={k} className={`layer-manager-row compact ${state.layerVisibility[k]?'on':'off'}`}>
+        <div className="layer-manager-line">
+          <div className="layer-manager-name"><b>{l}</b><small>{hint}</small></div>
+          <input className="layer-opacity" type="range" min={0.1} max={1} step={0.05} value={opacity(k)} onChange={e=>dispatch({type:'SET_LAYER_OPACITY',key:k,value:+e.target.value})}/>
+          <div className="layer-actions">
+            <label className="layer-toggle mini" title="Show layer"><span>Show</span><input type="checkbox" checked={state.layerVisibility[k]} onChange={e=>dispatch({type:'SET_LAYER_VISIBILITY',key:k,value:e.target.checked})}/></label>
+            <label className="layer-toggle mini" title="Export include/exclude"><span>Exp</span><input type="checkbox" checked={exportEnabled(k)} onChange={e=>dispatch({type:'SET_LAYER_EXPORT',key:k,value:e.target.checked})}/></label>
+            <button className="layer-solo-mini" title={`Show only ${l}`} onClick={()=>solo(k)}>Solo</button>
+          </div>
+        </div>
       </div>)}
     </div>
-    <div className="menu-note" style={{marginTop:8}}>Export flags are used by Export Package / SVG exports. Visibility and opacity affect the editor immediately.</div>
+    <div className="menu-note compact-note">Visibility/opacity affect editor immediately. Export flags are saved in project JSON.</div>
   </div>;
 }
 
@@ -13720,6 +15552,20 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v199 adds Runtime diagnostics to Export → Report with build marker, error/warn/ok counts and top self-test messages.');
     ok('v200-rc1 adds a single APP_VERSION marker, exposes window.__PANEL_DESIGNER_VERSION and shows the build in Help/Shortcuts/Report diagnostics.');
     ok('v201-mobile-safari-hotfix syncs visualViewport height variables, darkens iOS safe-area bars, damps touch pan, and improves mobile SVG sharpness.');
+    ok('v202-mobile-bottom-overlay-fix removes the iOS body pseudo-element safe-area overlay that could cover the mobile dock with a black block.');
+    ok('v203 restores collapsible behavior for Panel/Artwork/Text/Labels/Component Library and redesigns Component Library as a 4-column icon grid.');
+    ok('v204 moves the Component Library icon grid into a Mac-like popover opened from a compact left-sidebar launcher.');
+    ok('v205 makes Component Library a top-aligned translucent shelf with four vertical rows and horizontal icon-grid flow.');
+    ok('v206 makes the Component Library popover compact and square, switches cards to square icon tiles with larger previews, vertical scrolling, and closes before placement.');
+    ok('v207 centers the Component Library picker lower on screen and changes icon cards to a non-overlapping flex layout.');
+    ok('v208 turns Component Library tiles into true app-icon cards: square cells, large centered previews, no middle text pill, and small bottom labels.');
+    ok('v209 hard-resets Component Library card layout: panel is 20% larger, grid rows are fixed, and icon/name/meta rows cannot overlap.');
+    ok('v210 centers the Component Library picker over the SVG/workspace and opens it on right-clicking empty canvas while preserving component context menus.');
+    ok('v211 keeps a headless Component Library picker mounted so empty-canvas right-click works in Focus mode even when sidebars are hidden.');
+    ok('v212 adds same-component multi-edit: matching selected parts share one Properties editor, with changes dispatched as a single batch patch while refs stay protected.');
+    ok('v213 renders tact6mm realistic top hardware as a small round actuator/plunger instead of a square body, with neutral grey default color.');
+    ok('v214 compacts Layer Manager into one table-like card: smaller preset buttons, inline opacity sliders, and show/export/solo controls on the right.');
+    ok('v215 fixes compact Layer Manager row layout: layer name is full-width on top, slider below, show/export/solo controls on the right.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -18097,7 +19943,14 @@ function App() {
       if (section.dataset.collapsible === 'true') return true;
       if (section.dataset.collapsible === 'false') return false;
       const title = (section.querySelector('.section-title')?.textContent || '').toLowerCase();
+      const explicitLeftSidebarSection =
+        title.includes('project') ||
+        title === 'panel' ||
+        title.includes('artwork') ||
+        title.includes('text / labels') ||
+        title.includes('component library');
       const longOrAdvanced =
+        explicitLeftSidebarSection ||
         title.includes('undo history') ||
         title.includes('warnings') ||
         title.includes('drill table') ||
@@ -18105,8 +19958,7 @@ function App() {
         title.includes('autosave') ||
         title.includes('assistant') ||
         title.includes('library tools') ||
-        title.includes('custom parts') ||
-        title.includes('project');
+        title.includes('custom parts');
       return longOrAdvanced;
     }
 
@@ -18114,6 +19966,7 @@ function App() {
       if (section.dataset.defaultOpen === 'true') return true;
       if (!isCollapsibleSection(section)) return true;
       const title = (section.querySelector('.section-title')?.textContent || '').toLowerCase();
+      if (title.includes('project')) return false;
       if (title.includes('undo history')) return false;
       if (title.includes('autosave')) return false;
       if (title.includes('library tools')) return false;
@@ -18994,9 +20847,15 @@ function App() {
   function onSVGContextMenu(e: React.MouseEvent<SVGSVGElement>) {
     const el = e.target as Element;
     const group = el.closest('[data-id]') as SVGElement | null;
-    if (!group) return;
     e.preventDefault();
     e.stopPropagation();
+
+    if (!group) {
+      setComponentMenu(null);
+      window.dispatchEvent(new CustomEvent('open-component-library-picker'));
+      return;
+    }
+
     const id = group.getAttribute('data-id')!;
     dispatch({ type: 'SELECT', ids: [id], additive: false });
     setComponentMenu({ id, x: e.clientX, y: e.clientY });
@@ -20117,6 +21976,7 @@ function App() {
           onTouchEnd={onDrawerSwipeEnd}
           onStartPartPlacement={startPartPlacement}
         />
+        <ComponentLibraryPanel headless onStartPartPlacement={startPartPlacement} />
         <SVGCanvas
           svgRef={svgRef}
           zoom={zoom}
