@@ -7668,6 +7668,660 @@ select {
   }
 }
 
+
+/* v187 CSS cleanup lite / legacy conflict guard
+   This intentionally consolidates the most fragile duplicated UI surfaces
+   without physically deleting old CSS blocks yet. */
+:root {
+  --workspace-hud-z: 1400;
+  --workspace-popover-z: 5200;
+}
+
+/* Single source of truth for canvas overlay positioning. */
+.canvas-wrap > .workspace-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: var(--workspace-hud-z) !important;
+  pointer-events: none !important;
+}
+
+.canvas-wrap > .workspace-overlay .hud-zone {
+  position: absolute !important;
+  pointer-events: none !important;
+  min-width: 0 !important;
+}
+
+.canvas-wrap > .workspace-overlay .hud-zone > * {
+  pointer-events: auto !important;
+}
+
+/* Kill old duplicated HUD positions, but only inside the current overlay. */
+.canvas-wrap > .workspace-overlay .dfm-status-float,
+.canvas-wrap > .workspace-overlay .dfm-status-main,
+.canvas-wrap > .workspace-overlay .selection-action-toolbar,
+.canvas-wrap > .workspace-overlay .selection-info-strip,
+.canvas-wrap > .workspace-overlay .coord-readout,
+.canvas-wrap > .workspace-overlay .placement-status-pill,
+.canvas-wrap > .workspace-overlay .snap-feedback-badge {
+  position: static !important;
+  inset: auto !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+.canvas-wrap > .workspace-overlay .hud-bottom-left {
+  left: 10px !important;
+  bottom: 10px !important;
+  max-width: min(430px, 33vw) !important;
+}
+
+.canvas-wrap > .workspace-overlay .hud-bottom-center {
+  left: 50% !important;
+  bottom: 10px !important;
+  transform: translateX(-50%) !important;
+  max-width: min(760px, calc(100vw - 820px)) !important;
+}
+
+.canvas-wrap > .workspace-overlay .hud-bottom-right {
+  right: 10px !important;
+  bottom: 10px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 8px !important;
+  max-width: min(440px, 30vw) !important;
+}
+
+.canvas-wrap > .workspace-overlay .hud-top-center {
+  left: 50% !important;
+  top: 10px !important;
+  transform: translateX(-50%) !important;
+  max-width: min(560px, calc(100vw - 48px)) !important;
+}
+
+.canvas-wrap > .workspace-overlay .hud-top-right {
+  right: 10px !important;
+  top: 10px !important;
+  max-width: min(420px, 32vw) !important;
+}
+
+/* Selection HUD must be one element: old measuring float is always legacy now. */
+.selection-measure-float {
+  display: none !important;
+}
+
+/* Coordinate pills are canvas-local only; never allow them to drift into sidebars. */
+.canvas-wrap > .workspace-overlay .selection-info-strip,
+.canvas-wrap > .workspace-overlay .coord-readout {
+  white-space: nowrap !important;
+  width: auto !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Inspector rail: one position, one opening direction. */
+.canvas-wrap > .workspace-overlay .inspector-rail {
+  position: absolute !important;
+  right: 8px !important;
+  top: 84px !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  z-index: calc(var(--workspace-hud-z) + 20) !important;
+}
+
+.canvas-wrap > .workspace-overlay .inspector-rail-popover {
+  left: auto !important;
+  right: calc(100% + 6px) !important;
+  top: 0 !important;
+  max-width: min(420px, calc(100vw - 96px)) !important;
+  z-index: var(--workspace-popover-z) !important;
+}
+
+/* Toolbar/export/template popovers consume their own scroll and should not zoom canvas. */
+.toolbar-popover,
+.export-dialog-panel,
+.mobile-bottom-sheet,
+.template-dialog,
+.local-projects-modal {
+  overscroll-behavior: contain !important;
+}
+
+/* Make the right inspector tabs stable after several label/width migrations. */
+.sidebar-right-tabs .right-tab-strip.primary,
+.sidebar-right-tabs .right-tab-strip.secondary {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.sidebar-right-tabs .right-tab-strip.primary button,
+.sidebar-right-tabs .right-tab-strip.secondary button {
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Component Library final filter: status filter is gone; do not let old 2-col rules win. */
+.section[data-component-library="true"] .library-filter-row {
+  grid-template-columns: 1fr !important;
+}
+
+/* Preview mode is product-only; hide all editing chrome consistently. */
+.app.preview-mode .workspace-overlay,
+.app.preview-mode .canvas-hud,
+.app.preview-mode .selection-handles,
+.app.preview-mode .selection-badge,
+.app.preview-mode .component-hover-card,
+.app.preview-mode .snap-feedback-badge,
+.app.preview-mode .ruler-overlay,
+.app.preview-mode .selection-measure-float {
+  display: none !important;
+}
+
+@media (max-width: 1320px) {
+  .canvas-wrap > .workspace-overlay .hud-bottom-center {
+    max-width: min(560px, calc(100vw - 650px)) !important;
+  }
+  .canvas-wrap > .workspace-overlay .hud-bottom-left {
+    max-width: 310px !important;
+  }
+  .canvas-wrap > .workspace-overlay .hud-bottom-right {
+    max-width: 320px !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  .canvas-wrap > .workspace-overlay .hud-bottom-left {
+    display: none !important;
+  }
+  .canvas-wrap > .workspace-overlay .hud-bottom-center {
+    left: 10px !important;
+    right: 10px !important;
+    transform: none !important;
+    max-width: none !important;
+  }
+  .canvas-wrap > .workspace-overlay .hud-bottom-right {
+    right: 10px !important;
+    bottom: 54px !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .canvas-wrap > .workspace-overlay .inspector-rail,
+  .canvas-wrap > .workspace-overlay .hud-bottom-left,
+  .canvas-wrap > .workspace-overlay .hud-bottom-right,
+  .canvas-wrap > .workspace-overlay .hud-top-right {
+    display: none !important;
+  }
+  .canvas-wrap > .workspace-overlay .hud-bottom-center {
+    left: calc(8px + var(--safe-left, 0px)) !important;
+    right: calc(8px + var(--safe-right, 0px)) !important;
+    bottom: calc(var(--safe-bottom, 0px) + 82px) !important;
+    transform: none !important;
+    max-width: none !important;
+  }
+  .canvas-wrap > .workspace-overlay .hud-top-center {
+    top: auto !important;
+    bottom: calc(var(--safe-bottom, 0px) + 92px) !important;
+    left: calc(8px + var(--safe-left, 0px)) !important;
+    right: calc(8px + var(--safe-right, 0px)) !important;
+    transform: none !important;
+    max-width: none !important;
+  }
+}
+
+
+/* v188 Export dialog tabs */
+.export-dialog-panel-tabbed {
+  max-width: min(760px, calc(100vw - 28px)) !important;
+}
+
+.export-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.export-dialog-subtitle {
+  color: #91a6ad;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+.export-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 12px 0;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,.025);
+}
+
+.export-tabs button {
+  min-height: 40px !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(255,255,255,.075) !important;
+  background: transparent !important;
+  color: #9dafb6 !important;
+}
+
+.export-tabs button:last-child {
+  border-right: 0 !important;
+}
+
+.export-tabs button.active {
+  color: #dffcff !important;
+  background: rgba(46,233,255,.11) !important;
+  box-shadow: inset 0 -2px 0 rgba(46,233,255,.70) !important;
+}
+
+.export-tab-body {
+  min-height: 220px;
+}
+
+.export-action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+
+.export-action-grid button {
+  min-height: 38px !important;
+}
+
+.export-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 10px;
+  margin: 8px 0 12px;
+}
+
+.export-option-row,
+.kicad-export-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 7px 9px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 11px;
+  background: rgba(255,255,255,.025);
+  color: #ccdce1;
+  font-size: 11.5px;
+}
+
+.export-option-row input,
+.kicad-export-option input {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .export-action-grid,
+  .export-options-grid,
+  .kicad-export-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .export-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* v189 KiCad export QA/presets */
+.kicad-preset-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+
+.kicad-preset-row button {
+  min-height: 34px !important;
+  border-radius: 12px !important;
+  font-size: 11.5px !important;
+}
+
+.kicad-origin-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.075);
+  background: rgba(255,255,255,.025);
+}
+
+.kicad-origin-row span {
+  color: #9db0b7;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.kicad-origin-row select {
+  width: 100%;
+  min-height: 34px;
+}
+
+@media (max-width: 700px) {
+  .kicad-preset-row {
+    grid-template-columns: 1fr;
+  }
+  .kicad-origin-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* v191 Mobile QA / stability guard */
+@media (max-width: 860px) {
+  html,
+  body,
+  #root,
+  .app {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+  }
+
+  .canvas-wrap,
+  .panel-canvas-svg,
+  .panel-canvas-svg * {
+    touch-action: none !important;
+  }
+
+  .mobile-main-dock,
+  .mobile-bottom-sheet,
+  .mobile-sheet-backdrop {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-main-dock {
+    max-width: calc(100vw - 20px - var(--safe-left, 0px) - var(--safe-right, 0px)) !important;
+    touch-action: pan-x !important;
+    overscroll-behavior: contain !important;
+  }
+
+  .mobile-main-dock button {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .mobile-bottom-sheet {
+    max-height: min(64dvh, 540px) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    touch-action: pan-y !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .mobile-bottom-sheet button,
+  .mobile-bottom-sheet input,
+  .mobile-bottom-sheet select,
+  .mobile-bottom-sheet textarea {
+    touch-action: manipulation !important;
+  }
+
+  .export-dialog-panel,
+  .command-palette,
+  .toolbar-popover {
+    max-width: calc(100vw - 18px) !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
+  }
+
+  .workspace-overlay .placement-status-pill {
+    touch-action: manipulation !important;
+  }
+
+  .mobile-sidebar-backdrop.visible {
+    touch-action: none !important;
+  }
+
+  .sidebar-left.open,
+  .sidebar-right.open {
+    max-width: calc(100vw - 24px) !important;
+    touch-action: pan-y !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+
+/* v193 Right Inspector / sidebar collapse cleanup */
+.section.not-collapsible > .section-title {
+  cursor: default !important;
+}
+
+.section.not-collapsible > .section-title::after {
+  content: "" !important;
+}
+
+.section.not-collapsible.collapsed > *:not(.section-title) {
+  display: revert !important;
+}
+
+.sidebar-right-tabs .section.not-collapsible {
+  overflow: visible !important;
+}
+
+.sidebar-right-tabs .section-title {
+  user-select: none;
+}
+
+.sidebar-right-tabs .section.collapsed > .section-title {
+  margin-bottom: 0 !important;
+}
+
+
+/* v194 Regression QA checklist */
+.regression-check-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin: 8px 0 12px;
+}
+
+.regression-check-card {
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 13px;
+  background: rgba(255,255,255,.025);
+  padding: 10px;
+}
+
+.regression-check-card strong {
+  display: block;
+  color: #dffcff;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.regression-check-card label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 5px 0;
+  color: #aebfc5;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.regression-check-card input {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 700px) {
+  .regression-check-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* v195 Inspector rail attachment cleanup */
+.canvas-wrap > .workspace-overlay .inspector-rail.inspector-rail-attached {
+  right: 8px !important;
+  top: 72px !important;
+  opacity: .96;
+  transition: opacity 140ms ease, transform 140ms ease !important;
+}
+
+.canvas-wrap > .workspace-overlay .inspector-rail.inspector-rail-attached:hover {
+  opacity: 1;
+}
+
+.app.focus-mode .inspector-rail,
+.app.preview-mode .inspector-rail {
+  display: none !important;
+}
+
+@media (max-width: 1180px) {
+  .canvas-wrap > .workspace-overlay .inspector-rail.inspector-rail-attached {
+    top: 58px !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .canvas-wrap > .workspace-overlay .inspector-rail {
+    display: none !important;
+  }
+}
+
+
+/* v196 Help / shortcuts refresh */
+.shortcut-help {
+  width: min(920px, 96vw) !important;
+}
+
+.shortcut-help-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+@media (max-width: 820px) {
+  .shortcut-help-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* v197 CSS cleanup II: section collapse visuals now match behavior */
+.section > .section-title {
+  cursor: default !important;
+}
+
+.section > .section-title::after {
+  content: "" !important;
+}
+
+.section.collapsible > .section-title {
+  cursor: pointer !important;
+}
+
+.section.collapsible > .section-title::after {
+  content: "▾" !important;
+  margin-left: auto !important;
+  color: #607078 !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+}
+
+.section.collapsible.collapsed > .section-title::after {
+  content: "▸" !important;
+}
+
+.section.not-collapsible.collapsed > *:not(.section-title) {
+  display: revert !important;
+}
+
+
+/* v199 Runtime diagnostics in Report tab */
+.runtime-diagnostics-card {
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 14px;
+  background: rgba(255,255,255,.025);
+  padding: 10px;
+  margin: 8px 0 12px;
+}
+
+.runtime-diagnostics-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.runtime-diagnostics-head strong {
+  color: #dffcff;
+  font-size: 12px;
+}
+
+.runtime-diagnostics-head span {
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.runtime-diagnostics-head span.ok { color: #62d26f; }
+.runtime-diagnostics-head span.warn { color: #ffd166; }
+.runtime-diagnostics-head span.bad { color: #ff6b75; }
+
+.runtime-diagnostics-list {
+  display: grid;
+  gap: 5px;
+  max-height: 180px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.runtime-diagnostic {
+  display: grid;
+  grid-template-columns: 48px minmax(0,1fr);
+  gap: 8px;
+  align-items: start;
+  padding: 5px 7px;
+  border-radius: 9px;
+  background: rgba(0,0,0,.16);
+  color: #aebfc5;
+  font-size: 10.5px;
+}
+
+.runtime-diagnostic b {
+  font-size: 9px;
+  letter-spacing: .08em;
+}
+
+.runtime-diagnostic.ok b { color: #62d26f; }
+.runtime-diagnostic.warn b { color: #ffd166; }
+.runtime-diagnostic.error b { color: #ff6b75; }
+
+
+/* v200 Release candidate metadata */
+.shortcut-help-head small {
+  color: #7f939a;
+  font-size: 11px;
+  font-weight: 800;
+  margin-left: 8px;
+  letter-spacing: .02em;
+}
+
 </style>
 </head>
 <body>
@@ -7682,6 +8336,7 @@ select {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
+const APP_VERSION = 'v200-rc1';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -7708,6 +8363,7 @@ interface ExportOptions {
   kicadKeepoutHints:     boolean;
   kicadRefs:             boolean;
   kicadTextLabels:       boolean;
+  kicadOrigin:           'top-left' | 'center';
 }
 
 const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
@@ -7727,6 +8383,7 @@ const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
   kicadKeepoutHints:     false,
   kicadRefs:             false,
   kicadTextLabels:       false,
+  kicadOrigin:           'top-left',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -10861,15 +11518,18 @@ function InspectorRail({ rightPanelOpen }: { rightPanelOpen: boolean }) {
   const state = useAppState();
   const dispatch = useAppDispatch();
   const [openPanel, setOpenPanel] = useState<'view' | 'layers' | 'hardware' | null>(null);
+
+  // v195: rail is an accessory of the right inspector, not a floating canvas tool.
+  // Hide it when the right inspector is closed to avoid canvas overlap/event capture.
+  if (!rightPanelOpen) return null;
   const modes: ViewMode[] = ['front', 'rear', 'drill', 'combined'];
   const labels: [keyof LayerVisibility, string][] = [
     ['grid','Grid'], ['componentHoles','Holes'], ['frontShapes','Front'], ['topHardware','Hardware'],
     ['rearBodies','Bodies'], ['rearKeepouts','Keepouts'], ['pcb','PCB'], ['text','Text'], ['artwork','Art'], ['labels','Labels']
   ];
-  const railRight = rightPanelOpen ? 8 : 12;
   const toggle = (panel: 'view' | 'layers' | 'hardware') => setOpenPanel(v => v === panel ? null : panel);
   return (
-    <div className="inspector-rail" style={{ right: railRight }} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
+    <div className="inspector-rail inspector-rail-attached" onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onWheel={e => e.stopPropagation()}>
       <button className={openPanel === 'view' ? 'active' : ''} title="View mode" onClick={() => toggle('view')}>▣</button>
       <button className={openPanel === 'layers' ? 'active' : ''} title="Layers" onClick={() => toggle('layers')}>☷</button>
       <button className={openPanel === 'hardware' ? 'active' : ''} title="Top hardware" onClick={() => toggle('hardware')}>◉</button>
@@ -11074,6 +11734,10 @@ function SVGCanvas({
   const state    = useAppState();
   const dispatch = useAppDispatch();
   const widthMM  = panelWidthMM(state.panel);
+
+  useEffect(() => {
+    (window as any).__PANEL_DESIGNER_VERSION = APP_VERSION;
+  }, []);
   const heightMM = PANEL_HEIGHT_MM;
   const PAD = 180;
   const selectedIdSet = useMemo(() => new Set(state.selected), [state.selected]);
@@ -12890,6 +13554,21 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v183 fixes KiCad text export by removing invalid justify center from gr_text effects.');
     ok('v184 changes KiCad PCB export default to holes-only: panel outline plus real NPTH holes/slots/cutouts, without front outlines, keepout hints, refs or text labels.');
     ok('v185 adds KiCad export checkboxes and rotates oval mounting-hole NPTH pads horizontal while component slots keep component rotation.');
+    ok('v186 fixes KiCad oval NPTH geometry by putting the long oval axis on local X instead of relying on footprint rotation for mounting holes.');
+    ok('v187 adds a CSS cleanup-lite guard that consolidates legacy HUD, coordinate, inspector rail, right-tab and library-filter overrides without deleting old rules.');
+    ok('v188 reorganizes the Export dialog into SVG / KiCad / Package / Report tabs so KiCad options and manufacturing actions are separated.');
+    ok('v189 adds KiCad export presets, top-left/center origin selection, and basic KiCad export QA summary/disabled empty export guard.');
+    ok('v190 refactors component and text drag-preview updates into dedicated helpers while preserving cursor-anchored normal drag and Shift smart snap.');
+    ok('v191 adds a mobile QA/stability guard: sidebar swipes ignore editor gestures/popovers, placement closes mobile sheets, and touch/overscroll behavior is tightened.');
+    ok('v192 refactors placement preview, pending/active marquee, ruler preview and rotation preview into dedicated interaction helpers.');
+    ok('v193 makes sidebar/right-inspector collapse opt-in for long advanced sections, keeping short working panels open and stable.');
+    ok('v194 adds a manual regression QA checklist to the Export → Report tab covering interaction, layout, mobile and exports/KiCad.');
+    ok('v195 attaches InspectorRail to the right inspector lifecycle: hidden when the right panel is closed, focus/preview/mobile-safe, and no longer uses inline right offsets.');
+    ok('v196 refreshes Help and Shortcuts for current workflows: Preview, Repeat placement, Shift smart snap, text inline edit, mobile gestures and KiCad export.');
+    ok('v197 completes collapse visual cleanup: sections get explicit collapsible/not-collapsible classes and arrows/cursors appear only where collapse is active.');
+    ok('v198 splits KiCad oval orientation: mounting oval holes use local X for horizontal slots, while component slots keep panel local Y plus component rotation.');
+    ok('v199 adds Runtime diagnostics to Export → Report with build marker, error/warn/ok counts and top self-test messages.');
+    ok('v200-rc1 adds a single APP_VERSION marker, exposes window.__PANEL_DESIGNER_VERSION and shows the build in Help/Shortcuts/Report diagnostics.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -14154,15 +14833,17 @@ function kicadGrText(text: string, x: number, y: number, size = 1.2, rot = 0, la
   )`;
 }
 
-function kicadNPTHFootprint(ref: string, name: string, x: number, y: number, type: 'circle' | 'oval', d: number, slotLength?: number, rot = 0, value?: string): string {
+function kicadNPTHFootprint(ref: string, name: string, x: number, y: number, type: 'circle' | 'oval', d: number, slotLength?: number, rot = 0, value?: string, ovalAxis: 'x' | 'y' = 'x'): string {
   const fp = kicadSafeName(name);
   const hole = Math.max(0.1, d || 3);
   const len = Math.max(hole, slotLength || hole);
+  // KiCad oval pads use X/Y size directly.
+  // Mounting holes need long axis on local X; component slots keep panel convention on local Y.
   const padSize = type === 'oval'
-    ? `${kicadNum(hole)} ${kicadNum(len)}`
+    ? (ovalAxis === 'x' ? `${kicadNum(len)} ${kicadNum(hole)}` : `${kicadNum(hole)} ${kicadNum(len)}`)
     : `${kicadNum(hole)} ${kicadNum(hole)}`;
   const drill = type === 'oval'
-    ? `oval ${kicadNum(hole)} ${kicadNum(len)}`
+    ? (ovalAxis === 'x' ? `oval ${kicadNum(len)} ${kicadNum(hole)}` : `oval ${kicadNum(hole)} ${kicadNum(len)}`)
     : `${kicadNum(hole)}`;
   const shape = type === 'oval' ? 'oval' : 'circle';
   return `  (footprint "PanelDesigner:${fp}" (layer "F.Cu")
@@ -14193,6 +14874,11 @@ function exportKiCadPCB(state: AppState, options: Partial<ExportOptions> = DEFAU
   const includeKeepoutHints = !!options.kicadKeepoutHints;
   const includeRefs = !!options.kicadRefs;
   const includeTextLabels = !!options.kicadTextLabels;
+  const kicadOrigin = options.kicadOrigin || 'top-left';
+  const ox = kicadOrigin === 'center' ? -widthMM / 2 : 0;
+  const oy = kicadOrigin === 'center' ? -heightMM / 2 : 0;
+  const tx = (x: number) => x + ox;
+  const ty = (y: number) => y + oy;
 
   const lines: string[] = [];
   const footprints: string[] = [];
@@ -14200,10 +14886,10 @@ function exportKiCadPCB(state: AppState, options: Partial<ExportOptions> = DEFAU
 
   // Board outline.
   if (includePanelOutline) {
-    lines.push(kicadEdgeLine(0, 0, widthMM, 0));
-    lines.push(kicadEdgeLine(widthMM, 0, widthMM, heightMM));
-    lines.push(kicadEdgeLine(widthMM, heightMM, 0, heightMM));
-    lines.push(kicadEdgeLine(0, heightMM, 0, 0));
+    lines.push(kicadEdgeLine(tx(0), ty(0), tx(widthMM), ty(0)));
+    lines.push(kicadEdgeLine(tx(widthMM), ty(0), tx(widthMM), ty(heightMM)));
+    lines.push(kicadEdgeLine(tx(widthMM), ty(heightMM), tx(0), ty(heightMM)));
+    lines.push(kicadEdgeLine(tx(0), ty(heightMM), tx(0), ty(0)));
   }
 
   // Mounting holes.
@@ -14211,11 +14897,11 @@ function exportKiCadPCB(state: AppState, options: Partial<ExportOptions> = DEFAU
     for (let i = 0; i < state.mountingHoles.holes.length; i++) {
       const h = normalizeMountingHoleRail(state.mountingHoles.holes[i]);
       if (state.mountingHoles.holeShape === 'oval') {
-        footprints.push(kicadNPTHFootprint(`MH${i + 1}`, 'Mounting_Hole_Oval', h.x, h.y, 'oval', MOUNTING_HOLE_DIAMETER_MM, state.mountingHoles.ovalLength || 4.8, 90, 'Mounting hole'));
+        footprints.push(kicadNPTHFootprint(`MH${i + 1}`, 'Mounting_Hole_Oval', tx(h.x), ty(h.y), 'oval', MOUNTING_HOLE_DIAMETER_MM, state.mountingHoles.ovalLength || 4.8, 0, 'Mounting hole', 'x'));
       } else {
-        footprints.push(kicadNPTHFootprint(`MH${i + 1}`, 'Mounting_Hole', h.x, h.y, 'circle', MOUNTING_HOLE_DIAMETER_MM, undefined, 0, 'Mounting hole'));
+        footprints.push(kicadNPTHFootprint(`MH${i + 1}`, 'Mounting_Hole', tx(h.x), ty(h.y), 'circle', MOUNTING_HOLE_DIAMETER_MM, undefined, 0, 'Mounting hole'));
       }
-      if (includeKeepoutHints && state.mountingHoles.showKeepouts) graphics.push(kicadCircle(h.x, h.y, state.mountingHoles.keepoutRadius || MOUNTING_HOLE_KEEPOUT_R_MM, 'Cmts.User', 0.06));
+      if (includeKeepoutHints && state.mountingHoles.showKeepouts) graphics.push(kicadCircle(tx(h.x), ty(h.y), state.mountingHoles.keepoutRadius || MOUNTING_HOLE_KEEPOUT_R_MM, 'Cmts.User', 0.06));
     }
   }
 
@@ -14228,17 +14914,17 @@ function exportKiCadPCB(state: AppState, options: Partial<ExportOptions> = DEFAU
     if (c.holeType === 'rect') {
       const w = c.holeW ?? c.frontW ?? c.holeDiameter ?? 3;
       const h = c.holeH ?? c.frontH ?? c.holeDiameter ?? 3;
-      if (includeRectCutouts) lines.push(...kicadRectLines(c.x, c.y, w, h, rot, 'Edge.Cuts', 0.1));
-      if (includeVisualOutlines) graphics.push(...kicadRectLines(c.x, c.y, c.frontW ?? w, c.frontH ?? h, rot, 'Dwgs.User', 0.08));
+      if (includeRectCutouts) lines.push(...kicadRectLines(tx(c.x), ty(c.y), w, h, rot, 'Edge.Cuts', 0.1));
+      if (includeVisualOutlines) graphics.push(...kicadRectLines(tx(c.x), ty(c.y), c.frontW ?? w, c.frontH ?? h, rot, 'Dwgs.User', 0.08));
     } else if (c.holeType === 'slot') {
-      if (includeComponentHoles) footprints.push(kicadNPTHFootprint(ref, c.name || c.type, c.x, c.y, 'oval', c.holeDiameter || 3, c.slotLength || c.holeDiameter || 3, rot, shortPartName(c)));
-      if (includeKeepoutHints) graphics.push(...kicadRectLines(c.x, c.y, c.keepoutW || (c.holeDiameter || 3) + 2, c.keepoutH || (c.slotLength || 3) + 2, rot, 'Cmts.User', 0.05));
+      if (includeComponentHoles) footprints.push(kicadNPTHFootprint(ref, c.name || c.type, tx(c.x), ty(c.y), 'oval', c.holeDiameter || 3, c.slotLength || c.holeDiameter || 3, rot, shortPartName(c), 'y'));
+      if (includeKeepoutHints) graphics.push(...kicadRectLines(tx(c.x), ty(c.y), c.keepoutW || (c.holeDiameter || 3) + 2, c.keepoutH || (c.slotLength || 3) + 2, rot, 'Cmts.User', 0.05));
     } else {
-      if (includeComponentHoles) footprints.push(kicadNPTHFootprint(ref, c.name || c.type, c.x, c.y, 'circle', c.holeDiameter || 3, undefined, rot, shortPartName(c)));
-      if (includeVisualOutlines) graphics.push(kicadCircle(c.x, c.y, (c.frontDiameter || c.holeDiameter || 3) / 2, 'Dwgs.User', 0.08));
-      if (includeKeepoutHints) graphics.push(kicadCircle(c.x, c.y, Math.max(c.keepoutW || 0, c.keepoutH || 0, c.holeDiameter || 3) / 2, 'Cmts.User', 0.05));
+      if (includeComponentHoles) footprints.push(kicadNPTHFootprint(ref, c.name || c.type, tx(c.x), ty(c.y), 'circle', c.holeDiameter || 3, undefined, rot, shortPartName(c)));
+      if (includeVisualOutlines) graphics.push(kicadCircle(tx(c.x), ty(c.y), (c.frontDiameter || c.holeDiameter || 3) / 2, 'Dwgs.User', 0.08));
+      if (includeKeepoutHints) graphics.push(kicadCircle(tx(c.x), ty(c.y), Math.max(c.keepoutW || 0, c.keepoutH || 0, c.holeDiameter || 3) / 2, 'Cmts.User', 0.05));
     }
-    if (includeRefs) graphics.push(kicadGrText(ref, c.x, c.y - Math.max(2.5, (c.frontDiameter || c.frontH || 6) / 2 + 2), 1.0, 0, 'F.SilkS'));
+    if (includeRefs) graphics.push(kicadGrText(ref, tx(c.x), ty(c.y) - Math.max(2.5, (c.frontDiameter || c.frontH || 6) / 2 + 2), 1.0, 0, 'F.SilkS'));
   }
   }
 
@@ -14246,7 +14932,7 @@ function exportKiCadPCB(state: AppState, options: Partial<ExportOptions> = DEFAU
   if (includeTextLabels) {
     for (const t of state.textItems) {
       if (!t.visible) continue;
-      graphics.push(kicadGrText(t.text || 'TEXT', t.x, t.y, Math.max(0.6, t.fontSizeMm || 1.2), t.rotation || 0, t.layer === 'background' ? 'B.SilkS' : 'F.SilkS'));
+      graphics.push(kicadGrText(t.text || 'TEXT', tx(t.x), ty(t.y), Math.max(0.6, t.fontSizeMm || 1.2), t.rotation || 0, t.layer === 'background' ? 'B.SilkS' : 'F.SilkS'));
     }
   }
 
@@ -15504,6 +16190,7 @@ function ExportDialog({ options, onChange, onExport, onExportMode, onExportPacka
     return { hard, warn, unverified };
   }, [warnings, state.components]);
   const { hard, warn, unverified } = exportSanity;
+  const [tab, setTab] = useState<'svg' | 'kicad' | 'package' | 'report'>('kicad');
   const [showChecklist, setShowChecklist] = useState(false);
   const checklist = [
     ['Panel HP confirmed', true],
@@ -15513,13 +16200,162 @@ function ExportDialog({ options, onChange, onExport, onExportMode, onExportPacka
     ['PCB outline checked', state.pcb.enabled],
     ['1:1 print template checked', false],
   ] as [string, boolean][];
-  return <div className="export-dialog-backdrop"><div className="export-dialog-panel"><div className="export-dialog-title">Export</div><div className="export-sanity"><strong>Export sanity:</strong><br/>Hard errors: {hard} · Warnings: {warn} · Approximate parts: {unverified}<br/>Scale: 1:1 mm. Drill/Cut and DXF exclude decorative top hardware/artwork unless the mode explicitly includes them.</div><ExportPreviewMini state={state} warnings={warnings} />
-  <div className="export-package-card"><div><strong>Manufacturing package ZIP</strong><p>Downloads one .zip with front artwork SVG, drill/cut SVG, rear keepout SVG, component CSV, DFM report and project JSON. Respects Layer Manager export flags.</p></div><button className="primary" onClick={onExportPackage}>Export ZIP</button></div>
-  <button style={{marginBottom:10}} onClick={() => setShowChecklist(!showChecklist)}>Production checklist</button>{showChecklist && <div className="export-sanity">{checklist.map(([label, ok]) => <div key={label} className="checklist-row"><span>{ok ? '✓' : '○'}</span><span>{label}</span></div>)}</div>}<div className="section-title">Quick modes</div><div className="btn-row" style={{marginBottom:12}}><button onClick={()=>onExportMode('preview')}>Preview SVG</button><button onClick={()=>onExportMode('drill')}>Drill/Cut SVG</button><button onClick={()=>onExportMode('artwork')}>Artwork SVG</button><button onClick={()=>onExportMode('debug')}>Debug SVG</button><button onClick={onExportCSV}>CSV Drill Table</button><button onClick={onExportKiCad}>KiCad PCB</button><button onClick={onExportPrintTemplate}>1:1 Print Template</button><button onClick={onExportDXF}>DXF Cut/Drill</button><button onClick={onExportReport}>DFM Report</button><button onClick={() => downloadExportPackageLooseFiles(state, warnings)}>Loose package files</button></div><div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>Preview SVG is for layout review. Use Drill/Cut SVG or the 1:1 template for fabrication checks.</div><div className="section-title">Custom SVG options</div>{rows.map(([key,label])=><div key={key} style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}><input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/><span style={{fontSize:12,color:'#ccc'}}>{label}</span></div>)}
-  <div className="section-title" style={{marginTop:12}}>KiCad PCB export</div>
-  <div className="kicad-export-grid">{kicadRows.map(([key,label])=><label key={key} className="kicad-export-option"><input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/><span>{label}</span></label>)}</div>
-  <div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>KiCad export is mechanical. Oval Eurorack mounting holes are exported horizontal; component slots follow component rotation.</div>
-  <div className="export-dialog-actions"><button onClick={onCancel}>Cancel</button><button onClick={onExportKiCad}>Export KiCad PCB</button><button className="primary" onClick={onExport}>Export SVG</button></div></div></div>;
+
+  const regressionGroups = [
+    { title: 'Interaction', items: ['Click empty canvas deselects', 'Marquee L→R and R→L', 'Drag one component', 'Drag selected group', 'Shift smart snap component', 'Text inline edit', 'Shift smart snap text'] },
+    { title: 'Layout', items: ['Focus restore panels', 'Preview/Edit view toggle', 'HUD no overlap', 'Right inspector tabs', 'Prod → Output not empty', 'Component Library filter fits'] },
+    { title: 'Mobile', items: ['Bottom dock buttons', 'Add → Repeat/Done placement', 'Side drawers scroll', 'No white edge panels', 'Dialogs scroll internally'] },
+    { title: 'Exports', items: ['SVG preview', 'Drill/Cut SVG', 'DXF Cut/Drill', 'ZIP package', 'KiCad holes only opens', 'KiCad mounting holes horizontal'] },
+  ];
+
+  const runtimeDiagnostics = useMemo(() => runRuntimeSelfTest(state, warnings), [state, warnings]);
+  const runtimeSummary = useMemo(() => {
+    const ok = runtimeDiagnostics.filter(i => i.level === 'ok').length;
+    const warn = runtimeDiagnostics.filter(i => i.level === 'warn').length;
+    const error = runtimeDiagnostics.filter(i => i.level === 'error').length;
+    return { ok, warn, error };
+  }, [runtimeDiagnostics]);
+
+  function optionRow(key: keyof ExportOptions, label: string) {
+    return (
+      <label key={key} className="export-option-row">
+        <input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/>
+        <span>{label}</span>
+      </label>
+    );
+  }
+
+  function setKiCadPreset(preset: 'holes' | 'refs' | 'debug') {
+    const base = {
+      ...options,
+      kicadPanelOutline: true,
+      kicadMountingHoles: true,
+      kicadComponentHoles: true,
+      kicadRectCutouts: true,
+    };
+    if (preset === 'holes') {
+      onChange({ ...base, kicadVisualOutlines: false, kicadKeepoutHints: false, kicadRefs: false, kicadTextLabels: false });
+    } else if (preset === 'refs') {
+      onChange({ ...base, kicadVisualOutlines: false, kicadKeepoutHints: false, kicadRefs: true, kicadTextLabels: true });
+    } else {
+      onChange({ ...base, kicadVisualOutlines: true, kicadKeepoutHints: true, kicadRefs: true, kicadTextLabels: true });
+    }
+  }
+
+  const kicadEnabledCount = kicadRows.filter(([key]) => !!options[key]).length;
+
+  return (
+    <div className="export-dialog-backdrop">
+      <div className="export-dialog-panel export-dialog-panel-tabbed">
+        <div className="export-dialog-header">
+          <div>
+            <div className="export-dialog-title">Export</div>
+            <div className="export-dialog-subtitle">Hard errors: {hard} · Warnings: {warn} · Approximate parts: {unverified}</div>
+          </div>
+          <button onClick={onCancel}>Close</button>
+        </div>
+
+        <ExportPreviewMini state={state} warnings={warnings} />
+
+        <div className="export-tabs">
+          <button className={tab === 'svg' ? 'active' : ''} onClick={() => setTab('svg')}>SVG</button>
+          <button className={tab === 'kicad' ? 'active' : ''} onClick={() => setTab('kicad')}>KiCad</button>
+          <button className={tab === 'package' ? 'active' : ''} onClick={() => setTab('package')}>Package</button>
+          <button className={tab === 'report' ? 'active' : ''} onClick={() => setTab('report')}>Report</button>
+        </div>
+
+        {tab === 'svg' && (
+          <div className="export-tab-body">
+            <div className="section-title">SVG quick modes</div>
+            <div className="export-action-grid">
+              <button onClick={()=>onExportMode('preview')}>Preview SVG</button>
+              <button onClick={()=>onExportMode('drill')}>Drill/Cut SVG</button>
+              <button onClick={()=>onExportMode('artwork')}>Artwork SVG</button>
+              <button onClick={()=>onExportMode('debug')}>Debug SVG</button>
+              <button onClick={onExportPrintTemplate}>1:1 Print Template</button>
+              <button onClick={onExportDXF}>DXF Cut/Drill</button>
+            </div>
+            <div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>Preview SVG is for layout review. Use Drill/Cut SVG, DXF or the 1:1 template for fabrication checks.</div>
+            <div className="section-title">Custom SVG options</div>
+            <div className="export-options-grid">{rows.map(([key,label]) => optionRow(key, label))}</div>
+            <div className="export-dialog-actions"><button onClick={onCancel}>Cancel</button><button className="primary" onClick={onExport}>Export SVG</button></div>
+          </div>
+        )}
+
+        {tab === 'kicad' && (
+          <div className="export-tab-body">
+            <div className="section-title">KiCad PCB mechanical export</div>
+            <div className="kicad-preset-row">
+              <button onClick={() => setKiCadPreset('holes')}>Holes only</button>
+              <button onClick={() => setKiCadPreset('refs')}>With refs/text</button>
+              <button onClick={() => setKiCadPreset('debug')}>Debug layers</button>
+            </div>
+            <div className="kicad-origin-row">
+              <span>Origin</span>
+              <select value={options.kicadOrigin || 'top-left'} onChange={e => onChange({ ...options, kicadOrigin: e.target.value as any })}>
+                <option value="top-left">Top-left panel corner</option>
+                <option value="center">Panel center</option>
+              </select>
+            </div>
+            <div className="kicad-export-grid">{kicadRows.map(([key,label]) => optionRow(key, label))}</div>
+            <div className={`warning-item ${kicadEnabledCount ? 'warn' : 'bad'}`} style={{fontSize:10,marginBottom:10}}>
+              {kicadEnabledCount ? `Mechanical export only · ${kicadEnabledCount} KiCad layer groups enabled · ${state.components.length} components · ${state.mountingHoles.enabled ? state.mountingHoles.holes.length : 0} mounting holes.` : 'Nothing selected for KiCad export.'}
+            </div>
+            <div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>Default is clean: panel Edge.Cuts plus real NPTH holes/slots/cutouts. Visual outlines/refs/text are optional debug layers.</div>
+            <div className="export-dialog-actions"><button onClick={onCancel}>Cancel</button><button className="primary" disabled={!kicadEnabledCount} onClick={onExportKiCad}>Export KiCad PCB</button></div>
+          </div>
+        )}
+
+        {tab === 'package' && (
+          <div className="export-tab-body">
+            <div className="export-package-card">
+              <div><strong>Manufacturing package ZIP</strong><p>Downloads one .zip with front artwork SVG, drill/cut SVG, rear keepout SVG, component CSV, DFM report and project JSON. Respects Layer Manager export flags.</p></div>
+              <button className="primary" onClick={onExportPackage}>Export ZIP</button>
+            </div>
+            <div className="export-action-grid">
+              <button onClick={onExportCSV}>CSV Drill Table</button>
+              <button onClick={() => downloadExportPackageLooseFiles(state, warnings)}>Loose package files</button>
+              <button onClick={() => exportJSON(state)}>Save Project JSON</button>
+            </div>
+          </div>
+        )}
+
+        {tab === 'report' && (
+          <div className="export-tab-body">
+            <button style={{marginBottom:10}} onClick={() => setShowChecklist(!showChecklist)}>Production checklist</button>
+            {showChecklist && <div className="export-sanity">{checklist.map(([label, ok]) => <div key={label} className="checklist-row"><span>{ok ? '✓' : '○'}</span><span>{label}</span></div>)}</div>}
+
+            <div className="section-title">Runtime diagnostics</div>
+            <div className="runtime-diagnostics-card">
+              <div className="runtime-diagnostics-head">
+                <strong>Build {APP_VERSION}</strong>
+                <span className={runtimeSummary.error ? 'bad' : runtimeSummary.warn ? 'warn' : 'ok'}>{runtimeSummary.error} errors · {runtimeSummary.warn} warnings · {runtimeSummary.ok} ok</span>
+              </div>
+              <div className="runtime-diagnostics-list">
+                {runtimeDiagnostics.slice(0, 10).map((item, idx) => <div key={idx} className={`runtime-diagnostic ${item.level}`}><b>{item.level.toUpperCase()}</b><span>{item.message}</span></div>)}
+              </div>
+            </div>
+
+            <div className="section-title">Regression QA checklist</div>
+            <div className="regression-check-grid">
+              {regressionGroups.map(group => (
+                <div key={group.title} className="regression-check-card">
+                  <strong>{group.title}</strong>
+                  {group.items.map(item => <label key={item}><input type="checkbox" /> <span>{item}</span></label>)}
+                </div>
+              ))}
+            </div>
+
+            <div className="export-action-grid">
+              <button onClick={onExportReport}>DFM Report</button>
+              <button onClick={onExportCSV}>CSV Drill Table</button>
+            </div>
+            <div className="export-sanity"><strong>Export sanity:</strong><br/>Hard errors: {hard} · Warnings: {warn} · Approximate parts: {unverified}<br/>Scale: 1:1 mm. Always verify real parts with datasheets/calipers before ordering a panel.</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 interface CommandItem { id: string; label: string; hint: string; run: () => void; }
@@ -15823,6 +16659,7 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
           {openMenu === 'help' && (
             <>
               <div className="menu-title">Help / quick reference</div>
+              <div className="menu-note">Build: {APP_VERSION}</div>
               <div className="help-popover-grid">
                 <div className="help-card warn">
                   <strong>Manufacturing</strong>
@@ -15833,12 +16670,16 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
                   <span>Use Add / Select / Part / View / More. Swipe the bottom dock left to hide it; tap the glass handle to restore it. Pinch to zoom.</span>
                 </div>
                 <div className="help-card">
-                  <strong>Part editing</strong>
-                  <span>Select one component and open Part. You can edit position, dimensions summary, and now add/remove linked scales.</span>
+                  <strong>Part / text editing</strong>
+                  <span>Select a component for Part properties. Text labels can be edited inline in Text / Labels and moved with Shift smart snap.</span>
                 </div>
                 <div className="help-card">
-                  <strong>Ruler / snap</strong>
-                  <span>Ruler snaps to panel/object edges and centers. Hold Shift on desktop to measure freely without snapping.</span>
+                  <strong>Snap / placement</strong>
+                  <span>Normal drag is cursor-anchored. Hold Shift for smart snap. Placement uses Repeat/Done; desktop Shift+click places another copy.</span>
+                </div>
+                <div className="help-card">
+                  <strong>KiCad export</strong>
+                  <span>Use File → Export KiCad PCB… for mechanical .kicad_pcb: holes-only, refs/text, debug layers and origin options.</span>
                 </div>
               </div>
               <div className="menu-grid two" style={{ marginTop: 10 }}>
@@ -16812,15 +17653,17 @@ function ProductionCheckDialog({ warnings, onClose, onOpenExport }: { warnings: 
 
 function ShortcutHelpOverlay({ onClose }: { onClose: () => void }) {
   const groups = [
-    { title: 'Navigation', rows: [['Ctrl/Cmd + K', 'Command palette'], ['F', 'Focus mode'], ['?', 'This help'], ['Mouse wheel', 'Zoom']] },
-    { title: 'Selection', rows: [['Click', 'Select component'], ['Shift + click', 'Add/remove selection'], ['Right click', 'Component edit menu'], ['Esc', 'Clear selection / cancel']] },
-    { title: 'Editing', rows: [['D', 'Duplicate selected'], ['R', 'Rotate selected 90°'], ['Delete / Backspace', 'Delete selected'], ['Arrow keys', 'Nudge by grid'], ['Shift + Arrow', 'Fine nudge 0.1 mm']] },
-    { title: 'Project', rows: [['Ctrl/Cmd + S', 'Export JSON project'], ['Ctrl/Cmd + E', 'Open export preview'], ['Ctrl/Cmd + Z', 'Undo'], ['Ctrl/Cmd + Shift + Z', 'Redo']] },
+    { title: 'Navigation', rows: [['Ctrl/Cmd + K', 'Command palette'], ['F', 'Focus mode / restore panels'], ['Preview button', 'Product view / Edit view'], ['Mouse wheel', 'Zoom toward cursor'], ['Fit', 'Fit panel to screen']] },
+    { title: 'Selection', rows: [['Click component', 'Select component'], ['Click empty canvas', 'Deselect'], ['Drag empty canvas', 'Marquee select'], ['Shift + click', 'Add/remove selection'], ['Right click / long press', 'Component edit menu'], ['Esc', 'Cancel placement / clear selection']] },
+    { title: 'Placement', rows: [['Library click', 'Choose part, then click panel'], ['Repeat', 'Place more of the same part'], ['Done', 'Finish placement'], ['Shift + panel click', 'Desktop quick repeat placement'], ['Mobile Add', 'Use Add sheet; sheet closes before placement']] },
+    { title: 'Editing', rows: [['Drag', 'Cursor-anchored move'], ['Shift + drag', 'Smart snap: grid, edges, centers'], ['D', 'Duplicate selected'], ['R', 'Rotate selected 90°'], ['Delete / Backspace', 'Delete selected'], ['Text row input', 'Inline edit text label']] },
+    { title: 'Exports', rows: [['Ctrl/Cmd + S', 'Export JSON project'], ['Ctrl/Cmd + E', 'Open export dialog'], ['KiCad tab', 'Mechanical .kicad_pcb export'], ['Holes only', 'Clean KiCad panel outline + NPTH holes'], ['Report tab', 'Regression QA checklist']] },
+    { title: 'Mobile', rows: [['Bottom dock', 'Add / Select / Part / View / More'], ['Pinch', 'Zoom'], ['Side drawers', 'Swipe from edge, not over editor gestures'], ['Bottom sheets', 'Scroll inside sheet, canvas stays put']] },
   ];
   return (
     <div className="shortcut-help-backdrop" onMouseDown={onClose}>
       <div className="shortcut-help" onMouseDown={e => e.stopPropagation()}>
-        <div className="shortcut-help-head"><strong>Shortcuts</strong><button onClick={onClose}>×</button></div>
+        <div className="shortcut-help-head"><strong>Shortcuts <small>{APP_VERSION}</small></strong><button onClick={onClose}>×</button></div>
         <div className="shortcut-help-grid">
           {groups.map(g => <div key={g.title} className="shortcut-help-card"><h4>{g.title}</h4>{g.rows.map(([key, label]) => <div key={key} className="shortcut-row"><kbd>{key}</kbd><span>{label}</span></div>)}</div>)}
         </div>
@@ -16899,6 +17742,7 @@ function App() {
     setPendingAddPart({ def, stamp });
     setPendingAddPreview(null);
     setPendingAddRepeat(false);
+    setMobileSheet(null);
     setCanvasInteractionMode('placingPart');
     window.dispatchEvent(new Event('starter-dismiss'));
     setShowMobileNudge(false);
@@ -17094,34 +17938,53 @@ function App() {
     if (state.selected.length === 0) setShowMobileNudge(false);
   }, [state.selected.length]);
 
-  // Collapsible sidebar sections. Advanced panels start collapsed so the
-  // left/right sidebars stay usable. Project and Undo History also start
-  // collapsed by default; core panel/status/properties stay open. This is
-  // UI-only and does not affect JSON.
+  // Collapsible sidebar sections. v193 makes collapse opt-in for long/advanced
+  // sections only; short working panels stay open so right-inspector tabs do not
+  // feel like content has disappeared.
   useEffect(() => {
-    function shouldStartOpen(section: HTMLElement, idx: number): boolean {
-      if (section.dataset.defaultOpen === 'true') return true;
+    function isCollapsibleSection(section: HTMLElement): boolean {
+      if (section.dataset.collapsible === 'true') return true;
+      if (section.dataset.collapsible === 'false') return false;
       const title = (section.querySelector('.section-title')?.textContent || '').toLowerCase();
-      const inRight = !!section.closest('.sidebar-right');
-      // Keep only the most frequently used panels open by default.
-      // Project, Panel, and Undo History are intentionally closed by default.
-      if (title.includes('layout status')) return true;
-      if (title.includes('add component')) return true;
-      // Keep the active component/image/text properties panel open, but not Undo History.
-      if (inRight && idx <= 2 && !title.includes('undo history')) return true;
-      return false;
+      const longOrAdvanced =
+        title.includes('undo history') ||
+        title.includes('warnings') ||
+        title.includes('drill table') ||
+        title.includes('bom') ||
+        title.includes('autosave') ||
+        title.includes('assistant') ||
+        title.includes('library tools') ||
+        title.includes('custom parts') ||
+        title.includes('project');
+      return longOrAdvanced;
     }
+
+    function shouldStartOpen(section: HTMLElement): boolean {
+      if (section.dataset.defaultOpen === 'true') return true;
+      if (!isCollapsibleSection(section)) return true;
+      const title = (section.querySelector('.section-title')?.textContent || '').toLowerCase();
+      if (title.includes('undo history')) return false;
+      if (title.includes('autosave')) return false;
+      if (title.includes('library tools')) return false;
+      return true;
+    }
+
     function initSections() {
       const containers = Array.from(document.querySelectorAll('.sidebar-left, .sidebar-right')) as HTMLElement[];
       containers.forEach(container => {
         const sections = Array.from(container.querySelectorAll(':scope > .section')) as HTMLElement[];
-        sections.forEach((section, idx) => {
+        sections.forEach(section => {
           if (section.dataset.collapseInit === '1') return;
           section.dataset.collapseInit = '1';
-          section.classList.toggle('collapsed', !shouldStartOpen(section, idx));
+          const collapsible = isCollapsibleSection(section);
+          section.dataset.collapsibleComputed = collapsible ? 'true' : 'false';
+          section.classList.toggle('collapsible', collapsible);
+          section.classList.toggle('not-collapsible', !collapsible);
+          section.classList.toggle('collapsed', !shouldStartOpen(section));
         });
       });
     }
+
     function onClick(e: MouseEvent) {
       const target = e.target as HTMLElement | null;
       if (!target) return;
@@ -17129,12 +17992,18 @@ function App() {
       const title = target.closest('.section-title') as HTMLElement | null;
       if (!title) return;
       const section = title.closest('.section') as HTMLElement | null;
-      if (!section) return;
+      if (!section || !isCollapsibleSection(section)) return;
       section.classList.toggle('collapsed');
     }
+
     initSections();
+    const observer = new MutationObserver(() => initSections());
+    observer.observe(document.body, { childList: true, subtree: true });
     document.addEventListener('click', onClick);
-    return () => document.removeEventListener('click', onClick);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('click', onClick);
+    };
   }, []);
 
   useEffect(() => {
@@ -17811,7 +18680,7 @@ function App() {
       return !!(
         draggingRef.current || draggingTextRef.current || draggingArtworkRef.current ||
         resizingArtworkRef.current || rotatingComponentRef.current || pinching || panning || touchPanning || ruler?.dragging ||
-        marqueeSelectionRef.current
+        pendingMarqueeRef.current || marqueeSelectionRef.current || pendingAddPart || pendingTemplatePlacement || componentMenu
       );
     }
 
@@ -17819,6 +18688,8 @@ function App() {
       if (ev.touches.length !== 1) { start = null; return; }
       if (busyWithEditorGesture()) { start = null; return; }
       const t = ev.touches[0];
+      const target = ev.target as HTMLElement | null;
+      if (target?.closest?.('.mobile-main-dock, .mobile-bottom-sheet, .toolbar-popover, .export-dialog-panel, .command-palette, .component-menu, input, textarea, select, button')) { start = null; return; }
       if (!canStartSidebarSwipe(ev.target as EventTarget, t.clientX)) { start = null; return; }
       start = { x: t.clientX, y: t.clientY };
     }
@@ -18186,6 +19057,137 @@ function App() {
     }
   }
 
+
+
+  function updatePlacementPreview(mm: { x: number; y: number }) {
+    if (pendingAddPart) {
+      const nextPending = { x: snapToGrid(mm.x, state.grid.size), y: snapToGrid(mm.y, state.grid.size) };
+      setPendingAddPreview(prev => prev && Math.abs(prev.x - nextPending.x) < 0.001 && Math.abs(prev.y - nextPending.y) < 0.001 ? prev : nextPending);
+    }
+    if (pendingTemplatePlacement) {
+      setPendingTemplatePlacement({ ...pendingTemplatePlacement, anchor: { x: snapToGrid(mm.x, state.grid.size), y: snapToGrid(mm.y, state.grid.size) } });
+    }
+  }
+
+  function updatePendingMarquee(mm: { x: number; y: number }): boolean {
+    if (!pendingMarquee) return false;
+    const dx = Math.abs(mm.x - pendingMarquee.start.x);
+    const dy = Math.abs(mm.y - pendingMarquee.start.y);
+    if (dx >= 0.35 || dy >= 0.35) {
+      const next = { start: pendingMarquee.start, current: mm, additive: pendingMarquee.additive, initialSelection: pendingMarquee.initialSelection };
+      setPendingMarquee(null);
+      setMarqueeSelection(next);
+      setCanvasInteractionMode('marqueeSelecting');
+    }
+    return true;
+  }
+
+  function updateActiveMarquee(mm: { x: number; y: number }): boolean {
+    if (!marqueeSelection) return false;
+    setMarqueeSelection({ ...marqueeSelection, current: mm });
+    return true;
+  }
+
+  function updateRulerPreview(mm: { x: number; y: number }, freeMeasure: boolean): boolean {
+    if (!(touchMode === 'ruler' && ruler?.dragging)) return false;
+    const snapped = snapRulerPoint(mm, freeMeasure);
+    setRuler(r => r ? { ...r, end: snapped.point, snappedEnd: snapped.snapped } : r);
+    return true;
+  }
+
+  function updateRotationPreviewFromPointer(mm: { x: number; y: number }, shiftKey: boolean): boolean {
+    if (!rotatingComponent) return false;
+    const angle = Math.atan2(mm.y - rotatingComponent.cy, mm.x - rotatingComponent.cx) * 180 / Math.PI;
+    let nextRotation = rotatingComponent.startRotation + angle - rotatingComponent.startAngle;
+    nextRotation = ((nextRotation % 360) + 360) % 360;
+    nextRotation = shiftKey ? Math.round(nextRotation / 15) * 15 : Math.round(nextRotation);
+    setRotationPreview(new Map([[rotatingComponent.id, nextRotation]]));
+    return true;
+  }
+
+  function updateComponentDragPreview(mm: { x: number; y: number }, shiftKey: boolean) {
+    if (!dragging || !dragStartPositions) return;
+    const primaryOrig = dragStartPositions.get(dragging.id);
+    if (!primaryOrig) return;
+    const selectionSize = dragStartPositions.size;
+    const multiDrag = selectionSize > 1;
+
+    const rawDx = mm.x - dragging.startX;
+    const rawDy = mm.y - dragging.startY;
+    const moveDistance = Math.hypot(rawDx, rawDy);
+
+    if (!dragging.moved && moveDistance < 0.35) return;
+    if (!dragging.moved) setDragging(d => d ? { ...d, moved: true } : d);
+
+    let dx = rawDx;
+    let dy = rawDy;
+    const hardSnapActive = shiftKey;
+
+    if (hardSnapActive && snapSettings.grid) {
+      dx = snapToGrid(rawDx, state.grid.size);
+      dy = snapToGrid(rawDy, state.grid.size);
+    }
+
+    let edgeSnap: { dx: number; dy: number; guides: SnapGuide[] } = { dx, dy, guides: [] };
+    let centerSnap: { dx: number; dy: number; guides: SnapGuide[] } = { dx, dy, guides: [] };
+
+    if (hardSnapActive) {
+      edgeSnap = multiDrag
+        ? snapDragDeltaToPrimaryBodyEdges(dragging.id, primaryOrig, dx, dy)
+        : snapDragDeltaToPanelEdges(dragStartPositions, dx, dy);
+      dx = edgeSnap.dx;
+      dy = edgeSnap.dy;
+
+      centerSnap = snapDragDeltaToComponentCenters(dragging.id, primaryOrig, dx, dy);
+      dx = centerSnap.dx;
+      dy = centerSnap.dy;
+    }
+
+    const snappedX = primaryOrig.x + dx;
+    const snappedGuideY = primaryOrig.y + dy;
+    const previewSig = `${selectionSize}:${dx.toFixed(3)}:${dy.toFixed(3)}`;
+
+    if (previewSig !== lastDragPreviewSignatureRef.current) {
+      lastDragPreviewSignatureRef.current = previewSig;
+      const newPreview = new Map<string, { x: number; y: number }>();
+      dragStartPositions.forEach((pos, cid) => newPreview.set(cid, { x: pos.x + dx, y: pos.y + dy }));
+      setDragPreview(newPreview);
+      if (shouldShowDragMeasurement(selectionSize)) updateDistanceGuidesForPreview(newPreview);
+    }
+
+    const gridGuides = hardSnapActive && snapSettings.grid ? gridSnapGuidesForPosition(snappedX, snappedGuideY) : [];
+    const visualCenterGuides = hardSnapActive ? computeSnapGuidesFor(dragging.id, snappedX, snappedGuideY)
+      .filter(g => !centerSnap.guides.some(s => s.axis === g.axis && Math.abs(s.pos - g.pos) < 0.001 && s.label === g.label)) : [];
+    const nextGuides = uniqueSnapGuides([...centerSnap.guides, ...edgeSnap.guides, ...visualCenterGuides, ...gridGuides]);
+
+    setSnapGuidesIfChanged(nextGuides);
+    const snapKey = snapGuidesSignature(nextGuides);
+    if (hardSnapActive && snapKey && snapKey !== lastSnapHapticKeyRef.current) {
+      lastSnapHapticKeyRef.current = snapKey;
+      softHaptic(multiDrag ? 4 : 8);
+    }
+  }
+
+  function updateTextDragPreview(mm: { x: number; y: number }, shiftKey: boolean) {
+    if (!draggingText) return;
+    const rawX = mm.x - draggingText.offX;
+    const rawY = mm.y - draggingText.offY;
+
+    if (shiftKey) {
+      const snapped = applyTextSmartSnap(draggingText.id, rawX, rawY);
+      setTextDragPreview({ id: draggingText.id, x: snapped.x, y: snapped.y });
+      setSnapGuidesIfChanged(snapped.guides);
+      const snapKey = snapGuidesSignature(snapped.guides);
+      if (snapKey && snapKey !== lastSnapHapticKeyRef.current) {
+        lastSnapHapticKeyRef.current = snapKey;
+        softHaptic(5);
+      }
+    } else {
+      setTextDragPreview({ id: draggingText.id, x: rawX, y: rawY });
+      clearLiveGuides();
+    }
+  }
+
   function processSVGMouseMove(e: React.MouseEvent<SVGSVGElement>) {
     const mm = clientToMM(e.clientX, e.clientY);
     if (!mm) return;
@@ -18197,144 +19199,22 @@ function App() {
       lastCoordReadoutRef.current = nextCoordReadout;
       setCoordReadout(nextCoordReadout);
     }
-    if (pendingAddPart) {
-      const nextPending = { x: snapToGrid(mm.x, state.grid.size), y: snapToGrid(mm.y, state.grid.size) };
-      setPendingAddPreview(prev => prev && Math.abs(prev.x - nextPending.x) < 0.001 && Math.abs(prev.y - nextPending.y) < 0.001 ? prev : nextPending);
-    }
-    if (pendingTemplatePlacement) { setPendingTemplatePlacement({ ...pendingTemplatePlacement, anchor: { x: snapToGrid(mm.x, state.grid.size), y: snapToGrid(mm.y, state.grid.size) } }); }
+    updatePlacementPreview(mm);
 
-    if (pendingMarquee) {
-      const dx = Math.abs(mm.x - pendingMarquee.start.x);
-      const dy = Math.abs(mm.y - pendingMarquee.start.y);
-      if (dx >= 0.35 || dy >= 0.35) {
-        const next = { start: pendingMarquee.start, current: mm, additive: pendingMarquee.additive, initialSelection: pendingMarquee.initialSelection };
-        setPendingMarquee(null);
-        setMarqueeSelection(next);
-        setCanvasInteractionMode('marqueeSelecting');
-      }
-      return;
-    }
-
-    if (marqueeSelection) {
-      setMarqueeSelection({ ...marqueeSelection, current: mm });
-      return;
-    }
-
-    if (touchMode === 'ruler' && ruler?.dragging) {
-      const snapped = snapRulerPoint(mm, e.shiftKey);
-      setRuler(r => r ? { ...r, end: snapped.point, snappedEnd: snapped.snapped } : r);
-      return;
-    }
-
-    if (rotatingComponent) {
-      const angle = Math.atan2(mm.y - rotatingComponent.cy, mm.x - rotatingComponent.cx) * 180 / Math.PI;
-      let nextRotation = rotatingComponent.startRotation + angle - rotatingComponent.startAngle;
-      nextRotation = ((nextRotation % 360) + 360) % 360;
-      nextRotation = e.shiftKey ? Math.round(nextRotation / 15) * 15 : Math.round(nextRotation);
-      setRotationPreview(new Map([[rotatingComponent.id, nextRotation]]));
-      return;
-    }
+    if (updatePendingMarquee(mm)) return;
+    if (updateActiveMarquee(mm)) return;
+    if (updateRulerPreview(mm, e.shiftKey)) return;
+    if (updateRotationPreviewFromPointer(mm, e.shiftKey)) return;
 
     // Update drag preview (does NOT dispatch to reducer — avoids undo stack pollution)
     if (dragging && dragStartPositions) {
-      const primaryOrig = dragStartPositions.get(dragging.id)!;
-      const selectionSize = dragStartPositions.size;
-      const multiDrag = selectionSize > 1;
-
-      const hardSnapActive = e.shiftKey;
-      const rawDx = mm.x - dragging.startX;
-      const rawDy = mm.y - dragging.startY;
-      const moveDistance = Math.hypot(rawDx, rawDy);
-
-      // Do not turn a plain click into a drag. This makes selection reliable,
-      // especially when the mouse moves by a fraction of a millimeter.
-      if (!dragging.moved && moveDistance < 0.35) {
-        return;
-      }
-      if (!dragging.moved) {
-        setDragging(d => d ? { ...d, moved: true } : d);
-      }
-
-      // Normal drag must stay cursor-anchored: use the raw delta.
-      // Hold Shift for hard grid/edge/center snapping.
-      let dx = rawDx;
-      let dy = rawDy;
-      if (hardSnapActive && snapSettings.grid) {
-        dx = snapToGrid(rawDx, state.grid.size);
-        dy = snapToGrid(rawDy, state.grid.size);
-      }
-      let snappedX = primaryOrig.x + dx;
-      const snappedY = primaryOrig.y + dy;
-
-      let edgeSnap: { dx: number; dy: number; guides: SnapGuide[] } = { dx, dy, guides: [] };
-      let centerSnap: { dx: number; dy: number; guides: SnapGuide[] } = { dx, dy, guides: [] };
-
-      if (hardSnapActive) {
-        // For multi-drag, keep the group lightweight: snap and measure only
-        // from the active component under the cursor. The rest of the selection
-        // receives the same delta without expensive group-bound scans.
-        edgeSnap = multiDrag
-          ? snapDragDeltaToPrimaryBodyEdges(dragging.id, primaryOrig, dx, dy)
-          : snapDragDeltaToPanelEdges(dragStartPositions, dx, dy);
-        dx = edgeSnap.dx;
-        dy = edgeSnap.dy;
-
-        centerSnap = snapDragDeltaToComponentCenters(dragging.id, primaryOrig, dx, dy);
-        dx = centerSnap.dx;
-        dy = centerSnap.dy;
-      }
-
-      snappedX = primaryOrig.x + dx;
-      const snappedGuideY = primaryOrig.y + dy;
-
-      // Do not rebuild a Map/re-render if the snapped delta did not actually
-      // change. This happens a lot with grid snapping.
-      const previewSig = `${selectionSize}:${dx.toFixed(3)}:${dy.toFixed(3)}`;
-      if (previewSig !== lastDragPreviewSignatureRef.current) {
-        lastDragPreviewSignatureRef.current = previewSig;
-        const newPreview = new Map<string, { x: number; y: number }>();
-        dragStartPositions.forEach((origPos, cid) => {
-          newPreview.set(cid, { x: origPos.x + dx, y: origPos.y + dy });
-        });
-        setDragPreview(newPreview);
-
-        if (multiDrag) {
-          updateDistanceGuidesForPrimary(dragging.id, { x: snappedX, y: snappedGuideY });
-        } else {
-          updateDistanceGuidesForPreview(newPreview);
-        }
-      }
-
-      const gridGuides = hardSnapActive && snapSettings.grid ? gridSnapGuidesForPosition(snappedX, snappedGuideY) : [];
-      const visualCenterGuides = hardSnapActive ? computeSnapGuidesFor(dragging.id, snappedX, snappedGuideY)
-        .filter(g => !centerSnap.guides.some(s => s.axis === g.axis && Math.abs(s.pos - g.pos) < 0.001 && s.label === g.label)) : [];
-      const nextGuides = uniqueSnapGuides([...centerSnap.guides, ...edgeSnap.guides, ...visualCenterGuides, ...gridGuides]);
-      setSnapGuidesIfChanged(nextGuides);
-      const snapKey = snapGuidesSignature(nextGuides);
-      if (hardSnapActive && snapKey && snapKey !== lastSnapHapticKeyRef.current) {
-        lastSnapHapticKeyRef.current = snapKey;
-        softHaptic(multiDrag ? 4 : 8);
-      }
-    } else if (!dragging) {
+      updateComponentDragPreview(mm, e.shiftKey);
+    } else {
       clearLiveGuides();
     }
 
     if (draggingText) {
-      const rawX = mm.x - draggingText.offX;
-      const rawY = mm.y - draggingText.offY;
-      if (e.shiftKey) {
-        const snapped = applyTextSmartSnap(draggingText.id, rawX, rawY);
-        setTextDragPreview({ id: draggingText.id, x: snapped.x, y: snapped.y });
-        setSnapGuidesIfChanged(snapped.guides);
-        const snapKey = snapGuidesSignature(snapped.guides);
-        if (snapKey && snapKey !== lastSnapHapticKeyRef.current) {
-          lastSnapHapticKeyRef.current = snapKey;
-          softHaptic(5);
-        }
-      } else {
-        setTextDragPreview({ id: draggingText.id, x: rawX, y: rawY });
-        clearLiveGuides();
-      }
+      updateTextDragPreview(mm, e.shiftKey);
     }
 
     if (draggingArtwork) {
