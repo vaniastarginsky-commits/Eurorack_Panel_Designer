@@ -293,7 +293,7 @@
 
     /* Desktop comfort sizing: wider sidebars + ~15% larger sidebar text */
     @media (min-width: 861px) {
-      .sidebar-left  { width: 230px; }
+      .sidebar-left  { width: 276px; }
       .sidebar-right { width: 276px; }
 
       .sidebar-left,
@@ -3361,6 +3361,162 @@
   }
 }
 
+
+/* v86 sidebar width stability + larger component icons */
+@media (min-width: 861px) {
+  .sidebar-left,
+  .sidebar-left.open {
+    width: 276px !important;
+    min-width: 276px !important;
+    max-width: 276px !important;
+    flex-basis: 276px !important;
+  }
+  .sidebar-right,
+  .sidebar-right.open {
+    width: 276px !important;
+    min-width: 276px !important;
+    max-width: 276px !important;
+    flex-basis: 276px !important;
+  }
+}
+
+/* Component Library icons: 2× bigger than previous compact desktop size. */
+.section[data-component-library="true"] .part-icon {
+  width: 36px !important;
+  height: 36px !important;
+  flex: 0 0 36px !important;
+}
+
+.section[data-component-library="true"] .part-card-main .part-picker-label {
+  grid-template-columns: 36px minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+
+.section[data-component-library="true"] .part-card-main small,
+.section[data-component-library="true"] .part-card-side > span {
+  padding-left: 46px !important;
+}
+
+.section[data-component-library="true"] .comp-lib-item {
+  min-height: 76px !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+@media (max-width: 860px) {
+  .section[data-component-library="true"] .part-icon {
+    width: 42px !important;
+    height: 42px !important;
+    flex-basis: 42px !important;
+  }
+  .section[data-component-library="true"] .part-card-main .part-picker-label {
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+  .section[data-component-library="true"] .part-card-main small,
+  .section[data-component-library="true"] .part-card-side > span {
+    padding-left: 54px !important;
+  }
+  .section[data-component-library="true"] .comp-lib-item {
+    min-height: 88px !important;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* v97 stable Component Library preview tiles */
+.section[data-component-library="true"] .comp-lib-item.real-part-tile {
+  display: grid !important;
+  grid-template-columns: 58px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 74px !important;
+  padding: 10px 12px !important;
+  cursor: pointer !important;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.section[data-component-library="true"] .comp-lib-item.real-part-tile:hover {
+  border-color: rgba(46,233,255,.32) !important;
+  background-color: rgba(46,233,255,.045) !important;
+}
+.library-real-preview {
+  width: 58px !important;
+  height: 58px !important;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 0 10px rgba(46,233,255,.12));
+}
+.section[data-component-library="true"] .real-part-tile .part-card-main {
+  display: grid !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+}
+.section[data-component-library="true"] .real-part-tile .part-card-main strong {
+  color: #f2fbff;
+  font-size: 14px;
+  font-weight: 950;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.section[data-component-library="true"] .real-part-tile .part-card-main small,
+.section[data-component-library="true"] .real-part-tile .part-card-main span {
+  padding-left: 0 !important;
+  margin: 0 !important;
+  color: #8fa6ad;
+  font-size: 10px;
+  line-height: 1.18;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.section[data-component-library="true"] .real-part-tile .part-card-main span {
+  color: #aac1c8;
+}
+@media (max-width: 860px) {
+  .section[data-component-library="true"] .comp-lib-item.real-part-tile {
+    grid-template-columns: 66px minmax(0, 1fr) !important;
+    min-height: 86px !important;
+  }
+  .library-real-preview {
+    width: 66px !important;
+    height: 66px !important;
+  }
+}
+
+
+/* v98 restore collapse behavior for Component Library */
+.section[data-component-library="true"].collapsed > *:not(.section-title) {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.section[data-component-library="true"].collapsed .comp-lib-item,
+.section[data-component-library="true"].collapsed .real-part-tile,
+.section[data-component-library="true"].collapsed .library-real-preview,
+.section[data-component-library="true"].collapsed .library-action-grid,
+.section[data-component-library="true"].collapsed .library-render-note,
+.section[data-component-library="true"].collapsed .field-pair,
+.section[data-component-library="true"].collapsed .library-load-more {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.section[data-component-library="true"].collapsed {
+  max-height: none;
+  overflow: hidden;
+}
+
 </style>
 </head>
 <body>
@@ -3411,7 +3567,7 @@ const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
 type ComponentType = 'pot9mm' | 'pot16mm' | 'jack' | 'slimjack' |
                      'toggle' | 'led3mm' | 'encoder' | 'custom' |
                      'fader20' | 'fader20led' | 'fader35' | 'fader45' | 'tact6mm' | 'momentary12' | 'tactled' |
-                     'pot9mm_ra' | 'trimmer6mm' | 'slideSwitchMini' | 'customrect';
+                     'pot9mm_ra' | 'trimmer6mm' | 'slideSwitchMini' | 'subMiniSwitch' | 'rotary8pos' | 'customrect';
 
 type ViewMode = 'front' | 'rear' | 'drill' | 'combined';
 type TopHardwareStyle = 'classic' | 'realistic';
@@ -3692,21 +3848,23 @@ function isSamePartType(a: ComponentDef, b: ComponentDef): boolean {
 
 const COMPONENT_LIBRARY: ComponentDef[] = [
   { type: 'pot9mm',   name: 'Alpha RD901F 9mm Pot', holeDiameter: 7.0, frontDiameter: 10.0, knobEnabled: true, knobDiameter: 10.0, rearBodyW: 9.5, rearBodyH: 10.5, rearDepth: 7.5, keepoutW: 12.0, keepoutH: 13.0, minSpacing: 1.5, manufacturer: 'Taiwan Alpha', partNumber: 'RD901F 9mm series reference', category: 'potentiometer', verificationStatus: 'datasheet', verification: 'Alpha RD901F 9mm rotary potentiometer candidate: 6mm shaft family, 9mm body class, 300°±5° rotation. Body/keepout are datasheet-class defaults; verify exact shaft/bushing option before production.' },
-  { type: 'pot16mm',  name: 'Alpha RV16AF 16mm Pot', holeDiameter: 7.0, frontDiameter: 10.0, knobEnabled: true, knobDiameter: 10.0, rearBodyW: 16.5, rearBodyH: 17.0, rearDepth: 10.0, keepoutW: 19.0, keepoutH: 20.0, minSpacing: 2.0, manufacturer: 'Taiwan Alpha', partNumber: 'RV16AF 16mm series reference', category: 'potentiometer', verificationStatus: 'approximate', verification: 'Approximate Alpha RV16AF-style 16mm panel pot. Dimensions are practical Eurorack defaults; choose a specific shaft/bushing/terminal variant before production.' },
+  { type: 'pot16mm',  name: 'Alpha RV16AF-10B6 16mm Pot', holeDiameter: 7.2, frontDiameter: 17.0, knobEnabled: true, knobDiameter: 16.0, rearBodyW: 16.5, rearBodyH: 17.0, rearDepth: 10.0, keepoutW: 19.0, keepoutH: 20.0, minSpacing: 2.0, manufacturer: 'Taiwan Alpha', partNumber: 'RV16AF-10B6', category: 'potentiometer', verificationStatus: 'datasheet', verification: 'Alpha RV16AF-10B6 16mm potentiometer drawing: Ø16.5mm body class, front/washer reference Ø17mm, M7×0.75 threaded bushing, Ø6mm 18-teeth knurled shaft, 300° mono rotation, terminal/pin side envelope about 13.5mm high, body/bushing depth reference 9.1mm plus shaft/bushing L/F/T variant dimensions. Panel hole modeled as Ø7.2mm clearance for M7 bushing; verify chosen L/F/T shaft option, nut/washer stack and panel thickness before production.' },
   { type: 'jack',     name: 'Thonkiconn Jack', holeDiameter: 6.1, frontDiameter: 8.0, rearBodyW: 8.5, rearBodyH: 10.5, rearDepth: 12.0, keepoutW: 10.5, keepoutH: 12.5, minSpacing: 1.5, manufacturer: 'Thonk / QingPu', partNumber: 'PJ398SM / Thonkiconn-style', category: 'jack', verificationStatus: 'datasheet', verification: 'Thonkiconn/PJ398SM-style Eurorack jack reference: use Ø6.0–6.1mm panel hole, visible hardware about Ø8mm, rear body about 8.5×10.5mm. Verify exact vendor revision.' },
-  { type: 'slimjack', name: 'Slim Jack 3.5mm', holeDiameter: 6.0, frontDiameter: 7.5, rearBodyW: 7.0, rearBodyH: 9.0, rearDepth: 11.0, keepoutW: 8.5, keepoutH: 10.5, minSpacing: 1.0, category: 'jack', verificationStatus: 'approximate', verification: 'Generic slim 3.5mm jack placeholder. Replace with a concrete manufacturer/MPN before production.' },
-  { type: 'toggle',   name: 'Toggle Switch', holeDiameter: 6.0, frontDiameter: 8.0, rearBodyW: 8.0, rearBodyH: 13.0, rearDepth: 13.0, keepoutW: 10.0, keepoutH: 15.0, minSpacing: 1.5, category: 'switch', verificationStatus: 'approximate', verification: 'Generic miniature toggle placeholder. Real MTS/C&K/NKK/Dailywell toggles vary significantly in thread, body and depth.' },
-  { type: 'led3mm',   name: '3mm LED', holeDiameter: 3.2, frontDiameter: 3.2, rearBodyW: 3.2, rearBodyH: 3.2, rearDepth: 5.5, keepoutW: 4.5, keepoutH: 4.5, minSpacing: 1.0, category: 'led', verificationStatus: 'datasheet', verification: 'Generic 3mm through-panel LED / low-profile lightpipe reference: Ø3.0–3.2mm visible lens, Ø3.2mm practical panel hole. Use holder-specific dimensions if using a metal/plastic bezel.' },
+  { type: 'slimjack', name: 'WQP PJ612A 1/4 inch Slim Jack', holeDiameter: 9.2, frontDiameter: 11.5, rearBodyW: 11.5, rearBodyH: 22.0, rearDepth: 13.0, keepoutW: 13.0, keepoutH: 24.0, minSpacing: 2.0, manufacturer: 'WQP / Thonk', partNumber: 'PJ612A 1/4 inch switched jack', category: 'jack', verificationStatus: 'datasheet', verification: 'WQP PJ612A 1/4 inch low-profile switched jack socket, sold by Thonk as a slimline mono/stereo-compatible 6.35mm socket. Datasheet reference: body/front envelope about 11.5×22mm, practical rear depth class about 13mm, threaded/nut front hardware for 1/4 inch jack, panel hole modeled as Ø9.2mm. Verify exact washer/nut clearance and panel thickness before production.' },
+  { type: 'toggle',   name: 'Dailywell DWB4 DPDT ON-OFF-ON Mini Toggle', holeDiameter: 6.35, frontDiameter: 10.8, rearBodyW: 11.43, rearBodyH: 12.70, rearDepth: 11.5, keepoutW: 13.0, keepoutH: 14.5, minSpacing: 2.0, manufacturer: 'Dailywell / Thonk', partNumber: 'DWB4 DPDT ON-OFF-ON / 1MD3', category: 'switch', verificationStatus: 'datasheet', verification: 'Dailywell DWB4 miniature toggle switch, Thonk DPDT ON-OFF-ON. Datasheet: DPDT 1MD3 ON-OFF-ON, 1/4-40 UNS-2A bushing/thread, panel hole Ø0.250in / Ø6.35mm without locking ring, optional locking ring uses extra Ø0.094in / Ø2.38mm anti-rotation hole, body face about 0.450×0.500in / 11.43×12.70mm, bushing length 0.350in / 8.89mm, lever length above bushing about 0.410in / 10.41mm, locking washer Ø0.425in / 10.80mm, nut 0.361×0.312in / 9.19×7.92mm, PC terminal pitch around 0.190in / 4.83mm and 0.185in / 4.70mm. Rear depth modeled as 11.5mm practical clearance; verify panel thickness, lug/PCB orientation and anti-rotation hole choice before production.' },
+  { type: 'led3mm',   name: 'Hakai Labs DDE-0016-00 3mm CVD LED', holeDiameter: 3.2, frontDiameter: 3.9, rearBodyW: 3.9, rearBodyH: 3.9, rearDepth: 4.5, keepoutW: 4.8, keepoutH: 4.8, minSpacing: 1.0, manufacturer: 'Hakai Labs / Danesi Designs / Thonk', partNumber: 'DDE-0016-00', category: 'led', verificationStatus: 'datasheet', verification: 'Hakai Labs / Danesi Designs DDE-0016-00 CVD LED: 3mm bi-polar red/custom-teal LED for color vision deficiency accessibility. Datasheet package drawing: lens/body Ø3.0mm nominal with Ø3.9mm flange, dome height 4.5mm above flange, flange thickness 0.8mm, lead pitch 2.54mm, lead width 0.50mm, lead length 25.4mm. Electrical: red 630nm, teal 505nm, typical Vf 2.1V red / 3.8V teal, recommended constant current 20mA. Panel hole modeled as Ø3.2mm practical clearance for the 3mm lens; use a holder-specific hole if mounting with a bezel/lightpipe.' },
   { type: 'encoder',  name: 'ALPS EC12E Encoder', holeDiameter: 6.8, frontDiameter: 10.0, knobEnabled: true, knobDiameter: 16.0, rearBodyW: 12.4, rearBodyH: 13.2, rearDepth: 8.2, keepoutW: 14.0, keepoutH: 15.0, minSpacing: 2.0, manufacturer: 'ALPS Alpine', partNumber: 'EC12E / EC12D 12mm series reference', category: 'encoder', verificationStatus: 'datasheet', verification: 'ALPS EC12E/EC12D 12mm encoder reference: Ø6.6–6.8mm shaft/panel opening class, 12.4×13.2mm body class, 7.5/5mm pin pitch family. Verify exact push/non-push and shaft variant.' },
   { type: 'trimmer6mm', name: 'Song Huei R0904N 9mm Trim Pot', holeDiameter: 6.4, frontDiameter: 6.3, knobEnabled: true, knobDiameter: 6.3, rearBodyW: 9.7, rearBodyH: 11.4, rearDepth: 7.0, keepoutW: 10.6, keepoutH: 12.0, minSpacing: 1.2, manufacturer: 'Song Huei / Thonk', partNumber: 'R0904N-B50K,L-25KQ', category: 'potentiometer', verificationStatus: 'datasheet', verification: 'Thonk R0904N 9mm snap-in insulated shaft potentiometer: Ø6-0.3 shaft, 25mm shaft length, 9.7mm body width, 11.4mm body height, 10.6×7mm PCB layout reference, 280°±10° travel.' },
-  { type: 'slideSwitchMini', name: 'Mini Slide Switch', holeDiameter: 2.0, frontDiameter: 6.0, rearBodyW: 8.5, rearBodyH: 5.2, rearDepth: 3.0, keepoutW: 10.0, keepoutH: 7.0, minSpacing: 1.0, holeType: 'rect', holeW: 8.5, holeH: 3.0, frontShape: 'rect', frontW: 8.5, frontH: 5.2, manufacturer: 'C&K PCM-style candidate', partNumber: 'PCM/ultraminiature visual reference', category: 'switch', verificationStatus: 'approximate', verification: 'Mini slide switch visual/mechanical placeholder. It is styled after ultraminiature slide switches, but panel cutout/body must be replaced by your exact part.' },
+  { type: 'slideSwitchMini', name: 'Sunrom DPDT Mini Slide Switch', holeDiameter: 1.8, frontDiameter: 3.5, rearBodyW: 9.0, rearBodyH: 3.5, rearDepth: 6.7, keepoutW: 10.0, keepoutH: 5.0, minSpacing: 1.0, holeType: 'rect', holeW: 3.8, holeH: 1.8, frontShape: 'rect', frontW: 9.0, frontH: 3.5, manufacturer: 'Sunrom', partNumber: '5260 / 2P2T DPDT 6-pin slide switch', category: 'switch', verificationStatus: 'datasheet', verification: 'Sunrom 560.pdf / part 5260: DPDT 2P2T 6-pin through-hole slide switch. Body 9.0×3.5mm, actuator width 1.5mm, travel 2.0mm, total height/depth class 6.7mm, pin width 0.4mm, pin pitch 2.5mm along length and 2.0/3.4mm across rows. Panel opening is modeled as a 3.8×1.8mm actuator slot with clearance, while the visible front body is 9.0×3.5mm.' },
+  { type: 'subMiniSwitch', name: 'Dailywell 5SES1S105M2RES Sub-mini Switch', holeDiameter: 1.8, frontDiameter: 5.0, rearBodyW: 5.0, rearBodyH: 9.5, rearDepth: 8.0, keepoutW: 7.0, keepoutH: 11.0, minSpacing: 1.0, holeType: 'rect', holeW: 3.2, holeH: 1.8, frontShape: 'rect', frontW: 5.0, frontH: 9.5, manufacturer: 'Dailywell / ChipDip', partNumber: '5SES1S105M2RES / 5SESP0005', category: 'switch', verificationStatus: 'datasheet', verification: 'Dailywell 5SES1S105M2RES / 5SESP0005 Sub-Miniature Slide Switch. Drawing shows 5.0×9.5mm face/body, 8.0mm body depth, actuator protrusion about 2.2mm, actuator/slider feature about 2.95mm, three PC pins at 2.54mm pitch with Ø1.0mm PCB holes, IP67 epoxy-sealed SPDT ON-NONE-ON function. Panel opening is modeled as a 3.2×1.8mm actuator slot with clearance; verify exact panel cutout against your mechanical mounting style.' },
+  { type: 'rotary8pos', name: 'Alpha SR1712F 8-position Rotary Switch', holeDiameter: 9.0, frontDiameter: 14.0, knobEnabled: true, knobDiameter: 15.0, rearBodyW: 17.2, rearBodyH: 18.3, rearDepth: 7.5, keepoutW: 19.5, keepoutH: 20.5, minSpacing: 2.0, manufacturer: 'Alpha / Thonk', partNumber: 'SR1712F-0108-20F0A-N9-N', category: 'switch', verificationStatus: 'datasheet', verification: 'Alpha SR1712F-0108-20F0A-N9-N 8-position rotary switch, as sold by Thonk for the Turing Machine Length parameter. Datasheet drawing: M9×0.75 threaded bushing, Ø6.0 D-shaft, L=20mm shaft version with F=12mm, body/front envelope 17.2×18.3mm, rear body depth around 7.5mm, washer Ø14.0/Ø9.1×0.4mm, nut 11.0mm across flats ×2.0mm thick, PCB footprint 10 pins Ø0.9mm plus 2×Ø2.0mm stopper holes. Panel hole modeled as Ø9.0mm for the bushing; washer/front visual modeled as Ø14mm with 15mm knob preview.' },
   { type: 'custom',      name: 'Custom Hole', holeDiameter: 5.0, frontDiameter: 7.0, rearBodyW: 0, rearBodyH: 0, rearDepth: 0, keepoutW: 8.0, keepoutH: 8.0, minSpacing: 1.0, category: 'custom', verificationStatus: 'approximate', verification: 'User-defined circular cutout.' },
   { type: 'customrect',  name: 'Custom Rectangle', holeDiameter: 5.0, frontDiameter: 8.0, rearBodyW: 0, rearBodyH: 0, rearDepth: 0, keepoutW: 10.0, keepoutH: 8.0, minSpacing: 1.0, holeType: 'rect', holeW: 10.0, holeH: 6.0, frontShape: 'rect', frontW: 10.0, frontH: 6.0, category: 'custom', verificationStatus: 'approximate', verification: 'User-defined rectangular cutout.' },
-  { type: 'fader20',    name: 'Alpha RA2045F 20mm Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 32.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 6.0, faderHandleH: 5.5, manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20 mechanical reference', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha illuminated slide series outline: 20mm travel, PC board vertical terminal, 7mm mounting height, T=20mm; outline uses T+10/T+11 body/rail class.' },
-  { type: 'fader20led', name: 'Alpha RA2045F-20 LED Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 32.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 3.2, faderHandleH: 4.4, topColor: '#ff2b2b', manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20R-15LC-B10K-C', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha RA2045F-20 illuminated slide: single unit, 20mm travel, PC board vertical terminal, LED colors A/B/G/R, 7mm mounting height, LC insulated lever length 10/15mm.' },
+  { type: 'fader20',    name: 'Alpha RA2045F 20mm Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 35.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 6.0, faderHandleH: 5.5, manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20 mechanical reference', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha RA2045F-20 illuminated slide series datasheet: single unit, 20mm travel, PC board vertical terminal, 7mm mounting height. For T=20mm: rear/PCB body length T+10 = 30mm, front rail/slot visual class T+11 = 31mm, practical actuator slot modeled as 3.0×27.0mm, overall metal/keepout envelope class T+15 = 35mm. LC insulated lever drawing shows approx 6.0mm top width, 5.5mm inner width, 6.6mm base, lever length L=10/15mm options.' },
+  { type: 'fader20led', name: 'Alpha RA2045F-20 LED Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 35.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 3.2, faderHandleH: 4.4, topColor: '#ff2b2b', manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20R-15LC-B10K-C', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha RA2045F-20 illuminated slide datasheet: single unit, 20mm travel, PC board vertical terminal, LED colors A/B/G/R, 7mm mounting height. For T=20mm: rear/PCB body length T+10 = 30mm, front rail/slot visual class T+11 = 31mm, practical actuator slot modeled as 3.0×27.0mm, overall metal/keepout envelope class T+15 = 35mm. LC insulated lever drawing shows approx 6.0mm top width, 5.5mm inner width, 6.6mm base, lever length L=10/15mm options. Visual LED cap size is intentionally kept at the previous compact 3.2×4.4mm appearance for the panel designer.' },
   { type: 'fader35',    name: 'Alps Fader 35mm', holeDiameter: 4.0, frontDiameter: 9.0, rearBodyW: 6.7, rearBodyH: 55.0, rearDepth: 15.0, keepoutW: 9.0, keepoutH: 58.0, minSpacing: 2.0, holeType: 'slot', slotLength: 41.0, frontShape: 'slot', frontW: 9, frontH: 55, faderHandleW: 10.5, faderHandleH: 5.0, category: 'fader', verificationStatus: 'approximate', verification: 'Generic 35mm fader placeholder. Replace with exact ALPS/Bourns/Alpha part before production.' },
   { type: 'fader45',    name: 'Alps Fader 45mm', holeDiameter: 4.0, frontDiameter: 9.0, rearBodyW: 6.7, rearBodyH: 65.0, rearDepth: 15.0, keepoutW: 9.0, keepoutH: 68.0, minSpacing: 2.0, holeType: 'slot', slotLength: 51.0, frontShape: 'slot', frontW: 9, frontH: 65, faderHandleW: 10.5, faderHandleH: 5.0, category: 'fader', verificationStatus: 'approximate', verification: 'Generic 45mm fader placeholder. Replace with exact ALPS/Bourns/Alpha part before production.' },
-  { type: 'tact6mm',    name: 'Tact 6mm', holeDiameter: 3.5, frontDiameter: 6.0, rearBodyW: 6.0, rearBodyH: 6.0, rearDepth: 8.0, keepoutW: 8.0, keepoutH: 8.0, minSpacing: 1.0, category: 'switch', verificationStatus: 'approximate', verification: 'Generic 6mm tactile switch placeholder. Use exact cap/stem/hole dimensions for production.' },
+  { type: 'tact6mm',    name: 'TE FSM2JSM 6mm Tact Switch', holeDiameter: 3.6, frontDiameter: 6.0, rearBodyW: 6.0, rearBodyH: 6.0, rearDepth: 4.3, keepoutW: 8.0, keepoutH: 8.0, minSpacing: 1.0, manufacturer: 'TE Connectivity / Alcoswitch', partNumber: 'FSM2JSM / 2-1437565-8 family', category: 'switch', verificationStatus: 'datasheet', verification: 'TE Connectivity / Alcoswitch micro miniature pushbutton switch FSMJSM/FSM2JSM datasheet. Drawing: 6.0×6.0mm square body, Ø3.50mm actuator button, 4 terminals 0.80±0.05mm wide / 0.25mm thick, terminal layout 5.86×7.00mm with 3.10mm spacing, body drawing shows 8.40mm internal span and 10.00mm overall side envelope. Table row for FSM2JSM family gives DIM B 4.29±0.15mm and DIM A 0.71±0.10mm; actuator travel 0.25 +0.20/-0.10mm. Panel/front opening is modeled as Ø3.6mm clearance for the actuator; verify cap/no-cap mounting and exact FSM2JSM variant height before production.' },
   { type: 'momentary12',name: 'Momentary 12mm', holeDiameter: 12.0, frontDiameter: 16.0, rearBodyW: 12.0, rearBodyH: 12.0, rearDepth: 20.0, keepoutW: 16.0, keepoutH: 16.0, minSpacing: 2.0, category: 'switch', verificationStatus: 'approximate', verification: 'Generic 12mm momentary button placeholder.' },
   { type: 'tactled',    name: 'Low Profile LED Button 7.5mm', holeDiameter: 6.0, frontDiameter: 5.5, rearBodyW: 7.5, rearBodyH: 7.5, rearDepth: 14.0, keepoutW: 10.0, keepoutH: 10.0, minSpacing: 1.5, topColor: '#ff7a2a', manufacturer: 'Thonk / PB01-109TL style', partNumber: 'Low-Profile LED Button', category: 'switch', verificationStatus: 'datasheet', verification: 'Thonk datasheet: 7.5mm square cover/body reference, Ø5.5mm visible round button, 14.0±0.25mm height, 5.08mm pitch, momentary OFF-(ON).' },
 ];
@@ -3787,10 +3945,12 @@ function shortPartName(def: ComponentDef): string {
   if (t === 'pot9mm_ra') return '9mm RA Pot';
   if (t === 'trimmer6mm') return 'Trim Pot 9mm';
   if (t === 'jack') return '6mm Jack';
-  if (t === 'slimjack') return 'Slim Jack';
-  if (t === 'toggle') return 'Toggle';
-  if (t === 'slideSwitchMini') return 'Mini Slide';
-  if (t === 'led3mm') return '3mm LED';
+  if (t === 'slimjack') return '1/4 Slim Jack';
+  if (t === 'toggle') return 'DPDT Toggle';
+  if (t === 'slideSwitchMini') return 'DPDT Slide';
+  if (t === 'subMiniSwitch') return 'Sub-mini Switch';
+  if (t === 'rotary8pos') return '8-pos Rotary';
+  if (t === 'led3mm') return '3mm CVD LED';
   if (t === 'tactled') return 'LED Button 7.5';
   if (t === 'tact6mm') return '6mm Tact';
   if (t === 'momentary12') return '12mm Button';
@@ -3850,6 +4010,75 @@ function PartPickerLabel({ def }: { def: ComponentDef }) {
   return <span className="part-picker-label"><PartIcon def={def}/><span>{shortPartName(def)}</span></span>;
 }
 
+function LibraryPartPreview({ def }: { def: ComponentDef }) {
+  const placed: PlacedComponent = {
+    ...sanitizePart(def),
+    id: `preview-${def.type}-${def.name}`,
+    ref: '',
+    label: '',
+    x: 18,
+    y: 18,
+    rotation: 0,
+    notes: '',
+    locked: false,
+  };
+  const b = getFrontBounds(placed);
+  const maxDim = Math.max(b.w || placed.frontDiameter || placed.holeDiameter || 6, b.h || placed.frontDiameter || placed.holeDiameter || 6, placed.slotLength || 0, placed.knobDiameter || 0, 8);
+  const pad = Math.max(5, maxDim * 0.26);
+  const size = Math.max(24, maxDim + pad * 2);
+  const cx = size / 2;
+  const cy = size / 2;
+  const c = { ...placed, x: cx, y: cy };
+  return (
+    <svg className="library-real-preview" viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
+      <defs>
+        <radialGradient id={`lib-glow-${def.type}`} cx="38%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="rgba(255,255,255,.28)" />
+          <stop offset="48%" stopColor="rgba(46,233,255,.08)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0)" />
+        </radialGradient>
+      </defs>
+      <rect x="0" y="0" width={size} height={size} rx={size*0.18} fill="rgba(255,255,255,.025)" />
+      <circle cx={cx} cy={cy} r={size*0.42} fill={`url(#lib-glow-${def.type})`} />
+      {isFaderLike(c) ? (
+        <g transform={`rotate(${c.rotation}, ${cx}, ${cy})`}>
+          <rect x={cx - (c.holeDiameter || 3)/2} y={cy - (c.slotLength || 20)/2} width={c.holeDiameter || 3} height={c.slotLength || 20} rx={(c.holeDiameter || 3)/2} fill="#050505" stroke="rgba(255,255,255,.45)" strokeWidth=".35" />
+          <rect x={cx - Math.max(7, (c.faderHandleW || 8))/2} y={cy - (c.faderHandleH || 5)/2} width={Math.max(7, (c.faderHandleW || 8))} height={c.faderHandleH || 5} rx="1.4" fill={c.type === 'fader20led' ? '#ff3838' : '#dfe4e8'} stroke="rgba(0,0,0,.72)" strokeWidth=".32" />
+          {c.type === 'fader20led' && <rect x={cx - 1.5} y={cy - 1.0} width="3" height="1.5" rx=".35" fill="rgba(255,255,255,.35)" />}
+        </g>
+      ) : isJackLike(c) ? (
+        <g>
+          <circle cx={cx} cy={cy} r={Math.max(4, c.frontDiameter/2)} fill="#cfd5d8" stroke="#1b1f22" strokeWidth=".45" />
+          <circle cx={cx} cy={cy} r={Math.max(2.2, c.holeDiameter*0.42)} fill="#050505" stroke="rgba(255,255,255,.45)" strokeWidth=".25" />
+          <circle cx={cx - 1.4} cy={cy - 1.4} r={Math.max(.8, c.frontDiameter*.08)} fill="rgba(255,255,255,.48)" />
+        </g>
+      ) : isPotLike(c) || c.category === 'encoder' ? (
+        <g>
+          <circle cx={cx} cy={cy} r={Math.max(5, visualKnobDiameter(c)/2)} fill="#101010" stroke="rgba(255,255,255,.62)" strokeWidth=".42" />
+          <circle cx={cx} cy={cy} r={Math.max(4, visualKnobDiameter(c)*0.38)} fill="#1d1d1d" stroke="rgba(255,255,255,.18)" strokeWidth=".25" />
+          <line x1={cx} y1={cy} x2={cx} y2={cy - Math.max(3.5, visualKnobDiameter(c)*0.32)} stroke="#f2f2ee" strokeWidth=".85" strokeLinecap="round" />
+        </g>
+      ) : isMiniSlideSwitch(c) ? (
+        <g>
+          <rect x={cx-8} y={cy-5} width="16" height="10" rx="1.5" fill="#f2f2ee" stroke="#050505" strokeWidth=".45"/>
+          <rect x={cx-6.5} y={cy-3.5} width="13" height="7" rx=".8" fill="#111" stroke="#999" strokeWidth=".18"/>
+          <rect x={cx+1.2} y={cy-2.6} width="4.5" height="5.2" rx=".8" fill="#d9d9d5" stroke="#fff" strokeWidth=".18"/>
+        </g>
+      ) : isButtonLike(c) || isLedLike(c) ? (
+        <g>
+          <circle cx={cx} cy={cy} r={Math.max(3, c.frontDiameter/2)} fill={isLedLike(c) ? '#ff4141' : '#777'} stroke="rgba(255,255,255,.55)" strokeWidth=".35" />
+          <circle cx={cx - 1.2} cy={cy - 1.4} r={Math.max(.9, c.frontDiameter*.16)} fill="rgba(255,255,255,.5)" />
+        </g>
+      ) : (
+        <g>
+          <rect x={cx-6} y={cy-6} width="12" height="12" rx="2" fill="#151515" stroke="rgba(185,246,255,.65)" strokeWidth=".45"/>
+          <path d={`M ${cx-3} ${cy} H ${cx+3} M ${cx} ${cy-3} V ${cy+3}`} stroke="#b9f6ff" strokeWidth=".7" strokeLinecap="round"/>
+        </g>
+      )}
+    </svg>
+  );
+}
+
 const COMPONENT_TYPE_SORT_ORDER: Record<string, number> = {
   potentiometer: 10,
   pot9mm: 11,
@@ -3861,9 +4090,11 @@ const COMPONENT_TYPE_SORT_ORDER: Record<string, number> = {
   switch: 30,
   toggle: 31,
   slideSwitchMini: 32,
-  tact6mm: 33,
-  tactled: 34,
-  momentary12: 35,
+  subMiniSwitch: 33,
+  rotary8pos: 34,
+  tact6mm: 35,
+  tactled: 36,
+  momentary12: 37,
   led: 40,
   led3mm: 41,
   encoder: 50,
@@ -3885,6 +4116,7 @@ function componentSortKey(def: ComponentDef): string {
 function sortComponentDefs<T extends ComponentDef>(parts: T[]): T[] {
   return [...parts].sort((a, b) => componentSortKey(a).localeCompare(componentSortKey(b)));
 }
+
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -5593,15 +5825,15 @@ function topHardwareVisible(c: ComponentDef): boolean {
   if (isPotLike(c)) return !!c.knobEnabled;
   return true;
 }
-function isPotLike(c: ComponentDef): boolean { return c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'encoder' || c.type === 'trimmer6mm'; }
+function isPotLike(c: ComponentDef): boolean { return c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'encoder' || c.type === 'trimmer6mm' || c.type === 'rotary8pos'; }
 function isScaleEligibleComponent(c: ComponentDef): boolean {
-  return c.category === 'potentiometer' || c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'trimmer6mm';
+  return c.category === 'potentiometer' || c.type === 'pot9mm' || c.type === 'pot16mm' || c.type === 'pot9mm_ra' || c.type === 'trimmer6mm' || c.type === 'rotary8pos';
 }
 function isJackLike(c: ComponentDef): boolean { return c.type === 'jack' || c.type === 'slimjack'; }
 function isButtonLike(c: ComponentDef): boolean { return c.type === 'tact6mm' || c.type === 'momentary12' || c.type === 'tactled'; }
 function isLedLike(c: ComponentDef): boolean { return c.type === 'led3mm' || c.type === 'tactled'; }
 function isFaderLike(c: ComponentDef): boolean { return c.type === 'fader20' || c.type === 'fader20led' || c.type === 'fader35' || c.type === 'fader45' || c.holeType === 'slot'; }
-function isMiniSlideSwitch(c: ComponentDef): boolean { return c.type === 'slideSwitchMini'; }
+function isMiniSlideSwitch(c: ComponentDef): boolean { return c.type === 'slideSwitchMini' || c.type === 'subMiniSwitch'; }
 function isTrimPot(c: ComponentDef): boolean { return c.type === 'trimmer6mm'; }
 function hasNutWasherHardware(c: ComponentDef): boolean {
   // PCB/tact/LED-style buttons and faders do not have panel nuts or washers.
@@ -6498,6 +6730,7 @@ function SVGCanvas({
   coordReadout, warnings,
 }: SVGCanvasProps) {
   const state    = useAppState();
+  const dispatch = useAppDispatch();
   const widthMM  = panelWidthMM(state.panel);
   const heightMM = PANEL_HEIGHT_MM;
   const PAD = 10;
@@ -6532,6 +6765,20 @@ function SVGCanvas({
 
   const hoveredComponent = hoverTip ? state.components.find(c => c.id === hoverTip.id) : undefined;
 
+  function clientPointToMM(clientX: number, clientY: number): { x: number; y: number } | null {
+    const svg = svgRef.current;
+    if (!svg) return null;
+    const pt = svg.createSVGPoint();
+    pt.x = clientX;
+    pt.y = clientY;
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return null;
+    const mm = pt.matrixTransform(ctm.inverse());
+    return { x: mm.x, y: mm.y };
+  }
+
+
+
   return (
     <div
       className={`canvas-wrap mode-${state.viewMode} ${state.selected.length ? 'has-selection' : ''}`}
@@ -6549,6 +6796,7 @@ function SVGCanvas({
       }}>
         <svg
           ref={svgRef}
+          className="panel-canvas-svg"
           viewBox={`${-PAD} ${-PAD} ${widthMM + PAD * 2} ${heightMM + PAD * 2}`}
           style={{ width: `${(widthMM + PAD * 2) * 4}px`, height: `${(heightMM + PAD * 2) * 4}px`, display: 'block', touchAction: 'none', userSelect: 'none' }}
           onMouseMove={handleSVGMouseMove}
@@ -6928,6 +7176,8 @@ function ComponentLibraryPanel() {
   const sortedVisibleParts = sortComponentDefs(visibleParts);
   const displayedParts = sortedVisibleParts.slice(0, renderLimit);
   const hiddenPartCount = Math.max(0, sortedVisibleParts.length - displayedParts.length);
+  const suppressNextLibraryClickRef = useRef(false);
+
   function addComponent(def: ComponentDef) {
     if (replaceMode && state.selected.length > 0) {
       dispatch({ type: 'REPLACE_SELECTED_WITH_PART', def });
@@ -7005,12 +7255,16 @@ function ComponentLibraryPanel() {
       {visibleParts.length === 0 && <div style={{ color:'#777', fontSize:12, padding:'8px 0' }}>No parts match the filter.</div>}
       {visibleParts.length > 0 && <div className="library-render-note">Rendering {displayedParts.length} of {sortedVisibleParts.length} matching parts. Use search/filter or Load more.</div>}
       {displayedParts.map((def, idx) => (
-        <div key={`${def.name}-${idx}`} className={`comp-lib-item ${(def.verificationStatus || 'approximate') === 'approximate' ? 'approx' : ''}`} title={`${replaceMode ? 'Replace selected component(s) with this part' : 'Add this part to the panel'}\n\n${partTooltip(def)}`} onClick={() => addComponent(def)}>
+        <div
+          key={`${def.name}-${idx}`}
+          className={`comp-lib-item real-part-tile ${(def.verificationStatus || 'approximate') === 'approximate' ? 'approx' : ''}`}
+          title={`${replaceMode ? 'Replace selected component(s) with this part' : 'Click to add at center, or drag the component preview onto the panel'}\n\n${partTooltip(def)}`}
+          onClick={() => addComponent(def)}
+        >
+          <LibraryPartPreview def={def} />
           <div className="part-card-main">
-            <PartPickerLabel def={def} />
+            <strong>{shortPartName(def)}</strong>
             <small>{def.name}</small>
-          </div>
-          <div className="part-card-side">
             <span>{holeText(def)} · {def.rearDepth}mm deep</span>
           </div>
           {state.customParts.some(p => p.name === def.name) && <button className="part-delete-mini" onClick={e => { e.stopPropagation(); dispatch({ type:'DELETE_CUSTOM_PART', name:def.name }); }}>×</button>}
@@ -7952,6 +8206,18 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('Component pickers use short names, icons, and desktop tooltips with full part details.');
     ok('Component pickers are sorted by component type across desktop and mobile.');
     ok('Component Library CSS is consolidated; audit/status visual leftovers are removed.');
+    ok('Left sidebar width is locked to match the right sidebar on desktop, and component icons are enlarged.');
+    ok('Component Library uses stable preview tiles; clicking a tile adds the component at panel center.');
+    ok('Component Library collapsed state hides all preview tiles and controls.');
+    ok('Mini slide switch dimensions updated from Sunrom 560.pdf / part 5260 datasheet.');
+    ok('Dailywell 5SES1S105M2RES Sub-mini Switch added as a separate datasheet-verified library component.');
+    ok('Alpha SR1712F 8-position rotary switch added as a datasheet-verified library component.');
+    ok('WQP PJ612A 1/4 inch slim jack updated from Thonk/WQP datasheet.');
+    ok('Dailywell DWB4 DPDT ON-OFF-ON mini toggle updated from Thonk/Dailywell datasheet.');
+    ok('Hakai Labs DDE-0016-00 3mm CVD LED updated from Danesi Designs datasheet.');
+    ok('Alpha RA2045F-20 fader geometry verified against Taiwan Alpha datasheet; LED slider visual cap size restored to compact appearance.');
+    ok('Alpha RV16AF-10B6 16mm potentiometer updated from datasheet drawing.');
+    ok('TE Connectivity FSM2JSM 6mm tactile switch updated from ChipDip/TE datasheet.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -11616,14 +11882,30 @@ function App() {
 
   // ── Coordinate conversion ──────────────────────────────────────────────
   function clientToMM(clientX: number, clientY: number): { x: number; y: number } | null {
-    const svg = svgRef.current;
+    const svg = svgRef.current || document.querySelector('svg.panel-canvas-svg') as SVGSVGElement | null;
     if (!svg) return null;
-    const pt = svg.createSVGPoint();
-    pt.x = clientX; pt.y = clientY;
-    const ctm = svg.getScreenCTM();
-    if (!ctm) return null;
-    const mm = pt.matrixTransform(ctm.inverse());
-    return { x: mm.x, y: mm.y };
+
+    // Primary path: map through the rendered SVG rect and its viewBox.
+    // This is reliable with our CSS transform wrapper because the rect already
+    // includes the current pan/zoom transform.
+    const rect = svg.getBoundingClientRect();
+    const vb = svg.viewBox.baseVal;
+    if (rect.width > 0 && rect.height > 0 && vb.width > 0 && vb.height > 0) {
+      const x = vb.x + ((clientX - rect.left) / rect.width) * vb.width;
+      const y = vb.y + ((clientY - rect.top) / rect.height) * vb.height;
+      return { x, y };
+    }
+
+    try {
+      const pt = svg.createSVGPoint();
+      pt.x = clientX; pt.y = clientY;
+      const ctm = svg.getScreenCTM();
+      if (!ctm) return null;
+      const mm = pt.matrixTransform(ctm.inverse());
+      return { x: mm.x, y: mm.y };
+    } catch {
+      return null;
+    }
   }
 
   function measurementAnchors(): { x: number[]; y: number[] } {
