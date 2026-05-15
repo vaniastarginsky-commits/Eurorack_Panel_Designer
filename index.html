@@ -3517,6 +3517,326 @@
   overflow: hidden;
 }
 
+
+/* v110 interface art-direction pass: cleaner hierarchy, calmer glass, better focus */
+:root {
+  --ui-bg-0: #05080b;
+  --ui-bg-1: #0a1015;
+  --ui-bg-2: #111820;
+  --ui-panel: rgba(17, 23, 29, .78);
+  --ui-panel-strong: rgba(20, 27, 34, .92);
+  --ui-line: rgba(255,255,255,.075);
+  --ui-line-strong: rgba(185,246,255,.20);
+  --ui-text: #e9f4f7;
+  --ui-muted: #92a6ad;
+  --ui-cyan: #2ee9ff;
+  --ui-cyan-soft: rgba(46,233,255,.16);
+  --ui-warn: #ffd166;
+  --ui-danger: #ff5a64;
+  --ui-radius-sm: 10px;
+  --ui-radius-md: 14px;
+  --ui-radius-lg: 18px;
+  --ui-shadow-card: 0 10px 30px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.035);
+  --ui-shadow-pop: 0 20px 60px rgba(0,0,0,.48), 0 0 0 1px rgba(255,255,255,.04) inset;
+}
+
+html, body {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(46,233,255,.07), transparent 32%),
+    radial-gradient(circle at 78% 18%, rgba(76,117,255,.045), transparent 36%),
+    linear-gradient(180deg, var(--ui-bg-1), var(--ui-bg-0) 62%);
+}
+
+.app {
+  background:
+    linear-gradient(90deg, rgba(46,233,255,.035), transparent 18%, transparent 82%, rgba(46,233,255,.028)),
+    transparent !important;
+}
+
+.toolbar,
+.mobile-topbar {
+  background:
+    linear-gradient(180deg, rgba(24,31,38,.94), rgba(8,12,17,.94)) !important;
+  border-bottom: 1px solid rgba(185,246,255,.12) !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,.34), inset 0 -1px 0 rgba(255,255,255,.035) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.logo {
+  letter-spacing: .105em !important;
+  color: var(--ui-text) !important;
+  text-shadow: 0 0 14px rgba(46,233,255,.18);
+}
+
+.toolbar button,
+.toolbar select,
+.mobile-topbar button,
+.canvas-toolbar button,
+.mobile-main-dock button,
+.dropdown-menu button,
+button {
+  border-radius: var(--ui-radius-sm) !important;
+  border: 1px solid rgba(255,255,255,.095) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.026)) !important;
+  color: #dce9ed !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 6px 18px rgba(0,0,0,.18);
+  transition: transform 110ms ease, border-color 130ms ease, background 130ms ease, box-shadow 130ms ease, color 130ms ease;
+}
+
+.toolbar button:hover,
+.toolbar select:hover,
+.mobile-topbar button:hover,
+.canvas-toolbar button:hover,
+.mobile-main-dock button:hover,
+.dropdown-menu button:hover,
+button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(46,233,255,.34) !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46,233,255,.13), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.095), rgba(255,255,255,.032)) !important;
+  color: #f6fdff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 24px rgba(0,0,0,.24), 0 0 0 1px rgba(46,233,255,.06);
+}
+
+.toolbar button:active,
+.canvas-toolbar button:active,
+button:active {
+  transform: translateY(0);
+}
+
+button.active,
+.mobile-main-dock button.active,
+.canvas-toolbar button.active {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46,233,255,.26), transparent 60%),
+    linear-gradient(180deg, rgba(46,233,255,.20), rgba(46,233,255,.075)) !important;
+  border-color: rgba(46,233,255,.55) !important;
+  color: #c9fbff !important;
+  box-shadow: 0 0 0 1px rgba(46,233,255,.12) inset, 0 0 24px rgba(46,233,255,.14);
+}
+
+button.danger,
+.danger {
+  border-color: rgba(255,90,100,.30) !important;
+  background: linear-gradient(180deg, rgba(255,90,100,.17), rgba(255,90,100,.055)) !important;
+  color: #ffd7db !important;
+}
+
+.sidebar-left,
+.sidebar-right {
+  background:
+    linear-gradient(180deg, rgba(9,14,19,.96), rgba(7,10,14,.98)) !important;
+  border-color: rgba(185,246,255,.10) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.025), 0 0 44px rgba(0,0,0,.22);
+}
+
+.section {
+  border-radius: var(--ui-radius-md) !important;
+  border: 1px solid var(--ui-line) !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,.045), transparent 44%),
+    linear-gradient(180deg, rgba(255,255,255,.036), rgba(255,255,255,.012)) !important;
+  box-shadow: var(--ui-shadow-card) !important;
+  overflow: hidden;
+}
+
+.section:hover {
+  border-color: rgba(46,233,255,.18) !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(46,233,255,.055), transparent 44%),
+    linear-gradient(180deg, rgba(255,255,255,.046), rgba(255,255,255,.014)) !important;
+}
+
+.section-title {
+  color: #c5d0d6 !important;
+  font-weight: 900 !important;
+  letter-spacing: .14em !important;
+  padding: 2px 1px 6px !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,.55);
+}
+
+.section-title::after {
+  color: rgba(46,233,255,.82) !important;
+  font-size: 12px !important;
+}
+
+.section.collapsed {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.010)) !important;
+}
+
+input[type=text],
+input[type=number],
+select,
+textarea,
+.mini-input {
+  border-radius: 11px !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  background: rgba(3,7,10,.66) !important;
+  color: var(--ui-text) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025), 0 6px 18px rgba(0,0,0,.12);
+}
+
+input[type=text]:focus,
+input[type=number]:focus,
+select:focus,
+textarea:focus,
+.mini-input:focus {
+  border-color: rgba(46,233,255,.55) !important;
+  box-shadow: 0 0 0 3px rgba(46,233,255,.10), inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+.canvas-wrap {
+  background:
+    radial-gradient(ellipse at center, rgba(46,233,255,.055), transparent 42%),
+    linear-gradient(180deg, rgba(7,12,15,.96), rgba(2,5,8,.98)) !important;
+  border-left: 1px solid rgba(185,246,255,.08);
+  border-right: 1px solid rgba(185,246,255,.08);
+}
+
+.canvas-hud {
+  border-radius: 999px !important;
+  border: 1px solid rgba(46,233,255,.20) !important;
+  background: rgba(4,10,14,.64) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.canvas-hud span {
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.052) !important;
+  color: #d7edf2 !important;
+  border: 1px solid rgba(255,255,255,.045);
+}
+
+.canvas-toolbar {
+  border-radius: 999px !important;
+  background: rgba(4,10,14,.52) !important;
+  border: 1px solid rgba(46,233,255,.18) !important;
+  box-shadow: 0 14px 40px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.035);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dropdown-menu,
+.command-palette,
+.export-dialog-panel,
+.mobile-sheet {
+  border-radius: var(--ui-radius-lg) !important;
+  border: 1px solid rgba(46,233,255,.19) !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(46,233,255,.08), transparent 42%),
+    linear-gradient(180deg, rgba(18,24,30,.96), rgba(6,10,14,.96)) !important;
+  box-shadow: var(--ui-shadow-pop) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.section[data-component-library="true"] .comp-lib-item.real-part-tile {
+  border-radius: 16px !important;
+  border: 1px solid rgba(255,255,255,.085) !important;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(46,233,255,.075), transparent 42%),
+    linear-gradient(180deg, rgba(255,255,255,.050), rgba(255,255,255,.018)) !important;
+  box-shadow: 0 12px 30px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.section[data-component-library="true"] .comp-lib-item.real-part-tile.approx {
+  border-color: rgba(255,209,102,.20) !important;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255,209,102,.070), transparent 44%),
+    linear-gradient(180deg, rgba(255,255,255,.047), rgba(255,255,255,.017)) !important;
+}
+
+.section[data-component-library="true"] .comp-lib-item.real-part-tile:hover {
+  transform: translateY(-1px);
+  border-color: rgba(46,233,255,.36) !important;
+  box-shadow: 0 16px 36px rgba(0,0,0,.28), 0 0 24px rgba(46,233,255,.10), inset 0 1px 0 rgba(255,255,255,.045);
+}
+
+.library-real-preview {
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 45% 30%, rgba(255,255,255,.08), transparent 42%),
+    rgba(46,233,255,.035);
+}
+
+.library-render-note {
+  border-radius: 12px !important;
+  border: 1px solid rgba(46,233,255,.10) !important;
+  background: rgba(46,233,255,.045) !important;
+  color: #9fb6be !important;
+}
+
+.selection-handles rect,
+.selection-handles circle,
+.selection-handles line {
+  filter: drop-shadow(0 0 4px rgba(46,233,255,.24));
+}
+
+.component-hover-card {
+  border-radius: 16px !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(46,233,255,.10), transparent 42%),
+    rgba(8,12,15,.94) !important;
+  border-color: rgba(46,233,255,.28) !important;
+}
+
+.status-ok,
+.ok {
+  color: #76f2a3 !important;
+}
+
+@media (max-width: 860px) {
+  .mobile-main-dock {
+    border-radius: 24px !important;
+    background: rgba(8,12,16,.82) !important;
+    border: 1px solid rgba(46,233,255,.18) !important;
+    box-shadow: 0 18px 56px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.04);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .mobile-main-dock button {
+    border-radius: 18px !important;
+  }
+
+  .section {
+    border-radius: 18px !important;
+  }
+}
+
+
+/* v111 mobile hardware render controls: real tappable segmented buttons */
+@media (max-width: 860px) {
+  .mobile-hardware-controls,
+  .mobile-hardware-controls * {
+    pointer-events: auto !important;
+  }
+  .mobile-hardware-controls {
+    position: relative;
+    z-index: 10;
+    touch-action: manipulation !important;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .mobile-hardware-button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .mobile-hardware-button-grid button,
+  .mobile-perf-button {
+    min-height: 44px !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -5058,6 +5378,12 @@ function appReducer(state: AppState, action: AppAction): AppState {
 
     case 'SET_TOP_HARDWARE_STYLE':
       return { ...state, topHardwareStyle: action.style };
+
+    case 'SET_HARDWARE_RENDER_MODE':
+      return { ...state, hardwareRenderMode: action.mode };
+
+    case 'SET_MOBILE_PERFORMANCE_MODE':
+      return { ...state, mobilePerformanceMode: action.value };
 
     case 'SET_GRID_SIZE':
       return { ...state, grid: { ...state.grid, size: action.size } };
@@ -8219,6 +8545,8 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('Alpha RV16AF-10B6 16mm potentiometer updated from datasheet drawing.');
     ok('TE Connectivity FSM2JSM 6mm tactile switch updated from ChipDip/TE datasheet.');
     ok('Ten new real-module-inspired presets from 2HP to 28HP are added to the preset library.');
+    ok('Interface art-direction polish pass applied: calmer glass hierarchy, refined cards, buttons, HUD and sidebars.');
+    ok('Hardware render and mobile performance reducer actions are implemented and mobile controls are tap-safe.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -11408,23 +11736,32 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                 </div>
                 <div className="mobile-sheet-section">
                   <div className="mobile-sheet-label">Hardware render</div>
-                  <div className="mobile-hardware-controls" onPointerDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
+                  <div className="mobile-hardware-controls" onPointerDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onClick={e => e.stopPropagation()}>
                     <div className="mobile-hardware-button-grid">
-                      {(['auto','classic','realistic','off'] as HardwareRenderMode[]).map(mode => (
-                        <button
-                          key={mode}
-                          type="button"
-                          className={(state.hardwareRenderMode || 'auto') === mode ? 'active' : ''}
-                          onPointerUp={e => { e.preventDefault(); e.stopPropagation(); dispatch({ type:'SET_HARDWARE_RENDER_MODE', mode }); }}
-                          onClick={e => { e.preventDefault(); e.stopPropagation(); dispatch({ type:'SET_HARDWARE_RENDER_MODE', mode }); }}
-                        >
-                          {mode === 'realistic' ? 'Boutique' : mode.charAt(0).toUpperCase() + mode.slice(1)}
-                        </button>
-                      ))}
+                      {(['auto','classic','realistic','off'] as HardwareRenderMode[]).map(mode => {
+                        const setMode = (e: React.SyntheticEvent) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          dispatch({ type:'SET_HARDWARE_RENDER_MODE', mode });
+                        };
+                        return (
+                          <button
+                            key={mode}
+                            type="button"
+                            className={(state.hardwareRenderMode || 'auto') === mode ? 'active' : ''}
+                            onTouchEnd={setMode}
+                            onPointerUp={setMode}
+                            onClick={setMode}
+                          >
+                            {mode === 'realistic' ? 'Boutique' : mode.charAt(0).toUpperCase() + mode.slice(1)}
+                          </button>
+                        );
+                      })}
                     </div>
                     <button
                       type="button"
                       className={`mobile-perf-button ${state.mobilePerformanceMode !== false ? 'active' : ''}`}
+                      onTouchEnd={e => { e.preventDefault(); e.stopPropagation(); dispatch({ type:'SET_MOBILE_PERFORMANCE_MODE', value: !(state.mobilePerformanceMode !== false) }); }}
                       onPointerUp={e => { e.preventDefault(); e.stopPropagation(); dispatch({ type:'SET_MOBILE_PERFORMANCE_MODE', value: !(state.mobilePerformanceMode !== false) }); }}
                       onClick={e => { e.preventDefault(); e.stopPropagation(); dispatch({ type:'SET_MOBILE_PERFORMANCE_MODE', value: !(state.mobilePerformanceMode !== false) }); }}
                     >
