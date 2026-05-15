@@ -6546,6 +6546,1128 @@ body {
   min-width: 0 !important;
 }
 
+
+/* v168 Layout / Overlay Stabilization
+   All canvas-related floating UI now lives in one workspace overlay. */
+.canvas-wrap {
+  position: relative !important;
+}
+
+.workspace-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1400;
+  pointer-events: none;
+}
+
+.workspace-overlay .hud-zone {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  min-width: 0;
+}
+
+.workspace-overlay .hud-zone > * {
+  pointer-events: auto;
+}
+
+.workspace-overlay .hud-bottom-left {
+  left: 10px;
+  bottom: 10px;
+  align-items: flex-end;
+  justify-content: flex-start;
+  max-width: min(430px, 33vw);
+}
+
+.workspace-overlay .hud-bottom-center {
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  align-items: flex-end;
+  justify-content: center;
+  max-width: min(760px, calc(100vw - 820px));
+}
+
+.workspace-overlay .hud-bottom-right {
+  right: 10px;
+  bottom: 10px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: min(440px, 30vw);
+}
+
+.workspace-overlay .hud-top-center {
+  left: 50%;
+  top: 10px;
+  transform: translateX(-50%);
+  align-items: flex-start;
+  justify-content: center;
+  max-width: min(520px, calc(100vw - 48px));
+}
+
+.workspace-overlay .hud-top-right {
+  right: 10px;
+  top: 10px;
+  align-items: flex-start;
+  justify-content: flex-end;
+  max-width: min(420px, 32vw);
+}
+
+/* Neutralize old fixed/absolute HUD positions inside the new zones. */
+.workspace-overlay .dfm-status-float,
+.workspace-overlay .selection-action-toolbar,
+.workspace-overlay .selection-info-strip,
+.workspace-overlay .coord-readout,
+.workspace-overlay .placement-status-pill,
+.workspace-overlay .snap-feedback-badge {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  max-width: 100% !important;
+}
+
+.workspace-overlay .selection-measure-float {
+  display: none !important;
+}
+
+.workspace-overlay .dfm-status-float {
+  min-width: 0 !important;
+}
+
+.workspace-overlay .selection-action-toolbar {
+  width: auto !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+}
+
+.workspace-overlay .selection-info-strip,
+.workspace-overlay .coord-readout {
+  white-space: nowrap !important;
+}
+
+.workspace-overlay .selection-info-strip {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.workspace-overlay .coord-readout {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.workspace-overlay .placement-status-pill {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Keep rail attached to the right edge of the canvas area, not the whole app. */
+.workspace-overlay .inspector-rail {
+  position: absolute !important;
+  right: 8px !important;
+  top: 84px !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+/* Rail popovers open into the workspace, away from the right sidebar. */
+.workspace-overlay .inspector-rail-popover {
+  left: auto !important;
+  right: calc(100% + 6px) !important;
+}
+
+/* App-level placement pill should never appear after v168. */
+.workspace > .placement-status-pill {
+  display: none !important;
+}
+
+@media (max-width: 1320px) {
+  .workspace-overlay .hud-bottom-left {
+    max-width: 310px;
+  }
+  .workspace-overlay .hud-bottom-center {
+    max-width: min(560px, calc(100vw - 650px));
+  }
+  .workspace-overlay .hud-bottom-right {
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .workspace-overlay .hud-bottom-left {
+    display: none;
+  }
+  .workspace-overlay .hud-bottom-center {
+    left: 10px;
+    right: 10px;
+    transform: none;
+    max-width: none;
+    justify-content: flex-start;
+  }
+  .workspace-overlay .hud-bottom-right {
+    right: 10px;
+    bottom: 54px;
+    max-width: calc(100vw - 20px);
+  }
+}
+
+@media (max-width: 860px) {
+  .workspace-overlay .inspector-rail,
+  .workspace-overlay .hud-bottom-left,
+  .workspace-overlay .hud-top-right {
+    display: none !important;
+  }
+  .workspace-overlay .hud-bottom-center {
+    bottom: calc(var(--safe-bottom, 0px) + 82px);
+  }
+  .workspace-overlay .hud-bottom-right {
+    display: none !important;
+  }
+  .workspace-overlay .hud-top-center {
+    top: calc(var(--safe-top, 0px) + 8px);
+  }
+}
+
+
+/* v169 CSS Consolidation Pass
+   Final design-system layer for common controls. This does not remove legacy CSS yet,
+   but it gives the app one stable visual source of truth for the main UI primitives. */
+:root {
+  --pd-bg-app: #05080a;
+  --pd-bg-panel: rgba(13, 17, 21, 0.94);
+  --pd-bg-panel-soft: rgba(255, 255, 255, 0.035);
+  --pd-bg-control: rgba(255, 255, 255, 0.045);
+  --pd-bg-control-hover: rgba(255, 255, 255, 0.075);
+  --pd-bg-control-active: rgba(46, 233, 255, 0.12);
+
+  --pd-border-soft: rgba(255, 255, 255, 0.075);
+  --pd-border-mid: rgba(255, 255, 255, 0.12);
+  --pd-border-cyan: rgba(46, 233, 255, 0.26);
+  --pd-border-cyan-strong: rgba(46, 233, 255, 0.55);
+
+  --pd-text-main: #eef7fa;
+  --pd-text-muted: #9db0b7;
+  --pd-text-dim: #6f8087;
+  --pd-accent-cyan: #2ee9ff;
+  --pd-accent-cyan-soft: #b9f6ff;
+  --pd-accent-yellow: #ffd166;
+  --pd-accent-red: #ff6b75;
+  --pd-accent-green: #62d26f;
+
+  --pd-radius-xs: 7px;
+  --pd-radius-sm: 10px;
+  --pd-radius-md: 13px;
+  --pd-radius-lg: 17px;
+  --pd-radius-xl: 22px;
+  --pd-radius-pill: 999px;
+
+  --pd-space-1: 4px;
+  --pd-space-2: 6px;
+  --pd-space-3: 8px;
+  --pd-space-4: 10px;
+  --pd-space-5: 12px;
+  --pd-space-6: 16px;
+
+  --pd-shadow-panel: 0 18px 48px rgba(0, 0, 0, .34);
+  --pd-shadow-float: 0 14px 42px rgba(0, 0, 0, .36);
+  --pd-glow-cyan-soft: 0 0 18px rgba(46, 233, 255, .10);
+  --pd-glow-cyan-med: 0 0 26px rgba(46, 233, 255, .18);
+}
+
+/* Common button surface */
+button,
+.btn,
+.toolbar button,
+.sidebar-left button,
+.sidebar-right button,
+.workspace-overlay button {
+  border-radius: var(--pd-radius-md);
+  border-color: var(--pd-border-soft);
+  color: var(--pd-text-main);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.030));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045);
+}
+
+button:hover,
+.btn:hover,
+.toolbar button:hover,
+.sidebar-left button:hover,
+.sidebar-right button:hover,
+.workspace-overlay button:hover {
+  border-color: rgba(46,233,255,.32);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46,233,255,.12), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.090), rgba(255,255,255,.040));
+}
+
+button.active,
+.btn.active,
+.toolbar button.active,
+.sidebar-left button.active,
+.sidebar-right button.active,
+.workspace-overlay button.active {
+  color: var(--pd-accent-cyan-soft);
+  border-color: var(--pd-border-cyan-strong);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46,233,255,.24), transparent 62%),
+    var(--pd-bg-control-active);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    var(--pd-glow-cyan-soft);
+}
+
+button.danger,
+.btn.danger,
+.sidebar-right button.danger,
+.workspace-overlay button.danger {
+  color: #ffd7da;
+  border-color: rgba(255,107,117,.42);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255,107,117,.16), transparent 58%),
+    rgba(255,107,117,.08);
+}
+
+/* Common form controls */
+input,
+select,
+textarea,
+.mini-input,
+.sidebar-left input,
+.sidebar-right input,
+.sidebar-left select,
+.sidebar-right select,
+.sidebar-left textarea,
+.sidebar-right textarea {
+  border-radius: var(--pd-radius-md);
+  border-color: var(--pd-border-soft);
+  background: rgba(1, 5, 8, .70);
+  color: var(--pd-text-main);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.mini-input:focus,
+.sidebar-left input:focus,
+.sidebar-right input:focus,
+.sidebar-left select:focus,
+.sidebar-right select:focus,
+.sidebar-left textarea:focus,
+.sidebar-right textarea:focus {
+  outline: none;
+  border-color: var(--pd-border-cyan-strong);
+  box-shadow:
+    0 0 0 2px rgba(46,233,255,.10),
+    inset 0 1px 0 rgba(255,255,255,.045);
+}
+
+select {
+  padding-right: 34px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Side sections / cards */
+.sidebar-left .section,
+.sidebar-right .section,
+.panel-section,
+.inspector-card {
+  border-radius: var(--pd-radius-lg);
+  border-color: var(--pd-border-soft);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.040), rgba(255,255,255,.020));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.030);
+}
+
+.sidebar-left .section-title,
+.sidebar-right .section-title,
+.panel-section-title {
+  color: #d9e7eb;
+  letter-spacing: .16em;
+}
+
+/* Photoshop-like right tabs */
+.right-tab-strip.primary {
+  background: rgba(13,17,21,.98);
+  border-bottom-color: var(--pd-border-soft);
+}
+
+.right-tab-strip.primary button {
+  border-radius: 0;
+  color: var(--pd-text-muted);
+  background: transparent;
+  box-shadow: none;
+}
+
+.right-tab-strip.primary button.active {
+  color: var(--pd-text-main);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46,233,255,.16), transparent 62%),
+    rgba(255,255,255,.025);
+  box-shadow: inset 0 -2px 0 rgba(46,233,255,.76);
+}
+
+.right-tab-strip.secondary {
+  border-color: var(--pd-border-soft);
+  background: rgba(255,255,255,.025);
+}
+
+.right-tab-strip.secondary button {
+  border-radius: 0;
+  color: var(--pd-text-muted);
+  background: transparent;
+  box-shadow: none;
+}
+
+.right-tab-strip.secondary button.active {
+  color: var(--pd-accent-cyan-soft);
+  background: rgba(46,233,255,.10);
+  box-shadow: inset 0 -2px 0 rgba(46,233,255,.60);
+}
+
+/* Component Library filters/cards */
+.library-filter-row,
+.component-library-filters {
+  min-width: 0;
+}
+
+.library-filter-row select,
+.component-library select {
+  min-width: 0;
+  padding-right: 36px;
+}
+
+.real-part-tile,
+.part-card,
+.comp-lib-item {
+  border-radius: var(--pd-radius-md);
+}
+
+.real-part-tile {
+  border-color: rgba(255,255,255,.075);
+  background:
+    radial-gradient(circle at 18% 20%, rgba(46,233,255,.07), transparent 42%),
+    linear-gradient(180deg, rgba(255,255,255,.042), rgba(255,255,255,.018));
+}
+
+.real-part-tile:hover {
+  border-color: rgba(46,233,255,.28);
+}
+
+/* Unified HUD visuals inside v168 overlay */
+.workspace-overlay .dfm-status-main,
+.workspace-overlay .selection-action-toolbar,
+.workspace-overlay .selection-info-strip,
+.workspace-overlay .coord-readout,
+.workspace-overlay .placement-status-pill {
+  background: rgba(4,10,14,.78);
+  border: 1px solid var(--pd-border-cyan);
+  border-radius: var(--pd-radius-pill);
+  box-shadow:
+    var(--pd-shadow-float),
+    inset 0 1px 0 rgba(255,255,255,.045);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.workspace-overlay .coord-readout,
+.workspace-overlay .selection-info-strip {
+  color: var(--pd-accent-cyan-soft);
+}
+
+.workspace-overlay .selection-action-toolbar button {
+  min-height: 31px;
+  padding: 5px 9px;
+  border-radius: var(--pd-radius-sm);
+}
+
+/* Inspector rail normalized */
+.workspace-overlay .inspector-rail {
+  background: rgba(4,10,14,.72);
+  border-color: var(--pd-border-cyan);
+  border-radius: var(--pd-radius-lg);
+  box-shadow: var(--pd-shadow-float), inset 0 1px 0 rgba(255,255,255,.040);
+}
+
+.workspace-overlay .inspector-rail > button {
+  border-radius: var(--pd-radius-sm);
+}
+
+.workspace-overlay .inspector-rail-popover {
+  border-radius: var(--pd-radius-lg);
+  border-color: var(--pd-border-cyan);
+  background: rgba(7, 12, 16, .94);
+  box-shadow: 0 24px 70px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+/* A few legacy floats are intentionally disabled after v168. */
+.selection-measure-float {
+  display: none;
+}
+
+
+/* v171 right inspector finalized tab labels */
+.right-tab-strip.primary button,
+.right-tab-strip.secondary button {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* v172 Component Library Finalization */
+.section[data-component-library="true"] {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+
+.section[data-component-library="true"] .section-title {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 22px !important;
+  margin-bottom: 8px !important;
+}
+
+.section[data-component-library="true"] .library-search-compact {
+  min-height: 36px !important;
+  margin-bottom: 8px !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  font-size: 13px !important;
+}
+
+.section[data-component-library="true"] .library-filter-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.section[data-component-library="true"] .library-filter-row select {
+  min-width: 0 !important;
+  height: 34px !important;
+  padding: 6px 36px 6px 10px !important;
+  font-size: 12px !important;
+  text-overflow: ellipsis !important;
+}
+
+.library-active-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding: 6px 8px;
+  border-radius: 12px;
+  background: rgba(46,233,255,.055);
+  border: 1px solid rgba(46,233,255,.16);
+}
+
+.library-active-filter-row span {
+  min-width: 0;
+  color: #9db0b7;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.library-active-filter-row button {
+  min-height: 26px !important;
+  padding: 4px 8px !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  color: #b9f6ff !important;
+}
+
+/* Recent / Favorites as compact chips, not another big block. */
+.library-memory-row {
+  gap: 6px !important;
+  margin: 4px 0 9px !important;
+}
+
+.library-memory-row > div {
+  padding: 6px !important;
+  border-radius: 12px !important;
+  background: rgba(255,255,255,.022) !important;
+}
+
+.library-memory-row b {
+  flex: 0 0 100%;
+  margin-bottom: 1px;
+  font-size: 9.5px !important;
+  color: #7f939a !important;
+}
+
+.library-memory-row button {
+  min-height: 24px !important;
+  max-width: 100% !important;
+  padding: 3px 7px !important;
+  font-size: 10.5px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Cards: actual components are the visual focus. */
+.section[data-component-library="true"] .comp-lib-item.real-part-tile {
+  grid-template-columns: 62px minmax(0, 1fr) !important;
+  min-height: 80px !important;
+  gap: 12px !important;
+  margin-bottom: 7px !important;
+  padding: 10px 36px 10px 10px !important;
+  border: 1px solid rgba(255,255,255,.075) !important;
+  border-radius: 15px !important;
+  background:
+    radial-gradient(circle at 16% 22%, rgba(46,233,255,.080), transparent 42%),
+    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018)) !important;
+}
+
+.section[data-component-library="true"] .comp-lib-item.real-part-tile.approx {
+  border-color: rgba(255,209,102,.16) !important;
+}
+
+.section[data-component-library="true"] .comp-lib-item.real-part-tile:not(.approx) {
+  border-color: rgba(46,233,255,.18) !important;
+}
+
+.section[data-component-library="true"] .comp-lib-item.real-part-tile:hover {
+  border-color: rgba(46,233,255,.38) !important;
+  background:
+    radial-gradient(circle at 16% 22%, rgba(46,233,255,.13), transparent 42%),
+    linear-gradient(180deg, rgba(255,255,255,.060), rgba(255,255,255,.024)) !important;
+}
+
+.library-real-preview {
+  width: 62px !important;
+  height: 62px !important;
+}
+
+.section[data-component-library="true"] .real-part-tile .part-card-main strong {
+  max-width: 100% !important;
+  font-size: 13.5px !important;
+  line-height: 1.05 !important;
+}
+
+.section[data-component-library="true"] .real-part-tile .part-card-main small {
+  margin-top: 2px !important;
+  color: #8aa0a7 !important;
+}
+
+.section[data-component-library="true"] .real-part-tile .part-card-main span {
+  margin-top: 2px !important;
+  color: #aac1c8 !important;
+}
+
+.part-favorite-mini {
+  right: 7px !important;
+  top: 7px !important;
+  width: 23px !important;
+  height: 23px !important;
+  min-height: 23px !important;
+  font-size: 12px !important;
+}
+
+.part-delete-mini {
+  right: 7px !important;
+  bottom: 7px !important;
+  width: 23px !important;
+  height: 23px !important;
+  min-height: 23px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+}
+
+/* Hide noisy render note; Load more is enough. */
+.section[data-component-library="true"] .library-render-note {
+  display: none !important;
+}
+
+.library-load-more {
+  width: 100% !important;
+  min-height: 34px !important;
+  margin-top: 2px !important;
+  margin-bottom: 7px !important;
+  border-radius: 13px !important;
+}
+
+/* Keep advanced/custom-library tools at the bottom, visually quiet. */
+.library-tools-footer {
+  margin-top: 8px !important;
+  border-radius: 14px !important;
+  opacity: .78;
+}
+
+.library-tools-footer:not([open]) {
+  background: transparent !important;
+  border-color: rgba(255,255,255,.055) !important;
+}
+
+.library-tools-footer summary {
+  min-height: 34px !important;
+  padding: 8px 10px !important;
+  font-size: 10px !important;
+}
+
+.library-tools-footer .library-action-grid.compact {
+  grid-template-columns: 1fr 1fr !important;
+}
+
+.library-tools-footer .library-action-grid.compact button {
+  min-height: 32px !important;
+  font-size: 11px !important;
+}
+
+@media (max-width: 860px) {
+  .section[data-component-library="true"] .library-filter-row {
+    grid-template-columns: 1fr !important;
+  }
+  .section[data-component-library="true"] .comp-lib-item.real-part-tile {
+    grid-template-columns: 66px minmax(0, 1fr) !important;
+    min-height: 88px !important;
+  }
+  .library-real-preview {
+    width: 66px !important;
+    height: 66px !important;
+  }
+}
+
+
+/* v173 Mobile UX Stabilization */
+.mobile-placement-help {
+  display: none;
+  font-style: normal;
+  color: #92aab2;
+}
+.desktop-placement-help {
+  font-style: normal;
+  color: #92aab2;
+}
+.placement-status-pill span b {
+  color: #dffcff;
+}
+
+@media (max-width: 860px) {
+  /* Mobile has no hover/rail/desktop-only HUD clutter. */
+  .component-hover-card,
+  .workspace-overlay .inspector-rail,
+  .workspace-overlay .hud-top-right,
+  .workspace-overlay .hud-bottom-left,
+  .workspace-overlay .selection-info-strip,
+  .workspace-overlay .coord-readout {
+    display: none !important;
+  }
+
+  .desktop-placement-help {
+    display: none !important;
+  }
+  .mobile-placement-help {
+    display: inline !important;
+  }
+
+  .workspace-overlay .hud-top-center {
+    top: auto !important;
+    bottom: calc(var(--safe-bottom, 0px) + 92px) !important;
+    left: calc(8px + var(--safe-left, 0px)) !important;
+    right: calc(8px + var(--safe-right, 0px)) !important;
+    transform: none !important;
+    max-width: none !important;
+    justify-content: center !important;
+  }
+
+  .workspace-overlay .placement-status-pill {
+    width: 100% !important;
+    max-width: 520px !important;
+    justify-content: space-between !important;
+    gap: 7px !important;
+    padding: 8px 9px 8px 11px !important;
+    border-radius: 18px !important;
+  }
+
+  .workspace-overlay .placement-status-pill span {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    font-size: 12px !important;
+  }
+
+  .workspace-overlay .placement-status-pill button {
+    flex: 0 0 auto !important;
+    min-height: 34px !important;
+    padding: 6px 9px !important;
+    border-radius: 999px !important;
+    font-size: 11px !important;
+  }
+
+  .workspace-overlay .hud-bottom-center {
+    bottom: calc(var(--safe-bottom, 0px) + 82px) !important;
+    left: calc(8px + var(--safe-left, 0px)) !important;
+    right: calc(8px + var(--safe-right, 0px)) !important;
+    transform: none !important;
+    max-width: none !important;
+  }
+
+  .workspace-overlay .selection-action-toolbar {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    border-radius: 18px !important;
+    padding: 7px !important;
+  }
+
+  .workspace-overlay .selection-action-toolbar button {
+    min-height: 38px !important;
+    padding: 7px 11px !important;
+    font-size: 12px !important;
+  }
+
+  .mobile-bottom-sheet {
+    max-height: min(62dvh, 520px) !important;
+    overscroll-behavior: contain !important;
+  }
+
+  .sidebar-left,
+  .sidebar-right {
+    overscroll-behavior: contain !important;
+  }
+
+  svg {
+    touch-action: none;
+  }
+}
+
+
+/* v174 Visual Polish Release */
+.toolbar {
+  background:
+    linear-gradient(180deg, rgba(11,15,18,.94), rgba(5,8,10,.90)) !important;
+  border-bottom: 1px solid rgba(46,233,255,.13) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+
+.toolbar .app-brand {
+  padding: 3px 7px 3px 4px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.055);
+}
+
+.toolbar .app-logo {
+  width: 28px !important;
+  height: 28px !important;
+  filter: drop-shadow(0 0 12px rgba(46,233,255,.13));
+}
+
+.toolbar .app-title {
+  color: #dff8fd !important;
+  font-weight: 950 !important;
+  letter-spacing: .08em !important;
+}
+
+.toolbar-menu-trigger,
+.toolbar > button,
+.toolbar > label > button {
+  min-height: 34px !important;
+  border-radius: 13px !important;
+  padding: 6px 10px !important;
+  font-weight: 850 !important;
+}
+
+.toolbar .tb-label {
+  color: #80939b !important;
+  font-weight: 800 !important;
+  letter-spacing: .06em;
+}
+
+.toolbar .tb-sep {
+  background: linear-gradient(180deg, transparent, rgba(46,233,255,.22), transparent) !important;
+}
+
+/* Launcher: smaller, sharper, more product-like. */
+.empty-canvas-launchpad {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(46,233,255,.070), transparent 34%),
+    radial-gradient(circle at 50% 65%, rgba(124,92,255,.040), transparent 42%) !important;
+}
+
+.empty-launch-card.launch-console.launch-compact {
+  width: min(460px, calc(100vw - 44px)) !important;
+  padding: 18px !important;
+  border-radius: 26px !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(46,233,255,.18), transparent 42%),
+    radial-gradient(circle at 88% 8%, rgba(124,92,255,.12), transparent 48%),
+    linear-gradient(180deg, rgba(18,25,32,.88), rgba(5,9,13,.82)) !important;
+}
+
+.empty-launch-card.launch-console.launch-compact h2 {
+  margin-top: 6px !important;
+  margin-bottom: 5px !important;
+  font-size: 28px !important;
+  letter-spacing: -.035em !important;
+}
+
+.empty-launch-card.launch-console.launch-compact p {
+  margin-bottom: 12px !important;
+  font-size: 13px !important;
+}
+
+.launch-project-strip {
+  gap: 7px !important;
+  margin-bottom: 10px !important;
+}
+
+.launch-project-strip button {
+  min-height: 46px !important;
+  padding: 8px 10px !important;
+  border-radius: 16px !important;
+}
+
+.launch-project-strip button strong {
+  font-size: 12px !important;
+}
+
+.launch-project-strip button span {
+  font-size: 10.5px !important;
+}
+
+.launch-compact-body {
+  gap: 8px !important;
+}
+
+.launch-compact .launch-console-section {
+  padding: 10px !important;
+  border-radius: 16px !important;
+}
+
+.launch-hp-grid.compact button,
+.launch-mode-grid.compact button {
+  min-height: 34px !important;
+}
+
+.launch-custom-hp {
+  margin-top: 8px !important;
+}
+
+.launch-custom-hp input {
+  min-height: 36px !important;
+}
+
+.launch-console-footer.compact {
+  margin-top: 10px !important;
+  padding: 10px !important;
+  border-radius: 16px !important;
+}
+
+.launch-go-button {
+  min-width: 118px !important;
+  min-height: 50px !important;
+  font-size: 17px !important;
+}
+
+/* Preview/product mode: hide editing chrome but keep module visible. */
+.app.preview-mode .workspace-overlay,
+.app.preview-mode .canvas-hud,
+.app.preview-mode .selection-handles,
+.app.preview-mode .selection-badge,
+.app.preview-mode .component-hover-card,
+.app.preview-mode .snap-feedback-badge,
+.app.preview-mode .ruler-overlay {
+  display: none !important;
+}
+
+.app.preview-mode .component-node.is-selected {
+  filter: none !important;
+}
+
+.app.preview-mode .canvas-wrap {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(46,233,255,.050), transparent 32%),
+    linear-gradient(180deg, rgba(4,7,9,.88), rgba(1,3,5,.95)) !important;
+}
+
+.app.preview-mode .svg-pan-zoom {
+  filter: drop-shadow(0 28px 60px rgba(0,0,0,.36));
+}
+
+/* Slightly cleaner desktop quick dock after adding Preview. */
+.canvas-quick-dock {
+  gap: 7px !important;
+  padding: 7px !important;
+  border-radius: 19px !important;
+}
+
+.canvas-quick-dock button {
+  min-height: 34px !important;
+  border-radius: 13px !important;
+}
+
+@media (max-width: 860px) {
+  .toolbar .app-brand {
+    background: transparent;
+    border-color: transparent;
+    padding: 0;
+  }
+  .empty-launch-card.launch-console.launch-compact {
+    width: calc(100vw - 24px) !important;
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+  .empty-launch-card.launch-console.launch-compact h2 {
+    font-size: 24px !important;
+  }
+  .launch-project-strip {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* v177 fixes Prod Output and keeps toolbar dropdown wheel-scroll local */
+.toolbar-popover {
+  overscroll-behavior: contain !important;
+}
+
+.toolbar-popover .preset-card-grid {
+  max-height: min(62vh, 560px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  padding-right: 4px !important;
+}
+
+.toolbar-popover .preset-card-grid::-webkit-scrollbar {
+  width: 8px;
+}
+.toolbar-popover .preset-card-grid::-webkit-scrollbar-thumb {
+  background: rgba(46,233,255,.22);
+  border-radius: 999px;
+}
+
+
+/* v178 Text / Labels UX */
+.text-labels-panel .text-panel-add {
+  width: 100% !important;
+  margin-bottom: 8px !important;
+  min-height: 38px !important;
+}
+
+.text-item-list {
+  display: grid;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.text-item-row {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 7px 9px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.075);
+  background: rgba(255,255,255,.028);
+  cursor: pointer;
+}
+
+.text-item-row.active {
+  border-color: rgba(46,233,255,.50);
+  background:
+    radial-gradient(circle at 12% 50%, rgba(46,233,255,.14), transparent 46%),
+    rgba(46,233,255,.045);
+}
+
+.text-item-layer {
+  color: #2ee9ff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.text-item-link {
+  font-size: 12px;
+  opacity: .85;
+}
+
+.text-item-row input {
+  min-width: 0 !important;
+  width: 100% !important;
+  min-height: 30px !important;
+  padding: 4px 7px !important;
+  border-radius: 9px !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  color: #eaf8fb !important;
+  font-weight: 850 !important;
+  letter-spacing: .02em;
+}
+
+.text-item-row.active input,
+.text-item-row input:focus {
+  border-color: rgba(46,233,255,.25) !important;
+  background: rgba(0,0,0,.22) !important;
+}
+
+.text-empty-note {
+  padding: 10px;
+  border-radius: 12px;
+  color: #7d8f96;
+  border: 1px dashed rgba(255,255,255,.10);
+}
+
+
+/* v180 Component Library: single wide component-type filter */
+.section[data-component-library="true"] .library-filter-row {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+}
+
+.section[data-component-library="true"] .library-category-select-wide {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  padding-left: 12px !important;
+  padding-right: 38px !important;
+  font-size: 13px !important;
+}
+
+.section[data-component-library="true"] .library-filter-row select {
+  width: 100% !important;
+}
+
+
+/* v185 KiCad export options */
+.kicad-export-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 10px;
+  margin: 8px 0 10px;
+}
+
+.kicad-export-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 6px 8px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 10px;
+  background: rgba(255,255,255,.025);
+  color: #ccdce1;
+  font-size: 11.5px;
+}
+
+.kicad-export-option input {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .kicad-export-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -6577,6 +7699,15 @@ interface ExportOptions {
   centerMarks:      boolean;
   mountingKeepouts: boolean;
   includeArtwork:   boolean;
+
+  kicadPanelOutline:     boolean;
+  kicadMountingHoles:    boolean;
+  kicadComponentHoles:   boolean;
+  kicadRectCutouts:      boolean;
+  kicadVisualOutlines:   boolean;
+  kicadKeepoutHints:     boolean;
+  kicadRefs:             boolean;
+  kicadTextLabels:       boolean;
 }
 
 const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
@@ -6587,6 +7718,15 @@ const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
   centerMarks:      true,
   mountingKeepouts: true,
   includeArtwork:   true,
+
+  kicadPanelOutline:     true,
+  kicadMountingHoles:    true,
+  kicadComponentHoles:   true,
+  kicadRectCutouts:      true,
+  kicadVisualOutlines:   false,
+  kicadKeepoutHints:     false,
+  kicadRefs:             false,
+  kicadTextLabels:       false,
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -8702,13 +9842,14 @@ const HPGuideLayer = React.memo(function HPGuideLayer({ widthHP, heightMM }: { w
               strokeOpacity={centerish ? 0.20 : edge ? 0.18 : 0.065}
               strokeDasharray={edge ? 'none' : '0.75 1.35'}
             />
-            {i > 0 && i < hpCount && (i % 2 === 0 || hpCount <= 10) && (
+            {i > 0 && (i < hpCount || i === hpCount) && (i === hpCount || i % 2 === 0 || hpCount <= 10) && (
               <text
-                x={x} y={-2.1}
-                textAnchor="middle"
-                fontSize={1.15}
-                fill="#b8c8cf"
-                opacity={0.62}
+                x={i === hpCount ? x - 0.55 : x} y={-2.1}
+                textAnchor={i === hpCount ? "end" : "middle"}
+                fontSize={i === hpCount ? 1.22 : 1.15}
+                fill={i === hpCount ? "#d7e8ef" : "#b8c8cf"}
+                opacity={i === hpCount ? 0.78 : 0.62}
+                fontWeight={i === hpCount ? 800 : 600}
               >
                 {i}
               </text>
@@ -9916,6 +11057,9 @@ interface SVGCanvasProps {
   onOpenRecentProjects?: () => void;
   pendingAddPart?: { def: ComponentDef; stamp: boolean } | null;
   pendingAddPreview?: { x: number; y: number } | null;
+  pendingAddRepeat?: boolean;
+  onTogglePendingAddRepeat?: () => void;
+  onCancelPendingAdd?: () => void;
   rightPanelOpen?: boolean;
 }
 
@@ -9925,7 +11069,7 @@ function SVGCanvas({
   onSVGTouchStart, onSVGTouchMove, onSVGTouchEnd, onSVGContextMenu,
   onWheel, onWrapMouseDown,
   coordReadout, warnings,
-  autosaveSummary, recentProjects = [], onRestoreAutosave, onOpenProjectFile, onOpenRecentProjects, pendingAddPart = null, pendingAddPreview = null, rightPanelOpen = false,
+  autosaveSummary, recentProjects = [], onRestoreAutosave, onOpenProjectFile, onOpenRecentProjects, pendingAddPart = null, pendingAddPreview = null, pendingAddRepeat = false, onTogglePendingAddRepeat, onCancelPendingAdd, rightPanelOpen = false,
 }: SVGCanvasProps) {
   const state    = useAppState();
   const dispatch = useAppDispatch();
@@ -10223,8 +11367,8 @@ function SVGCanvas({
           <div className="empty-orbit" />
           <div className="empty-launch-card launch-console launch-compact">
             <span className="empty-kicker">New panel</span>
-            <h2>Start clean.</h2>
-            <p>Choose panel width and render mode. Everything else can be changed later.</p>
+            <h2>Design a panel.</h2>
+            <p>Choose width and product render. You can change everything later.</p>
 
             <div className="launch-project-strip">
               {autosaveSummary && (
@@ -10280,7 +11424,7 @@ function SVGCanvas({
 
             <div className="launch-console-footer compact">
               <div>
-                <strong>{starterHP}HP blank panel</strong>
+                <strong>{starterHP}HP clean start</strong>
                 <span>{starterMode === 'realistic' ? 'Realistic render' : `${starterMode.charAt(0).toUpperCase() + starterMode.slice(1)} render`} · slightly oval mounting holes</span>
               </div>
               <button className="launch-go-button" onClick={launchStarter}>GO</button>
@@ -10299,18 +11443,39 @@ function SVGCanvas({
         {warnings.length > 0 && <span className="hud-issues">{warnings.length} issues</span>}
       </div>
 
-      <InspectorRail rightPanelOpen={rightPanelOpen} />
-      <DFMStatusFloat warnings={warnings} />
-      <SelectionMeasureFloat />
-      <SelectionActionToolbar />
-      <SnapFeedbackBadge guides={snapGuides} />
+      <div className="workspace-overlay" onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
+        <div className="hud-zone hud-bottom-left">
+          <DFMStatusFloat warnings={warnings} />
+        </div>
+
+        <div className="hud-zone hud-bottom-center">
+          <SelectionActionToolbar />
+        </div>
+
+        <div className="hud-zone hud-bottom-right">
+          <SelectionInfoStrip hidden={false} />
+          {coordReadout && <div className="coord-readout">{coordReadout}</div>}
+        </div>
+
+        <div className="hud-zone hud-top-center">
+          {pendingAddPart && (
+            <div className="placement-status-pill" onMouseDown={e => e.stopPropagation()} onWheel={e => e.stopPropagation()}>
+              <strong>PLACE</strong>
+              <span><b>{shortPartName(pendingAddPart.def)}</b><em className="desktop-placement-help"> · Shift+click for more</em><em className="mobile-placement-help"> · tap panel to place</em></span>
+              <button className={pendingAddRepeat ? 'active' : ''} onClick={() => onTogglePendingAddRepeat?.()}>{pendingAddRepeat ? 'Repeat on' : 'Repeat'}</button>
+              <button onClick={() => onCancelPendingAdd?.()}>Done</button>
+            </div>
+          )}
+        </div>
+
+        <div className="hud-zone hud-top-right">
+          <SnapFeedbackBadge guides={snapGuides} />
+        </div>
+
+        <InspectorRail rightPanelOpen={rightPanelOpen} />
+      </div>
+
       {hoverTip && <ComponentHoverTooltip component={hoveredComponent} warnings={warnings} x={hoverTip.x} y={hoverTip.y} />}
-
-      <SelectionInfoStrip hidden={false} />
-
-      {coordReadout && (
-        <div className="coord-readout">{coordReadout}</div>
-      )}
     </div>
   );
 }
@@ -10501,19 +11666,17 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
   const [replaceMode, setReplaceMode] = useState(false);
   const [partSearch, setPartSearch] = useState('');
   const [partCategory, setPartCategory] = useState<'all' | NonNullable<ComponentDef['category']>>('all');
-  const [statusFilter, setStatusFilter] = useState<'all' | PartVerificationStatus>('all');
   const [renderLimit, setRenderLimit] = useState(36);
   const [favoriteKeys, setFavoriteKeys] = useState<string[]>(() => readStringListStorage(UX_FAVORITE_PARTS_KEY));
   const [recentKeys, setRecentKeys] = useState<string[]>(() => readStringListStorage(UX_RECENT_PARTS_KEY));
-  useEffect(() => { setRenderLimit(36); }, [partSearch, partCategory, statusFilter, state.customParts.length]);
+  useEffect(() => { setRenderLimit(36); }, [partSearch, partCategory, state.customParts.length]);
   const visibleParts = allParts.filter(def => {
     const q = partSearch.trim().toLowerCase();
     const cat = def.category ?? inferCategoryForType(def.type);
     const matchesCat = partCategory === 'all' || cat === partCategory;
     const status = def.verificationStatus || 'approximate';
-    const matchesStatus = statusFilter === 'all' || status === statusFilter;
     const hay = `${def.name} ${def.type} ${def.manufacturer || ''} ${def.partNumber || ''} ${cat || ''} ${status}`.toLowerCase();
-    return matchesCat && matchesStatus && (!q || hay.includes(q));
+    return matchesCat && (!q || hay.includes(q));
   });
   const sortedVisibleParts = sortComponentDefs(visibleParts);
   const displayedParts = sortedVisibleParts.slice(0, renderLimit);
@@ -10585,8 +11748,8 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
       <div className="section-title">Component Library</div>
       <input className="mini-input library-search-compact" type="text" placeholder="Search parts…" value={partSearch} onChange={e => setPartSearch(e.target.value)} />
       <div className="field-pair library-filter-row">
-        <select className="mini-input" value={partCategory} onChange={e => setPartCategory(e.target.value as any)}>
-          <option value="all">All categories</option>
+        <select className="mini-input library-category-select-wide" value={partCategory} onChange={e => setPartCategory(e.target.value as any)}>
+          <option value="all">All component types</option>
           <option value="potentiometer">Potentiometers</option>
           <option value="jack">Jacks</option>
           <option value="switch">Switches/buttons</option>
@@ -10595,15 +11758,14 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
           <option value="fader">Faders</option>
           <option value="custom">Custom</option>
         </select>
-        <select className="mini-input" value={statusFilter} onChange={e => setStatusFilter(e.target.value as any)}>
-          <option value="all">All statuses</option>
-          <option value="approximate">Approximate</option>
-          <option value="datasheet">Datasheet</option>
-          <option value="measured">Measured</option>
-          <option value="production">Production</option>
-        </select>
       </div>
-      {(recentKeys.length > 0 || favoriteKeys.length > 0) && !partSearch.trim() && partCategory === 'all' && statusFilter === 'all' && (
+      {(partSearch.trim() || partCategory !== 'all') && (
+        <div className="library-active-filter-row">
+          <span>{sortedVisibleParts.length} match{sortedVisibleParts.length === 1 ? '' : 'es'}</span>
+          <button onClick={() => { setPartSearch(''); setPartCategory('all'); }}>Clear filters</button>
+        </div>
+      )}
+      {(recentKeys.length > 0 || favoriteKeys.length > 0) && !partSearch.trim() && partCategory === 'all' && (
         <div className="library-memory-row">
           {favoriteKeys.length > 0 && <div><b>Favorites</b>{favoriteKeys.slice(0, 5).map(k => allParts.find(p => partStableKey(p) === k)).filter(Boolean).map((p:any) => <button key={partStableKey(p)} onClick={() => startPlacement(p)}>{shortPartName(p)}</button>)}</div>}
           {recentKeys.length > 0 && <div><b>Recent</b>{recentKeys.slice(0, 5).map(k => allParts.find(p => partStableKey(p) === k)).filter(Boolean).map((p:any) => <button key={partStableKey(p)} onClick={() => startPlacement(p)}>{shortPartName(p)}</button>)}</div>}
@@ -10615,7 +11777,7 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
         <div
           key={`${def.name}-${idx}`}
           className={`comp-lib-item real-part-tile ${(def.verificationStatus || 'approximate') === 'approximate' ? 'approx' : ''}`}
-          title={`${replaceMode ? 'Replace selected component(s) with this part' : 'Click to add at center, or drag the component preview onto the panel'}\n\n${partTooltip(def)}`}
+          title={`${replaceMode ? 'Replace selected component(s) with this part' : 'Click to choose, then click the panel to place. Use Repeat to place more.'}\n\n${partTooltip(def)}`}
           onClick={() => addComponent(def)}
         >
           <button
@@ -10635,8 +11797,8 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
       {hiddenPartCount > 0 && (
         <button className="library-load-more" onClick={() => setRenderLimit(v => v + 36)}>Load more ({hiddenPartCount} hidden)</button>
       )}
-      <details className="library-tools-compact">
-        <summary>Library tools</summary>
+      <details className="library-tools-compact library-tools-footer">
+        <summary>Tools</summary>
         <label className="library-replace-compact" title="When enabled, clicking a part replaces the selected components while keeping their ref/label/position/rotation.">
           <input type="checkbox" checked={replaceMode} disabled={state.selected.length === 0} onChange={e => setReplaceMode(e.target.checked)} />
           Replace selected
@@ -10655,13 +11817,71 @@ function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?
 }
 
 function TextPanel() {
-  const state = useAppState(); const dispatch = useAppDispatch(); const widthMM = panelWidthMM(state.panel);
-  function addText() { dispatch({ type:'ADD_TEXT', item:{ id: crypto.randomUUID(), text:'TEXT', x:snapToGrid(widthMM/2,state.grid.size), y:snapToGrid(PANEL_HEIGHT_MM/2,state.grid.size), rotation:0, fontSizeMm:3, align:'center', layer:'foreground', locked:false, visible:true, opacity:1, fontFamily: TEXT_FONT_OPTIONS[0].value } }); }
+  const state = useAppState();
+  const dispatch = useAppDispatch();
+  const widthMM = panelWidthMM(state.panel);
+
+  function addText() {
+    dispatch({
+      type:'ADD_TEXT',
+      item:{
+        id: crypto.randomUUID(),
+        text:'TEXT',
+        x:snapToGrid(widthMM/2,state.grid.size),
+        y:snapToGrid(PANEL_HEIGHT_MM/2,state.grid.size),
+        rotation:0,
+        fontSizeMm:3,
+        align:'center',
+        layer:'foreground',
+        locked:false,
+        visible:true,
+        opacity:1,
+        fontFamily: TEXT_FONT_OPTIONS[0].value
+      }
+    });
+  }
+
   function addLabelsForSelected() {
     const selected = state.components.filter(c => state.selected.includes(c.id));
     selected.forEach(c => dispatch({ type: 'ADD_TEXT', item: defaultAttachedLabelFor(c) }));
   }
-  return <div className="section"><div className="section-title">Text / Labels</div><button style={{ width:'100%', marginBottom:6 }} onClick={addText}>+ Add Text</button><button style={{ width:'100%', marginBottom:6 }} disabled={state.selected.length === 0} title="Create attached text labels under selected components" onClick={addLabelsForSelected}>+ Labels for selected</button>{state.textItems.map(t => <div key={t.id} className="comp-lib-item" onClick={() => dispatch({ type:'SELECT_TEXT', id:t.id })} style={{ color: state.selectedText === t.id ? '#00d4ff' : '#aaa' }}>{t.layer === 'background' ? '▼' : '▲'} {t.componentId ? '🔗 ' : ''}{t.text || '(empty)'}</div>)}</div>;
+
+  function updateText(id: string, value: string) {
+    dispatch({ type:'UPDATE_TEXT', id, patch:{ text:value } });
+  }
+
+  return (
+    <div className="section text-labels-panel">
+      <div className="section-title">Text / Labels</div>
+      <button className="text-panel-add" onClick={addText}>+ Add Text</button>
+      <button className="text-panel-add" disabled={state.selected.length === 0} title="Create attached text labels under selected components" onClick={addLabelsForSelected}>+ Labels for selected</button>
+
+      <div className="text-item-list">
+        {state.textItems.map(t => (
+          <div
+            key={t.id}
+            className={`text-item-row ${state.selectedText === t.id ? 'active' : ''}`}
+            onClick={() => dispatch({ type:'SELECT_TEXT', id:t.id })}
+          >
+            <span className="text-item-layer">{t.layer === 'background' ? '▼' : '▲'}</span>
+            {t.componentId && <span className="text-item-link">🔗</span>}
+            <input
+              value={t.text}
+              placeholder="TEXT"
+              onClick={e => { e.stopPropagation(); dispatch({ type:'SELECT_TEXT', id:t.id }); }}
+              onFocus={() => dispatch({ type:'SELECT_TEXT', id:t.id })}
+              onChange={e => updateText(t.id, e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
+                e.stopPropagation();
+              }}
+            />
+          </div>
+        ))}
+        {state.textItems.length === 0 && <div className="text-empty-note">No text yet. Add a label or create text.</div>}
+      </div>
+    </div>
+  );
 }
 
 function ArtworkPanel() {
@@ -11651,6 +12871,25 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v165 makes Focus remember whether side panels were open and restores them when Focus is toggled off.');
     ok('v166 routes the Focus hotkey and command palette through the same restore-aware toggle.');
     ok('v167 fixes Component Library filter selects so long labels do not overlap the dropdown chevron.');
+    ok('v168 introduces workspace overlay zones and moves DFM/actions/selection/cursor/placement/snap HUD into a single canvas overlay.');
+    ok('v169 adds design-system CSS tokens and consolidates button/input/sidebar/tab/HUD styling into a final stable layer.');
+    ok('v170 adds an explicit canvas interaction mode, stabilizes marquee commit behavior, and resets modes on drag/placement/ruler completion.');
+    ok('v171 moves right inspector tab state into App, removes the open-right-inspector event bridge, and finalizes tabs as Status / Inspect / Prod / Layers with Output / PCB / Mounts.');
+    ok('v172 finalizes Component Library layout: compact filters, active filter reset, chip-style recents/favorites, cleaner cards and quiet bottom tools.');
+    ok('v173 stabilizes mobile UX: no rail/hover clutter, placement has Repeat/Done instead of relying on Shift, and mobile HUD/dock spacing is safer.');
+    ok('v174 polishes the top toolbar and launcher, adds Preview mode for product-style viewing, and improves quick-dock presentation.');
+    ok('v174-hotfix2 moves the interaction-mode debug effect below canvasInteractionMode initialization to fix startup ReferenceError.');
+    ok('v175 separates click selection from drag with a movement threshold and keeps normal drag cursor-anchored; Shift enables hard grid/edge/center snap.');
+    ok('v176 uses SVG getScreenCTM for coordinate conversion and delays marquee creation until real movement; empty clicks deselect.');
+    ok('v177 fixes Prod → Output stale tab checks and prevents mouse-wheel scroll inside toolbar popovers from closing the menu or zooming the canvas.');
+    ok('v178 makes Text / Labels rows inline-editable and changes text dragging so Shift enables grid snap while normal drag stays cursor-anchored.');
+    ok('v179 makes Shift-drag text use component-like smart snap guides: grid, panel center, component centers and other text anchors.');
+    ok('v180 removes the Component Library status filter and makes the component-type filter full-width so labels fit.');
+    ok('v181 adds the final HP endpoint label so the guide shows the actual panel width.');
+    ok('v182 adds a mechanical KiCad .kicad_pcb export with Edge.Cuts panel outline, NPTH mounting/component holes, slots, rect cutouts and text labels.');
+    ok('v183 fixes KiCad text export by removing invalid justify center from gr_text effects.');
+    ok('v184 changes KiCad PCB export default to holes-only: panel outline plus real NPTH holes/slots/cutouts, without front outlines, keepout hints, refs or text labels.');
+    ok('v185 adds KiCad export checkboxes and rotates oval mounting-hole NPTH pads horizontal while component slots keep component rotation.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -12260,25 +13499,42 @@ function LayoutStatusPanel({ warnings, components }: {
   );
 }
 
-function RightSidebar({ warnings, components, open, autosaveStatus, onRestoreAutosave, onClearAutosave, onTouchStart, onTouchMove, onTouchEnd }: { warnings: CollisionWarning[]; components: PlacedComponent[]; open: boolean; autosaveStatus: string; onRestoreAutosave: () => void; onClearAutosave: () => void; onTouchStart?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchMove?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchEnd?: (e: React.TouchEvent<HTMLDivElement>) => void }) {
-  const state = useAppState();
-  const [topTab, setTopTab] = useState<'status' | 'inspect' | 'production' | 'layers'>('status');
-  const [statusTab, setStatusTab] = useState<'layout' | 'warnings' | 'checks'>('layout');
-  const [inspectTab, setInspectTab] = useState<'properties' | 'measure' | 'history'>('properties');
-  const [productionTab, setProductionTab] = useState<'files' | 'pcb' | 'mounts'>('files');
-  const [layersTab, setLayersTab] = useState<'layers' | 'align' | 'assistant'>('layers');
+type RightInspectorTopTab = 'status' | 'inspect' | 'prod' | 'layers';
+type RightStatusTab = 'layout' | 'warnings' | 'checks';
+type RightInspectTab = 'properties' | 'measure' | 'history';
+type RightProdTab = 'output' | 'pcb' | 'mounts';
+type RightLayersTab = 'layers' | 'align' | 'assistant';
 
-  useEffect(() => {
-    const onOpenInspector = (ev: Event) => {
-      const detail = (ev as CustomEvent).detail || {};
-      if (detail.topTab === 'inspect' || detail.panel === 'properties') {
-        setTopTab('inspect');
-        setInspectTab('properties');
-      }
-    };
-    window.addEventListener('open-right-inspector', onOpenInspector as EventListener);
-    return () => window.removeEventListener('open-right-inspector', onOpenInspector as EventListener);
-  }, []);
+function RightSidebar({
+  warnings, components, open, autosaveStatus, onRestoreAutosave, onClearAutosave,
+  onTouchStart, onTouchMove, onTouchEnd,
+  topTab, setTopTab,
+  statusTab, setStatusTab,
+  inspectTab, setInspectTab,
+  prodTab, setProdTab,
+  layersTab, setLayersTab,
+}: {
+  warnings: CollisionWarning[];
+  components: PlacedComponent[];
+  open: boolean;
+  autosaveStatus: string;
+  onRestoreAutosave: () => void;
+  onClearAutosave: () => void;
+  onTouchStart?: (e: React.TouchEvent<HTMLDivElement>) => void;
+  onTouchMove?: (e: React.TouchEvent<HTMLDivElement>) => void;
+  onTouchEnd?: (e: React.TouchEvent<HTMLDivElement>) => void;
+  topTab: RightInspectorTopTab;
+  setTopTab: (tab: RightInspectorTopTab) => void;
+  statusTab: RightStatusTab;
+  setStatusTab: (tab: RightStatusTab) => void;
+  inspectTab: RightInspectTab;
+  setInspectTab: (tab: RightInspectTab) => void;
+  prodTab: RightProdTab;
+  setProdTab: (tab: RightProdTab) => void;
+  layersTab: RightLayersTab;
+  setLayersTab: (tab: RightLayersTab) => void;
+}) {
+  const state = useAppState();
 
   // v61: lazy-unmount the entire properties/DFM/BOM/sidebar stack while closed.
   if (!open) return <div className="sidebar-right closed lazy-unmounted" aria-hidden="true" />;
@@ -12290,7 +13546,7 @@ function RightSidebar({ warnings, components, open, autosaveStatus, onRestoreAut
       <div className="right-tab-strip primary">
         <button className={topTab === 'status' ? 'active' : ''} onClick={() => setTopTab('status')}>Status</button>
         <button className={topTab === 'inspect' ? 'active' : ''} onClick={() => setTopTab('inspect')}>Inspect</button>
-        <button className={topTab === 'production' ? 'active' : ''} onClick={() => setTopTab('production')}>Prod</button>
+        <button className={topTab === 'prod' ? 'active' : ''} onClick={() => setTopTab('prod')}>Prod</button>
         <button className={topTab === 'layers' ? 'active' : ''} onClick={() => setTopTab('layers')}>Layers</button>
       </div>
 
@@ -12315,7 +13571,7 @@ function RightSidebar({ warnings, components, open, autosaveStatus, onRestoreAut
       {topTab === 'inspect' && (
         <div className="right-tab-page">
           <div className="right-tab-strip secondary">
-            <button className={inspectTab === 'properties' ? 'active' : ''} onClick={() => setInspectTab('properties')}>Properties</button>
+            <button className={inspectTab === 'properties' ? 'active' : ''} onClick={() => setInspectTab('properties')}>Props</button>
             <button className={inspectTab === 'measure' ? 'active' : ''} onClick={() => setInspectTab('measure')}>Measure</button>
             <button className={inspectTab === 'history' ? 'active' : ''} onClick={() => setInspectTab('history')}>History</button>
           </div>
@@ -12325,22 +13581,22 @@ function RightSidebar({ warnings, components, open, autosaveStatus, onRestoreAut
         </div>
       )}
 
-      {topTab === 'production' && (
+      {topTab === 'prod' && (
         <div className="right-tab-page">
           <div className="right-tab-strip secondary">
-            <button className={productionTab === 'files' ? 'active' : ''} onClick={() => setProductionTab('files')}>Files</button>
-            <button className={productionTab === 'pcb' ? 'active' : ''} onClick={() => setProductionTab('pcb')}>PCB</button>
-            <button className={productionTab === 'mounts' ? 'active' : ''} onClick={() => setProductionTab('mounts')}>Mounts</button>
+            <button className={prodTab === 'output' ? 'active' : ''} onClick={() => setProdTab('output')}>Output</button>
+            <button className={prodTab === 'pcb' ? 'active' : ''} onClick={() => setProdTab('pcb')}>PCB</button>
+            <button className={prodTab === 'mounts' ? 'active' : ''} onClick={() => setProdTab('mounts')}>Mounts</button>
           </div>
-          {productionTab === 'files' && (
+          {prodTab === 'output' && (
             <>
               <DrillTablePanel />
               <BOMPanel />
               <AutosavePanel status={autosaveStatus} onRestore={onRestoreAutosave} onClear={onClearAutosave} />
             </>
           )}
-          {productionTab === 'pcb' && <PCBPanel />}
-          {productionTab === 'mounts' && <MountingHolesPanel />}
+          {prodTab === 'pcb' && <PCBPanel />}
+          {prodTab === 'mounts' && <MountingHolesPanel />}
         </div>
       )}
 
@@ -12840,6 +14096,209 @@ function downloadTextFile(filename: string, text: string, mime = 'application/js
 function exportJSON(state: AppState) {
   void saveTextFile(safeProjectFileName(state.projectMeta?.name || 'panel-layout'), serializeProject(state, true), 'application/json');
 }
+
+function kicadNum(n: number): string {
+  const v = Number.isFinite(n) ? n : 0;
+  return String(Math.round(v * 1000000) / 1000000);
+}
+
+function kicadStr(s: any): string {
+  return `"${String(s ?? '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+}
+
+function kicadRefPrefix(type: ComponentType): string {
+  if (type.includes('jack')) return 'J';
+  if (type.includes('pot') || type.includes('trimmer') || type.includes('fader')) return 'RV';
+  if (type.includes('switch') || type === 'toggle') return 'SW';
+  if (type.includes('led')) return 'D';
+  if (type.includes('encoder')) return 'ENC';
+  return 'H';
+}
+
+function kicadSafeName(s: string): string {
+  return String(s || 'part').replace(/[^A-Za-z0-9_.+-]+/g, '_').replace(/^_+|_+$/g, '') || 'part';
+}
+
+function rotatePointAround(px: number, py: number, cx: number, cy: number, deg: number): { x: number; y: number } {
+  const a = deg * Math.PI / 180;
+  const dx = px - cx;
+  const dy = py - cy;
+  return { x: cx + dx * Math.cos(a) - dy * Math.sin(a), y: cy + dx * Math.sin(a) + dy * Math.cos(a) };
+}
+
+function kicadEdgeLine(x1: number, y1: number, x2: number, y2: number, width = 0.1): string {
+  return `  (gr_line (start ${kicadNum(x1)} ${kicadNum(y1)}) (end ${kicadNum(x2)} ${kicadNum(y2)}) (stroke (width ${kicadNum(width)}) (type solid)) (layer "Edge.Cuts") (tstamp ${crypto.randomUUID()}))`;
+}
+
+function kicadRectLines(cx: number, cy: number, w: number, h: number, rot = 0, layer = 'Edge.Cuts', width = 0.1): string[] {
+  const pts = [
+    rotatePointAround(cx - w/2, cy - h/2, cx, cy, rot),
+    rotatePointAround(cx + w/2, cy - h/2, cx, cy, rot),
+    rotatePointAround(cx + w/2, cy + h/2, cx, cy, rot),
+    rotatePointAround(cx - w/2, cy + h/2, cx, cy, rot),
+  ];
+  return pts.map((p, i) => {
+    const q = pts[(i + 1) % pts.length];
+    return `  (gr_line (start ${kicadNum(p.x)} ${kicadNum(p.y)}) (end ${kicadNum(q.x)} ${kicadNum(q.y)}) (stroke (width ${kicadNum(width)}) (type solid)) (layer ${kicadStr(layer)}) (tstamp ${crypto.randomUUID()}))`;
+  });
+}
+
+function kicadCircle(cx: number, cy: number, r: number, layer = 'Dwgs.User', width = 0.08): string {
+  return `  (gr_circle (center ${kicadNum(cx)} ${kicadNum(cy)}) (end ${kicadNum(cx + r)} ${kicadNum(cy)}) (stroke (width ${kicadNum(width)}) (type solid)) (fill none) (layer ${kicadStr(layer)}) (tstamp ${crypto.randomUUID()}))`;
+}
+
+function kicadGrText(text: string, x: number, y: number, size = 1.2, rot = 0, layer = 'F.SilkS'): string {
+  const s = Math.max(0.3, size);
+  return `  (gr_text ${kicadStr(text)} (at ${kicadNum(x)} ${kicadNum(y)} ${kicadNum(rot)}) (layer ${kicadStr(layer)}) (tstamp ${crypto.randomUUID()})
+    (effects (font (size ${kicadNum(s)} ${kicadNum(s)}) (thickness ${kicadNum(Math.max(0.08, s * 0.12))})))
+  )`;
+}
+
+function kicadNPTHFootprint(ref: string, name: string, x: number, y: number, type: 'circle' | 'oval', d: number, slotLength?: number, rot = 0, value?: string): string {
+  const fp = kicadSafeName(name);
+  const hole = Math.max(0.1, d || 3);
+  const len = Math.max(hole, slotLength || hole);
+  const padSize = type === 'oval'
+    ? `${kicadNum(hole)} ${kicadNum(len)}`
+    : `${kicadNum(hole)} ${kicadNum(hole)}`;
+  const drill = type === 'oval'
+    ? `oval ${kicadNum(hole)} ${kicadNum(len)}`
+    : `${kicadNum(hole)}`;
+  const shape = type === 'oval' ? 'oval' : 'circle';
+  return `  (footprint "PanelDesigner:${fp}" (layer "F.Cu")
+    (tstamp ${crypto.randomUUID()})
+    (at ${kicadNum(x)} ${kicadNum(y)} ${kicadNum(rot)})
+    (attr board_only exclude_from_pos_files exclude_from_bom)
+    (property "Reference" ${kicadStr(ref)} (at 0 ${kicadNum(-(len/2 + 2))} 0) (layer "F.SilkS") hide (effects (font (size 1 1) (thickness 0.15))))
+    (property "Value" ${kicadStr(value || name)} (at 0 ${kicadNum(len/2 + 2)} 0) (layer "F.Fab") hide (effects (font (size 1 1) (thickness 0.15))))
+    (fp_text reference ${kicadStr(ref)} (at 0 ${kicadNum(-(len/2 + 1.2))} 0) (layer "F.SilkS") hide (effects (font (size 1 1) (thickness 0.15))))
+    (fp_text value ${kicadStr(value || name)} (at 0 ${kicadNum(len/2 + 1.2)} 0) (layer "F.Fab") hide (effects (font (size 1 1) (thickness 0.15))))
+    (pad "" np_thru_hole ${shape} (at 0 0) (size ${padSize}) (drill ${drill}) (layers "*.Cu" "*.Mask"))
+  )`;
+}
+
+function exportKiCadPCB(state: AppState, options: Partial<ExportOptions> = DEFAULT_EXPORT_OPTIONS) {
+  const widthMM = panelWidthMM(state.panel);
+  const heightMM = PANEL_HEIGHT_MM;
+
+  // v184 default: clean mechanical export. Only panel Edge.Cuts and real
+  // NPTH holes/slots/cutouts are exported. Visual front outlines, refs,
+  // keepout hints and text labels are intentionally off by default because
+  // they clutter KiCad when the goal is drilling/mechanical planning.
+  const includePanelOutline = options.kicadPanelOutline !== false;
+  const includeMountingHoles = options.kicadMountingHoles !== false;
+  const includeComponentHoles = options.kicadComponentHoles !== false;
+  const includeRectCutouts = options.kicadRectCutouts !== false;
+  const includeVisualOutlines = !!options.kicadVisualOutlines;
+  const includeKeepoutHints = !!options.kicadKeepoutHints;
+  const includeRefs = !!options.kicadRefs;
+  const includeTextLabels = !!options.kicadTextLabels;
+
+  const lines: string[] = [];
+  const footprints: string[] = [];
+  const graphics: string[] = [];
+
+  // Board outline.
+  if (includePanelOutline) {
+    lines.push(kicadEdgeLine(0, 0, widthMM, 0));
+    lines.push(kicadEdgeLine(widthMM, 0, widthMM, heightMM));
+    lines.push(kicadEdgeLine(widthMM, heightMM, 0, heightMM));
+    lines.push(kicadEdgeLine(0, heightMM, 0, 0));
+  }
+
+  // Mounting holes.
+  if (includeMountingHoles && state.mountingHoles?.enabled) {
+    for (let i = 0; i < state.mountingHoles.holes.length; i++) {
+      const h = normalizeMountingHoleRail(state.mountingHoles.holes[i]);
+      if (state.mountingHoles.holeShape === 'oval') {
+        footprints.push(kicadNPTHFootprint(`MH${i + 1}`, 'Mounting_Hole_Oval', h.x, h.y, 'oval', MOUNTING_HOLE_DIAMETER_MM, state.mountingHoles.ovalLength || 4.8, 90, 'Mounting hole'));
+      } else {
+        footprints.push(kicadNPTHFootprint(`MH${i + 1}`, 'Mounting_Hole', h.x, h.y, 'circle', MOUNTING_HOLE_DIAMETER_MM, undefined, 0, 'Mounting hole'));
+      }
+      if (includeKeepoutHints && state.mountingHoles.showKeepouts) graphics.push(kicadCircle(h.x, h.y, state.mountingHoles.keepoutRadius || MOUNTING_HOLE_KEEPOUT_R_MM, 'Cmts.User', 0.06));
+    }
+  }
+
+  // Component holes/cutouts.
+  if (includeComponentHoles || includeRectCutouts || includeVisualOutlines || includeKeepoutHints || includeRefs) {
+  for (let i = 0; i < state.components.length; i++) {
+    const c = state.components[i];
+    const ref = c.ref || `${kicadRefPrefix(c.type)}${i + 1}`;
+    const rot = c.rotation || 0;
+    if (c.holeType === 'rect') {
+      const w = c.holeW ?? c.frontW ?? c.holeDiameter ?? 3;
+      const h = c.holeH ?? c.frontH ?? c.holeDiameter ?? 3;
+      if (includeRectCutouts) lines.push(...kicadRectLines(c.x, c.y, w, h, rot, 'Edge.Cuts', 0.1));
+      if (includeVisualOutlines) graphics.push(...kicadRectLines(c.x, c.y, c.frontW ?? w, c.frontH ?? h, rot, 'Dwgs.User', 0.08));
+    } else if (c.holeType === 'slot') {
+      if (includeComponentHoles) footprints.push(kicadNPTHFootprint(ref, c.name || c.type, c.x, c.y, 'oval', c.holeDiameter || 3, c.slotLength || c.holeDiameter || 3, rot, shortPartName(c)));
+      if (includeKeepoutHints) graphics.push(...kicadRectLines(c.x, c.y, c.keepoutW || (c.holeDiameter || 3) + 2, c.keepoutH || (c.slotLength || 3) + 2, rot, 'Cmts.User', 0.05));
+    } else {
+      if (includeComponentHoles) footprints.push(kicadNPTHFootprint(ref, c.name || c.type, c.x, c.y, 'circle', c.holeDiameter || 3, undefined, rot, shortPartName(c)));
+      if (includeVisualOutlines) graphics.push(kicadCircle(c.x, c.y, (c.frontDiameter || c.holeDiameter || 3) / 2, 'Dwgs.User', 0.08));
+      if (includeKeepoutHints) graphics.push(kicadCircle(c.x, c.y, Math.max(c.keepoutW || 0, c.keepoutH || 0, c.holeDiameter || 3) / 2, 'Cmts.User', 0.05));
+    }
+    if (includeRefs) graphics.push(kicadGrText(ref, c.x, c.y - Math.max(2.5, (c.frontDiameter || c.frontH || 6) / 2 + 2), 1.0, 0, 'F.SilkS'));
+  }
+  }
+
+  // Free text labels are optional. Off by default in holes-only export.
+  if (includeTextLabels) {
+    for (const t of state.textItems) {
+      if (!t.visible) continue;
+      graphics.push(kicadGrText(t.text || 'TEXT', t.x, t.y, Math.max(0.6, t.fontSizeMm || 1.2), t.rotation || 0, t.layer === 'background' ? 'B.SilkS' : 'F.SilkS'));
+    }
+  }
+
+  const board = `(kicad_pcb
+  (version 20221018)
+  (generator "Panel Designer KiCad mechanical export")
+  (general
+    (thickness 1.6)
+  )
+  (paper "A4")
+  (layers
+    (0 "F.Cu" signal)
+    (31 "B.Cu" signal)
+    (32 "B.Adhes" user)
+    (33 "F.Adhes" user)
+    (34 "B.Paste" user)
+    (35 "F.Paste" user)
+    (36 "B.SilkS" user)
+    (37 "F.SilkS" user)
+    (38 "B.Mask" user)
+    (39 "F.Mask" user)
+    (44 "Edge.Cuts" user)
+    (45 "Margin" user)
+    (46 "B.CrtYd" user)
+    (47 "F.CrtYd" user)
+    (48 "B.Fab" user)
+    (49 "F.Fab" user)
+    (50 "User.1" user)
+    (51 "User.2" user)
+    (52 "User.3" user)
+    (53 "User.4" user)
+    (54 "User.5" user)
+    (55 "User.6" user)
+    (56 "User.7" user)
+    (57 "User.8" user)
+    (58 "User.9" user)
+    (59 "Dwgs.User" user)
+    (60 "Cmts.User" user)
+  )
+  (setup
+    (pad_to_mask_clearance 0)
+    (grid_origin 0 0)
+  )
+${lines.join('\n')}
+${graphics.join('\n')}
+${footprints.join('\n')}
+)
+`;
+  const base = safeProjectFileName(state.projectMeta?.name || 'panel-layout').replace(/\.json$/i, '');
+  void saveTextFile(`${base}.kicad_pcb`, board, 'application/x-kicad-pcb');
+}
+
 
 interface LocalProjectRecord {
   id: string;
@@ -14031,6 +15490,7 @@ function ExportPreviewMini({ state, warnings }: { state: AppState; warnings: Col
 
 function ExportDialog({ options, onChange, onExport, onExportMode, onExportPackage, onExportCSV, onExportKiCad, onExportPrintTemplate, onExportDXF, onExportReport, onCancel }: { options: ExportOptions; onChange: (o: ExportOptions) => void; onExport: () => void; onExportMode: (mode: 'preview'|'drill'|'artwork'|'debug') => void; onExportPackage: () => void; onExportCSV: () => void; onExportKiCad: () => void; onExportPrintTemplate: () => void; onExportDXF: () => void; onExportReport: () => void; onCancel: () => void; }) {
   const rows: [keyof ExportOptions, string][] = [['drillOnly','Drill holes only'],['labels','Include labels'],['includeArtwork','Include artwork images'],['rearKeepout','Include rear keepout zones'],['rearBody','Include rear body outlines'],['centerMarks','Include center marks'],['mountingKeepouts','Include mounting hole keepouts']];
+  const kicadRows: [keyof ExportOptions, string][] = [['kicadPanelOutline','Panel outline / Edge.Cuts'],['kicadMountingHoles','Mounting holes'],['kicadComponentHoles','Component round/slot holes'],['kicadRectCutouts','Rectangular cutouts'],['kicadVisualOutlines','Visual front outlines / Dwgs.User'],['kicadKeepoutHints','Keepout hints / Cmts.User'],['kicadRefs','Reference labels'],['kicadTextLabels','Text labels']];
   const state = useAppState();
   const exportPanelWidth = panelWidthMM(state.panel);
   const warnings = useMemo(
@@ -14055,7 +15515,11 @@ function ExportDialog({ options, onChange, onExport, onExportMode, onExportPacka
   ] as [string, boolean][];
   return <div className="export-dialog-backdrop"><div className="export-dialog-panel"><div className="export-dialog-title">Export</div><div className="export-sanity"><strong>Export sanity:</strong><br/>Hard errors: {hard} · Warnings: {warn} · Approximate parts: {unverified}<br/>Scale: 1:1 mm. Drill/Cut and DXF exclude decorative top hardware/artwork unless the mode explicitly includes them.</div><ExportPreviewMini state={state} warnings={warnings} />
   <div className="export-package-card"><div><strong>Manufacturing package ZIP</strong><p>Downloads one .zip with front artwork SVG, drill/cut SVG, rear keepout SVG, component CSV, DFM report and project JSON. Respects Layer Manager export flags.</p></div><button className="primary" onClick={onExportPackage}>Export ZIP</button></div>
-  <button style={{marginBottom:10}} onClick={() => setShowChecklist(!showChecklist)}>Production checklist</button>{showChecklist && <div className="export-sanity">{checklist.map(([label, ok]) => <div key={label} className="checklist-row"><span>{ok ? '✓' : '○'}</span><span>{label}</span></div>)}</div>}<div className="section-title">Quick modes</div><div className="btn-row" style={{marginBottom:12}}><button onClick={()=>onExportMode('preview')}>Preview SVG</button><button onClick={()=>onExportMode('drill')}>Drill/Cut SVG</button><button onClick={()=>onExportMode('artwork')}>Artwork SVG</button><button onClick={()=>onExportMode('debug')}>Debug SVG</button><button onClick={onExportCSV}>CSV Drill Table</button><button onClick={onExportKiCad}>KiCad placement CSV</button><button onClick={onExportPrintTemplate}>1:1 Print Template</button><button onClick={onExportDXF}>DXF Cut/Drill</button><button onClick={onExportReport}>DFM Report</button><button onClick={() => downloadExportPackageLooseFiles(state, warnings)}>Loose package files</button></div><div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>Preview SVG is for layout review. Use Drill/Cut SVG or the 1:1 template for fabrication checks.</div><div className="section-title">Custom SVG options</div>{rows.map(([key,label])=><div key={key} style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}><input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/><span style={{fontSize:12,color:'#ccc'}}>{label}</span></div>)}<div className="export-dialog-actions"><button onClick={onCancel}>Cancel</button><button className="primary" onClick={onExport}>Export SVG</button></div></div></div>;
+  <button style={{marginBottom:10}} onClick={() => setShowChecklist(!showChecklist)}>Production checklist</button>{showChecklist && <div className="export-sanity">{checklist.map(([label, ok]) => <div key={label} className="checklist-row"><span>{ok ? '✓' : '○'}</span><span>{label}</span></div>)}</div>}<div className="section-title">Quick modes</div><div className="btn-row" style={{marginBottom:12}}><button onClick={()=>onExportMode('preview')}>Preview SVG</button><button onClick={()=>onExportMode('drill')}>Drill/Cut SVG</button><button onClick={()=>onExportMode('artwork')}>Artwork SVG</button><button onClick={()=>onExportMode('debug')}>Debug SVG</button><button onClick={onExportCSV}>CSV Drill Table</button><button onClick={onExportKiCad}>KiCad PCB</button><button onClick={onExportPrintTemplate}>1:1 Print Template</button><button onClick={onExportDXF}>DXF Cut/Drill</button><button onClick={onExportReport}>DFM Report</button><button onClick={() => downloadExportPackageLooseFiles(state, warnings)}>Loose package files</button></div><div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>Preview SVG is for layout review. Use Drill/Cut SVG or the 1:1 template for fabrication checks.</div><div className="section-title">Custom SVG options</div>{rows.map(([key,label])=><div key={key} style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}><input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/><span style={{fontSize:12,color:'#ccc'}}>{label}</span></div>)}
+  <div className="section-title" style={{marginTop:12}}>KiCad PCB export</div>
+  <div className="kicad-export-grid">{kicadRows.map(([key,label])=><label key={key} className="kicad-export-option"><input type="checkbox" checked={options[key] as boolean} onChange={e=>onChange({...options,[key]:e.target.checked})}/><span>{label}</span></label>)}</div>
+  <div className="warning-item warn" style={{fontSize:10,marginBottom:10}}>KiCad export is mechanical. Oval Eurorack mounting holes are exported horizontal; component slots follow component rotation.</div>
+  <div className="export-dialog-actions"><button onClick={onCancel}>Cancel</button><button onClick={onExportKiCad}>Export KiCad PCB</button><button className="primary" onClick={onExport}>Export SVG</button></div></div></div>;
 }
 
 interface CommandItem { id: string; label: string; hint: string; run: () => void; }
@@ -14126,12 +15590,10 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
     document.addEventListener('pointerdown', onDocPointerDown, true);
     window.addEventListener('keydown', onKey);
     window.addEventListener('resize', close);
-    window.addEventListener('scroll', close, true);
     return () => {
       document.removeEventListener('pointerdown', onDocPointerDown, true);
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('resize', close);
-      window.removeEventListener('scroll', close, true);
     };
   }, [openMenu]);
 
@@ -14227,7 +15689,7 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
           style={popoverStyle}
           onClick={e => e.stopPropagation()}
           onPointerDown={e => e.stopPropagation()}
-          onWheel={e => e.stopPropagation()}
+          onWheel={e => { e.preventDefault(); e.stopPropagation(); }}
           onTouchMove={e => e.stopPropagation()}
         >
           {openMenu === 'tools' && (
@@ -14330,6 +15792,7 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
               <div className="menu-title">File / Export</div>
               <div className="menu-grid">
                 <button onClick={() => { onExportSVGClick(); setOpenMenu(null); }}>Export…</button>
+                <button onClick={() => { onExportSVGClick(); setOpenMenu(null); }}>Export KiCad PCB…</button>
                 <button onClick={() => { exportJSON(state); setOpenMenu(null); }}>Save Project File</button>
                 <button onClick={() => { setOpenMenu(null); onRequestProjectFileImport(); }}>Load Project File</button>
                 <button onClick={() => { saveProjectToBrowser(state); setOpenMenu(null); }}>Save to Browser</button>
@@ -14706,10 +16169,12 @@ function LocalProjectsDialog({ onClose }: { onClose: () => void }) {
 
 
 
-function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts, touchMode, onSetTouchMode, onOpenExport, onOpenTemplates, onOpenProductionCheck, onToggleLeftPanel, onToggleRightPanel, leftPanelOpen, rightPanelOpen, warnings }: {
+function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onTogglePreviewMode, onOpenShortcuts, touchMode, onSetTouchMode, onOpenExport, onOpenTemplates, onOpenProductionCheck, onToggleLeftPanel, onToggleRightPanel, leftPanelOpen, rightPanelOpen, warnings }: {
   hidden: boolean;
   focusMode: boolean;
+  previewMode: boolean;
   onToggleFocus: () => void;
+  onTogglePreviewMode: () => void;
   onOpenShortcuts: () => void;
   touchMode: 'edit' | 'pan' | 'select' | 'ruler';
   onSetTouchMode: (mode: 'edit' | 'pan' | 'select' | 'ruler') => void;
@@ -14847,6 +16312,7 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
       <div className={`canvas-quick-dock ${hidden ? 'hidden' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
         <button className="dock-primary" title="Quick add common parts" onClick={() => setOpen(v => !v)}>＋ Add</button>
         <button title="Toggle grid visibility" className={state.layerVisibility.grid ? 'active' : ''} onClick={() => dispatch({ type:'SET_LAYER_VISIBILITY', key:'grid', value:!state.layerVisibility.grid })}>Grid</button>
+        <button title="Preview product view" className={previewMode ? 'active' : ''} onClick={onTogglePreviewMode}>{previewMode ? 'Edit view' : 'Preview'}</button>
         <button title="Toggle focus mode" className={focusMode ? 'active' : ''} onClick={onToggleFocus}>{focusMode ? 'Exit focus' : 'Focus'}</button>
         <button title="Show keyboard shortcuts" onClick={onOpenShortcuts}>?</button>
         {open && (
@@ -14922,6 +16388,13 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
 
             {mobileSheet === 'view' && (
               <>
+                <div className="mobile-sheet-section compact-first">
+                  <div className="mobile-sheet-label">Product view</div>
+                  <button className={`mobile-perf-button ${previewMode ? 'active' : ''}`} onClick={onTogglePreviewMode}>
+                    <span className="mobile-toggle-dot" />
+                    {previewMode ? 'Preview mode on' : 'Preview mode'}
+                  </button>
+                </div>
                 <div className="mobile-segment-grid four">
                   {(['front','rear','drill','combined'] as ViewMode[]).map(m => <button key={m} className={state.viewMode === m ? 'active' : ''} onClick={() => dispatch({ type:'SET_VIEW_MODE', mode:m })}>{m}</button>)}
                 </div>
@@ -15398,6 +16871,7 @@ function App() {
   const [showMobileNudge, setShowMobileNudge] = useState(false);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
+  const [previewMode, setPreviewMode] = useState(false);
   const focusRestorePanelsRef = useRef<{ left: boolean; right: boolean } | null>(null);
   const [showShortcutHelp, setShowShortcutHelp] = useState(false);
   const [clearanceMode, setClearanceMode] = useState(false);
@@ -15413,6 +16887,7 @@ function App() {
   const [pendingTemplatePlacement, setPendingTemplatePlacement] = useState<{ template: UserTemplate; components: PlacedComponent[]; anchor: {x:number;y:number}; rotation: number } | null>(null);
   const [pendingAddPart, setPendingAddPart] = useState<{ def: ComponentDef; stamp: boolean } | null>(null);
   const [pendingAddPreview, setPendingAddPreview] = useState<{ x: number; y: number } | null>(null);
+  const [pendingAddRepeat, setPendingAddRepeat] = useState(false);
   useEffect(() => {
     const open = () => setShowTemplatesDialog(true);
     window.addEventListener('open-template-dialog', open as EventListener);
@@ -15423,6 +16898,8 @@ function App() {
     rememberRecentPart(def);
     setPendingAddPart({ def, stamp });
     setPendingAddPreview(null);
+    setPendingAddRepeat(false);
+    setCanvasInteractionMode('placingPart');
     window.dispatchEvent(new Event('starter-dismiss'));
     setShowMobileNudge(false);
     setTouchMode('edit');
@@ -15442,6 +16919,11 @@ function App() {
   const isNarrowInitial = typeof window !== 'undefined' && window.innerWidth <= 860;
   const [leftPanelOpen,  setLeftPanelOpen]  = useState(!isNarrowInitial);
   const [rightPanelOpen, setRightPanelOpen] = useState(!isNarrowInitial);
+  const [rightInspectorTopTab, setRightInspectorTopTab] = useState<RightInspectorTopTab>('status');
+  const [rightStatusTab, setRightStatusTab] = useState<RightStatusTab>('layout');
+  const [rightInspectTab, setRightInspectTab] = useState<RightInspectTab>('properties');
+  const [rightProdTab, setRightProdTab] = useState<RightProdTab>('output');
+  const [rightLayersTab, setRightLayersTab] = useState<RightLayersTab>('layers');
   const [sidebarSwipe, setSidebarSwipe] = useState<{ startX: number; startY: number; active: boolean } | null>(null);
   const [drawerCloseSwipe, setDrawerCloseSwipe] = useState<{ startX: number; startY: number } | null>(null);
   const lastComponentTapRef = useRef<{ id: string; t: number; x: number; y: number } | null>(null);
@@ -15482,8 +16964,17 @@ function App() {
   const [showCommandPalette, setShowCommandPalette] = useState(false);
   const [exportOptions,    setExportOptions]    = useState<ExportOptions>(DEFAULT_EXPORT_OPTIONS);
 
+  type CanvasInteractionMode = 'idle' | 'placingPart' | 'draggingComponents' | 'marqueeSelecting' | 'draggingArtwork' | 'resizingArtwork' | 'draggingText' | 'ruler' | 'panning' | 'rotatingComponent';
+  const [canvasInteractionMode, setCanvasInteractionMode] = useState<CanvasInteractionMode>('idle');
+  useEffect(() => { (window as any).__PANEL_INTERACTION_MODE = canvasInteractionMode; }, [canvasInteractionMode]);
+
+
+  function resetCanvasInteractionMode() {
+    setCanvasInteractionMode('idle');
+  }
+
   // Drag: track which component is being dragged and the current preview position
-  const [dragging, setDragging] = useState<{ id: string; offX: number; offY: number; startX: number; startY: number } | null>(null);
+  const [dragging, setDragging] = useState<{ id: string; offX: number; offY: number; startX: number; startY: number; moved?: boolean } | null>(null);
   const [dragPreview,        setDragPreview]        = useState<Map<string, { x: number; y: number }> | null>(null);
   const [dragStartPositions, setDragStartPositions] = useState<Map<string, { x: number; y: number }> | null>(null);
   // Refs mirror state so the window mouseup handler always sees latest values
@@ -15554,7 +17045,10 @@ function App() {
   const pendingPointerMoveRef = useRef<React.MouseEvent<SVGSVGElement> | null>(null);
   const [snapGuides, setSnapGuides] = useState<SnapGuide[]>([]);
   const [distanceGuides, setDistanceGuides] = useState<DistanceGuide[]>([]);
-  const [marqueeSelection, setMarqueeSelection] = useState<{ start: { x: number; y: number }; current: { x: number; y: number }; additive: boolean } | null>(null);
+  const [marqueeSelection, setMarqueeSelection] = useState<{ start: { x: number; y: number }; current: { x: number; y: number }; additive: boolean; initialSelection?: string[] } | null>(null);
+  const [pendingMarquee, setPendingMarquee] = useState<{ start: { x: number; y: number }; additive: boolean; initialSelection: string[] } | null>(null);
+  const pendingMarqueeRef = useRef(pendingMarquee);
+  pendingMarqueeRef.current = pendingMarquee;
   const marqueeSelectionRef = useRef(marqueeSelection);
   marqueeSelectionRef.current = marqueeSelection;
 
@@ -15662,9 +17156,21 @@ function App() {
     const svg = svgRef.current || document.querySelector('svg.panel-canvas-svg') as SVGSVGElement | null;
     if (!svg) return null;
 
-    // Primary path: map through the rendered SVG rect and its viewBox.
-    // This is reliable with our CSS transform wrapper because the rect already
-    // includes the current pan/zoom transform.
+    // Use the browser's actual SVG transform matrix first. It accounts for
+    // CSS transforms, viewBox, pan/zoom wrappers and device pixel ratio, so
+    // drag/marquee coordinates stay directly under the cursor.
+    try {
+      const pt = svg.createSVGPoint();
+      pt.x = clientX;
+      pt.y = clientY;
+      const ctm = svg.getScreenCTM();
+      if (ctm) {
+        const mm = pt.matrixTransform(ctm.inverse());
+        if (Number.isFinite(mm.x) && Number.isFinite(mm.y)) return { x: mm.x, y: mm.y };
+      }
+    } catch {}
+
+    // Fallback only.
     const rect = svg.getBoundingClientRect();
     const vb = svg.viewBox.baseVal;
     if (rect.width > 0 && rect.height > 0 && vb.width > 0 && vb.height > 0) {
@@ -15672,17 +17178,7 @@ function App() {
       const y = vb.y + ((clientY - rect.top) / rect.height) * vb.height;
       return { x, y };
     }
-
-    try {
-      const pt = svg.createSVGPoint();
-      pt.x = clientX; pt.y = clientY;
-      const ctm = svg.getScreenCTM();
-      if (!ctm) return null;
-      const mm = pt.matrixTransform(ctm.inverse());
-      return { x: mm.x, y: mm.y };
-    } catch {
-      return null;
-    }
+    return null;
   }
 
   function measurementAnchors(): { x: number[]; y: number[] } {
@@ -15753,7 +17249,7 @@ function App() {
     };
   }
 
-  function componentsInsideMarquee(sel: { start: { x: number; y: number }; current: { x: number; y: number } }): string[] {
+  function componentsInsideMarquee(sel: { start: { x: number; y: number }; current: { x: number; y: number }; initialSelection?: string[] }): string[] {
     const rect = {
       x1: Math.min(sel.start.x, sel.current.x),
       x2: Math.max(sel.start.x, sel.current.x),
@@ -15768,6 +17264,60 @@ function App() {
         return centerInside || rectsOverlap(rect, e);
       })
       .map(c => c.id);
+  }
+
+  function computeTextSnapGuides(x: number, y: number, textId: string): SnapGuide[] {
+    const guides: SnapGuide[] = [];
+    const tol = Math.max(0.25, snapSettings.distance);
+    const panelCenterX = widthMM / 2;
+    const panelCenterY = PANEL_HEIGHT_MM / 2;
+
+    if (snapSettings.componentCenters && Math.abs(x - panelCenterX) <= tol) {
+      guides.push({ axis: 'x', pos: panelCenterX, label: 'SNAP: panel center X' });
+    }
+    if (snapSettings.componentCenters && Math.abs(y - panelCenterY) <= tol) {
+      guides.push({ axis: 'y', pos: panelCenterY, label: 'SNAP: panel center Y' });
+    }
+
+    for (const c of state.components) {
+      const name = c.ref || c.label || c.name;
+      if (snapSettings.componentCenters && Math.abs(x - c.x) <= tol) {
+        guides.push({ axis: 'x', pos: c.x, label: `SNAP: same X as ${name}` });
+      }
+      if (snapSettings.componentCenters && Math.abs(y - c.y) <= tol) {
+        guides.push({ axis: 'y', pos: c.y, label: `SNAP: same Y as ${name}` });
+      }
+      if (guides.length >= 5) break;
+    }
+
+    for (const t of state.textItems) {
+      if (t.id === textId || !t.visible) continue;
+      const name = t.text || 'text';
+      if (snapSettings.componentCenters && Math.abs(x - t.x) <= tol) {
+        guides.push({ axis: 'x', pos: t.x, label: `SNAP: same X as ${name}` });
+      }
+      if (snapSettings.componentCenters && Math.abs(y - t.y) <= tol) {
+        guides.push({ axis: 'y', pos: t.y, label: `SNAP: same Y as ${name}` });
+      }
+      if (guides.length >= 6) break;
+    }
+
+    return guides;
+  }
+
+  function applyTextSmartSnap(textId: string, rawX: number, rawY: number): { x: number; y: number; guides: SnapGuide[] } {
+    let x = snapSettings.grid ? snapToGrid(rawX, state.grid.size) : rawX;
+    let y = snapSettings.grid ? snapToGrid(rawY, state.grid.size) : rawY;
+    const guides = computeTextSnapGuides(x, y, textId);
+
+    // Match component snap feel: center/axis guides override grid when close.
+    const gx = guides.find(g => g.axis === 'x');
+    const gy = guides.find(g => g.axis === 'y');
+    if (gx) x = gx.pos;
+    if (gy) y = gy.pos;
+
+    const gridGuides = snapSettings.grid ? gridSnapGuidesForPosition(x, y) : [];
+    return { x, y, guides: uniqueSnapGuides([...guides, ...gridGuides]) };
   }
 
   function computeSnapGuidesFor(id: string, x: number, y: number): SnapGuide[] {
@@ -16378,7 +17928,8 @@ function App() {
 
   function openComponentPropertiesPanel() {
     setRightPanelOpen(true);
-    window.dispatchEvent(new CustomEvent('open-right-inspector', { detail: { topTab: 'inspect', panel: 'properties' } }));
+    setRightInspectorTopTab('inspect');
+    setRightInspectTab('properties');
     window.setTimeout(() => {
       const right = resetRightDrawerPosition();
       if (!right) return;
@@ -16399,7 +17950,8 @@ function App() {
 
   function openArtworkPropertiesPanel() {
     setRightPanelOpen(true);
-    window.dispatchEvent(new CustomEvent('open-right-inspector', { detail: { topTab: 'inspect', panel: 'properties' } }));
+    setRightInspectorTopTab('inspect');
+    setRightInspectTab('properties');
     window.setTimeout(() => {
       const right = resetRightDrawerPosition();
       if (!right) return;
@@ -16450,11 +18002,15 @@ function App() {
         const x = snapToGrid(mm.x, state.grid.size);
         const y = snapToGrid(mm.y, state.grid.size);
         dispatch({ type: 'ADD_COMPONENT', def: pendingAddPart.def, x, y });
-        if (!e.shiftKey) {
+        const keepPlacing = e.shiftKey || pendingAddRepeat;
+        if (!keepPlacing) {
           setPendingAddPart(null);
           setPendingAddPreview(null);
+          setPendingAddRepeat(false);
+          resetCanvasInteractionMode();
         } else {
           setPendingAddPreview({ x, y });
+          setCanvasInteractionMode('placingPart');
         }
         softHaptic(e.shiftKey ? 3 : 5);
         return;
@@ -16467,6 +18023,7 @@ function App() {
       const placed = previewTemplateComponents({ ...pendingTemplatePlacement, anchor: { x: snapToGrid(mm.x, state.grid.size), y: snapToGrid(mm.y, state.grid.size) } }).map(c => ({ ...c, id: crypto.randomUUID(), ref: nextRefForComponent(c.type, state.components) }));
       dispatch({ type: 'ADD_COMPONENTS', components: placed, selectedIds: placed.map(c => c.id) });
       setPendingTemplatePlacement(null);
+      resetCanvasInteractionMode();
       return;
     }
 
@@ -16475,6 +18032,7 @@ function App() {
       e.stopPropagation();
       const snapped = snapRulerPoint(mm, e.shiftKey);
       setRuler({ start: snapped.point, end: snapped.point, dragging: true, snappedStart: snapped.snapped, snappedEnd: snapped.snapped });
+      setCanvasInteractionMode('ruler');
       dispatch({ type: 'DESELECT_ALL' });
       return;
     }
@@ -16489,13 +18047,14 @@ function App() {
         const startAngle = Math.atan2(mm.y - comp.y, mm.x - comp.x) * 180 / Math.PI;
         dispatch({ type: 'SELECT', ids: [id], additive: false });
         setRotatingComponent({ id, cx: comp.x, cy: comp.y, startRotation: comp.rotation || 0, startAngle });
+        setCanvasInteractionMode('rotatingComponent');
         setRotationPreview(new Map([[id, comp.rotation || 0]]));
       }
       return;
     }
 
     const textGroup = el.closest('[data-text-id]') as SVGElement | null;
-    if (textGroup) { e.stopPropagation(); const id = textGroup.getAttribute('data-text-id')!; const t = state.textItems.find(tt => tt.id === id); if (t) { dispatch({ type:'SELECT_TEXT', id }); if (!t.locked) { setDraggingText({ id, offX: mm.x - t.x, offY: mm.y - t.y }); setTextDragPreview({ id, x:t.x, y:t.y }); } } return; }
+    if (textGroup) { e.stopPropagation(); const id = textGroup.getAttribute('data-text-id')!; const t = state.textItems.find(tt => tt.id === id); if (t) { dispatch({ type:'SELECT_TEXT', id }); if (!t.locked) { setDraggingText({ id, offX: mm.x - t.x, offY: mm.y - t.y }); setTextDragPreview({ id, x:t.x, y:t.y }); setCanvasInteractionMode('draggingText'); } } return; }
 
     const resizeHandle = el.closest('[data-artwork-resize]') as SVGElement | null;
     if (resizeHandle) {
@@ -16541,6 +18100,7 @@ function App() {
           dispatch({ type: 'SELECT_ARTWORK', id: artId });
           if (!art.locked) {
             setDraggingArtwork({ id: artId, offX: mm.x - art.x, offY: mm.y - art.y });
+            setCanvasInteractionMode('draggingArtwork');
             setArtworkDragPreview({ id: artId, x: art.x, y: art.y });
           }
           return;
@@ -16592,7 +18152,8 @@ function App() {
         return;
       }
 
-      setDragging({ id, offX: mm.x - comp.x, offY: mm.y - comp.y, startX: mm.x, startY: mm.y });
+      setDragging({ id, offX: mm.x - comp.x, offY: mm.y - comp.y, startX: mm.x, startY: mm.y, moved: false });
+      setCanvasInteractionMode('draggingComponents');
 
       const newSelected = e.shiftKey
         ? [...new Set([...state.selected, ...groupIds])]
@@ -16617,8 +18178,8 @@ function App() {
         // Shift+marquee is additive: keep the current selection while drawing
         // the selection rectangle, then merge selected ids on mouseup. Direction
         // does not matter: the final rect is normalized with min/max.
-        if (!e.shiftKey) dispatch({ type: 'DESELECT_ALL' });
-        setMarqueeSelection({ start: mm, current: mm, additive: e.shiftKey });
+        setPendingMarquee({ start: mm, additive: e.shiftKey, initialSelection: state.selected });
+        setCanvasInteractionMode('idle');
       } else if (touchMode !== 'select') {
         if (!e.shiftKey) dispatch({ type: 'DESELECT_ALL' });
       }
@@ -16641,6 +18202,18 @@ function App() {
       setPendingAddPreview(prev => prev && Math.abs(prev.x - nextPending.x) < 0.001 && Math.abs(prev.y - nextPending.y) < 0.001 ? prev : nextPending);
     }
     if (pendingTemplatePlacement) { setPendingTemplatePlacement({ ...pendingTemplatePlacement, anchor: { x: snapToGrid(mm.x, state.grid.size), y: snapToGrid(mm.y, state.grid.size) } }); }
+
+    if (pendingMarquee) {
+      const dx = Math.abs(mm.x - pendingMarquee.start.x);
+      const dy = Math.abs(mm.y - pendingMarquee.start.y);
+      if (dx >= 0.35 || dy >= 0.35) {
+        const next = { start: pendingMarquee.start, current: mm, additive: pendingMarquee.additive, initialSelection: pendingMarquee.initialSelection };
+        setPendingMarquee(null);
+        setMarqueeSelection(next);
+        setCanvasInteractionMode('marqueeSelecting');
+      }
+      return;
+    }
 
     if (marqueeSelection) {
       setMarqueeSelection({ ...marqueeSelection, current: mm });
@@ -16671,12 +18244,25 @@ function App() {
       const hardSnapActive = e.shiftKey;
       const rawDx = mm.x - dragging.startX;
       const rawDy = mm.y - dragging.startY;
+      const moveDistance = Math.hypot(rawDx, rawDy);
 
-      // Snap the movement delta, not the absolute component coordinate. This
-      // keeps the original grab point visually anchored and avoids the cursor
-      // jumping away when the component itself is not already grid-aligned.
-      let dx = snapSettings.grid ? snapToGrid(rawDx, state.grid.size) : rawDx;
-      let dy = snapSettings.grid ? snapToGrid(rawDy, state.grid.size) : rawDy;
+      // Do not turn a plain click into a drag. This makes selection reliable,
+      // especially when the mouse moves by a fraction of a millimeter.
+      if (!dragging.moved && moveDistance < 0.35) {
+        return;
+      }
+      if (!dragging.moved) {
+        setDragging(d => d ? { ...d, moved: true } : d);
+      }
+
+      // Normal drag must stay cursor-anchored: use the raw delta.
+      // Hold Shift for hard grid/edge/center snapping.
+      let dx = rawDx;
+      let dy = rawDy;
+      if (hardSnapActive && snapSettings.grid) {
+        dx = snapToGrid(rawDx, state.grid.size);
+        dy = snapToGrid(rawDy, state.grid.size);
+      }
       let snappedX = primaryOrig.x + dx;
       const snappedY = primaryOrig.y + dy;
 
@@ -16719,7 +18305,7 @@ function App() {
         }
       }
 
-      const gridGuides = snapSettings.grid ? gridSnapGuidesForPosition(snappedX, snappedGuideY) : [];
+      const gridGuides = hardSnapActive && snapSettings.grid ? gridSnapGuidesForPosition(snappedX, snappedGuideY) : [];
       const visualCenterGuides = hardSnapActive ? computeSnapGuidesFor(dragging.id, snappedX, snappedGuideY)
         .filter(g => !centerSnap.guides.some(s => s.axis === g.axis && Math.abs(s.pos - g.pos) < 0.001 && s.label === g.label)) : [];
       const nextGuides = uniqueSnapGuides([...centerSnap.guides, ...edgeSnap.guides, ...visualCenterGuides, ...gridGuides]);
@@ -16733,7 +18319,23 @@ function App() {
       clearLiveGuides();
     }
 
-    if (draggingText) { const snappedX = snapToGrid(mm.x - draggingText.offX, state.grid.size); const snappedY = snapToGrid(mm.y - draggingText.offY, state.grid.size); setTextDragPreview({ id: draggingText.id, x: snappedX, y: snappedY }); }
+    if (draggingText) {
+      const rawX = mm.x - draggingText.offX;
+      const rawY = mm.y - draggingText.offY;
+      if (e.shiftKey) {
+        const snapped = applyTextSmartSnap(draggingText.id, rawX, rawY);
+        setTextDragPreview({ id: draggingText.id, x: snapped.x, y: snapped.y });
+        setSnapGuidesIfChanged(snapped.guides);
+        const snapKey = snapGuidesSignature(snapped.guides);
+        if (snapKey && snapKey !== lastSnapHapticKeyRef.current) {
+          lastSnapHapticKeyRef.current = snapKey;
+          softHaptic(5);
+        }
+      } else {
+        setTextDragPreview({ id: draggingText.id, x: rawX, y: rawY });
+        clearLiveGuides();
+      }
+    }
 
     if (draggingArtwork) {
       const snappedX = snapToGrid(mm.x - draggingArtwork.offX, state.grid.size);
@@ -16811,11 +18413,26 @@ function App() {
   }
 
   function onSVGMouseUp(_e: React.MouseEvent<SVGSVGElement>) {
+    if (pendingMarquee) {
+      if (!pendingMarquee.additive) dispatch({ type: 'DESELECT_ALL' });
+      setPendingMarquee(null);
+      resetCanvasInteractionMode();
+      return;
+    }
+
     if (marqueeSelection) {
-      const ids = componentsInsideMarquee(marqueeSelection);
-      const next = marqueeSelection.additive ? [...new Set([...state.selected, ...ids])] : ids;
-      dispatch({ type: 'SELECT', ids: next, additive: false });
+      const dx = Math.abs(marqueeSelection.current.x - marqueeSelection.start.x);
+      const dy = Math.abs(marqueeSelection.current.y - marqueeSelection.start.y);
+      if (dx < 0.25 || dy < 0.25) {
+        dispatch({ type: 'SELECT', ids: marqueeSelection.initialSelection ?? state.selected, additive: false });
+      } else {
+        const ids = componentsInsideMarquee(marqueeSelection);
+        const base = marqueeSelection.additive ? (marqueeSelection.initialSelection ?? state.selected) : [];
+        const next = marqueeSelection.additive ? [...new Set([...base, ...ids])] : ids;
+        dispatch({ type: 'SELECT', ids: next, additive: false });
+      }
       setMarqueeSelection(null);
+      resetCanvasInteractionMode();
       return;
     }
     if (ruler?.dragging) setRuler(r => r ? { ...r, dragging: false } : r);
@@ -17013,15 +18630,29 @@ function App() {
         pendingPointerMoveRef.current = null;
         if (pending) processSVGMouseMove(pending);
       }
+      if (pendingMarqueeRef.current) {
+        const current = pendingMarqueeRef.current;
+        if (!current.additive) dispatch({ type: 'DESELECT_ALL' });
+        setPendingMarquee(null);
+        resetCanvasInteractionMode();
+      }
       if (marqueeSelectionRef.current) {
         const current = marqueeSelectionRef.current;
-        const ids = componentsInsideMarquee(current);
-        const next = current.additive ? [...new Set([...state.selected, ...ids])] : ids;
-        dispatch({ type: 'SELECT', ids: next, additive: false });
+        const dx = Math.abs(current.current.x - current.start.x);
+        const dy = Math.abs(current.current.y - current.start.y);
+        if (dx < 0.25 || dy < 0.25) {
+          dispatch({ type: 'SELECT', ids: current.initialSelection ?? state.selected, additive: false });
+        } else {
+          const ids = componentsInsideMarquee(current);
+          const base = current.additive ? (current.initialSelection ?? state.selected) : [];
+          const next = current.additive ? [...new Set([...base, ...ids])] : ids;
+          dispatch({ type: 'SELECT', ids: next, additive: false });
+        }
         setMarqueeSelection(null);
+        resetCanvasInteractionMode();
       }
       if (draggingRef.current) {
-        if (dragPreviewRef.current && dragPreviewRef.current.size > 0) {
+        if (draggingRef.current.moved && dragPreviewRef.current && dragPreviewRef.current.size > 0) {
           const moves: { id: string; x: number; y: number }[] = [];
           dragPreviewRef.current.forEach((pos, id) => moves.push({ id, x: pos.x, y: pos.y }));
           if (moves.length === 1) {
@@ -17034,9 +18665,10 @@ function App() {
         setDragPreview(null);
         setDragStartPositions(null);
         clearLiveGuides();
+        resetCanvasInteractionMode();
       }
 
-      if (draggingTextRef.current) { if (textDragPreviewRef.current) { const { id } = draggingTextRef.current; const { x, y } = textDragPreviewRef.current; dispatch({ type: 'MOVE_TEXT', id, x, y }); } setDraggingText(null); setTextDragPreview(null); }
+      if (draggingTextRef.current) { if (textDragPreviewRef.current) { const { id } = draggingTextRef.current; const { x, y } = textDragPreviewRef.current; dispatch({ type: 'MOVE_TEXT', id, x, y }); } setDraggingText(null); setTextDragPreview(null); clearLiveGuides(); resetCanvasInteractionMode(); }
 
       if (draggingArtworkRef.current) {
         if (artworkDragPreviewRef.current) {
@@ -17046,6 +18678,7 @@ function App() {
         }
         setDraggingArtwork(null);
         setArtworkDragPreview(null);
+        resetCanvasInteractionMode();
       }
 
       if (rotatingComponentRef.current && rotationPreviewRef.current) {
@@ -17055,10 +18688,12 @@ function App() {
           dispatch({ type: 'UPDATE_COMPONENT', id, patch: { rotation } });
         }
       }
+      if (rotatingComponentRef.current) resetCanvasInteractionMode();
       setRotatingComponent(null);
       setRotationPreview(null);
 
       setRuler(r => r?.dragging ? { ...r, dragging: false } : r);
+      if (ruler?.dragging) resetCanvasInteractionMode();
 
       if (resizingArtworkRef.current && artworkResizePreviewRef.current) {
         const { id } = resizingArtworkRef.current;
@@ -17141,7 +18776,7 @@ function App() {
           dispatch({ type: 'ROTATE_SELECTED', degrees: 90 });
         }
       } else if (e.key === 'Escape') {
-        if (pendingAddPart) { setPendingAddPart(null); setPendingAddPreview(null); return; }
+        if (pendingAddPart) { setPendingAddPart(null); setPendingAddPreview(null); setPendingAddRepeat(false); resetCanvasInteractionMode(); return; }
         if (pending) { setPendingTemplatePlacement(null); return; }
         setRuler(null);
         dispatch({ type: 'DESELECT_ALL' });
@@ -17347,9 +18982,10 @@ function App() {
   }, [dragging, distanceGuides, clearanceMode, state.selected, state.components]);
 
   const commandItems: CommandItem[] = [
+    { id:'preview-mode', label: previewMode ? 'Exit preview mode' : 'Enter preview mode', hint:'Hide editing HUD and show the module like a product', run:() => setPreviewMode(v => !v) },
     { id:'toggle-grid', label:'Toggle grid layer', hint:'Show/hide grid overlay', run:() => dispatch({ type:'SET_LAYER_VISIBILITY', key:'grid', value:!state.layerVisibility.grid }) },
     { id:'focus-mode', label: focusMode ? 'Exit focus mode' : 'Enter focus mode', hint:'Hide side panels and keep canvas clear', run:() => toggleFocusMode() },
-    { id:'shortcuts', label:'Show shortcuts', hint:'Keyboard and mouse cheat sheet', run:() => setShowShortcutHelp(true) },
+        { id:'shortcuts', label:'Show shortcuts', hint:'Keyboard and mouse cheat sheet', run:() => setShowShortcutHelp(true) },
     { id:'view-front', label:'View: Front', hint:'Front panel mode', run:() => dispatch({ type:'SET_VIEW_MODE', mode:'front' }) },
     { id:'view-rear', label:'View: Rear', hint:'Rear bodies and keepouts', run:() => dispatch({ type:'SET_VIEW_MODE', mode:'rear' }) },
     { id:'view-drill', label:'View: Drill', hint:'Cut/drill review mode', run:() => dispatch({ type:'SET_VIEW_MODE', mode:'drill' }) },
@@ -17371,7 +19007,7 @@ function App() {
 
   // ── Render ─────────────────────────────────────────────────────────────
   return (
-    <div className={`app ${focusMode ? 'focus-mode' : ''}`}>
+    <div className={`app ${focusMode ? 'focus-mode' : ''} ${previewMode ? 'preview-mode' : ''}`}>
       <Toolbar
         onImport={onImport}
         onExportSVGClick={() => setShowExportDialog(true)}
@@ -17417,7 +19053,7 @@ function App() {
           onExportMode={(mode) => { exportSVGMode(state, mode, warnings); setShowExportDialog(false); }}
           onExportPackage={() => { downloadExportPackage(state, warnings); setShowExportDialog(false); }}
           onExportCSV={() => { exportCSVDrillTable(state, warnings); setShowExportDialog(false); }}
-          onExportKiCad={() => { exportKiCadPlacementCSV(state); setShowExportDialog(false); }}
+          onExportKiCad={() => { exportKiCadPCB(state, exportOptions); setShowExportDialog(false); }}
           onExportPrintTemplate={() => { exportPrintableTemplate(state); setShowExportDialog(false); }}
           onExportDXF={() => { exportDXF(state); setShowExportDialog(false); }}
           onExportReport={() => { exportManufacturingReport(state, warnings); setShowExportDialog(false); }}
@@ -17472,20 +19108,16 @@ function App() {
           onOpenRecentProjects={() => setShowLocalProjectsDialog(true)}
           pendingAddPart={pendingAddPart}
           pendingAddPreview={pendingAddPreview}
+          pendingAddRepeat={pendingAddRepeat}
+          onTogglePendingAddRepeat={() => setPendingAddRepeat(v => !v)}
+          onCancelPendingAdd={() => { setPendingAddPart(null); setPendingAddPreview(null); setPendingAddRepeat(false); resetCanvasInteractionMode(); }}
           rightPanelOpen={rightPanelOpen}
         />
-        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} onToggleFocus={toggleFocusMode} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onOpenProductionCheck={() => setShowProductionCheck(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} />
+        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} previewMode={previewMode} onToggleFocus={toggleFocusMode} onTogglePreviewMode={() => setPreviewMode(v => !v)} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onOpenProductionCheck={() => setShowProductionCheck(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} />
         {!rightPanelOpen && (
           <div className={`project-health-pill ${warnings.some(w => w.severity === 'error') ? 'error' : warnings.length ? 'warn' : 'ok'}`}>
             <span>{warnings.some(w => w.severity === 'error') ? 'Issues' : warnings.length ? `${warnings.length} warnings` : 'OK'}</span>
             <small>{autosaveStatus || 'Autosave ready'}</small>
-          </div>
-        )}
-        {pendingAddPart && (
-          <div className="placement-status-pill" onMouseDown={e => e.stopPropagation()} onWheel={e => e.stopPropagation()}>
-            <strong>PLACE</strong>
-            <span>{shortPartName(pendingAddPart.def)} · Shift+click for more</span>
-            <button onClick={() => { setPendingAddPart(null); setPendingAddPreview(null); }}>Cancel</button>
           </div>
         )}
         {!sidePanelOpen && (
@@ -17743,7 +19375,27 @@ function App() {
             </div>
           );
         })()}
-        <RightSidebar warnings={warnings} components={state.components} open={rightPanelOpen} autosaveStatus={autosaveStatus} onRestoreAutosave={restoreAutosave} onClearAutosave={clearAutosave} onTouchStart={onDrawerSwipeStart} onTouchMove={onDrawerSwipeMove} onTouchEnd={onDrawerSwipeEnd} />
+        <RightSidebar
+          warnings={warnings}
+          components={state.components}
+          open={rightPanelOpen}
+          autosaveStatus={autosaveStatus}
+          onRestoreAutosave={restoreAutosave}
+          onClearAutosave={clearAutosave}
+          onTouchStart={onDrawerSwipeStart}
+          onTouchMove={onDrawerSwipeMove}
+          onTouchEnd={onDrawerSwipeEnd}
+          topTab={rightInspectorTopTab}
+          setTopTab={setRightInspectorTopTab}
+          statusTab={rightStatusTab}
+          setStatusTab={setRightStatusTab}
+          inspectTab={rightInspectTab}
+          setInspectTab={setRightInspectTab}
+          prodTab={rightProdTab}
+          setProdTab={setRightProdTab}
+          layersTab={rightLayersTab}
+          setLayersTab={setRightLayersTab}
+        />
       </div>
     </div>
   );
