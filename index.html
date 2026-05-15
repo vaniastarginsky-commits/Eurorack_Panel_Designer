@@ -10147,6 +10147,86 @@ body::after {
   }
 }
 
+
+/* v216 Mobile SVG Crisp Render
+   iOS Safari may rasterize an SVG subtree when translateZ/backface/filter are applied.
+   That made the panel look like a low-res bitmap after zooming. Keep the app fixed,
+   but let the SVG render as real vector content again on touch devices. */
+@media (max-width: 860px), (pointer: coarse) {
+  .canvas-wrap,
+  .panel-canvas-svg,
+  .svg-pan-zoom,
+  .workspace svg {
+    transform: none !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+    will-change: auto !important;
+    image-rendering: auto !important;
+  }
+
+  .panel-canvas-svg,
+  .workspace svg {
+    shape-rendering: geometricPrecision !important;
+    text-rendering: geometricPrecision !important;
+    -webkit-font-smoothing: antialiased !important;
+  }
+
+  /* Avoid expensive SVG filters on mobile: they often force offscreen bitmap layers. */
+  .panel-canvas-svg * {
+    filter: none !important;
+  }
+
+  /* Keep strokes readable without forcing non-scaling strokes everywhere. */
+  .panel-canvas-svg line,
+  .panel-canvas-svg path,
+  .panel-canvas-svg rect,
+  .panel-canvas-svg circle,
+  .panel-canvas-svg ellipse,
+  .panel-canvas-svg polygon,
+  .panel-canvas-svg polyline {
+    vector-effect: none !important;
+  }
+
+  .panel-canvas-svg text {
+    paint-order: stroke fill !important;
+    stroke: rgba(0,0,0,.18) !important;
+    stroke-width: .08px !important;
+    stroke-linejoin: round !important;
+  }
+
+  /* Selection glow/filter is pretty on desktop but blurs/rasterizes mobile. */
+  [filter="url(#selection-glow)"],
+  .selection-glow,
+  .panel-canvas-svg .glow {
+    filter: none !important;
+  }
+
+  /* Mobile viewport stays stable, but don't promote the whole app/canvas to a bitmap. */
+  .app {
+    transform: none !important;
+    will-change: auto !important;
+  }
+
+  /* Reduce semi-transparent blur overlays near canvas on mobile. */
+  .mobile-main-dock,
+  .toolbar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 860px), (pointer: coarse) {
+    .canvas-wrap,
+    .panel-canvas-svg,
+    .workspace svg {
+      transform: none !important;
+      -webkit-transform: none !important;
+      contain: layout size !important;
+    }
+  }
+}
+
 </style>
 </head>
 <body>
@@ -10161,7 +10241,7 @@ body::after {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v215-layer-manager-row-layout-fix';
+const APP_VERSION = 'v216-mobile-svg-crisp-render';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -15566,6 +15646,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v213 renders tact6mm realistic top hardware as a small round actuator/plunger instead of a square body, with neutral grey default color.');
     ok('v214 compacts Layer Manager into one table-like card: smaller preset buttons, inline opacity sliders, and show/export/solo controls on the right.');
     ok('v215 fixes compact Layer Manager row layout: layer name is full-width on top, slider below, show/export/solo controls on the right.');
+    ok('v216 improves mobile SVG crispness by removing forced GPU/raster compositing and SVG filters on touch devices.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
