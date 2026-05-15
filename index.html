@@ -3837,6 +3837,2715 @@ textarea:focus,
   }
 }
 
+
+/* v112 make-it-feel-like-a-product pass */
+.empty-canvas-launchpad {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 900;
+  pointer-events: none;
+}
+.empty-launch-card {
+  position: relative;
+  width: min(540px, calc(100vw - 48px));
+  padding: 24px;
+  border-radius: 28px;
+  pointer-events: auto;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(46,233,255,.16), transparent 44%),
+    radial-gradient(circle at 80% 10%, rgba(124,92,255,.12), transparent 48%),
+    linear-gradient(180deg, rgba(18,25,32,.88), rgba(5,9,13,.78));
+  border: 1px solid rgba(185,246,255,.22);
+  box-shadow: 0 28px 90px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.07), 0 0 44px rgba(46,233,255,.08);
+  backdrop-filter: blur(22px) saturate(1.15);
+  -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  text-align: left;
+}
+.empty-orbit {
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(46,233,255,.055), transparent 48%),
+    conic-gradient(from 210deg, transparent, rgba(46,233,255,.18), transparent 34%, rgba(255,255,255,.08), transparent 72%);
+  filter: blur(.2px);
+  opacity: .62;
+  pointer-events: none;
+}
+.empty-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #b9f6ff;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.empty-kicker::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #2ee9ff;
+  box-shadow: 0 0 18px rgba(46,233,255,.75);
+}
+.empty-launch-card h2 {
+  margin: 0;
+  max-width: 440px;
+  color: #f4fbff;
+  font-size: clamp(28px, 4vw, 43px);
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+.empty-launch-card p {
+  margin: 14px 0 18px;
+  max-width: 460px;
+  color: #a8bbc2;
+  font-size: 14px;
+  line-height: 1.48;
+}
+.empty-launch-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 10px;
+}
+.empty-launch-actions button {
+  min-height: 78px;
+  padding: 12px;
+  border-radius: 18px !important;
+  text-align: left;
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  background:
+    radial-gradient(circle at 30% 0%, rgba(46,233,255,.16), transparent 48%),
+    rgba(255,255,255,.055) !important;
+}
+.empty-launch-actions button strong {
+  color: #b9f6ff;
+  font-size: 12px;
+  letter-spacing: .08em;
+}
+.empty-launch-actions button span {
+  color: #f3fbff;
+  font-weight: 850;
+  line-height: 1.15;
+}
+.empty-launch-foot {
+  margin-top: 14px;
+  color: #7f969d;
+  font-size: 12px;
+}
+.empty-launch-foot b { color: #cfeff5; }
+
+.preset-popover-hero {
+  margin: 0 0 10px;
+  padding: 12px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(46,233,255,.14), transparent 52%),
+    rgba(255,255,255,.045);
+  border: 1px solid rgba(46,233,255,.16);
+}
+.preset-popover-hero strong {
+  display: block;
+  color: #f3fbff;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+.preset-popover-hero span {
+  display: block;
+  color: #8fa6ad;
+  font-size: 11px;
+  line-height: 1.35;
+}
+.preset-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 8px;
+  max-height: min(62vh, 560px);
+  overflow: auto;
+  padding-right: 3px;
+}
+.preset-card-button {
+  min-height: 92px;
+  padding: 11px !important;
+  border-radius: 16px !important;
+  text-align: left;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 4px;
+  align-content: start;
+}
+.preset-card-hp {
+  justify-self: start;
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: #071014;
+  background: #b9f6ff;
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: .07em;
+}
+.preset-card-button strong {
+  color: #f2fbff;
+  font-size: 12px;
+  line-height: 1.15;
+}
+.preset-card-button small {
+  color: #8fa6ad;
+  font-size: 10px;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.library-delight-note {
+  margin: 0 0 10px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  color: #9fb6bd;
+  background: rgba(46,233,255,.045);
+  border: 1px solid rgba(46,233,255,.13);
+  font-size: 11px;
+  line-height: 1.35;
+}
+.section[data-component-library="true"].collapsed .library-delight-note {
+  display: none !important;
+}
+.section[data-component-library="true"] .real-part-tile .part-card-main strong {
+  font-size: 15px !important;
+  letter-spacing: -.01em;
+}
+.section[data-component-library="true"] .real-part-tile .part-card-main span {
+  color: #b5cbd1 !important;
+}
+@media (max-width: 860px) {
+  .empty-canvas-launchpad {
+    display: none;
+  }
+  .preset-card-grid {
+    grid-template-columns: 1fr;
+    max-height: 58vh;
+  }
+}
+
+
+/* v113 iOS/Safari white edge fix */
+html,
+body,
+#root,
+.app,
+.app-shell {
+  background-color: #05080b !important;
+}
+
+html {
+  min-height: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden !important;
+  overscroll-behavior: none;
+}
+
+body {
+  min-height: 100%;
+  min-height: 100dvh;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: none;
+}
+
+@media (max-width: 860px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(46,233,255,.07), transparent 32%),
+      linear-gradient(180deg, #0a1015, #05080b 62%) !important;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -80px;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(46,233,255,.07), transparent 32%),
+      linear-gradient(180deg, #0a1015, #05080b 62%);
+  }
+
+  .app,
+  .app-shell,
+  .canvas-wrap,
+  .mobile-page,
+  .mobile-workspace {
+    background-color: #05080b !important;
+  }
+
+  .canvas-wrap {
+    min-height: 100dvh;
+    overflow: hidden !important;
+  }
+
+  .mobile-main-dock,
+  .mobile-topbar {
+    transform: translateZ(0);
+  }
+}
+
+
+/* v114 top hardware color swatches + blank starter panel */
+.top-color-preset {
+  width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  border: 2px solid rgba(255,255,255,.16) !important;
+  background: var(--preset-color) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.28),
+    0 0 0 1px rgba(0,0,0,.38),
+    0 8px 18px rgba(0,0,0,.22) !important;
+  transform: none !important;
+}
+.top-color-preset:hover {
+  border-color: rgba(185,246,255,.72) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.35),
+    0 0 0 1px rgba(0,0,0,.38),
+    0 0 18px color-mix(in srgb, var(--preset-color) 55%, transparent),
+    0 8px 18px rgba(0,0,0,.26) !important;
+}
+.empty-launch-actions {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+.empty-clear-button {
+  border-color: rgba(255,209,102,.30) !important;
+  background:
+    radial-gradient(circle at 30% 0%, rgba(255,209,102,.18), transparent 48%),
+    rgba(255,255,255,.055) !important;
+}
+.empty-clear-button strong {
+  color: #ffd166 !important;
+}
+@media (max-width: 1120px) {
+  .empty-launch-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 860px) {
+  .top-color-preset {
+    width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+  }
+}
+
+
+/* v115 toolbar popover wheel isolation */
+.toolbar-popover {
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch;
+}
+.preset-card-grid,
+.menu-grid,
+.help-popover,
+.toolbar-popover {
+  overscroll-behavior: contain !important;
+}
+
+
+/* v116 starter logo + clear dismiss fix */
+.empty-launch-logo {
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  opacity: .26;
+  mix-blend-mode: screen;
+  filter: invert(1) drop-shadow(0 0 18px rgba(46,233,255,.20));
+  pointer-events: none;
+}
+.empty-launch-card {
+  overflow: hidden;
+}
+.empty-launch-card h2,
+.empty-launch-card p,
+.empty-launch-actions,
+.empty-launch-foot,
+.empty-kicker {
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 860px) {
+  .empty-launch-logo {
+    width: 54px;
+    height: 54px;
+    right: 16px;
+    top: 14px;
+  }
+}
+
+
+/* v118 starter logo visibility fix */
+.empty-launch-logo {
+  width: 118px !important;
+  height: 118px !important;
+  right: 30px !important;
+  top: 28px !important;
+  opacity: .72 !important;
+  mix-blend-mode: normal !important;
+  filter:
+    invert(1)
+    drop-shadow(0 0 16px rgba(46,233,255,.32))
+    drop-shadow(0 12px 30px rgba(0,0,0,.45)) !important;
+}
+.empty-launch-card::after {
+  content: '';
+  position: absolute;
+  right: 20px;
+  top: 18px;
+  width: 140px;
+  height: 140px;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(46,233,255,.11), transparent 58%),
+    rgba(255,255,255,.025);
+  border: 1px solid rgba(185,246,255,.08);
+  z-index: 0;
+  pointer-events: none;
+}
+.empty-launch-logo {
+  z-index: 1;
+}
+@media (max-width: 860px) {
+  .empty-launch-logo {
+    width: 82px !important;
+    height: 82px !important;
+    right: 18px !important;
+    top: 18px !important;
+    opacity: .76 !important;
+  }
+  .empty-launch-card::after {
+    width: 100px;
+    height: 100px;
+    right: 10px;
+    top: 10px;
+  }
+}
+
+
+/* v119 clean white starter logo */
+.empty-launch-card::after {
+  display: none !important;
+  content: none !important;
+}
+.empty-launch-logo {
+  width: 126px !important;
+  height: 126px !important;
+  right: 34px !important;
+  top: 32px !important;
+  opacity: .86 !important;
+  mix-blend-mode: normal !important;
+  filter:
+    brightness(0)
+    invert(1)
+    drop-shadow(0 0 16px rgba(255,255,255,.14))
+    drop-shadow(0 0 28px rgba(46,233,255,.18)) !important;
+}
+@media (max-width: 860px) {
+  .empty-launch-logo {
+    width: 84px !important;
+    height: 84px !important;
+    right: 18px !important;
+    top: 18px !important;
+    opacity: .88 !important;
+  }
+}
+
+
+/* v120 starter logo corner placement */
+.empty-launch-logo {
+  width: 96px !important;
+  height: 96px !important;
+  right: 42px !important;
+  top: 28px !important;
+  opacity: .86 !important;
+  z-index: 0 !important;
+}
+.empty-launch-card {
+  padding-right: 170px !important;
+}
+.empty-kicker,
+.empty-launch-card h2,
+.empty-launch-card p,
+.empty-launch-actions,
+.empty-launch-foot {
+  z-index: 2 !important;
+}
+@media (max-width: 1180px) {
+  .empty-launch-logo {
+    width: 82px !important;
+    height: 82px !important;
+    right: 34px !important;
+    top: 26px !important;
+    opacity: .74 !important;
+  }
+  .empty-launch-card {
+    padding-right: 132px !important;
+  }
+}
+@media (max-width: 860px) {
+  .empty-launch-card {
+    padding-right: 24px !important;
+  }
+  .empty-launch-logo {
+    display: none !important;
+  }
+}
+
+
+/* v121 hero card right-side composition */
+.empty-launch-card {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.08fr) minmax(280px, .72fr) !important;
+  grid-template-areas:
+    "kicker visual"
+    "title visual"
+    "copy visual"
+    "actions actions"
+    "foot foot";
+  column-gap: 34px;
+  align-items: start;
+  padding: 34px 40px 32px !important;
+}
+.empty-kicker { grid-area: kicker; }
+.empty-launch-card h2 { grid-area: title; max-width: 620px !important; }
+.empty-launch-card p { grid-area: copy; max-width: 650px !important; }
+.empty-launch-actions { grid-area: actions; }
+.empty-launch-foot { grid-area: foot; }
+
+.empty-launch-logo {
+  grid-area: visual;
+  position: absolute !important;
+  width: 150px !important;
+  height: 150px !important;
+  right: 102px !important;
+  top: 82px !important;
+  opacity: .92 !important;
+  z-index: 3 !important;
+}
+
+.empty-hero-orbit-mark {
+  grid-area: visual;
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  border-radius: 32px;
+  align-self: stretch;
+  background:
+    radial-gradient(circle at 52% 36%, rgba(255,255,255,.10), transparent 12%),
+    radial-gradient(circle at 52% 36%, rgba(46,233,255,.17), transparent 29%),
+    radial-gradient(circle at 50% 45%, rgba(124,92,255,.10), transparent 46%),
+    linear-gradient(135deg, rgba(255,255,255,.045), rgba(255,255,255,.010));
+  border: 1px solid rgba(185,246,255,.105);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 18px 60px rgba(0,0,0,.18);
+  overflow: hidden;
+  z-index: 0;
+}
+.empty-hero-orbit-mark::before {
+  content: '';
+  position: absolute;
+  inset: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(185,246,255,.16);
+  box-shadow:
+    0 0 0 34px rgba(46,233,255,.025),
+    0 0 0 78px rgba(255,255,255,.014),
+    0 0 58px rgba(46,233,255,.08);
+}
+.empty-hero-orbit-mark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(185,246,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(185,246,255,.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(circle at 52% 36%, black 0%, transparent 72%);
+  opacity: .36;
+}
+.empty-hero-specs {
+  grid-area: visual;
+  align-self: end;
+  justify-self: stretch;
+  position: relative;
+  z-index: 4;
+  display: grid;
+  gap: 8px;
+  margin: 0 18px 18px;
+}
+.empty-hero-specs span {
+  justify-self: end;
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: #b9f6ff;
+  background: rgba(5,10,14,.58);
+  border: 1px solid rgba(46,233,255,.16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .035em;
+}
+
+.empty-launch-actions {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  margin-top: 22px;
+}
+.empty-launch-actions button {
+  min-height: 88px;
+}
+
+@media (max-width: 1180px) {
+  .empty-launch-card {
+    grid-template-columns: minmax(0, 1fr) 210px !important;
+    column-gap: 24px;
+    padding: 30px 32px !important;
+  }
+  .empty-launch-logo {
+    width: 116px !important;
+    height: 116px !important;
+    right: 80px !important;
+    top: 76px !important;
+  }
+  .empty-hero-orbit-mark { min-height: 250px; }
+  .empty-hero-specs span { font-size: 10px; }
+}
+
+@media (max-width: 980px) {
+  .empty-launch-card {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "kicker"
+      "title"
+      "copy"
+      "actions"
+      "foot";
+  }
+  .empty-launch-logo,
+  .empty-hero-orbit-mark,
+  .empty-hero-specs {
+    display: none !important;
+  }
+}
+
+
+/* v122 fix starter composition: remove overdesigned hero column */
+.empty-launch-card {
+  display: block !important;
+  width: min(920px, calc(100vw - 64px)) !important;
+  padding: 34px 40px 32px !important;
+  padding-right: 172px !important;
+}
+.empty-hero-orbit-mark,
+.empty-hero-specs {
+  display: none !important;
+}
+.empty-launch-logo {
+  position: absolute !important;
+  width: 108px !important;
+  height: 108px !important;
+  right: 44px !important;
+  top: 42px !important;
+  opacity: .78 !important;
+  z-index: 1 !important;
+  filter:
+    brightness(0)
+    invert(1)
+    drop-shadow(0 0 14px rgba(255,255,255,.12))
+    drop-shadow(0 0 24px rgba(46,233,255,.16)) !important;
+}
+.empty-kicker,
+.empty-launch-card h2,
+.empty-launch-card p,
+.empty-launch-actions,
+.empty-launch-foot {
+  position: relative;
+  z-index: 2 !important;
+}
+.empty-launch-card h2 {
+  max-width: 720px !important;
+  font-size: clamp(42px, 6.2vw, 72px) !important;
+  line-height: .98 !important;
+  letter-spacing: -.055em !important;
+}
+.empty-launch-card p {
+  max-width: 710px !important;
+  font-size: 18px !important;
+  line-height: 1.45 !important;
+}
+.empty-launch-actions {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  margin-top: 22px !important;
+}
+.empty-launch-actions button {
+  min-height: 112px !important;
+  padding: 18px 20px !important;
+}
+.empty-launch-actions button span {
+  font-size: 18px !important;
+}
+.empty-launch-actions button strong {
+  font-size: 15px !important;
+}
+.empty-launch-foot {
+  margin-top: 20px !important;
+  font-size: 16px !important;
+}
+
+@media (max-width: 1180px) {
+  .empty-launch-card {
+    width: min(860px, calc(100vw - 48px)) !important;
+    padding: 30px 34px 30px !important;
+    padding-right: 142px !important;
+  }
+  .empty-launch-logo {
+    width: 88px !important;
+    height: 88px !important;
+    right: 34px !important;
+    top: 34px !important;
+    opacity: .7 !important;
+  }
+  .empty-launch-card h2 {
+    max-width: 650px !important;
+    font-size: clamp(38px, 6vw, 62px) !important;
+  }
+  .empty-launch-card p {
+    max-width: 660px !important;
+    font-size: 16px !important;
+  }
+  .empty-launch-actions {
+    gap: 12px !important;
+  }
+  .empty-launch-actions button {
+    min-height: 96px !important;
+    padding: 14px 16px !important;
+  }
+  .empty-launch-actions button span {
+    font-size: 15px !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .empty-launch-card {
+    padding: 24px !important;
+    width: calc(100vw - 28px) !important;
+  }
+  .empty-launch-logo {
+    display: none !important;
+  }
+  .empty-launch-actions {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+
+/* v123 launch console: no logo, tactile pre-start controls */
+.empty-launch-logo,
+.empty-hero-orbit-mark,
+.empty-hero-specs {
+  display: none !important;
+}
+
+.empty-launch-card.launch-console {
+  width: min(1040px, calc(100vw - 64px)) !important;
+  padding: 34px 38px 30px !important;
+  padding-right: 38px !important;
+  border-radius: 34px !important;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(46,233,255,.16), transparent 36%),
+    radial-gradient(circle at 92% 12%, rgba(124,92,255,.13), transparent 42%),
+    linear-gradient(180deg, rgba(18,25,31,.90), rgba(5,8,12,.82)) !important;
+  border: 1px solid rgba(185,246,255,.24) !important;
+  box-shadow:
+    0 34px 100px rgba(0,0,0,.56),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 0 55px rgba(46,233,255,.08) !important;
+}
+
+.empty-launch-card.launch-console h2 {
+  max-width: 860px !important;
+  margin: 0 !important;
+  font-size: clamp(42px, 5.9vw, 78px) !important;
+  line-height: .94 !important;
+  letter-spacing: -.065em !important;
+}
+
+.empty-launch-card.launch-console p {
+  max-width: 760px !important;
+  margin: 18px 0 24px !important;
+  color: #b5c5cb !important;
+  font-size: 18px !important;
+  line-height: 1.42 !important;
+}
+
+.launch-console-grid {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr .78fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.launch-console-section {
+  min-width: 0;
+  padding: 14px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(46,233,255,.075), transparent 42%),
+    rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.075);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.launch-archetypes {
+  grid-column: 1 / -1;
+}
+
+.launch-label {
+  color: #8ea4ab;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.launch-hp-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  gap: 8px;
+}
+
+.launch-style-grid,
+.launch-mode-grid,
+.launch-archetype-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.launch-style-grid {
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.launch-mode-grid {
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.launch-archetype-grid {
+  grid-template-columns: repeat(4, minmax(0,1fr));
+}
+
+.launch-console button {
+  min-height: 44px !important;
+  border-radius: 15px !important;
+  text-align: left;
+  border-color: rgba(255,255,255,.10) !important;
+  background:
+    radial-gradient(circle at 25% 0%, rgba(255,255,255,.08), transparent 45%),
+    rgba(255,255,255,.045) !important;
+}
+
+.launch-console button.active {
+  border-color: rgba(46,233,255,.62) !important;
+  background:
+    radial-gradient(circle at 22% 0%, rgba(46,233,255,.25), transparent 52%),
+    linear-gradient(180deg, rgba(46,233,255,.14), rgba(46,233,255,.045)) !important;
+  box-shadow:
+    0 0 0 1px rgba(46,233,255,.15) inset,
+    0 0 28px rgba(46,233,255,.12) !important;
+}
+
+.launch-console button strong {
+  display: block;
+  color: #f6fdff;
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1.15;
+}
+
+.launch-console button span {
+  display: block;
+  margin-top: 3px;
+  color: #9eb2b9;
+  font-size: 11px;
+  line-height: 1.22;
+}
+
+.launch-hp-grid button {
+  text-align: center;
+  font-weight: 950;
+  color: #dff9ff !important;
+  letter-spacing: .02em;
+}
+
+.launch-console-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 22px;
+  background: rgba(3,7,10,.50);
+  border: 1px solid rgba(46,233,255,.12);
+}
+
+.launch-console-footer div {
+  display: grid;
+  gap: 3px;
+}
+
+.launch-console-footer strong {
+  color: #f4fbff;
+  font-size: 16px;
+}
+
+.launch-console-footer span {
+  color: #8fa6ad;
+  font-size: 12px;
+}
+
+.launch-go-button {
+  min-width: 148px;
+  min-height: 58px !important;
+  justify-content: center;
+  text-align: center !important;
+  border-radius: 999px !important;
+  color: #031014 !important;
+  font-size: 20px !important;
+  font-weight: 1000 !important;
+  letter-spacing: .12em;
+  background:
+    radial-gradient(circle at 35% 0%, rgba(255,255,255,.75), transparent 44%),
+    linear-gradient(135deg, #b9f6ff, #2ee9ff) !important;
+  border-color: rgba(185,246,255,.78) !important;
+  box-shadow: 0 0 34px rgba(46,233,255,.26), 0 16px 38px rgba(0,0,0,.34) !important;
+}
+
+.launch-go-button:hover {
+  transform: translateY(-2px) scale(1.015) !important;
+}
+
+.empty-launch-actions,
+.empty-launch-foot {
+  display: none !important;
+}
+
+@media (max-width: 1180px) {
+  .empty-launch-card.launch-console {
+    width: min(880px, calc(100vw - 48px)) !important;
+  }
+  .launch-console-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .launch-console-section:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+  .launch-mode-grid {
+    grid-template-columns: repeat(4, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .empty-launch-card.launch-console {
+    width: calc(100vw - 28px) !important;
+    padding: 24px !important;
+  }
+  .launch-console-grid,
+  .launch-style-grid,
+  .launch-mode-grid,
+  .launch-archetype-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .launch-hp-grid {
+    grid-template-columns: repeat(3, minmax(0,1fr));
+  }
+  .launch-console-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .launch-go-button {
+    width: 100%;
+  }
+}
+
+
+/* v126 targeted right-panel alignment fixes: Mounting Holes + Layer Manager only */
+
+/* ---------------- Mounting Holes ---------------- */
+.sidebar-right .section:has(.section-title:first-child:not(:empty)) {
+  min-width: 0;
+}
+
+/* Mounting holes panel: make controls breathe and prevent clipped number inputs */
+.sidebar-right .section:has(.section-title:first-child):has(select option[value="fourOval"]) {
+  overflow: hidden;
+}
+
+.sidebar-right .section:has(select option[value="fourOval"]) .field-pair {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+
+.sidebar-right .section:has(select option[value="fourOval"]) .field-pair > div {
+  min-width: 0 !important;
+}
+
+.sidebar-right .section:has(select option[value="fourOval"]) label {
+  line-height: 1.18 !important;
+}
+
+.sidebar-right .section:has(select option[value="fourOval"]) input[type="number"],
+.sidebar-right .section:has(select option[value="fourOval"]) select {
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* The two rail columns in Mounting Holes were too tight; stack them cleanly in the right sidebar. */
+.sidebar-right .section:has(select option[value="fourOval"]) > div[style*="grid-template-columns: 1fr 1fr"] {
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+  padding-top: 2px !important;
+}
+
+.sidebar-right .section:has(select option[value="fourOval"]) > div[style*="grid-template-columns: 1fr 1fr"] > div {
+  padding: 10px !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.035) !important;
+  border: 1px solid rgba(255,255,255,.065) !important;
+}
+
+/* Each hole row: number / input / delete button with enough space */
+.sidebar-right .section:has(select option[value="fourOval"]) div[style*="grid-template-columns: 26px 1fr 22px"] {
+  grid-template-columns: 28px minmax(84px, 1fr) 38px !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.sidebar-right .section:has(select option[value="fourOval"]) div[style*="grid-template-columns: 26px 1fr 22px"] input {
+  height: 44px !important;
+  text-align: center !important;
+}
+
+.sidebar-right .section:has(select option[value="fourOval"]) div[style*="grid-template-columns: 26px 1fr 22px"] button {
+  width: 38px !important;
+  min-width: 38px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 14px !important;
+}
+
+/* ---------------- Layer Manager ---------------- */
+.layer-manager-summary {
+  display: grid !important;
+  grid-template-columns: 88px minmax(0, 1fr) !important;
+  gap: 12px !important;
+  align-items: center !important;
+  margin: 10px 0 12px !important;
+}
+
+.layer-manager-summary span {
+  min-width: 0 !important;
+  line-height: 1.18 !important;
+}
+
+.layer-manager-presets {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.layer-manager-presets button {
+  min-width: 0 !important;
+  width: 100% !important;
+  justify-content: center !important;
+  text-align: center !important;
+  min-height: 48px !important;
+  white-space: normal !important;
+}
+
+/* Convert layer manager table into clean cards that cannot overflow the sidebar */
+.layer-manager-table {
+  display: grid !important;
+  gap: 8px !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+.layer-manager-head {
+  display: none !important;
+}
+
+.layer-manager-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 42px !important;
+  grid-template-areas:
+    "name show"
+    "opacity opacity"
+    "export solo";
+  gap: 8px 10px !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  padding: 12px !important;
+  border-radius: 16px !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(46,233,255,.055), transparent 42%),
+    rgba(255,255,255,.028) !important;
+  border: 1px solid rgba(255,255,255,.075) !important;
+}
+
+.layer-manager-row.on {
+  border-color: rgba(46,233,255,.16) !important;
+}
+
+.layer-manager-row.off {
+  opacity: .70 !important;
+}
+
+.layer-manager-name {
+  grid-area: name;
+  min-width: 0 !important;
+}
+
+.layer-manager-name b {
+  display: block !important;
+  color: #eef8fb !important;
+  font-size: 15px !important;
+  line-height: 1.08 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.layer-manager-name small {
+  display: block !important;
+  color: #8fa6ad !important;
+  font-size: 11px !important;
+  line-height: 1.18 !important;
+  margin-top: 3px !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.layer-manager-row > .layer-toggle:nth-of-type(1) {
+  grid-area: show;
+  justify-self: end !important;
+}
+
+.layer-manager-row > .layer-opacity {
+  grid-area: opacity;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+.layer-manager-row > .layer-toggle:nth-of-type(2) {
+  grid-area: export;
+  justify-self: start !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.layer-manager-row > .layer-toggle:nth-of-type(2)::before {
+  content: "Export";
+  color: #8fa6ad;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.layer-manager-row > button {
+  grid-area: solo;
+  justify-self: end !important;
+  min-width: 74px !important;
+  min-height: 36px !important;
+  padding: 7px 12px !important;
+  border-radius: 12px !important;
+}
+
+/* make checkboxes visually centered in rows */
+.layer-toggle {
+  margin: 0 !important;
+  min-width: 0 !important;
+}
+
+.layer-toggle input[type="checkbox"] {
+  margin: 0 !important;
+}
+
+/* Range visual consistency inside compact cards */
+.layer-opacity {
+  accent-color: #2ee9ff;
+}
+
+/* Avoid horizontal page/sidebar scroll caused by card internals */
+.sidebar-right,
+.sidebar-right .section,
+.sidebar-right .section * {
+  max-width: 100%;
+}
+
+
+/* v127 compact New Panel launch + simpler pre-start choices */
+.empty-launch-card.launch-console.launch-compact {
+  width: min(560px, calc(100vw - 44px)) !important;
+  padding: 24px !important;
+  border-radius: 26px !important;
+}
+
+.empty-launch-card.launch-console.launch-compact h2 {
+  max-width: none !important;
+  margin: 0 !important;
+  font-size: clamp(38px, 5vw, 56px) !important;
+  line-height: .94 !important;
+  letter-spacing: -.055em !important;
+}
+
+.empty-launch-card.launch-console.launch-compact p {
+  max-width: 440px !important;
+  margin: 10px 0 16px !important;
+  font-size: 14px !important;
+  line-height: 1.42 !important;
+  color: #aabcc2 !important;
+}
+
+.launch-compact-body {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+}
+
+.launch-compact .launch-console-section {
+  padding: 12px !important;
+  border-radius: 18px !important;
+}
+
+.launch-hp-grid.compact {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+}
+
+.launch-hp-grid.compact button {
+  min-height: 36px !important;
+  padding: 0 !important;
+  text-align: center !important;
+  display: grid !important;
+  place-items: center !important;
+  font-weight: 950 !important;
+}
+
+.launch-custom-hp {
+  display: grid !important;
+  grid-template-columns: 1fr 96px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-top: 10px !important;
+  color: #9fb3ba !important;
+  font-weight: 760 !important;
+}
+
+.launch-custom-hp input {
+  width: 100% !important;
+  min-height: 40px !important;
+  text-align: center !important;
+  font-weight: 900 !important;
+}
+
+.launch-mode-grid.compact {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+}
+
+.launch-mode-grid.compact button {
+  min-height: 42px !important;
+  padding: 8px 6px !important;
+  text-align: center !important;
+}
+
+.launch-mode-grid.compact button strong {
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+.launch-console-footer.compact {
+  margin-top: 12px !important;
+  padding: 12px !important;
+  border-radius: 18px !important;
+}
+
+.launch-console-footer.compact strong {
+  font-size: 14px !important;
+}
+
+.launch-console-footer.compact span {
+  font-size: 11px !important;
+}
+
+.launch-go-button {
+  min-width: 132px !important;
+  min-height: 56px !important;
+  color: #021114 !important;
+  background:
+    radial-gradient(circle at 35% 0%, rgba(255,255,255,.92), transparent 42%),
+    linear-gradient(135deg, #d8fbff, #2ee9ff 55%, #15b8ff) !important;
+  border-color: rgba(216,251,255,.9) !important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.30) inset,
+    0 0 36px rgba(46,233,255,.36),
+    0 16px 42px rgba(0,0,0,.42) !important;
+}
+
+.launch-go-button:hover {
+  transform: translateY(-2px) scale(1.03) !important;
+}
+
+@media (max-width: 700px) {
+  .empty-launch-card.launch-console.launch-compact {
+    width: calc(100vw - 24px) !important;
+    padding: 18px !important;
+  }
+  .launch-hp-grid.compact {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+  .launch-mode-grid.compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .launch-console-footer.compact {
+    display: grid !important;
+    gap: 10px !important;
+  }
+  .launch-go-button {
+    width: 100% !important;
+  }
+}
+
+
+/* v128 Component Library: give vertical space back to actual parts */
+.section[data-component-library="true"] .library-delight-note {
+  display: none !important;
+}
+
+.section[data-component-library="true"] .library-search-compact {
+  margin-bottom: 8px !important;
+}
+
+.section[data-component-library="true"] .library-filter-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.section[data-component-library="true"] .library-render-note {
+  display: none !important;
+}
+
+.library-tools-compact {
+  margin-top: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.075);
+  background: rgba(255,255,255,.025);
+  overflow: hidden;
+}
+
+.library-tools-compact summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  color: #94abb2;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.library-tools-compact[open] summary {
+  border-bottom: 1px solid rgba(255,255,255,.065);
+  color: #b9f6ff;
+}
+
+.library-replace-compact {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 12px 0 !important;
+  color: #aabcc2 !important;
+  line-height: 1.2 !important;
+}
+
+.library-action-grid.compact {
+  padding: 10px 12px 12px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+}
+
+.library-action-grid.compact button {
+  min-height: 36px !important;
+  padding: 7px 9px !important;
+  font-size: 12px !important;
+}
+
+@media (max-width: 860px) {
+  .section[data-component-library="true"] .library-filter-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* v131 attractive compact launcher */
+.empty-canvas-launchpad {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(46,233,255,.055), transparent 38%),
+    radial-gradient(circle at 50% 62%, rgba(124,92,255,.035), transparent 44%);
+}
+
+.empty-launch-card.launch-console.launch-compact {
+  width: min(520px, calc(100vw - 44px)) !important;
+  padding: 22px !important;
+  border-radius: 30px !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(46,233,255,.22), transparent 36%),
+    radial-gradient(circle at 92% 8%, rgba(126,92,255,.18), transparent 42%),
+    linear-gradient(180deg, rgba(22,30,38,.92), rgba(5,8,12,.86)) !important;
+  border: 1px solid rgba(185,246,255,.26) !important;
+  box-shadow:
+    0 34px 90px rgba(0,0,0,.58),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 0 0 1px rgba(46,233,255,.055),
+    0 0 70px rgba(46,233,255,.08) !important;
+}
+
+.empty-launch-card.launch-console.launch-compact::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 29px;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.08), transparent 26%, transparent 72%, rgba(46,233,255,.07));
+  opacity: .75;
+}
+
+.empty-launch-card.launch-console.launch-compact .empty-kicker {
+  margin-bottom: 10px !important;
+  color: #b9f6ff !important;
+  letter-spacing: .18em !important;
+}
+
+.empty-launch-card.launch-console.launch-compact h2 {
+  max-width: 410px !important;
+  font-size: clamp(42px, 5.5vw, 64px) !important;
+  line-height: .88 !important;
+  letter-spacing: -.07em !important;
+  text-shadow: 0 16px 40px rgba(0,0,0,.35);
+}
+
+.empty-launch-card.launch-console.launch-compact p {
+  max-width: 390px !important;
+  margin: 12px 0 14px !important;
+  color: #b9cbd1 !important;
+  font-size: 14.5px !important;
+}
+
+.launch-mini-preview {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  margin: 14px 0 14px;
+  padding: 12px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(46,233,255,.11), transparent 46%),
+    rgba(3,8,11,.44);
+  border: 1px solid rgba(46,233,255,.15);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.launch-mini-panel {
+  position: relative;
+  width: 54px;
+  height: 88px;
+  margin: 0 auto;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(91,101,109,.62), rgba(43,50,56,.70));
+  background-size: 10px 10px, 10px 10px, auto;
+  border: 1px solid rgba(235,248,255,.62);
+  box-shadow:
+    inset 0 0 18px rgba(0,0,0,.34),
+    0 0 30px rgba(46,233,255,.08);
+}
+
+.launch-mini-panel::before,
+.launch-mini-panel::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #050505;
+  border: 1px solid rgba(255,255,255,.48);
+}
+.launch-mini-panel::before { top: 7px; }
+.launch-mini-panel::after { bottom: 7px; }
+
+.launch-mini-panel span:nth-child(1),
+.launch-mini-panel span:nth-child(2) {
+  position: absolute;
+  right: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #050505;
+  border: 1px solid rgba(255,255,255,.48);
+}
+.launch-mini-panel span:nth-child(1) { top: 7px; }
+.launch-mini-panel span:nth-child(2) { bottom: 7px; }
+
+.launch-mini-panel i {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: rgba(46,233,255,.56);
+  box-shadow: 0 0 9px rgba(46,233,255,.38);
+}
+
+.launch-mini-panel b {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 50%;
+  height: 1px;
+  transform: translateY(-50%);
+  background: rgba(46,233,255,.32);
+}
+
+.launch-mini-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.launch-mini-copy strong {
+  color: #f4fbff;
+  font-size: 15px;
+  line-height: 1.1;
+}
+
+.launch-mini-copy span {
+  color: #91a8af;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.launch-compact-body {
+  gap: 9px !important;
+}
+
+.launch-compact .launch-console-section {
+  padding: 11px !important;
+  border-radius: 19px !important;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(46,233,255,.09), transparent 46%),
+    rgba(255,255,255,.035) !important;
+}
+
+.launch-label {
+  margin-bottom: 9px !important;
+  color: #a8bdc4 !important;
+  font-size: 10.5px !important;
+}
+
+.launch-hp-grid.compact {
+  gap: 6px !important;
+}
+
+.launch-hp-grid.compact button {
+  min-height: 34px !important;
+  border-radius: 13px !important;
+  font-size: 14px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.025)) !important;
+}
+
+.launch-hp-grid.compact button.active,
+.launch-mode-grid.compact button.active {
+  color: #eaffff !important;
+  border-color: rgba(46,233,255,.72) !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46,233,255,.35), transparent 58%),
+    linear-gradient(180deg, rgba(46,233,255,.16), rgba(46,233,255,.045)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 0 22px rgba(46,233,255,.17) !important;
+}
+
+.launch-custom-hp {
+  margin-top: 8px !important;
+  grid-template-columns: 1fr 80px !important;
+}
+
+.launch-custom-hp input {
+  min-height: 36px !important;
+  border-radius: 13px !important;
+}
+
+.launch-mode-grid.compact {
+  gap: 6px !important;
+}
+
+.launch-mode-grid.compact button {
+  min-height: 40px !important;
+  border-radius: 14px !important;
+}
+
+.launch-console-footer.compact {
+  margin-top: 10px !important;
+  padding: 10px !important;
+  border-radius: 20px !important;
+  background:
+    radial-gradient(circle at 80% 50%, rgba(46,233,255,.12), transparent 40%),
+    rgba(3,7,10,.58) !important;
+}
+
+.launch-console-footer.compact strong {
+  font-size: 15px !important;
+}
+
+.launch-go-button {
+  min-width: 144px !important;
+  min-height: 62px !important;
+  border-radius: 18px !important;
+  color: #021014 !important;
+  font-size: 22px !important;
+  font-weight: 1000 !important;
+  letter-spacing: .16em !important;
+  background:
+    radial-gradient(circle at 35% 0%, rgba(255,255,255,.95), transparent 44%),
+    linear-gradient(135deg, #f2feff, #57ecff 46%, #10bfff 100%) !important;
+  border: 1px solid rgba(230,254,255,.95) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85),
+    0 0 0 1px rgba(46,233,255,.18),
+    0 0 44px rgba(46,233,255,.42),
+    0 18px 44px rgba(0,0,0,.46) !important;
+  animation: launchGoPulse 2.4s ease-in-out infinite;
+}
+
+.launch-go-button:hover {
+  transform: translateY(-2px) scale(1.035) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    0 0 0 1px rgba(46,233,255,.25),
+    0 0 60px rgba(46,233,255,.55),
+    0 22px 50px rgba(0,0,0,.50) !important;
+}
+
+@keyframes launchGoPulse {
+  0%, 100% { filter: saturate(1); }
+  50% { filter: saturate(1.18) brightness(1.04); }
+}
+
+@media (max-width: 700px) {
+  .launch-mini-preview {
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+  .launch-mini-panel {
+    width: 44px;
+    height: 72px;
+  }
+}
+
+
+/* v132 recent/autosave in launcher; no native restore popup */
+.launch-project-strip {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+  margin: 0 0 10px;
+}
+
+.launch-project-strip button {
+  min-height: 44px !important;
+  padding: 9px 11px !important;
+  border-radius: 16px !important;
+  text-align: left !important;
+  display: grid !important;
+  gap: 2px !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(46,233,255,.10), transparent 44%),
+    rgba(255,255,255,.035) !important;
+}
+
+.launch-project-strip button strong {
+  color: #f4fbff;
+  font-size: 13px;
+  line-height: 1.1;
+}
+
+.launch-project-strip button span {
+  color: #8fa6ad;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.launch-project-strip .launch-restore-card {
+  border-color: rgba(255,209,102,.32) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255,209,102,.14), transparent 44%),
+    rgba(255,255,255,.04) !important;
+}
+
+.launch-project-strip .launch-restore-card strong {
+  color: #ffd166;
+}
+
+.launch-project-strip button:disabled {
+  opacity: .48;
+  cursor: default;
+}
+
+@media (min-width: 560px) {
+  .launch-project-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .launch-project-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* v134 remove launch preview card entirely */
+.launch-mini-preview,
+.launch-mini-panel,
+.launch-mini-copy {
+  display: none !important;
+}
+.empty-launch-card.launch-console.launch-compact p {
+  margin-bottom: 14px !important;
+}
+
+
+/* v139 workflow UX pack: place/stamp, recent/favorites, selection toolbar, health pill */
+.library-place-mode {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+.library-place-mode button {
+  min-height: 34px !important;
+  padding: 6px 8px !important;
+  border-radius: 12px !important;
+  font-size: 12px !important;
+}
+.library-place-mode button.active {
+  border-color: rgba(46,233,255,.55) !important;
+  color: #c9fbff !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46,233,255,.25), transparent 55%),
+    rgba(46,233,255,.08) !important;
+}
+.library-memory-row {
+  display: grid;
+  gap: 7px;
+  margin: 8px 0 9px;
+}
+.library-memory-row > div {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px;
+  border-radius: 13px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.06);
+}
+.library-memory-row b {
+  color: #9fb7be;
+  font-size: 10px;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  margin-right: 2px;
+}
+.library-memory-row button {
+  min-height: 26px !important;
+  padding: 4px 8px !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+}
+.part-favorite-mini {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 24px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  z-index: 2;
+  opacity: .68;
+  color: #7f969d !important;
+}
+.part-favorite-mini.active {
+  opacity: 1;
+  color: #ffd166 !important;
+  border-color: rgba(255,209,102,.45) !important;
+  background: rgba(255,209,102,.11) !important;
+}
+.real-part-tile {
+  position: relative;
+}
+.selection-action-toolbar {
+  position: absolute;
+  left: 50%;
+  bottom: 92px;
+  transform: translateX(-50%);
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: calc(100vw - 32px);
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(4,10,14,.78);
+  border: 1px solid rgba(46,233,255,.22);
+  box-shadow: 0 18px 48px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.selection-action-toolbar span {
+  color: #b9f6ff;
+  font-size: 12px;
+  font-weight: 850;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+.selection-action-toolbar button {
+  min-height: 34px !important;
+  padding: 6px 10px !important;
+  border-radius: 12px !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+}
+.selection-action-toolbar button:disabled {
+  opacity: .42;
+  cursor: default;
+}
+.project-health-pill {
+  position: absolute;
+  right: 14px;
+  top: 58px;
+  z-index: 1200;
+  display: grid;
+  gap: 1px;
+  min-width: 118px;
+  padding: 8px 11px;
+  border-radius: 16px;
+  background: rgba(4,10,14,.62);
+  border: 1px solid rgba(46,233,255,.14);
+  box-shadow: 0 12px 34px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.035);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.project-health-pill span {
+  font-size: 12px;
+  font-weight: 950;
+  color: #9ff6bd;
+}
+.project-health-pill small {
+  font-size: 10px;
+  color: #8da4ab;
+}
+.project-health-pill.warn span { color: #ffd166; }
+.project-health-pill.error span { color: #ff7c86; }
+
+@media (max-width: 860px) {
+  .selection-action-toolbar {
+    bottom: 98px;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  .project-health-pill {
+    display: none;
+  }
+}
+
+
+/* v142 simplified part placement: one mode only */
+.library-place-mode {
+  display: none !important;
+}
+
+
+/* v143 placement hint moved out of SVG panel */
+.placement-status-pill {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 1450;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: min(460px, calc(100vw - 36px));
+  padding: 9px 10px 9px 13px;
+  border-radius: 999px;
+  background: rgba(4,10,14,.78);
+  border: 1px solid rgba(46,233,255,.30);
+  box-shadow: 0 16px 44px rgba(0,0,0,.36), 0 0 22px rgba(46,233,255,.10), inset 0 1px 0 rgba(255,255,255,.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  pointer-events: auto;
+}
+.placement-status-pill strong {
+  color: #2ee9ff;
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: .13em;
+}
+.placement-status-pill span {
+  min-width: 0;
+  color: #d9fbff;
+  font-size: 13px;
+  font-weight: 850;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.placement-status-pill button {
+  min-height: 28px !important;
+  padding: 4px 9px !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  color: #a8c2c9 !important;
+}
+@media (max-width: 860px) {
+  .placement-status-pill {
+    bottom: 92px;
+  }
+}
+
+
+/* v144 placement ghost + Shift multi-place */
+.pending-add-ghost {
+  filter: drop-shadow(0 0 7px rgba(46,233,255,.35));
+}
+.placement-status-pill span {
+  max-width: 280px;
+}
+
+
+/* v149 compact bottom HUD alignment */
+.dfm-status-float {
+  position: absolute !important;
+  left: 12px !important;
+  bottom: 12px !important;
+  top: auto !important;
+  right: auto !important;
+  z-index: 1320 !important;
+  min-width: 0 !important;
+  max-width: min(460px, calc(100vw - 460px)) !important;
+}
+.dfm-status-main {
+  min-height: 34px !important;
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+}
+.dfm-status-drawer {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: calc(100% + 8px) !important;
+  margin-top: 0 !important;
+}
+
+.selection-action-toolbar {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 12px !important;
+  top: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 1340 !important;
+  padding: 6px !important;
+  border-radius: 16px !important;
+  gap: 6px !important;
+  max-width: min(720px, calc(100vw - 620px)) !important;
+}
+.selection-action-toolbar span {
+  font-size: 11px !important;
+}
+.selection-action-toolbar button {
+  min-height: 32px !important;
+  padding: 5px 9px !important;
+  font-size: 11px !important;
+  border-radius: 11px !important;
+}
+
+.coord-readout {
+  position: absolute !important;
+  right: 12px !important;
+  bottom: 12px !important;
+  top: auto !important;
+  z-index: 1320 !important;
+  min-height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 5px 11px !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+}
+
+.selection-info-strip {
+  position: absolute !important;
+  right: 12px !important;
+  bottom: 52px !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  z-index: 1325 !important;
+  min-height: 32px !important;
+  max-width: min(360px, calc(100vw - 24px)) !important;
+  padding: 5px 10px !important;
+  border-radius: 999px !important;
+  gap: 8px !important;
+  font-size: 11px !important;
+  white-space: nowrap !important;
+}
+.selection-info-strip strong {
+  max-width: 88px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.selection-info-strip span {
+  font-size: 11px !important;
+}
+
+/* keep placement pill above the compact action bar */
+.placement-status-pill {
+  bottom: 54px !important;
+}
+
+/* Avoid overcrowding when both sidebars are visible on normal desktop widths. */
+@media (max-width: 1280px) {
+  .dfm-status-float {
+    max-width: 330px !important;
+  }
+  .selection-action-toolbar {
+    max-width: min(640px, calc(100vw - 360px)) !important;
+    overflow-x: auto !important;
+  }
+}
+@media (max-width: 980px) {
+  .dfm-status-float {
+    display: none !important;
+  }
+  .selection-action-toolbar {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    transform: none !important;
+    max-width: none !important;
+    overflow-x: auto !important;
+  }
+  .selection-info-strip {
+    right: 12px !important;
+    bottom: 96px !important;
+  }
+  .coord-readout {
+    display: none !important;
+  }
+}
+
+
+/* v150 Photoshop-style right inspector tabs */
+.sidebar-right-tabs {
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background:
+    linear-gradient(180deg, rgba(19,23,27,.96), rgba(10,13,16,.96)) !important;
+  border-left: 1px solid rgba(255,255,255,.08) !important;
+}
+
+.right-tab-strip {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+}
+
+.right-tab-strip.primary {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: rgba(18,22,26,.98);
+  border-bottom: 1px solid rgba(255,255,255,.09);
+  box-shadow: 0 10px 24px rgba(0,0,0,.22);
+}
+
+.right-tab-strip.secondary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 8px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 0;
+}
+
+.right-tab-strip.secondary.scrollable {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.right-tab-strip button {
+  min-width: 0 !important;
+  min-height: 44px !important;
+  padding: 8px 6px !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(255,255,255,.07) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #9ba8ad !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  letter-spacing: .02em;
+  text-align: center !important;
+}
+
+.right-tab-strip button:last-child {
+  border-right: 0 !important;
+}
+
+.right-tab-strip.primary button.active {
+  color: #f3fbff !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46,233,255,.20), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.025)) !important;
+  box-shadow: inset 0 -2px 0 rgba(46,233,255,.75);
+}
+
+.right-tab-strip.secondary button {
+  min-height: 38px !important;
+  font-size: 11px !important;
+}
+
+.right-tab-strip.secondary button.active {
+  color: #c9fbff !important;
+  background: rgba(46,233,255,.10) !important;
+  box-shadow: inset 0 -2px 0 rgba(46,233,255,.55);
+}
+
+.right-tab-strip.secondary.scrollable button {
+  flex: 0 0 auto;
+  min-width: 72px !important;
+}
+
+.right-tab-page {
+  height: calc(100% - 45px);
+  overflow: auto;
+  padding: 10px 8px 12px !important;
+}
+
+/* In tabbed mode sections should feel like inspector groups, not separate giant accordions. */
+.sidebar-right-tabs .section {
+  margin: 0 0 8px !important;
+  border-radius: 10px !important;
+  background: rgba(255,255,255,.030) !important;
+  border-color: rgba(255,255,255,.075) !important;
+}
+
+.sidebar-right-tabs .section-title {
+  min-height: 20px !important;
+  margin-bottom: 8px !important;
+  font-size: 10.5px !important;
+  letter-spacing: .15em !important;
+}
+
+.sidebar-right-tabs .section.collapsed {
+  display: none !important;
+}
+
+/* Tabbed right sidebar has its own scroll; avoid nested awkward edge gutters. */
+.sidebar-right-tabs::-webkit-scrollbar,
+.right-tab-page::-webkit-scrollbar,
+.right-tab-strip.secondary.scrollable::-webkit-scrollbar {
+  width: 8px;
+  height: 6px;
+}
+.sidebar-right-tabs::-webkit-scrollbar-thumb,
+.right-tab-page::-webkit-scrollbar-thumb,
+.right-tab-strip.secondary.scrollable::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.18);
+  border-radius: 999px;
+}
+
+@media (max-width: 860px) {
+  .right-tab-strip.primary button {
+    min-height: 40px !important;
+    font-size: 11px !important;
+  }
+  .right-tab-page {
+    height: calc(100% - 41px);
+  }
+}
+
+
+/* v151 Photoshop-like collapsible inspector rail beside right sidebar */
+.inspector-rail {
+  position: absolute;
+  top: 68px;
+  z-index: 1360;
+  display: grid;
+  gap: 6px;
+  width: 42px;
+  padding: 6px;
+  border-radius: 16px;
+  background: rgba(4,10,14,.70);
+  border: 1px solid rgba(46,233,255,.16);
+  box-shadow: 0 18px 45px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.045);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: right 160ms ease;
+}
+.inspector-rail > button {
+  width: 30px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  border-radius: 10px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 14px !important;
+  color: #a9c0c7 !important;
+}
+.inspector-rail > button.active {
+  color: #dffcff !important;
+  border-color: rgba(46,233,255,.52) !important;
+  background: rgba(46,233,255,.12) !important;
+  box-shadow: 0 0 18px rgba(46,233,255,.12);
+}
+.inspector-rail-popover {
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 0;
+  width: 238px;
+  padding: 10px;
+  border-radius: 16px;
+  background: rgba(8,12,16,.94);
+  border: 1px solid rgba(46,233,255,.20);
+  box-shadow: 0 24px 70px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.inspector-rail-popover.wide {
+  width: 282px;
+}
+.rail-popover-title {
+  color: #b9f6ff;
+  font-size: 10px;
+  font-weight: 1000;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.rail-segment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 6px;
+}
+.rail-segment-grid.two + .rail-segment-grid.two {
+  margin-top: 8px;
+}
+.rail-segment-grid button,
+.rail-preset-row button {
+  min-height: 32px !important;
+  padding: 5px 8px !important;
+  border-radius: 10px !important;
+  font-size: 11px !important;
+  text-transform: capitalize;
+}
+.rail-segment-grid button.active,
+.rail-preset-row button.active {
+  color: #dffcff !important;
+  border-color: rgba(46,233,255,.50) !important;
+  background: rgba(46,233,255,.12) !important;
+}
+.rail-preset-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.rail-layer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 6px;
+}
+.rail-layer-grid label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 5px 7px;
+  border-radius: 10px;
+  color: #91a9b1;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.06);
+  font-size: 11px;
+}
+.rail-layer-grid label.on {
+  color: #dffcff;
+  border-color: rgba(46,233,255,.24);
+}
+.rail-layer-grid input {
+  margin: 0;
+}
+.canvas-mode-switch,
+.canvas-layer-panel {
+  display: none !important;
+}
+@media (max-width: 860px) {
+  .inspector-rail {
+    display: none !important;
+  }
+}
+
+
+/* v152 right inspector polish: closer rail, compact tabs, better bottom HUD spacing */
+.inspector-rail {
+  top: 112px !important;
+  width: 36px !important;
+  padding: 5px !important;
+  border-radius: 14px !important;
+}
+.inspector-rail > button {
+  width: 26px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  border-radius: 9px !important;
+  font-size: 12px !important;
+}
+.inspector-rail-popover {
+  right: calc(100% + 6px) !important;
+}
+.right-tab-strip.primary {
+  grid-template-columns: .9fr .95fr .9fr .9fr !important;
+}
+.right-tab-strip.primary button {
+  min-height: 40px !important;
+  padding: 7px 4px !important;
+  font-size: 11px !important;
+  letter-spacing: .01em !important;
+}
+.right-tab-strip.secondary {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+.right-tab-strip.secondary button {
+  min-width: 0 !important;
+  font-size: 11px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* selected coords must be directly above cursor coords */
+.selection-info-strip {
+  right: 12px !important;
+  bottom: 50px !important;
+  left: auto !important;
+  transform: none !important;
+  max-width: 300px !important;
+}
+
+/* actions shift right enough to avoid DFM overlap */
+.selection-action-toolbar {
+  left: calc(50% + 92px) !important;
+  bottom: 10px !important;
+  max-width: min(690px, calc(100vw - 650px)) !important;
+}
+.dfm-status-float {
+  bottom: 10px !important;
+  max-width: 470px !important;
+}
+.coord-readout {
+  right: 12px !important;
+  bottom: 10px !important;
+}
+@media (max-width: 1400px) {
+  .selection-action-toolbar {
+    left: calc(50% + 140px) !important;
+    max-width: min(650px, calc(100vw - 570px)) !important;
+  }
+  .dfm-status-float {
+    max-width: 430px !important;
+  }
+}
+@media (max-width: 1180px) {
+  .selection-action-toolbar {
+    left: 390px !important;
+    right: 12px !important;
+    transform: none !important;
+    max-width: none !important;
+    overflow-x: auto !important;
+  }
+  .dfm-status-float {
+    max-width: 360px !important;
+  }
+}
+@media (max-width: 980px) {
+  .selection-action-toolbar {
+    left: 12px !important;
+  }
+}
+
+
+/* v153 inspector rail closeness + remove Top HW duplicate controls */
+.inspector-rail {
+  right: 278px !important;
+  transform: translateX(-10px);
+}
+.inspector-rail-popover {
+  right: auto !important;
+  left: calc(100% + 6px) !important;
+  top: 0 !important;
+}
+.inspector-rail-popover.compact {
+  width: 210px !important;
+}
+.rail-segment-grid.two + .rail-segment-grid.two {
+  margin-top: 0 !important;
+}
+@media (max-width: 860px) {
+  .inspector-rail {
+    display: none !important;
+  }
+}
+
+
+/* v154 inspector rail sits directly next to the right sidebar */
+.inspector-rail {
+  right: 8px !important;
+  transform: none !important;
+}
+.inspector-rail-popover {
+  right: auto !important;
+  left: calc(100% + 6px) !important;
+}
+
+
+/* v155 keep selected component coords aligned above cursor coords, not over right sidebar */
+.selection-info-strip.right-panel-open {
+  right: calc(276px + 12px) !important;
+  bottom: 50px !important;
+}
+@media (max-width: 1280px) {
+  .selection-info-strip.right-panel-open {
+    right: calc(276px + 12px) !important;
+  }
+}
+@media (max-width: 860px) {
+  .selection-info-strip.right-panel-open {
+    right: 12px !important;
+  }
+}
+
+
+/* v156 inspector rail popovers open left, away from right sidebar */
+.inspector-rail-popover {
+  left: auto !important;
+  right: calc(100% + 6px) !important;
+}
+
+
+/* v157 fix collapsed tab sections + raise inspector rail */
+.sidebar-right-tabs .section.collapsed {
+  display: block !important;
+}
+
+.sidebar-right-tabs .section.collapsed > *:not(.section-title) {
+  display: none !important;
+}
+
+.sidebar-right-tabs .section.collapsed .section-title {
+  margin-bottom: 0 !important;
+}
+
+.inspector-rail {
+  top: 84px !important;
+}
+
+
+/* v158 compact non-overlapping bottom HUD */
+.selection-measure-float {
+  display: none !important;
+}
+
+/* bottom left: compact DFM */
+.dfm-status-float {
+  left: 10px !important;
+  bottom: 10px !important;
+  max-width: 390px !important;
+  min-width: 0 !important;
+}
+.dfm-status-main {
+  min-height: 32px !important;
+  padding: 5px 9px !important;
+  gap: 5px !important;
+}
+.dfm-status-main strong,
+.dfm-status-main span {
+  font-size: 11px !important;
+}
+
+/* bottom center: action bar, shorter labels, never full-width */
+.selection-action-toolbar {
+  left: 50% !important;
+  bottom: 10px !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  max-width: min(760px, calc(100vw - 900px)) !important;
+  padding: 6px !important;
+  gap: 5px !important;
+  border-radius: 16px !important;
+  overflow-x: auto !important;
+}
+.selection-action-toolbar span {
+  font-size: 11px !important;
+  padding: 0 5px !important;
+}
+.selection-action-toolbar button {
+  min-height: 31px !important;
+  padding: 5px 9px !important;
+  font-size: 11px !important;
+  border-radius: 11px !important;
+}
+
+/* bottom right: cursor coords */
+.coord-readout {
+  right: 10px !important;
+  bottom: 10px !important;
+  min-height: 32px !important;
+  padding: 5px 10px !important;
+  font-size: 11px !important;
+}
+
+/* selected coords: directly above cursor, compact and not gigantic */
+.selection-info-strip,
+.selection-info-strip.right-panel-open {
+  right: 10px !important;
+  bottom: 50px !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  max-width: 360px !important;
+  min-height: 31px !important;
+  padding: 5px 10px !important;
+  gap: 7px !important;
+  font-size: 11px !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+}
+.selection-info-strip strong {
+  max-width: 72px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.selection-info-strip span {
+  font-size: 11px !important;
+}
+
+/* Large desktops with sidebars: reserve fixed lanes */
+@media (min-width: 1500px) {
+  .selection-action-toolbar {
+    max-width: 720px !important;
+  }
+}
+
+/* Medium desktops: keep toolbar between left DFM and right coords */
+@media (max-width: 1499px) {
+  .dfm-status-float {
+    max-width: 330px !important;
+  }
+  .selection-action-toolbar {
+    left: 50% !important;
+    max-width: min(620px, calc(100vw - 720px)) !important;
+  }
+  .selection-action-toolbar button {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  .selection-info-strip,
+  .selection-info-strip.right-panel-open {
+    max-width: 310px !important;
+  }
+}
+
+/* Smaller layouts: action bar gets its own row, DFM hides to avoid collision */
+@media (max-width: 1180px) {
+  .dfm-status-float {
+    display: none !important;
+  }
+  .selection-action-toolbar {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 10px !important;
+    transform: none !important;
+    max-width: none !important;
+    justify-content: flex-start !important;
+  }
+  .selection-info-strip,
+  .selection-info-strip.right-panel-open {
+    right: 12px !important;
+    bottom: 52px !important;
+  }
+}
+
+
+/* v161 one unified selection info HUD, anchored to canvas like cursor coords */
+.selection-measure-float {
+  display: none !important;
+}
+
+.selection-info-strip,
+.selection-info-strip.right-panel-open {
+  position: absolute !important;
+  right: 10px !important;
+  bottom: 50px !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  z-index: 1325 !important;
+  display: flex !important;
+  align-items: center !important;
+  min-height: 31px !important;
+  max-width: min(420px, calc(100vw - 24px)) !important;
+  padding: 5px 10px !important;
+  gap: 7px !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  pointer-events: auto !important;
+}
+
+.selection-info-strip strong {
+  max-width: 92px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  flex: 0 1 auto !important;
+}
+
+.selection-info-strip span {
+  font-size: 11px !important;
+  flex: 0 0 auto !important;
+}
+
+.coord-readout {
+  right: 10px !important;
+  bottom: 10px !important;
+}
+
+/* Desktop with right sidebar: these HUDs live inside the canvas area, so do NOT offset them by sidebar width. */
+@media (min-width: 861px) {
+  .selection-info-strip,
+  .selection-info-strip.right-panel-open {
+    right: 10px !important;
+    bottom: 50px !important;
+  }
+}
+
+/* Narrow layouts: keep one line above action bar. */
+@media (max-width: 1180px) {
+  .selection-info-strip,
+  .selection-info-strip.right-panel-open {
+    right: 12px !important;
+    bottom: 52px !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+}
+
+
+/* v162 move selection HUD into SVGCanvas so it anchors to canvas, not the app/right sidebar */
+.canvas-wrap > .selection-info-strip {
+  position: absolute !important;
+  right: 10px !important;
+  bottom: 50px !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  z-index: 1325 !important;
+}
+
+.canvas-wrap > .coord-readout {
+  right: 10px !important;
+  bottom: 10px !important;
+}
+
+@media (max-width: 860px) {
+  .canvas-wrap > .selection-info-strip {
+    display: none !important;
+  }
+}
+
+
+/* v167 fix Component Library filter select text overlapping the dropdown chevron */
+.library-filter-row select,
+.component-library select,
+.sidebar-left select {
+  padding-right: 34px !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.library-filter-row {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 8px !important;
+}
+
+.library-filter-row select {
+  min-width: 0 !important;
+}
+
 </style>
 </head>
 <body>
@@ -4368,13 +7077,14 @@ function LibraryPartPreview({ def }: { def: ComponentDef }) {
         </g>
       ) : isJackLike(c) ? (
         <g>
-          <circle cx={cx} cy={cy} r={Math.max(4, c.frontDiameter/2)} fill="#cfd5d8" stroke="#1b1f22" strokeWidth=".45" />
-          <circle cx={cx} cy={cy} r={Math.max(2.2, c.holeDiameter*0.42)} fill="#050505" stroke="rgba(255,255,255,.45)" strokeWidth=".25" />
-          <circle cx={cx - 1.4} cy={cy - 1.4} r={Math.max(.8, c.frontDiameter*.08)} fill="rgba(255,255,255,.48)" />
+          <circle cx={cx} cy={cy} r={Math.max(4, c.frontDiameter*0.44)} fill="#1a1d20" stroke="#050505" strokeWidth=".32" />
+          <circle cx={cx} cy={cy} r={Math.max(2.7, c.frontDiameter*0.30)} fill="#8e969c" stroke="rgba(255,255,255,.20)" strokeWidth=".12" />
+          <circle cx={cx} cy={cy} r={Math.max(2.0, c.holeDiameter*0.32)} fill="#050505" stroke="rgba(255,255,255,.25)" strokeWidth=".16" />
+          <circle cx={cx - 1.2} cy={cy - 1.2} r={Math.max(.65, c.frontDiameter*.055)} fill="rgba(255,255,255,.34)" />
         </g>
       ) : isPotLike(c) || c.category === 'encoder' ? (
         <g>
-          <circle cx={cx} cy={cy} r={Math.max(5, visualKnobDiameter(c)/2)} fill="#101010" stroke="rgba(255,255,255,.62)" strokeWidth=".42" />
+          <circle cx={cx} cy={cy} r={Math.max(5, visualKnobDiameter(c)/2)} fill="#101010" stroke="none" strokeWidth="0" />
           <circle cx={cx} cy={cy} r={Math.max(4, visualKnobDiameter(c)*0.38)} fill="#1d1d1d" stroke="rgba(255,255,255,.18)" strokeWidth=".25" />
           <line x1={cx} y1={cy} x2={cx} y2={cy - Math.max(3.5, visualKnobDiameter(c)*0.32)} stroke="#f2f2ee" strokeWidth=".85" strokeLinecap="round" />
         </g>
@@ -4438,6 +7148,39 @@ function sortComponentDefs<T extends ComponentDef>(parts: T[]): T[] {
 }
 
 
+const UX_RECENT_PARTS_KEY = 'eurorack-panel-designer-recent-parts-v1';
+const UX_FAVORITE_PARTS_KEY = 'eurorack-panel-designer-favorite-parts-v1';
+
+function partStableKey(def: ComponentDef): string {
+  return `${def.type}|${def.name}|${def.manufacturer || ''}|${def.partNumber || ''}`;
+}
+
+function readStringListStorage(key: string): string[] {
+  try {
+    const raw = localStorage.getItem(key);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.filter(x => typeof x === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeStringListStorage(key: string, items: string[]) {
+  try { localStorage.setItem(key, JSON.stringify(items.slice(0, 32))); } catch {}
+}
+
+function rememberRecentPart(def: ComponentDef) {
+  const key = partStableKey(def);
+  const next = [key, ...readStringListStorage(UX_RECENT_PARTS_KEY).filter(k => k !== key)].slice(0, 8);
+  writeStringListStorage(UX_RECENT_PARTS_KEY, next);
+}
+
+function sendPartPlacementEvent(def: ComponentDef, stamp = false) {
+  rememberRecentPart(def);
+  window.dispatchEvent(new CustomEvent('start-part-placement', { detail: { def, stamp } }));
+}
+
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // PURE HELPERS
@@ -4497,10 +7240,10 @@ function defaultMountingHoleConfig(widthMM: number): MountingHoleConfig {
     enabled: true,
     showKeepouts: true,
     keepoutRadius: 1.0,
-    holeShape: 'circle',
+    holeShape: 'oval',
     ovalLength: 4.8,
-    preset: 'four',
-    holes: mountingHolesForPreset(widthMM, 'four'),
+    preset: 'fourOval',
+    holes: mountingHolesForPreset(widthMM, 'fourOval'),
   };
 }
 
@@ -6189,13 +8932,13 @@ function ergonomicDiameter(c: ComponentDef): number {
   return 0;
 }
 
-const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, dragPreview, viewMode, style, renderMode, performanceMode, zoom }: { components: PlacedComponent[]; dragPreview: Map<string, { x: number; y: number }> | null; viewMode: ViewMode; style: TopHardwareStyle; renderMode: HardwareRenderMode; performanceMode: boolean; zoom: number }) {
+const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, dragPreview, viewMode, style, renderMode, performanceMode, zoom, dragPerfMode = false }: { components: PlacedComponent[]; dragPreview: Map<string, { x: number; y: number }> | null; viewMode: ViewMode; style: TopHardwareStyle; renderMode: HardwareRenderMode; performanceMode: boolean; zoom: number; dragPerfMode?: boolean }) {
   if (viewMode === 'rear' || viewMode === 'drill' || renderMode === 'off') return null;
   const isRealtime = !!dragPreview;
   const autoSimple = renderMode === 'auto' && (isRealtime || (performanceMode && zoom < 0.9));
   const effectiveStyle: TopHardwareStyle = renderMode === 'realistic' ? 'realistic' : renderMode === 'classic' ? 'classic' : (autoSimple ? 'classic' : style);
   const realistic = effectiveStyle === 'realistic';
-  return <g style={{ pointerEvents: 'none' }}>{components.filter(topHardwareVisible).map(c => {
+  return <g style={{ pointerEvents: 'none' }}>{components.filter(c => topHardwareVisible(c) && !(dragPerfMode && dragPreview?.has(c.id))).map(c => {
     const preview = dragPreview?.get(c.id);
     const cx = preview?.x ?? c.x;
     const cy = preview?.y ?? c.y;
@@ -6206,7 +8949,7 @@ const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, drag
       if (isPotLike(c)) {
         const d = visualKnobDiameter(c);
         return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
-          <circle cx={cx} cy={cy} r={d/2} fill={color} stroke="rgba(255,255,255,0.28)" strokeWidth={0.28}/>
+          <circle cx={cx} cy={cy} r={d/2} fill={color} stroke="none" strokeWidth={0}/>
           <line x1={cx} y1={cy} x2={cx} y2={cy-d*0.36} stroke="rgba(255,255,255,0.62)" strokeWidth={0.35} strokeLinecap="round"/>
         </g>;
       }
@@ -6220,8 +8963,9 @@ const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, drag
       if (isJackLike(c)) {
         const outer = Math.max(c.frontDiameter, 8) / 2;
         return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
-          <circle cx={cx} cy={cy} r={outer} fill={color} stroke="rgba(255,255,255,0.25)" strokeWidth={0.25}/>
-          <circle cx={cx} cy={cy} r={Math.max(1.5, c.holeDiameter*0.32)} fill="#050505"/>
+          <circle cx={cx} cy={cy} r={outer*0.92} fill={color} stroke="rgba(0,0,0,0.65)" strokeWidth={0.22}/>
+          <circle cx={cx} cy={cy} r={outer*0.58} fill="#111" stroke="rgba(255,255,255,0.22)" strokeWidth={0.12}/>
+          <circle cx={cx} cy={cy} r={Math.max(1.5, c.holeDiameter*0.30)} fill="#050505"/>
         </g>;
       }
       if (isButtonLike(c) || isLedLike(c)) {
@@ -6275,7 +9019,7 @@ const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, drag
       }
       const pointerLen = r * 0.76;
       return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
-        <circle cx={cx} cy={cy} r={r + 0.85} fill="#050505" stroke="#f6f6f2" strokeWidth={0.22}/>
+        <circle cx={cx} cy={cy} r={r + 0.85} fill="#050505" stroke="none" strokeWidth={0}/>
         <circle cx={cx} cy={cy} r={r + 0.25} fill="#111" stroke="#2b2b2b" strokeWidth={0.42}/>
         <circle cx={cx} cy={cy} r={r * 0.82} fill="#1a1a1a" stroke="#3f3f3f" strokeWidth={0.18}/>
         <circle cx={cx-r*0.28} cy={cy-r*0.36} r={r*0.32} fill="rgba(255,255,255,0.34)" stroke="none"/>
@@ -6315,13 +9059,18 @@ const TopHardwareLayer = React.memo(function TopHardwareLayer({ components, drag
     }
     if (isJackLike(c)) {
       const outer = Math.max(c.frontDiameter, 8) / 2;
-      const hole = Math.max(1.45, c.holeDiameter * 0.34);
+      const rimOuter = outer * 0.92;
+      const metalRing = outer * 0.72;
+      const innerBevel = outer * 0.56;
+      const hole = Math.max(1.65, c.holeDiameter * 0.30);
       return <g key={c.id} data-top-hardware-id={c.id} opacity={hwOpacity}>
-        <circle cx={cx} cy={cy} r={outer+0.65} fill="#f3f3ee" stroke="#080808" strokeWidth={0.18}/>
-        <circle cx={cx} cy={cy} r={outer+0.25} fill="#9ca2a8" stroke="#ffffff" strokeWidth={0.18}/>
-        <circle cx={cx} cy={cy} r={outer*0.78} fill="#22262b" stroke="#f2f2ee" strokeWidth={0.18}/>
-        <circle cx={cx} cy={cy} r={hole} fill="#020202" stroke="#8b8f94" strokeWidth={0.18}/>
-        <path d={`M ${cx-outer*0.55} ${cy-outer*0.35} C ${cx-outer*0.25} ${cy-outer*0.75}, ${cx+outer*0.45} ${cy-outer*0.55}, ${cx+outer*0.62} ${cy-outer*0.16}`} fill="none" stroke="rgba(255,255,255,0.72)" strokeWidth={0.22} strokeLinecap="round"/>
+        {/* Realistic jack: thinner skirt, darker metal, deep socket. */}
+        <circle cx={cx} cy={cy} r={rimOuter} fill="#16191b" stroke="#030303" strokeWidth={0.22}/>
+        <circle cx={cx} cy={cy} r={metalRing} fill="#a2a8ad" stroke="rgba(255,255,255,0.20)" strokeWidth={0.10}/>
+        <circle cx={cx} cy={cy} r={metalRing*0.88} fill="#252a2e" stroke="rgba(0,0,0,0.72)" strokeWidth={0.16}/>
+        <circle cx={cx} cy={cy} r={innerBevel} fill="#070808" stroke="rgba(210,220,225,0.42)" strokeWidth={0.18}/>
+        <circle cx={cx} cy={cy} r={hole} fill="#000" stroke="rgba(255,255,255,0.22)" strokeWidth={0.10}/>
+        <path d={`M ${cx-metalRing*0.52} ${cy-metalRing*0.35} C ${cx-metalRing*0.28} ${cy-metalRing*0.68}, ${cx+metalRing*0.34} ${cy-metalRing*0.58}, ${cx+metalRing*0.54} ${cy-metalRing*0.18}`} fill="none" stroke="rgba(255,255,255,0.34)" strokeWidth={0.15} strokeLinecap="round"/>
       </g>;
     }
     if (c.type === 'tactled') {
@@ -6469,9 +9218,10 @@ interface ComponentsLayerProps {
   viewMode: ViewMode;
   warnings: CollisionWarning[];
   layers: LayerVisibility;
+  dragPerfMode?: boolean;
 }
 
-const ComponentsLayer = React.memo(function ComponentsLayer({ components, selectedIdSet, dragPreview, rotationPreview, viewMode, warnings, layers }: ComponentsLayerProps) {
+const ComponentsLayer = React.memo(function ComponentsLayer({ components, selectedIdSet, dragPreview, rotationPreview, viewMode, warnings, layers, dragPerfMode = false }: ComponentsLayerProps) {
   const warnIds = useMemo(() => new Set(warnings.flatMap(w => w.ids)), [warnings]);
   const errorIds = useMemo(() => new Set(warnings.filter(w => w.severity === 'error').flatMap(w => w.ids)), [warnings]);
 
@@ -6484,6 +9234,8 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
         const preview = dragPreview?.get(c.id);
         const cx = preview?.x ?? c.x;
         const cy = preview?.y ?? c.y;
+        const isDraggedPreview = !!preview;
+        const useCheapDragShape = dragPerfMode && isDraggedPreview;
 
         const isSel  = selectedIdSet.has(c.id);
         const isErr  = errorIds.has(c.id);
@@ -6501,8 +9253,32 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
               return <rect x={cx - w/2} y={cy - h/2} width={w} height={h} fill="transparent" stroke="none" pointerEvents="all" />;
             })()}
 
+            {useCheapDragShape && (
+              <g transform={`rotate(${c.rotation}, ${cx}, ${cy})`} style={{ pointerEvents: 'none' }}>
+                {getFrontShape(c) !== 'circle'
+                  ? <rect
+                      x={cx - getFrontBounds(c).w / 2} y={cy - getFrontBounds(c).h / 2}
+                      width={getFrontBounds(c).w} height={getFrontBounds(c).h}
+                      rx={1.2}
+                      fill="rgba(46,233,255,0.08)"
+                      stroke="#2ee9ff"
+                      strokeWidth={0.34}
+                      strokeDasharray="1.2 0.7"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  : <circle
+                      cx={cx} cy={cy} r={Math.max(c.frontDiameter / 2, c.holeDiameter / 2)}
+                      fill="rgba(46,233,255,0.08)"
+                      stroke="#2ee9ff"
+                      strokeWidth={0.34}
+                      strokeDasharray="1.2 0.7"
+                      vectorEffect="non-scaling-stroke"
+                    />}
+              </g>
+            )}
+
             {/* Rear keepout zone — rear and combined views */}
-            {layers.rearKeepouts && (viewMode === 'rear' || viewMode === 'combined') && c.keepoutW > 0 && (
+            {!useCheapDragShape && layers.rearKeepouts && (viewMode === 'rear' || viewMode === 'combined') && c.keepoutW > 0 && (
               <g transform={`rotate(${c.rotation}, ${cx}, ${cy})`}>
                 <rect
                   x={cx - c.keepoutW / 2} y={cy - c.keepoutH / 2}
@@ -6515,7 +9291,7 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Rear body — rear and combined views */}
-            {layers.rearBodies && (viewMode === 'rear' || viewMode === 'combined') && c.rearBodyW > 0 && (
+            {!useCheapDragShape && layers.rearBodies && (viewMode === 'rear' || viewMode === 'combined') && c.rearBodyW > 0 && (
               <g transform={`rotate(${c.rotation}, ${cx}, ${cy})`}>
                 <rect
                   x={cx - c.rearBodyW / 2} y={cy - c.rearBodyH / 2}
@@ -6528,7 +9304,7 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Front face — circle for normal components, rect for faders */}
-            {layers.frontShapes && (viewMode === 'front' || viewMode === 'combined') && (
+            {!useCheapDragShape && layers.frontShapes && (viewMode === 'front' || viewMode === 'combined') && (
               getFrontShape(c) !== 'circle'
                 ? (isFaderLike(c) ? null : (
                   <g transform={`rotate(${c.rotation}, ${cx}, ${cy})`}>
@@ -6551,7 +9327,7 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Knob ergonomic diameter — front and combined views */}
-            {layers.frontShapes && (viewMode === 'front' || viewMode === 'combined') && c.knobEnabled && c.knobDiameter && (
+            {!useCheapDragShape && layers.frontShapes && (viewMode === 'front' || viewMode === 'combined') && c.knobEnabled && c.knobDiameter && (
               <circle cx={cx} cy={cy} r={c.knobDiameter / 2}
                 fill="none"
                 stroke={isErr ? '#ff3333' : '#607060'}
@@ -6561,7 +9337,7 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Drill hole — circle or slot (slot respects rotation) */}
-            {layers.componentHoles && (viewMode === 'front' || viewMode === 'combined' || viewMode === 'drill') && (
+            {!useCheapDragShape && layers.componentHoles && (viewMode === 'front' || viewMode === 'combined' || viewMode === 'drill') && (
               c.holeType === 'slot'
                 ? (
                   <g transform={`rotate(${c.rotation}, ${cx}, ${cy})`}>
@@ -6591,7 +9367,7 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Coordinate label — drill view only */}
-            {viewMode === 'drill' && (
+            {!useCheapDragShape && viewMode === 'drill' && (
               <text x={cx} y={cy - (c.holeType === 'slot' ? (c.slotLength ?? c.holeDiameter) / 2 : c.holeType === 'rect' ? (c.holeH ?? c.frontH ?? c.holeDiameter) / 2 : c.holeDiameter / 2) - 1}
                 textAnchor="middle" fontSize={1.8} fill="#aaa">
                 {cx.toFixed(1)},{cy.toFixed(1)}
@@ -6599,7 +9375,7 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Component label — front and combined views */}
-            {layers.labels && (viewMode === 'front' || viewMode === 'combined') && c.label && (
+            {!useCheapDragShape && layers.labels && (viewMode === 'front' || viewMode === 'combined') && c.label && (
               <text x={cx} y={cy + getFrontBottomOffset(c) + 2.5}
                 textAnchor="middle" fontSize={2} fill={isErr ? '#ff9a9a' : '#d6d9dc'} stroke="rgba(0,0,0,0.55)" strokeWidth={0.35} paintOrder="stroke fill">
                 {c.label}
@@ -6607,7 +9383,7 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Rear label — rear view */}
-            {layers.labels && viewMode === 'rear' && (
+            {!useCheapDragShape && layers.labels && viewMode === 'rear' && (
               <text x={cx} y={cy + 0.8} textAnchor="middle" fontSize={2} fill="#888">
                 {c.label || c.name}
               </text>
@@ -6866,6 +9642,26 @@ function ComponentHoverTooltip({ component, warnings, x, y }: { component: Place
   );
 }
 
+
+function SelectionActionToolbar() {
+  const state = useAppState();
+  const dispatch = useAppDispatch();
+  const count = state.selected.length;
+  if (count === 0) return null;
+  return (
+    <div className="selection-action-toolbar" onMouseDown={e => e.stopPropagation()} onWheel={e => e.stopPropagation()}>
+      <span>{count} selected</span>
+      <button title="Duplicate selected" onClick={() => dispatch({ type: 'DUPLICATE_SELECTED' })}>Dup</button>
+      <button title="Align center X" disabled={count < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'centerH' })}>C-X</button>
+      <button title="Align center Y" disabled={count < 2} onClick={() => dispatch({ type: 'ALIGN', axis: 'centerV' })}>C-Y</button>
+      <button title="Distribute horizontally" disabled={count < 3} onClick={() => dispatch({ type: 'DISTRIBUTE', axis: 'h' })}>Dist-H</button>
+      <button title="Distribute vertically" disabled={count < 3} onClick={() => dispatch({ type: 'DISTRIBUTE', axis: 'v' })}>Dist-V</button>
+      <button title="Rotate 90°" onClick={() => dispatch({ type: 'ROTATE_SELECTED', degrees: 90 })}>Rot</button>
+      <button title="Delete selected" className="danger" onClick={() => dispatch({ type: 'DELETE_SELECTED' })}>Delete</button>
+    </div>
+  );
+}
+
 function SnapFeedbackBadge({ guides }: { guides: SnapGuide[] }) {
   if (!guides.length) return null;
   const labels = Array.from(new Set(guides.map(g => g.label))).slice(0, 2);
@@ -6897,7 +9693,7 @@ function CanvasLayerPanel() {
       <div className="hardware-style-mini">
         <span>Top HW</span>
         <button className={state.topHardwareStyle === 'classic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'classic' })}>Classic</button>
-        <button className={state.topHardwareStyle === 'realistic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'realistic' })}>Boutique</button>
+        <button className={state.topHardwareStyle === 'realistic' ? 'active' : ''} onClick={() => dispatch({ type:'SET_TOP_HARDWARE_STYLE', style:'realistic' })}>Realistic</button>
       </div>
       {open && <div className="layer-panel-body">
         <div className="layer-preset-row">
@@ -6915,6 +9711,73 @@ function CanvasLayerPanel() {
           ))}
         </div>
       </div>}
+    </div>
+  );
+}
+
+
+function InspectorRail({ rightPanelOpen }: { rightPanelOpen: boolean }) {
+  const state = useAppState();
+  const dispatch = useAppDispatch();
+  const [openPanel, setOpenPanel] = useState<'view' | 'layers' | 'hardware' | null>(null);
+  const modes: ViewMode[] = ['front', 'rear', 'drill', 'combined'];
+  const labels: [keyof LayerVisibility, string][] = [
+    ['grid','Grid'], ['componentHoles','Holes'], ['frontShapes','Front'], ['topHardware','Hardware'],
+    ['rearBodies','Bodies'], ['rearKeepouts','Keepouts'], ['pcb','PCB'], ['text','Text'], ['artwork','Art'], ['labels','Labels']
+  ];
+  const railRight = rightPanelOpen ? 8 : 12;
+  const toggle = (panel: 'view' | 'layers' | 'hardware') => setOpenPanel(v => v === panel ? null : panel);
+  return (
+    <div className="inspector-rail" style={{ right: railRight }} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
+      <button className={openPanel === 'view' ? 'active' : ''} title="View mode" onClick={() => toggle('view')}>▣</button>
+      <button className={openPanel === 'layers' ? 'active' : ''} title="Layers" onClick={() => toggle('layers')}>☷</button>
+      <button className={openPanel === 'hardware' ? 'active' : ''} title="Top hardware" onClick={() => toggle('hardware')}>◉</button>
+
+      {openPanel === 'view' && (
+        <div className="inspector-rail-popover">
+          <div className="rail-popover-title">View</div>
+          <div className="rail-segment-grid">
+            {modes.map(m => (
+              <button key={m} className={state.viewMode === m ? 'active' : ''} onClick={() => dispatch({ type:'SET_VIEW_MODE', mode:m })}>
+                {m}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {openPanel === 'layers' && (
+        <div className="inspector-rail-popover wide">
+          <div className="rail-popover-title">Layers</div>
+          <div className="rail-preset-row">
+            <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button>
+            <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mech</button>
+            <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Prod</button>
+            <button onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>All</button>
+          </div>
+          <div className="rail-layer-grid">
+            {labels.map(([k,label]) => (
+              <label key={k} className={state.layerVisibility[k] ? 'on' : ''}>
+                <input type="checkbox" checked={state.layerVisibility[k]} onChange={e => dispatch({ type:'SET_LAYER_VISIBILITY', key:k, value:e.target.checked })} />
+                <span>{label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {openPanel === 'hardware' && (
+        <div className="inspector-rail-popover compact">
+          <div className="rail-popover-title">Render mode</div>
+          <div className="rail-segment-grid two">
+            {(['auto','classic','realistic','off'] as HardwareRenderMode[]).map(mode => (
+              <button key={mode} className={(state.hardwareRenderMode || 'auto') === mode ? 'active' : ''} onClick={() => dispatch({ type:'SET_HARDWARE_RENDER_MODE', mode })}>
+                {mode === 'realistic' ? 'Realistic' : mode}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -7046,6 +9909,14 @@ interface SVGCanvasProps {
   onWrapMouseDown:(e: React.MouseEvent<HTMLDivElement>) => void;
   coordReadout: string;
   warnings: CollisionWarning[];
+  autosaveSummary?: { label: string; sizeLabel: string } | null;
+  recentProjects?: LocalProjectRecord[];
+  onRestoreAutosave?: () => void;
+  onOpenProjectFile?: () => void;
+  onOpenRecentProjects?: () => void;
+  pendingAddPart?: { def: ComponentDef; stamp: boolean } | null;
+  pendingAddPreview?: { x: number; y: number } | null;
+  rightPanelOpen?: boolean;
 }
 
 function SVGCanvas({
@@ -7054,16 +9925,18 @@ function SVGCanvas({
   onSVGTouchStart, onSVGTouchMove, onSVGTouchEnd, onSVGContextMenu,
   onWheel, onWrapMouseDown,
   coordReadout, warnings,
+  autosaveSummary, recentProjects = [], onRestoreAutosave, onOpenProjectFile, onOpenRecentProjects, pendingAddPart = null, pendingAddPreview = null, rightPanelOpen = false,
 }: SVGCanvasProps) {
   const state    = useAppState();
   const dispatch = useAppDispatch();
   const widthMM  = panelWidthMM(state.panel);
   const heightMM = PANEL_HEIGHT_MM;
-  const PAD = 10;
+  const PAD = 180;
   const selectedIdSet = useMemo(() => new Set(state.selected), [state.selected]);
   const [hoverTip, setHoverTip] = useState<{ id: string; x: number; y: number } | null>(null);
   const hoverTipRef = useRef<{ id: string; x: number; y: number } | null>(null);
   hoverTipRef.current = hoverTip;
+  const [starterDismissed, setStarterDismissed] = useState(false);
   const lop = (k: keyof LayerVisibility) => state.layerOpacity?.[k] ?? 1;
 
   function updateHoverTip(e: React.MouseEvent<SVGSVGElement>) {
@@ -7090,6 +9963,29 @@ function SVGCanvas({
   }
 
   const hoveredComponent = hoverTip ? state.components.find(c => c.id === hoverTip.id) : undefined;
+  const hasUserContent = state.components.length > 0 || state.artworks.length > 0 || state.textItems.length > 0;
+  const canvasIsEmpty = !starterDismissed && !hasUserContent;
+  const [starterHP, setStarterHP] = useState<number>(8);
+  const [starterMode, setStarterMode] = useState<HardwareRenderMode>('auto');
+  const recentProjectCount = recentProjects.length;
+
+  useEffect(() => {
+    if (hasUserContent && !starterDismissed) setStarterDismissed(true);
+  }, [hasUserContent, starterDismissed]);
+
+  useEffect(() => {
+    const dismiss = () => setStarterDismissed(true);
+    window.addEventListener('starter-dismiss', dismiss);
+    return () => window.removeEventListener('starter-dismiss', dismiss);
+  }, []);
+
+  function launchStarter() {
+    const hp = Math.max(2, Math.min(84, Math.round(starterHP || 8)));
+    dispatch({ type: 'SET_HARDWARE_RENDER_MODE', mode: starterMode });
+    dispatch({ type: 'SET_PANEL_HP', hp });
+    dispatch({ type: 'LOAD_PRESET', components: [] });
+    setStarterDismissed(true);
+  }
 
   function clientPointToMM(clientX: number, clientY: number): { x: number; y: number } | null {
     const svg = svgRef.current;
@@ -7217,16 +10113,61 @@ function SVGCanvas({
             viewMode={state.viewMode}
             warnings={warnings}
             layers={state.layerVisibility}
+            dragPerfMode={!!dragPreview && dragPreview.size > 8}
           />
           </g>
 
-          {state.layerVisibility.topHardware && <g opacity={lop('topHardware')}><TopHardwareLayer components={state.components} dragPreview={dragPreview} viewMode={state.viewMode} style={state.topHardwareStyle} renderMode={state.hardwareRenderMode || "auto"} performanceMode={!!state.mobilePerformanceMode} zoom={zoom} /></g>}
+          {state.layerVisibility.topHardware && <g opacity={lop('topHardware')}><TopHardwareLayer components={state.components} dragPreview={dragPreview} viewMode={state.viewMode} style={state.topHardwareStyle} renderMode={state.hardwareRenderMode || "auto"} performanceMode={!!state.mobilePerformanceMode} zoom={zoom} dragPerfMode={!!dragPreview && dragPreview.size > 8} /></g>}
 
           {state.layerVisibility.text && <g opacity={lop('text')}><ScaleLayer items={state.scaleItems} components={state.components} layer="foreground" viewMode={state.viewMode} /></g>}
           {state.layerVisibility.text && <g opacity={lop('text')}><TextLayer items={state.textItems} layer="foreground" selectedText={state.selectedText} textDragPreview={textDragPreview} viewMode={state.viewMode} /></g>}
 
           {/* Template placement preview */}
           <TemplateGhostLayer pending={pendingTemplatePlacement} />
+
+          {pendingAddPart && pendingAddPreview && (() => {
+            const ghost: PlacedComponent = {
+              ...sanitizePart({ ...pendingAddPart.def, category: pendingAddPart.def.category ?? inferCategoryForType(pendingAddPart.def.type), verificationStatus: pendingAddPart.def.verificationStatus ?? 'approximate' }),
+              id: 'pending-add-ghost',
+              ref: '',
+              label: '',
+              x: pendingAddPreview.x,
+              y: pendingAddPreview.y,
+              rotation: 0,
+              notes: '',
+              locked: false,
+            };
+            const front = getFrontBounds(ghost);
+            return (
+              <g className="pending-add-ghost" style={{ pointerEvents: 'none' }} opacity={0.72}>
+                {getFrontShape(ghost) !== 'circle'
+                  ? <g transform={`rotate(${ghost.rotation}, ${ghost.x}, ${ghost.y})`}>
+                      <rect x={ghost.x - front.w / 2} y={ghost.y - front.h / 2} width={front.w} height={front.h} rx={1.1}
+                        fill="rgba(46,233,255,.10)" stroke="#2ee9ff" strokeWidth={0.28} strokeDasharray="1.1 0.65" vectorEffect="non-scaling-stroke" />
+                    </g>
+                  : <circle cx={ghost.x} cy={ghost.y} r={Math.max(ghost.frontDiameter / 2, ghost.holeDiameter / 2)}
+                      fill="rgba(46,233,255,.10)" stroke="#2ee9ff" strokeWidth={0.28} strokeDasharray="1.1 0.65" vectorEffect="non-scaling-stroke" />}
+                {ghost.holeType === 'slot'
+                  ? <g transform={`rotate(${ghost.rotation}, ${ghost.x}, ${ghost.y})`}>
+                      <rect x={ghost.x - ghost.holeDiameter / 2} y={ghost.y - (ghost.slotLength ?? ghost.holeDiameter) / 2}
+                        width={ghost.holeDiameter} height={ghost.slotLength ?? ghost.holeDiameter} rx={ghost.holeDiameter/2}
+                        fill="rgba(0,0,0,.35)" stroke="rgba(185,246,255,.60)" strokeWidth={0.18} />
+                    </g>
+                  : ghost.holeType === 'rect'
+                    ? <g transform={`rotate(${ghost.rotation}, ${ghost.x}, ${ghost.y})`}>
+                        <rect x={ghost.x - (ghost.holeW ?? ghost.frontW ?? ghost.holeDiameter)/2} y={ghost.y - (ghost.holeH ?? ghost.frontH ?? ghost.holeDiameter)/2}
+                          width={ghost.holeW ?? ghost.frontW ?? ghost.holeDiameter} height={ghost.holeH ?? ghost.frontH ?? ghost.holeDiameter}
+                          fill="rgba(0,0,0,.35)" stroke="rgba(185,246,255,.60)" strokeWidth={0.18} />
+                      </g>
+                    : <circle cx={ghost.x} cy={ghost.y} r={ghost.holeDiameter / 2}
+                        fill="rgba(0,0,0,.35)" stroke="rgba(185,246,255,.60)" strokeWidth={0.18} />}
+                <text x={ghost.x} y={ghost.y + getFrontBottomOffset(ghost) + 2.8} textAnchor="middle" fontSize={1.7}
+                  fill="#b9f6ff" stroke="rgba(0,0,0,.55)" strokeWidth={0.28} paintOrder="stroke fill">
+                  {shortPartName(pendingAddPart.def)}
+                </text>
+              </g>
+            );
+          })()}
 
           {/* Foreground artwork */}
           {state.layerVisibility.artwork && <ArtworksLayer
@@ -7277,6 +10218,77 @@ function SVGCanvas({
         </svg>
       </div>
 
+      {canvasIsEmpty && (
+        <div className="empty-canvas-launchpad" onMouseDown={e => e.stopPropagation()}>
+          <div className="empty-orbit" />
+          <div className="empty-launch-card launch-console launch-compact">
+            <span className="empty-kicker">New panel</span>
+            <h2>Start clean.</h2>
+            <p>Choose panel width and render mode. Everything else can be changed later.</p>
+
+            <div className="launch-project-strip">
+              {autosaveSummary && (
+                <button className="launch-restore-card" onClick={onRestoreAutosave}>
+                  <strong>Resume autosave</strong>
+                  <span>{autosaveSummary.sizeLabel} · {autosaveSummary.label}</span>
+                </button>
+              )}
+              <button onClick={onOpenProjectFile}>
+                <strong>Open project…</strong>
+                <span>Load .json from device</span>
+              </button>
+              <button onClick={onOpenRecentProjects} disabled={recentProjectCount === 0}>
+                <strong>Recent projects</strong>
+                <span>{recentProjectCount ? `${recentProjectCount} saved locally` : 'none saved yet'}</span>
+              </button>
+            </div>
+
+            <div className="launch-compact-body">
+              <section className="launch-console-section">
+                <div className="launch-label">HP width</div>
+                <div className="launch-hp-grid compact">
+                  {[2,4,6,8,10,12,14,16,20,28].map(hp => (
+                    <button key={hp} className={starterHP === hp ? 'active' : ''} onClick={() => setStarterHP(hp)}>
+                      {hp}
+                    </button>
+                  ))}
+                </div>
+                <label className="launch-custom-hp">
+                  <span>Custom HP</span>
+                  <input
+                    type="number"
+                    min={2}
+                    max={84}
+                    step={1}
+                    value={starterHP}
+                    onChange={e => setStarterHP(Math.max(2, Math.min(84, Math.round(+e.target.value || 8))))}
+                  />
+                </label>
+              </section>
+
+              <section className="launch-console-section">
+                <div className="launch-label">Render mode</div>
+                <div className="launch-mode-grid compact">
+                  {(['auto','classic','realistic','off'] as HardwareRenderMode[]).map(mode => (
+                    <button key={mode} className={starterMode === mode ? 'active' : ''} onClick={() => setStarterMode(mode)}>
+                      <strong>{mode === 'realistic' ? 'Realistic' : mode.charAt(0).toUpperCase() + mode.slice(1)}</strong>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            </div>
+
+            <div className="launch-console-footer compact">
+              <div>
+                <strong>{starterHP}HP blank panel</strong>
+                <span>{starterMode === 'realistic' ? 'Realistic render' : `${starterMode.charAt(0).toUpperCase() + starterMode.slice(1)} render`} · slightly oval mounting holes</span>
+              </div>
+              <button className="launch-go-button" onClick={launchStarter}>GO</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={`canvas-hud ${warnings.some(w => w.severity === 'error') ? 'has-errors' : warnings.length ? 'has-warnings' : ''}`}>
         <span className="hud-main">{state.panel.widthHP}HP</span>
         <span>{state.viewMode.toUpperCase()}</span>
@@ -7287,12 +10299,14 @@ function SVGCanvas({
         {warnings.length > 0 && <span className="hud-issues">{warnings.length} issues</span>}
       </div>
 
-      <ModeQuickSwitch />
-      <CanvasLayerPanel />
+      <InspectorRail rightPanelOpen={rightPanelOpen} />
       <DFMStatusFloat warnings={warnings} />
       <SelectionMeasureFloat />
+      <SelectionActionToolbar />
       <SnapFeedbackBadge guides={snapGuides} />
       {hoverTip && <ComponentHoverTooltip component={hoveredComponent} warnings={warnings} x={hoverTip.x} y={hoverTip.y} />}
+
+      <SelectionInfoStrip hidden={false} />
 
       {coordReadout && (
         <div className="coord-readout">{coordReadout}</div>
@@ -7479,7 +10493,7 @@ function MobileQuickAdd({ hidden }: { hidden: boolean }) {
   </>;
 }
 
-function ComponentLibraryPanel() {
+function ComponentLibraryPanel({ onStartPartPlacement }: { onStartPartPlacement?: (def: ComponentDef, stamp: boolean) => void } = {}) {
   const dispatch = useAppDispatch();
   const state    = useAppState();
   const widthMM  = panelWidthMM(state.panel);
@@ -7489,6 +10503,8 @@ function ComponentLibraryPanel() {
   const [partCategory, setPartCategory] = useState<'all' | NonNullable<ComponentDef['category']>>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | PartVerificationStatus>('all');
   const [renderLimit, setRenderLimit] = useState(36);
+  const [favoriteKeys, setFavoriteKeys] = useState<string[]>(() => readStringListStorage(UX_FAVORITE_PARTS_KEY));
+  const [recentKeys, setRecentKeys] = useState<string[]>(() => readStringListStorage(UX_RECENT_PARTS_KEY));
   useEffect(() => { setRenderLimit(36); }, [partSearch, partCategory, statusFilter, state.customParts.length]);
   const visibleParts = allParts.filter(def => {
     const q = partSearch.trim().toLowerCase();
@@ -7504,14 +10520,35 @@ function ComponentLibraryPanel() {
   const hiddenPartCount = Math.max(0, sortedVisibleParts.length - displayedParts.length);
   const suppressNextLibraryClickRef = useRef(false);
 
+  function refreshLibraryMemory() {
+    setRecentKeys(readStringListStorage(UX_RECENT_PARTS_KEY));
+    setFavoriteKeys(readStringListStorage(UX_FAVORITE_PARTS_KEY));
+  }
+
+  function toggleFavorite(def: ComponentDef) {
+    const key = partStableKey(def);
+    const exists = favoriteKeys.includes(key);
+    const next = exists ? favoriteKeys.filter(k => k !== key) : [key, ...favoriteKeys].slice(0, 32);
+    writeStringListStorage(UX_FAVORITE_PARTS_KEY, next);
+    setFavoriteKeys(next);
+  }
+
+  function startPlacement(def: ComponentDef) {
+    rememberRecentPart(def);
+    if (onStartPartPlacement) {
+      onStartPartPlacement(def, false);
+    } else {
+      sendPartPlacementEvent(def, false);
+    }
+    refreshLibraryMemory();
+  }
+
   function addComponent(def: ComponentDef) {
     if (replaceMode && state.selected.length > 0) {
       dispatch({ type: 'REPLACE_SELECTED_WITH_PART', def });
       return;
     }
-    const x = snapToGrid(widthMM / 2, state.grid.size);
-    const y = snapToGrid(PANEL_HEIGHT_MM / 2, state.grid.size);
-    dispatch({ type: 'ADD_COMPONENT', def, x, y });
+    startPlacement(def);
   }
   function saveSelectedAsPart() {
     const c = state.components.find(cc => cc.id === state.selected[0]);
@@ -7546,20 +10583,8 @@ function ComponentLibraryPanel() {
   return (
     <div className="section" data-component-library="true">
       <div className="section-title">Component Library</div>
-      <label style={{ display:'flex', alignItems:'center', gap:6, marginBottom:6 }} title="When enabled, clicking a part replaces the selected components while keeping their ref/label/position/rotation.">
-        <input type="checkbox" checked={replaceMode} disabled={state.selected.length === 0} onChange={e => setReplaceMode(e.target.checked)} />
-        Replace selected with clicked part
-      </label>
-      <div className="library-action-grid">
-        <button onClick={saveSelectedAsPart}>Save selected</button>
-        <button onClick={exportParts} disabled={state.customParts.length === 0}>Export custom</button>
-        <button onClick={exportAuditCSV}>Export CSV</button>
-        <button onClick={() => document.getElementById('parts-import-input')!.click()}>Import</button>
-        <button className="danger" disabled={state.customParts.length === 0} onClick={() => confirm('Reset custom parts?') && dispatch({ type:'RESET_CUSTOM_PARTS' })}>Reset</button>
-        <input id="parts-import-input" type="file" accept=".json" style={{ display: 'none' }} onChange={importParts} />
-      </div>
-      <input className="mini-input" type="text" placeholder="Search parts…" value={partSearch} onChange={e => setPartSearch(e.target.value)} />
-      <div className="field-pair">
+      <input className="mini-input library-search-compact" type="text" placeholder="Search parts…" value={partSearch} onChange={e => setPartSearch(e.target.value)} />
+      <div className="field-pair library-filter-row">
         <select className="mini-input" value={partCategory} onChange={e => setPartCategory(e.target.value as any)}>
           <option value="all">All categories</option>
           <option value="potentiometer">Potentiometers</option>
@@ -7578,6 +10603,12 @@ function ComponentLibraryPanel() {
           <option value="production">Production</option>
         </select>
       </div>
+      {(recentKeys.length > 0 || favoriteKeys.length > 0) && !partSearch.trim() && partCategory === 'all' && statusFilter === 'all' && (
+        <div className="library-memory-row">
+          {favoriteKeys.length > 0 && <div><b>Favorites</b>{favoriteKeys.slice(0, 5).map(k => allParts.find(p => partStableKey(p) === k)).filter(Boolean).map((p:any) => <button key={partStableKey(p)} onClick={() => startPlacement(p)}>{shortPartName(p)}</button>)}</div>}
+          {recentKeys.length > 0 && <div><b>Recent</b>{recentKeys.slice(0, 5).map(k => allParts.find(p => partStableKey(p) === k)).filter(Boolean).map((p:any) => <button key={partStableKey(p)} onClick={() => startPlacement(p)}>{shortPartName(p)}</button>)}</div>}
+        </div>
+      )}
       {visibleParts.length === 0 && <div style={{ color:'#777', fontSize:12, padding:'8px 0' }}>No parts match the filter.</div>}
       {visibleParts.length > 0 && <div className="library-render-note">Rendering {displayedParts.length} of {sortedVisibleParts.length} matching parts. Use search/filter or Load more.</div>}
       {displayedParts.map((def, idx) => (
@@ -7587,6 +10618,11 @@ function ComponentLibraryPanel() {
           title={`${replaceMode ? 'Replace selected component(s) with this part' : 'Click to add at center, or drag the component preview onto the panel'}\n\n${partTooltip(def)}`}
           onClick={() => addComponent(def)}
         >
+          <button
+            className={`part-favorite-mini ${favoriteKeys.includes(partStableKey(def)) ? 'active' : ''}`}
+            title={favoriteKeys.includes(partStableKey(def)) ? 'Remove from favorites' : 'Add to favorites'}
+            onClick={e => { e.stopPropagation(); toggleFavorite(def); }}
+          >★</button>
           <LibraryPartPreview def={def} />
           <div className="part-card-main">
             <strong>{shortPartName(def)}</strong>
@@ -7599,6 +10635,21 @@ function ComponentLibraryPanel() {
       {hiddenPartCount > 0 && (
         <button className="library-load-more" onClick={() => setRenderLimit(v => v + 36)}>Load more ({hiddenPartCount} hidden)</button>
       )}
+      <details className="library-tools-compact">
+        <summary>Library tools</summary>
+        <label className="library-replace-compact" title="When enabled, clicking a part replaces the selected components while keeping their ref/label/position/rotation.">
+          <input type="checkbox" checked={replaceMode} disabled={state.selected.length === 0} onChange={e => setReplaceMode(e.target.checked)} />
+          Replace selected
+        </label>
+        <div className="library-action-grid compact">
+          <button onClick={saveSelectedAsPart}>Save selected</button>
+          <button onClick={exportParts} disabled={state.customParts.length === 0}>Export custom</button>
+          <button onClick={exportAuditCSV}>Export CSV</button>
+          <button onClick={() => document.getElementById('parts-import-input')!.click()}>Import</button>
+          <button className="danger" disabled={state.customParts.length === 0} onClick={() => confirm('Reset custom parts?') && dispatch({ type:'RESET_CUSTOM_PARTS' })}>Reset</button>
+          <input id="parts-import-input" type="file" accept=".json" style={{ display: 'none' }} onChange={importParts} />
+        </div>
+      </details>
     </div>
   );
 }
@@ -7768,7 +10819,7 @@ function ArtworkPanel() {
   );
 }
 
-function LeftSidebar({ open, onTouchStart, onTouchMove, onTouchEnd }: { open: boolean; onTouchStart?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchMove?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchEnd?: (e: React.TouchEvent<HTMLDivElement>) => void }) {
+function LeftSidebar({ open, onTouchStart, onTouchMove, onTouchEnd, onStartPartPlacement }: { open: boolean; onTouchStart?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchMove?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchEnd?: (e: React.TouchEvent<HTMLDivElement>) => void; onStartPartPlacement?: (def: ComponentDef, stamp: boolean) => void }) {
   // v61: do not keep expensive library/artwork panels mounted when the drawer is closed.
   if (!open) return <div className="sidebar-left closed lazy-unmounted" aria-hidden="true" />;
   return (
@@ -7777,7 +10828,7 @@ function LeftSidebar({ open, onTouchStart, onTouchMove, onTouchEnd }: { open: bo
       <PanelSettings />
       <ArtworkPanel />
       <TextPanel />
-      <ComponentLibraryPanel />
+      <ComponentLibraryPanel onStartPartPlacement={onStartPartPlacement} />
     </div>
   );
 }
@@ -7989,7 +11040,7 @@ function PropertiesPanel() {
               <label>Color</label>
               <input type="color" value={topColor(c)} onChange={e => patch({ topColor: e.target.value })} />
               <div className="btn-row" style={{ marginTop: 4 }}>
-                {TOP_COLOR_PRESETS.map(col => <button key={col} title={col} onClick={() => patch({ topColor: col })} style={{ width:22, height:22, padding:0, background:col, border:'1px solid #555' }} />)}
+                {TOP_COLOR_PRESETS.map(col => <button key={col} className="top-color-preset" title={col} onClick={() => patch({ topColor: col })} style={{ '--preset-color': col } as React.CSSProperties} />)}
               </div>
             </div>
           )}
@@ -8342,13 +11393,13 @@ function LayersPanel(){
   function setAll(value:boolean){ const patch:Partial<LayerVisibility>={}; labels.forEach(([k])=>patch[k]=value); dispatch({type:'SET_LAYER_VISIBILITY_BULK',patch}); }
   function solo(k:keyof LayerVisibility){ const patch:Partial<LayerVisibility>={}; labels.forEach(([key])=>patch[key]=key===k); dispatch({type:'SET_LAYER_VISIBILITY_BULK',patch}); }
   return <div className="section"><div className="section-title">Layer Manager</div>
-    <div className="field-row"><label>Hardware render</label><select value={state.hardwareRenderMode || 'auto'} onChange={e=>dispatch({type:'SET_HARDWARE_RENDER_MODE',mode:e.target.value as HardwareRenderMode})}><option value="auto">Auto: realistic when idle</option><option value="classic">Classic / fastest</option><option value="realistic">Boutique / realistic</option><option value="off">Off</option></select></div>
+    <div className="field-row"><label>Hardware render</label><select value={state.hardwareRenderMode || 'auto'} onChange={e=>dispatch({type:'SET_HARDWARE_RENDER_MODE',mode:e.target.value as HardwareRenderMode})}><option value="auto">Auto: realistic when idle</option><option value="classic">Classic / fastest</option><option value="realistic">Realistic / detailed</option><option value="off">Off</option></select></div>
     <label className="perf-toggle"><input type="checkbox" checked={state.mobilePerformanceMode !== false} onChange={e=>dispatch({type:'SET_MOBILE_PERFORMANCE_MODE',value:e.target.checked})}/> Mobile performance mode</label>
     <div className="layer-manager-summary"><span>{visibleCount}/{labels.length} visible</span><span>Opacity is saved in project JSON</span></div>
     <div className="btn-row layer-manager-presets" style={{ marginBottom: 8 }}>
       <button title="Mechanical view: holes, rear bodies, keepouts, PCB" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'mechanical' })}>Mechanical</button>
       <button title="Visual view: artwork, labels, text, top hardware" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'visual' })}>Visual</button>
-      <button title="Production view: outline and cut/drill geometry only" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Production</button>
+      <button title="Production view: outline and cut/drill geometry only" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'production' })}>Prod</button>
       <button title="Show all layers" onClick={() => dispatch({ type:'APPLY_LAYER_PRESET', preset:'debug' })}>Debug</button>
     </div>
     <div className="btn-row layer-manager-presets" style={{ marginBottom: 8 }}>
@@ -8547,6 +11598,59 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('Ten new real-module-inspired presets from 2HP to 28HP are added to the preset library.');
     ok('Interface art-direction polish pass applied: calmer glass hierarchy, refined cards, buttons, HUD and sidebars.');
     ok('Hardware render and mobile performance reducer actions are implemented and mobile controls are tap-safe.');
+    ok('Product UX pass added an empty-state launchpad, preset cards, and clearer component-library guidance.');
+    ok('Mobile Safari white edge/overscroll background is forced dark across root, body and app containers.');
+    ok('Top Hardware color swatches render with real colors again, and empty launchpad includes CLEAR 8HP blank panel.');
+    ok('Toolbar popovers stop wheel/touch scroll propagation so preset scrolling does not zoom the canvas.');
+    ok('Starter CLEAR now dismisses the launchpad, and the user logo is embedded in the launch card.');
+    ok('Starter launchpad stays dismissed after the user adds content, even if the panel is later emptied.');
+    ok('Starter logo visibility increased with stronger contrast, size and glow.');
+    ok('Starter logo background plaque removed; logo renders as clean white transparent mark.');
+    ok('Starter logo is placed safely in the top-right corner without covering the headline.');
+    ok('Starter launch card is now a Launch Console with HP, hardware style, render mode, archetype and GO action; logo removed.');
+    ok('v125 reverts the failed v124 global UI normalization and returns to the stable v123 visual baseline.');
+    ok('v126 targeted right-panel fixes align Mounting Holes and Layer Manager without global UI changes.');
+    ok('v127 compact launch keeps only HP, custom HP, render mode and GO; default mounting holes are slightly oval.');
+    ok('v128 Component Library moves secondary tools into a compact details block so parts start higher.');
+    ok('v129 removes the white outer ring from potentiometer/knob top hardware while keeping the dark rim.');
+    ok('v130 makes jack rendering more realistic with thinner skirt, darker metal and deeper socket.');
+    ok('v131 makes the compact launcher more tactile and inviting with panel preview, stronger CTA and refined controls.');
+    ok('v132 removes startup autosave confirm and shows autosave, open project, and recent projects inside the launcher.');
+    ok('v133 changes wheel zoom to zoom toward the mouse cursor instead of the canvas center.');
+    ok('v134 removes the Blank Eurorack panel preview block from the launcher.');
+    ok('v135 renames Boutique to Realistic throughout user-facing UI while preserving the internal realistic mode value.');
+    ok('v136 optimizes multi-select dragging by skipping expensive snap/distance guide scans for large selections and avoiding redundant preview renders.');
+    ok('v137 makes multi-drag snap and distance guides use only the active component under the cursor, while the whole selection follows the same delta.');
+    ok('v138 adds drag performance mode: large multi-drag uses cheap outlines and suppresses dragged top hardware/labels until mouseup.');
+    ok('v139 workflow UX pack adds place/stamp mode, recent/favorites, selection action toolbar and health/autosave pill.');
+    ok('v140 fixes v139 canvas clicks by moving pending part placement state into App and preventing placement mode from stealing component selection clicks.');
+    ok('v141 wires Component Library placement directly into App state and hides the health pill when the right panel is open.');
+    ok('v142 removes the Place once / Stamp mode toggle and keeps a single click-to-place workflow.');
+    ok('v143 moves the placement hint out of the SVG panel into a compact floating status pill.');
+    ok('v144 adds ghost preview for component placement and Shift+click to place multiple copies.');
+    ok('v145 expands the SVG workspace padding around the panel for more off-panel working room.');
+    ok('v146 expands the SVG workspace to a full-screen scale work area around the panel.');
+    ok('v147 only asks to replace the current project when the current project actually has content.');
+    ok('v148 makes normal drag cursor-anchored; hard snapping during drag is enabled only while holding Shift.');
+    ok('v149 aligns the bottom HUD: DFM bottom-left, actions bottom-center, cursor coords bottom-right, selected coords above cursor coords.');
+    ok('v150 reorganizes the right sidebar into Photoshop-style horizontal inspector tabs grouped by Status, Inspect, Production and Layers.');
+    ok('v151 adds a Photoshop-like collapsible inspector rail for View, Layers and Top HW beside the right sidebar.');
+    ok('v152 tightens the inspector rail, groups production tabs into Files/PCB/Mounts, and realigns bottom HUD blocks.');
+    ok('v153 makes the inspector rail popovers open toward the sidebar and removes duplicated Top HW style controls.');
+    ok('v154 fixes inspector rail positioning so it sits directly against the right sidebar edge.');
+    ok('v155 aligns selected component coordinates above cursor coordinates when the right sidebar is open.');
+    ok('v156 makes inspector rail popovers open left, away from the right sidebar.');
+    ok('v157 keeps collapsed sections visible inside right sidebar tabs and raises the inspector rail.');
+    ok('v158 compacts the bottom HUD, hides duplicate selection-measure float, shortens action labels and prevents DFM/toolbar/coords overlap.');
+    ok('v159 restores normal drag snap-to-grid while keeping edge/center hard snap on Shift.');
+    ok('v160 makes double-clicking a component open the right sidebar and switch it to Inspect → Properties.');
+    ok('v161 unifies single/multi selection info into one HUD and keeps it anchored above cursor coordinates inside the canvas.');
+    ok('v162 moves the unified selection HUD into SVGCanvas so it anchors to the same canvas area as cursor coordinates.');
+    ok('v163 fixes marquee direction robustness and snaps drag delta relative to the original grab point to prevent cursor drift.');
+    ok('v164 renames the top Production tab to Prod.');
+    ok('v165 makes Focus remember whether side panels were open and restores them when Focus is toggled off.');
+    ok('v166 routes the Focus hotkey and command palette through the same restore-aware toggle.');
+    ok('v167 fixes Component Library filter selects so long labels do not overlap the dropdown chevron.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -9158,25 +12262,100 @@ function LayoutStatusPanel({ warnings, components }: {
 
 function RightSidebar({ warnings, components, open, autosaveStatus, onRestoreAutosave, onClearAutosave, onTouchStart, onTouchMove, onTouchEnd }: { warnings: CollisionWarning[]; components: PlacedComponent[]; open: boolean; autosaveStatus: string; onRestoreAutosave: () => void; onClearAutosave: () => void; onTouchStart?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchMove?: (e: React.TouchEvent<HTMLDivElement>) => void; onTouchEnd?: (e: React.TouchEvent<HTMLDivElement>) => void }) {
   const state = useAppState();
+  const [topTab, setTopTab] = useState<'status' | 'inspect' | 'production' | 'layers'>('status');
+  const [statusTab, setStatusTab] = useState<'layout' | 'warnings' | 'checks'>('layout');
+  const [inspectTab, setInspectTab] = useState<'properties' | 'measure' | 'history'>('properties');
+  const [productionTab, setProductionTab] = useState<'files' | 'pcb' | 'mounts'>('files');
+  const [layersTab, setLayersTab] = useState<'layers' | 'align' | 'assistant'>('layers');
+
+  useEffect(() => {
+    const onOpenInspector = (ev: Event) => {
+      const detail = (ev as CustomEvent).detail || {};
+      if (detail.topTab === 'inspect' || detail.panel === 'properties') {
+        setTopTab('inspect');
+        setInspectTab('properties');
+      }
+    };
+    window.addEventListener('open-right-inspector', onOpenInspector as EventListener);
+    return () => window.removeEventListener('open-right-inspector', onOpenInspector as EventListener);
+  }, []);
+
   // v61: lazy-unmount the entire properties/DFM/BOM/sidebar stack while closed.
   if (!open) return <div className="sidebar-right closed lazy-unmounted" aria-hidden="true" />;
+
+  const propertyPanel = state.selectedText ? <TextPropertiesPanel /> : state.selectedArtwork ? <ArtworkPropertiesPanel /> : <PropertiesPanel />;
+
   return (
-    <div className="sidebar-right open" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} onTouchCancel={onTouchEnd}>
-      <LayoutStatusPanel warnings={warnings} components={components} />
-      <UndoHistoryPanel />
-      {state.selectedText ? <TextPropertiesPanel /> : state.selectedArtwork ? <ArtworkPropertiesPanel /> : <PropertiesPanel />}
-      <ManufacturingCheckPanel warnings={warnings} />
-      <SelfCheckPanel warnings={warnings} />
-      <WarningsPanel warnings={warnings} />
-      <MeasurementsPanel />
-      <DrillTablePanel />
-      <BOMPanel />
-      <LayoutAssistantPanel warnings={warnings} />
-      <LayersPanel />
-      <AlignTools />
-      <PCBPanel />
-      <MountingHolesPanel />
-      <AutosavePanel status={autosaveStatus} onRestore={onRestoreAutosave} onClear={onClearAutosave} />
+    <div className="sidebar-right open sidebar-right-tabs" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} onTouchCancel={onTouchEnd}>
+      <div className="right-tab-strip primary">
+        <button className={topTab === 'status' ? 'active' : ''} onClick={() => setTopTab('status')}>Status</button>
+        <button className={topTab === 'inspect' ? 'active' : ''} onClick={() => setTopTab('inspect')}>Inspect</button>
+        <button className={topTab === 'production' ? 'active' : ''} onClick={() => setTopTab('production')}>Prod</button>
+        <button className={topTab === 'layers' ? 'active' : ''} onClick={() => setTopTab('layers')}>Layers</button>
+      </div>
+
+      {topTab === 'status' && (
+        <div className="right-tab-page">
+          <div className="right-tab-strip secondary">
+            <button className={statusTab === 'layout' ? 'active' : ''} onClick={() => setStatusTab('layout')}>Layout</button>
+            <button className={statusTab === 'warnings' ? 'active' : ''} onClick={() => setStatusTab('warnings')}>Warnings</button>
+            <button className={statusTab === 'checks' ? 'active' : ''} onClick={() => setStatusTab('checks')}>Checks</button>
+          </div>
+          {statusTab === 'layout' && <LayoutStatusPanel warnings={warnings} components={components} />}
+          {statusTab === 'warnings' && <WarningsPanel warnings={warnings} />}
+          {statusTab === 'checks' && (
+            <>
+              <ManufacturingCheckPanel warnings={warnings} />
+              <SelfCheckPanel warnings={warnings} />
+            </>
+          )}
+        </div>
+      )}
+
+      {topTab === 'inspect' && (
+        <div className="right-tab-page">
+          <div className="right-tab-strip secondary">
+            <button className={inspectTab === 'properties' ? 'active' : ''} onClick={() => setInspectTab('properties')}>Properties</button>
+            <button className={inspectTab === 'measure' ? 'active' : ''} onClick={() => setInspectTab('measure')}>Measure</button>
+            <button className={inspectTab === 'history' ? 'active' : ''} onClick={() => setInspectTab('history')}>History</button>
+          </div>
+          {inspectTab === 'properties' && propertyPanel}
+          {inspectTab === 'measure' && <MeasurementsPanel />}
+          {inspectTab === 'history' && <UndoHistoryPanel />}
+        </div>
+      )}
+
+      {topTab === 'production' && (
+        <div className="right-tab-page">
+          <div className="right-tab-strip secondary">
+            <button className={productionTab === 'files' ? 'active' : ''} onClick={() => setProductionTab('files')}>Files</button>
+            <button className={productionTab === 'pcb' ? 'active' : ''} onClick={() => setProductionTab('pcb')}>PCB</button>
+            <button className={productionTab === 'mounts' ? 'active' : ''} onClick={() => setProductionTab('mounts')}>Mounts</button>
+          </div>
+          {productionTab === 'files' && (
+            <>
+              <DrillTablePanel />
+              <BOMPanel />
+              <AutosavePanel status={autosaveStatus} onRestore={onRestoreAutosave} onClear={onClearAutosave} />
+            </>
+          )}
+          {productionTab === 'pcb' && <PCBPanel />}
+          {productionTab === 'mounts' && <MountingHolesPanel />}
+        </div>
+      )}
+
+      {topTab === 'layers' && (
+        <div className="right-tab-page">
+          <div className="right-tab-strip secondary">
+            <button className={layersTab === 'layers' ? 'active' : ''} onClick={() => setLayersTab('layers')}>Layers</button>
+            <button className={layersTab === 'align' ? 'active' : ''} onClick={() => setLayersTab('align')}>Align</button>
+            <button className={layersTab === 'assistant' ? 'active' : ''} onClick={() => setLayersTab('assistant')}>Assistant</button>
+          </div>
+          {layersTab === 'layers' && <LayersPanel />}
+          {layersTab === 'align' && <AlignTools />}
+          {layersTab === 'assistant' && <LayoutAssistantPanel warnings={warnings} />}
+        </div>
+      )}
     </div>
   );
 }
@@ -10801,6 +13980,14 @@ const PRESETS: Record<string, PanelPreset> = {
     ],
   },
 };
+
+
+function instantiatePresetComponents(key: string): PlacedComponent[] {
+  const preset = PRESETS[key];
+  if (!preset) return [];
+  return preset.components.map(c => ({ ...c, id: crypto.randomUUID() }));
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // EXPORT DIALOG
 // ═══════════════════════════════════════════════════════════════════════════
@@ -10951,9 +14138,8 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
   function loadPreset(key: string) {
     const preset = PRESETS[key];
     if (!preset) return;
-    const comps: PlacedComponent[] = preset.components.map(c => ({ ...c, id: crypto.randomUUID() }));
     dispatch({ type: 'SET_PANEL_HP', hp: preset.hp });
-    dispatch({ type: 'LOAD_PRESET', components: comps });
+    dispatch({ type: 'LOAD_PRESET', components: instantiatePresetComponents(key) });
     setOpenMenu(null);
   }
 
@@ -11036,7 +14222,14 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
       </button>
 
       {openMenu && ReactDOM.createPortal(
-        <div className={`toolbar-popover ${openMenu === 'help' ? 'help-popover' : ''}`} style={popoverStyle} onClick={e => e.stopPropagation()} onPointerDown={e => e.stopPropagation()}>
+        <div
+          className={`toolbar-popover ${openMenu === 'help' ? 'help-popover' : ''}`}
+          style={popoverStyle}
+          onClick={e => e.stopPropagation()}
+          onPointerDown={e => e.stopPropagation()}
+          onWheel={e => e.stopPropagation()}
+          onTouchMove={e => e.stopPropagation()}
+        >
           {openMenu === 'tools' && (
             <>
               <div className="menu-title">Tools</div>
@@ -11102,10 +14295,16 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
           {openMenu === 'presets' && (
             <>
               <div className="menu-title">Presets</div>
-              <div className="menu-grid two">
+              <div className="preset-popover-hero">
+                <strong>Start from a module archetype</strong>
+                <span>Real-module-inspired layouts from 2HP to 28HP. Loading a preset replaces the current panel.</span>
+              </div>
+              <div className="preset-card-grid">
                 {Object.keys(PRESETS).map(k => (
-                  <button key={k} title={PRESETS[k].description} onClick={() => loadPreset(k)}>
-                    {k}<span style={{ color:'#777', marginLeft:6 }}>{PRESETS[k].hp}HP</span>
+                  <button key={k} className="preset-card-button" title={PRESETS[k].description} onClick={() => loadPreset(k)}>
+                    <span className="preset-card-hp">{PRESETS[k].hp}HP</span>
+                    <strong>{k.replace('Inspired — ', '')}</strong>
+                    <small>{PRESETS[k].description}</small>
                   </button>
                 ))}
               </div>
@@ -11415,6 +14614,12 @@ function TemplatesDialog({ onClose, onPlaceBlock }: { onClose: () => void; onPla
 
 function LocalProjectsDialog({ onClose }: { onClose: () => void }) {
   const dispatch = useAppDispatch();
+  const state = useAppState();
+  const currentProjectHasContent =
+    state.components.length > 0 ||
+    state.artworks.length > 0 ||
+    state.textItems.length > 0 ||
+    state.scaleItems.length > 0;
   const [projects, setProjects] = useState<LocalProjectRecord[]>(() => loadLocalProjects());
   const [projectSearch, setProjectSearch] = useState('');
   const visibleProjects = projects.filter(p => !projectSearch.trim() || `${p.name} ${p.updatedAt}`.toLowerCase().includes(projectSearch.trim().toLowerCase()));
@@ -11436,8 +14641,9 @@ function LocalProjectsDialog({ onClose }: { onClose: () => void }) {
       alert(`Load failed: ${result.error}`);
       return;
     }
-    if (!confirm(`Load “${record.name}” and replace current project?`)) return;
+    if (currentProjectHasContent && !confirm(`Load “${record.name}” and replace current project?`)) return;
     dispatch({ type: 'LOAD_STATE', state: result.state });
+    window.dispatchEvent(new Event('starter-dismiss'));
     onClose();
   }
 
@@ -11753,7 +14959,7 @@ function CanvasQuickAddDock({ hidden, focusMode, onToggleFocus, onOpenShortcuts,
                             onPointerUp={setMode}
                             onClick={setMode}
                           >
-                            {mode === 'realistic' ? 'Boutique' : mode.charAt(0).toUpperCase() + mode.slice(1)}
+                            {mode === 'realistic' ? 'Realistic' : mode.charAt(0).toUpperCase() + mode.slice(1)}
                           </button>
                         );
                       })}
@@ -12192,6 +15398,7 @@ function App() {
   const [showMobileNudge, setShowMobileNudge] = useState(false);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
+  const focusRestorePanelsRef = useRef<{ left: boolean; right: boolean } | null>(null);
   const [showShortcutHelp, setShowShortcutHelp] = useState(false);
   const [clearanceMode, setClearanceMode] = useState(false);
   const [snapSettings, setSnapSettings] = useState<SnapSettings>(() => defaultSnapSettings());
@@ -12204,10 +15411,31 @@ function App() {
   const [showLocalProjectsDialog, setShowLocalProjectsDialog] = useState(false);
   const [showTemplatesDialog, setShowTemplatesDialog] = useState(false);
   const [pendingTemplatePlacement, setPendingTemplatePlacement] = useState<{ template: UserTemplate; components: PlacedComponent[]; anchor: {x:number;y:number}; rotation: number } | null>(null);
+  const [pendingAddPart, setPendingAddPart] = useState<{ def: ComponentDef; stamp: boolean } | null>(null);
+  const [pendingAddPreview, setPendingAddPreview] = useState<{ x: number; y: number } | null>(null);
   useEffect(() => {
     const open = () => setShowTemplatesDialog(true);
     window.addEventListener('open-template-dialog', open as EventListener);
     return () => window.removeEventListener('open-template-dialog', open as EventListener);
+  }, []);
+
+  function startPartPlacement(def: ComponentDef, stamp = false) {
+    rememberRecentPart(def);
+    setPendingAddPart({ def, stamp });
+    setPendingAddPreview(null);
+    window.dispatchEvent(new Event('starter-dismiss'));
+    setShowMobileNudge(false);
+    setTouchMode('edit');
+  }
+
+  useEffect(() => {
+    const startPlacement = (ev: Event) => {
+      const detail = (ev as CustomEvent).detail || {};
+      if (!detail.def) return;
+      startPartPlacement(detail.def, !!detail.stamp);
+    };
+    window.addEventListener('start-part-placement', startPlacement as EventListener);
+    return () => window.removeEventListener('start-part-placement', startPlacement as EventListener);
   }, []);
 
   // Sidebar visibility — on phones the panels start closed and can slide over the canvas
@@ -12218,13 +15446,28 @@ function App() {
   const [drawerCloseSwipe, setDrawerCloseSwipe] = useState<{ startX: number; startY: number } | null>(null);
   const lastComponentTapRef = useRef<{ id: string; t: number; x: number; y: number } | null>(null);
   const sidePanelOpen = leftPanelOpen || rightPanelOpen;
-  useEffect(() => {
-    if (!focusMode) return;
-    setLeftPanelOpen(false);
-    setRightPanelOpen(false);
-    setShowMobileNudge(false);
-    setComponentMenu(null);
-  }, [focusMode]);
+  function toggleFocusMode() {
+    setFocusMode(prev => {
+      if (!prev) {
+        focusRestorePanelsRef.current = { left: leftPanelOpen, right: rightPanelOpen };
+        setLeftPanelOpen(false);
+        setRightPanelOpen(false);
+        setShowMobileNudge(false);
+        setComponentMenu(null);
+        return true;
+      }
+
+      const restore = focusRestorePanelsRef.current;
+      if (restore) {
+        setLeftPanelOpen(restore.left);
+        setRightPanelOpen(restore.right);
+      }
+      focusRestorePanelsRef.current = null;
+      setShowMobileNudge(false);
+      setComponentMenu(null);
+      return false;
+    });
+  }
 
   // Export dialog
   useEffect(() => {
@@ -12240,7 +15483,7 @@ function App() {
   const [exportOptions,    setExportOptions]    = useState<ExportOptions>(DEFAULT_EXPORT_OPTIONS);
 
   // Drag: track which component is being dragged and the current preview position
-  const [dragging, setDragging] = useState<{ id: string; offX: number; offY: number } | null>(null);
+  const [dragging, setDragging] = useState<{ id: string; offX: number; offY: number; startX: number; startY: number } | null>(null);
   const [dragPreview,        setDragPreview]        = useState<Map<string, { x: number; y: number }> | null>(null);
   const [dragStartPositions, setDragStartPositions] = useState<Map<string, { x: number; y: number }> | null>(null);
   // Refs mirror state so the window mouseup handler always sees latest values
@@ -12325,6 +15568,7 @@ function App() {
   const lastSnapGuidesSignatureRef = useRef('');
   const lastDistanceGuidesAtRef = useRef(0);
   const lastDistanceGuidesSignatureRef = useRef('');
+  const lastDragPreviewSignatureRef = useRef('');
 
   function softHaptic(ms = 5) {
     try {
@@ -12516,9 +15760,13 @@ function App() {
       y1: Math.min(sel.start.y, sel.current.y),
       y2: Math.max(sel.start.y, sel.current.y),
     };
-    if ((rect.x2 - rect.x1) < 0.4 || (rect.y2 - rect.y1) < 0.4) return [];
+    if (Math.abs(rect.x2 - rect.x1) < 0.25 || Math.abs(rect.y2 - rect.y1) < 0.25) return [];
     return state.components
-      .filter(c => rectsOverlap(rect, componentMarqueeExtents(c)))
+      .filter(c => {
+        const e = componentMarqueeExtents(c);
+        const centerInside = c.x >= rect.x1 && c.x <= rect.x2 && c.y >= rect.y1 && c.y <= rect.y2;
+        return centerInside || rectsOverlap(rect, e);
+      })
       .map(c => c.id);
   }
 
@@ -12717,10 +15965,59 @@ function App() {
     setDistanceGuidesIfChanged(computeDistanceGuidesForPreview(preview));
   }
 
+  function updateDistanceGuidesForPrimary(primaryId: string, pos: { x: number; y: number }, force = false) {
+    const now = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+    // Primary-only distance guides are the fast path for multi-drag: measure
+    // from the component under the cursor, not from the whole selected group.
+    if (!force && now - lastDistanceGuidesAtRef.current < 64) return;
+    lastDistanceGuidesAtRef.current = now;
+    setDistanceGuidesIfChanged(computeDistanceGuidesForPreview(new Map([[primaryId, pos]])));
+  }
+
+  function snapDragDeltaToPrimaryBodyEdges(primaryId: string, orig: { x: number; y: number }, dx: number, dy: number): { dx: number; dy: number; guides: SnapGuide[] } {
+    const comp = state.components.find(c => c.id === primaryId);
+    if (!comp) return { dx, dy, guides: [] };
+    const tol = Math.max(0.25, snapSettings.distance);
+    const guides: SnapGuide[] = [];
+    let outDx = dx;
+    let outDy = dy;
+
+    if (snapSettings.panelEdges) {
+      const e = getRearBodySnapExtents(comp, orig.x + outDx, orig.y + outDy);
+      const leftD = Math.abs(e.x1);
+      const rightD = Math.abs(widthMM - e.x2);
+      if (leftD <= tol && leftD <= rightD) {
+        outDx -= e.x1;
+        guides.push({ axis: 'x', pos: 0, label: 'SNAP: active part → left edge' });
+      } else if (rightD <= tol) {
+        outDx += widthMM - e.x2;
+        guides.push({ axis: 'x', pos: widthMM, label: 'SNAP: active part → right edge' });
+      }
+    }
+
+    if (state.pcb.enabled && snapSettings.pcbEdges) {
+      const e = getRearBodySnapExtents(comp, orig.x + outDx, orig.y + outDy);
+      const pcbTop = state.pcb.y;
+      const pcbBottom = state.pcb.y + state.pcb.height;
+      const topD = Math.abs(e.y1 - pcbTop);
+      const bottomD = Math.abs(pcbBottom - e.y2);
+      if (topD <= tol && topD <= bottomD) {
+        outDy += pcbTop - e.y1;
+        guides.push({ axis: 'y', pos: pcbTop, label: 'SNAP: active part → PCB top' });
+      } else if (bottomD <= tol) {
+        outDy += pcbBottom - e.y2;
+        guides.push({ axis: 'y', pos: pcbBottom, label: 'SNAP: active part → PCB bottom' });
+      }
+    }
+
+    return { dx: outDx, dy: outDy, guides };
+  }
+
   function clearLiveGuides() {
     lastSnapGuidesSignatureRef.current = '';
     lastDistanceGuidesSignatureRef.current = '';
     lastDistanceGuidesAtRef.current = 0;
+    lastDragPreviewSignatureRef.current = '';
     setSnapGuides([]);
     setDistanceGuides([]);
     lastSnapHapticKeyRef.current = '';
@@ -12897,6 +16194,7 @@ function App() {
       setDragging(null);
       setDragPreview(null);
       setDragStartPositions(null);
+      lastDragPreviewSignatureRef.current = '';
       setDraggingArtwork(null);
       setArtworkDragPreview(null);
       setResizingArtwork(null);
@@ -13080,31 +16378,41 @@ function App() {
 
   function openComponentPropertiesPanel() {
     setRightPanelOpen(true);
+    window.dispatchEvent(new CustomEvent('open-right-inspector', { detail: { topTab: 'inspect', panel: 'properties' } }));
     window.setTimeout(() => {
       const right = resetRightDrawerPosition();
       if (!right) return;
       const props = right.querySelector('[data-component-properties]') as HTMLElement | null;
+      const page = right.querySelector('.right-tab-page') as HTMLElement | null;
       if (props) {
         props.classList.remove('collapsed');
         // Put the edit section near the top of the drawer instead of preserving an old scroll offset.
-        right.scrollTop = Math.max(0, props.offsetTop - 8);
+        right.scrollTop = 0;
+        if (page) page.scrollTop = Math.max(0, props.offsetTop - page.offsetTop - 8);
+        else right.scrollTop = Math.max(0, props.offsetTop - 8);
       } else {
         right.scrollTop = 0;
+        if (page) page.scrollTop = 0;
       }
     }, 60);
   }
 
   function openArtworkPropertiesPanel() {
     setRightPanelOpen(true);
+    window.dispatchEvent(new CustomEvent('open-right-inspector', { detail: { topTab: 'inspect', panel: 'properties' } }));
     window.setTimeout(() => {
       const right = resetRightDrawerPosition();
       if (!right) return;
       const props = right.querySelector('[data-artwork-properties]') as HTMLElement | null;
+      const page = right.querySelector('.right-tab-page') as HTMLElement | null;
       if (props) {
         props.classList.remove('collapsed');
-        right.scrollTop = Math.max(0, props.offsetTop - 8);
+        right.scrollTop = 0;
+        if (page) page.scrollTop = Math.max(0, props.offsetTop - page.offsetTop - 8);
+        else right.scrollTop = Math.max(0, props.offsetTop - 8);
       } else {
         right.scrollTop = 0;
+        if (page) page.scrollTop = 0;
       }
     }, 60);
   }
@@ -13128,6 +16436,30 @@ function App() {
     if (!mm) return;
 
     const el    = e.target as SVGElement;
+
+    // Placement mode should not steal clicks from existing objects.
+    // Check target first, then place only on empty panel/canvas.
+    if (pendingAddPart) {
+      const hitComponent = el.closest('[data-id]');
+      const hitText = el.closest('[data-text-id]');
+      const hitArtwork = el.closest('[data-artwork-id]');
+      const hitHandle = el.closest('[data-artwork-resize], [data-component-rotate]');
+      if (!hitComponent && !hitText && !hitArtwork && !hitHandle) {
+        e.preventDefault();
+        e.stopPropagation();
+        const x = snapToGrid(mm.x, state.grid.size);
+        const y = snapToGrid(mm.y, state.grid.size);
+        dispatch({ type: 'ADD_COMPONENT', def: pendingAddPart.def, x, y });
+        if (!e.shiftKey) {
+          setPendingAddPart(null);
+          setPendingAddPreview(null);
+        } else {
+          setPendingAddPreview({ x, y });
+        }
+        softHaptic(e.shiftKey ? 3 : 5);
+        return;
+      }
+    }
 
     if (pendingTemplatePlacement) {
       e.preventDefault();
@@ -13260,7 +16592,7 @@ function App() {
         return;
       }
 
-      setDragging({ id, offX: mm.x - comp.x, offY: mm.y - comp.y });
+      setDragging({ id, offX: mm.x - comp.x, offY: mm.y - comp.y, startX: mm.x, startY: mm.y });
 
       const newSelected = e.shiftKey
         ? [...new Set([...state.selected, ...groupIds])]
@@ -13280,10 +16612,11 @@ function App() {
       setDragPreview(initPreview);
       softHaptic(5);
     } else {
-      if (touchMode !== 'select' && isRealDesktopMouseEvent(e)) {
+      if (touchMode !== 'pan' && isRealDesktopMouseEvent(e)) {
         e.preventDefault();
         // Shift+marquee is additive: keep the current selection while drawing
-        // the selection rectangle, then merge selected ids on mouseup.
+        // the selection rectangle, then merge selected ids on mouseup. Direction
+        // does not matter: the final rect is normalized with min/max.
         if (!e.shiftKey) dispatch({ type: 'DESELECT_ALL' });
         setMarqueeSelection({ start: mm, current: mm, additive: e.shiftKey });
       } else if (touchMode !== 'select') {
@@ -13302,6 +16635,10 @@ function App() {
     if (nextCoordReadout !== lastCoordReadoutRef.current) {
       lastCoordReadoutRef.current = nextCoordReadout;
       setCoordReadout(nextCoordReadout);
+    }
+    if (pendingAddPart) {
+      const nextPending = { x: snapToGrid(mm.x, state.grid.size), y: snapToGrid(mm.y, state.grid.size) };
+      setPendingAddPreview(prev => prev && Math.abs(prev.x - nextPending.x) < 0.001 && Math.abs(prev.y - nextPending.y) < 0.001 ? prev : nextPending);
     }
     if (pendingTemplatePlacement) { setPendingTemplatePlacement({ ...pendingTemplatePlacement, anchor: { x: snapToGrid(mm.x, state.grid.size), y: snapToGrid(mm.y, state.grid.size) } }); }
 
@@ -13328,42 +16665,70 @@ function App() {
     // Update drag preview (does NOT dispatch to reducer — avoids undo stack pollution)
     if (dragging && dragStartPositions) {
       const primaryOrig = dragStartPositions.get(dragging.id)!;
-      let snappedX = snapSettings.grid ? snapToGrid(mm.x - dragging.offX, state.grid.size) : (mm.x - dragging.offX);
-      const snappedY = snapSettings.grid ? snapToGrid(mm.y - dragging.offY, state.grid.size) : (mm.y - dragging.offY);
-      let dx = snappedX - primaryOrig.x;
-      let dy = snappedY - primaryOrig.y;
+      const selectionSize = dragStartPositions.size;
+      const multiDrag = selectionSize > 1;
 
-      // Smart edge snap: the dragged component/selection snaps by its physical
-      // REAR component body footprint, not by decorative top hardware/knobs.
-      // This is especially useful for pots with large knobs and fader caps.
-      const edgeSnap = snapDragDeltaToPanelEdges(dragStartPositions, dx, dy);
-      dx = edgeSnap.dx;
-      dy = edgeSnap.dy;
+      const hardSnapActive = e.shiftKey;
+      const rawDx = mm.x - dragging.startX;
+      const rawDy = mm.y - dragging.startY;
 
-      // Center snap is now hard, not just a visual guide. If the UI says
-      // “panel center X”, the component center is exactly on that X coordinate.
-      const centerSnap = snapDragDeltaToComponentCenters(dragging.id, primaryOrig, dx, dy);
-      dx = centerSnap.dx;
-      dy = centerSnap.dy;
+      // Snap the movement delta, not the absolute component coordinate. This
+      // keeps the original grab point visually anchored and avoids the cursor
+      // jumping away when the component itself is not already grid-aligned.
+      let dx = snapSettings.grid ? snapToGrid(rawDx, state.grid.size) : rawDx;
+      let dy = snapSettings.grid ? snapToGrid(rawDy, state.grid.size) : rawDy;
+      let snappedX = primaryOrig.x + dx;
+      const snappedY = primaryOrig.y + dy;
+
+      let edgeSnap: { dx: number; dy: number; guides: SnapGuide[] } = { dx, dy, guides: [] };
+      let centerSnap: { dx: number; dy: number; guides: SnapGuide[] } = { dx, dy, guides: [] };
+
+      if (hardSnapActive) {
+        // For multi-drag, keep the group lightweight: snap and measure only
+        // from the active component under the cursor. The rest of the selection
+        // receives the same delta without expensive group-bound scans.
+        edgeSnap = multiDrag
+          ? snapDragDeltaToPrimaryBodyEdges(dragging.id, primaryOrig, dx, dy)
+          : snapDragDeltaToPanelEdges(dragStartPositions, dx, dy);
+        dx = edgeSnap.dx;
+        dy = edgeSnap.dy;
+
+        centerSnap = snapDragDeltaToComponentCenters(dragging.id, primaryOrig, dx, dy);
+        dx = centerSnap.dx;
+        dy = centerSnap.dy;
+      }
+
       snappedX = primaryOrig.x + dx;
       const snappedGuideY = primaryOrig.y + dy;
 
-      const newPreview = new Map<string, { x: number; y: number }>();
-      dragStartPositions.forEach((origPos, cid) => {
-        newPreview.set(cid, { x: origPos.x + dx, y: origPos.y + dy });
-      });
-      setDragPreview(newPreview);
-      const gridGuides = gridSnapGuidesForPosition(snappedX, snappedGuideY);
-      const visualCenterGuides = computeSnapGuidesFor(dragging.id, snappedX, snappedGuideY)
-        .filter(g => !centerSnap.guides.some(s => s.axis === g.axis && Math.abs(s.pos - g.pos) < 0.001 && s.label === g.label));
+      // Do not rebuild a Map/re-render if the snapped delta did not actually
+      // change. This happens a lot with grid snapping.
+      const previewSig = `${selectionSize}:${dx.toFixed(3)}:${dy.toFixed(3)}`;
+      if (previewSig !== lastDragPreviewSignatureRef.current) {
+        lastDragPreviewSignatureRef.current = previewSig;
+        const newPreview = new Map<string, { x: number; y: number }>();
+        dragStartPositions.forEach((origPos, cid) => {
+          newPreview.set(cid, { x: origPos.x + dx, y: origPos.y + dy });
+        });
+        setDragPreview(newPreview);
+
+        if (multiDrag) {
+          updateDistanceGuidesForPrimary(dragging.id, { x: snappedX, y: snappedGuideY });
+        } else {
+          updateDistanceGuidesForPreview(newPreview);
+        }
+      }
+
+      const gridGuides = snapSettings.grid ? gridSnapGuidesForPosition(snappedX, snappedGuideY) : [];
+      const visualCenterGuides = hardSnapActive ? computeSnapGuidesFor(dragging.id, snappedX, snappedGuideY)
+        .filter(g => !centerSnap.guides.some(s => s.axis === g.axis && Math.abs(s.pos - g.pos) < 0.001 && s.label === g.label)) : [];
       const nextGuides = uniqueSnapGuides([...centerSnap.guides, ...edgeSnap.guides, ...visualCenterGuides, ...gridGuides]);
       setSnapGuidesIfChanged(nextGuides);
       const snapKey = snapGuidesSignature(nextGuides);
-      if (snapKey && snapKey !== lastSnapHapticKeyRef.current) {
+      if (hardSnapActive && snapKey && snapKey !== lastSnapHapticKeyRef.current) {
         lastSnapHapticKeyRef.current = snapKey;
-        softHaptic(8);
+        softHaptic(multiDrag ? 4 : 8);
       }
-      updateDistanceGuidesForPreview(newPreview);
     } else if (!dragging) {
       clearLiveGuides();
     }
@@ -13468,6 +16833,7 @@ function App() {
       setDragging(null);
       setDragPreview(null);
       setDragStartPositions(null);
+      lastDragPreviewSignatureRef.current = '';
       setDraggingArtwork(null);
       setArtworkDragPreview(null);
       setResizingArtwork(null);
@@ -13709,7 +17075,26 @@ function App() {
   // ── Zoom ───────────────────────────────────────────────────────────────
   function onWheel(e: React.WheelEvent<HTMLDivElement>) {
     e.preventDefault();
-    setZoom(z => clampZoom(z * (e.deltaY < 0 ? 1.1 : 0.9)));
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const cursor = {
+      x: e.clientX - rect.left - rect.width / 2,
+      y: e.clientY - rect.top - rect.height / 2,
+    };
+
+    setZoom(prevZoom => {
+      const nextZoom = clampZoom(prevZoom * (e.deltaY < 0 ? 1.1 : 0.9));
+      const zoomRatio = nextZoom / prevZoom;
+
+      // Zoom toward the mouse cursor: keep the canvas point under the cursor
+      // pinned in screen space instead of zooming toward the viewport center.
+      setPan(prevPan => ({
+        x: cursor.x - (cursor.x - prevPan.x) * zoomRatio,
+        y: cursor.y - (cursor.y - prevPan.y) * zoomRatio,
+      }));
+
+      return nextZoom;
+    });
   }
 
   // ── Keyboard shortcuts ─────────────────────────────────────────────────
@@ -13735,7 +17120,7 @@ function App() {
       }
       if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.toLowerCase() === 'f') {
         e.preventDefault();
-        setFocusMode(v => !v);
+        toggleFocusMode();
         return;
       }
 
@@ -13756,6 +17141,7 @@ function App() {
           dispatch({ type: 'ROTATE_SELECTED', degrees: 90 });
         }
       } else if (e.key === 'Escape') {
+        if (pendingAddPart) { setPendingAddPart(null); setPendingAddPreview(null); return; }
         if (pending) { setPendingTemplatePlacement(null); return; }
         setRuler(null);
         dispatch({ type: 'DESELECT_ALL' });
@@ -13884,8 +17270,9 @@ function App() {
     try { raw = JSON.parse(payload.data); } catch { return alert('Autosave is corrupted.'); }
     const result = validateAndNormalize(raw);
     if (!result.ok) return alert(`Autosave import failed: ${result.error}`);
-    if (!confirm(`Restore autosave (${payload.label}) and replace current layout?`)) return;
     dispatch({ type:'LOAD_STATE', state: result.state });
+    setAutosaveStatus(`Restored autosave · ${payload.label}`);
+    window.dispatchEvent(new Event('starter-dismiss'));
   }
   function clearAutosave() {
     localStorage.removeItem(AUTOSAVE_KEY);
@@ -13893,16 +17280,8 @@ function App() {
     lastAutosaveDataRef.current = '';
     setAutosaveStatus('Autosave cleared');
   }
-  useEffect(() => {
-    try {
-      const payload = readAutosavePayload();
-      if (!payload) return;
-      const kb = payload.data.length / 1024;
-      if (kb < 1) return;
-      const should = window.confirm(`Found autosaved project (${kb > 1024 ? (kb/1024).toFixed(1)+' MB' : kb.toFixed(0)+' KB'}, ${payload.label}). Restore it?`);
-      if (should) restoreAutosave();
-    } catch {}
-  }, []);
+  // Autosave restore is now offered inside the New Panel launcher.
+  // Avoid native browser confirm dialogs on startup.
 
   // ── JSON Import ────────────────────────────────────────────────────────
   function onImport(e: React.ChangeEvent<HTMLInputElement>) {
@@ -13952,6 +17331,15 @@ function App() {
     }
   }
 
+  const autosavePayloadForLauncher = readAutosavePayload();
+  const autosaveSummaryForLauncher = autosavePayloadForLauncher ? {
+    label: autosavePayloadForLauncher.label,
+    sizeLabel: autosavePayloadForLauncher.data.length > 1024 * 1024
+      ? `${(autosavePayloadForLauncher.data.length / 1024 / 1024).toFixed(1)} MB`
+      : `${Math.max(1, Math.round(autosavePayloadForLauncher.data.length / 1024))} KB`,
+  } : null;
+  const recentProjectsForLauncher = loadLocalProjects().slice(0, 3);
+
   const renderedDistanceGuides = useMemo(() => {
     if (dragging) return distanceGuides;
     if (!clearanceMode) return distanceGuides;
@@ -13960,7 +17348,7 @@ function App() {
 
   const commandItems: CommandItem[] = [
     { id:'toggle-grid', label:'Toggle grid layer', hint:'Show/hide grid overlay', run:() => dispatch({ type:'SET_LAYER_VISIBILITY', key:'grid', value:!state.layerVisibility.grid }) },
-    { id:'focus-mode', label: focusMode ? 'Exit focus mode' : 'Enter focus mode', hint:'Hide side panels and keep canvas clear', run:() => setFocusMode(v => !v) },
+    { id:'focus-mode', label: focusMode ? 'Exit focus mode' : 'Enter focus mode', hint:'Hide side panels and keep canvas clear', run:() => toggleFocusMode() },
     { id:'shortcuts', label:'Show shortcuts', hint:'Keyboard and mouse cheat sheet', run:() => setShowShortcutHelp(true) },
     { id:'view-front', label:'View: Front', hint:'Front panel mode', run:() => dispatch({ type:'SET_VIEW_MODE', mode:'front' }) },
     { id:'view-rear', label:'View: Rear', hint:'Rear bodies and keepouts', run:() => dispatch({ type:'SET_VIEW_MODE', mode:'rear' }) },
@@ -14050,6 +17438,7 @@ function App() {
           onTouchStart={onDrawerSwipeStart}
           onTouchMove={onDrawerSwipeMove}
           onTouchEnd={onDrawerSwipeEnd}
+          onStartPartPlacement={startPartPlacement}
         />
         <SVGCanvas
           svgRef={svgRef}
@@ -14076,9 +17465,29 @@ function App() {
           onWrapMouseDown={onWrapMouseDown}
           coordReadout={coordReadout}
           warnings={warnings}
+          autosaveSummary={autosaveSummaryForLauncher}
+          recentProjects={recentProjectsForLauncher}
+          onRestoreAutosave={restoreAutosave}
+          onOpenProjectFile={requestProjectFileImport}
+          onOpenRecentProjects={() => setShowLocalProjectsDialog(true)}
+          pendingAddPart={pendingAddPart}
+          pendingAddPreview={pendingAddPreview}
+          rightPanelOpen={rightPanelOpen}
         />
-        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} onToggleFocus={() => setFocusMode(v => !v)} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onOpenProductionCheck={() => setShowProductionCheck(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} />
-        <SelectionInfoStrip hidden={(sidePanelOpen && isNarrowInitial) || isNarrowInitial} />
+        <CanvasQuickAddDock hidden={sidePanelOpen && isNarrowInitial} focusMode={focusMode} onToggleFocus={toggleFocusMode} onOpenShortcuts={() => setShowShortcutHelp(true)} touchMode={touchMode} onSetTouchMode={setTouchMode} onOpenExport={() => setShowExportDialog(true)} onOpenTemplates={() => setShowTemplatesDialog(true)} onOpenProductionCheck={() => setShowProductionCheck(true)} onToggleLeftPanel={() => setLeftPanelOpen(v => !v)} onToggleRightPanel={() => setRightPanelOpen(v => !v)} leftPanelOpen={leftPanelOpen} rightPanelOpen={rightPanelOpen} warnings={warnings} />
+        {!rightPanelOpen && (
+          <div className={`project-health-pill ${warnings.some(w => w.severity === 'error') ? 'error' : warnings.length ? 'warn' : 'ok'}`}>
+            <span>{warnings.some(w => w.severity === 'error') ? 'Issues' : warnings.length ? `${warnings.length} warnings` : 'OK'}</span>
+            <small>{autosaveStatus || 'Autosave ready'}</small>
+          </div>
+        )}
+        {pendingAddPart && (
+          <div className="placement-status-pill" onMouseDown={e => e.stopPropagation()} onWheel={e => e.stopPropagation()}>
+            <strong>PLACE</strong>
+            <span>{shortPartName(pendingAddPart.def)} · Shift+click for more</span>
+            <button onClick={() => { setPendingAddPart(null); setPendingAddPreview(null); }}>Cancel</button>
+          </div>
+        )}
         {!sidePanelOpen && (
         <div
           className="mobile-mode-switch"
