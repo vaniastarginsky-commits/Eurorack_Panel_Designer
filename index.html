@@ -10607,7 +10607,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v222-mobile-no-page-zoom';
+const APP_VERSION = 'v223-mobile-placement-and-lock-fix';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -14477,7 +14477,14 @@ function SVGCanvas({
               <strong>PLACE</strong>
               <span><b>{shortPartName(pendingAddPart.def)}</b><em className="desktop-placement-help"> · Shift+click for more</em><em className="mobile-placement-help"> · tap panel to place</em></span>
               <button className={pendingAddRepeat ? 'active' : ''} onClick={() => onTogglePendingAddRepeat?.()}>{pendingAddRepeat ? 'Repeat on' : 'Repeat'}</button>
-              <button onClick={() => onCancelPendingAdd?.()}>Done</button>
+              <button onClick={() => {
+                if (pendingAddPart) {
+                  const x = pendingAddPreview ? pendingAddPreview.x : snapToGrid(widthMM / 2, state.grid.size);
+                  const y = pendingAddPreview ? pendingAddPreview.y : snapToGrid(heightMM / 2, state.grid.size);
+                  dispatch({ type: 'ADD_COMPONENT', def: pendingAddPart.def, x, y });
+                }
+                onCancelPendingAdd?.();
+              }}>Done</button>
             </div>
           )}
         </div>
@@ -16049,6 +16056,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v220 optimizes Component Library picker for phones: viewport-fitted sheet, stacked controls, 3-column grid and compact square cards.');
     ok('v221 closes the left mobile drawer before opening the Component Library picker, then opens the headless picker on the clean canvas.');
     ok('v222 prevents iOS Safari page zoom on input focus by locking viewport scaling and forcing mobile form controls to 16px while keeping canvas zoom internal.');
+    ok('v223 fixes mobile placement: Done places the pending part, touch placement has preventDefault/smart snap, Repeat keeps placement active, and mobile Lock/Unlock is unified with batch selected support.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -19759,8 +19767,11 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
     ['grid','Grid'], ['componentHoles','Holes'], ['frontShapes','Front'], ['topHardware','Hardware'],
     ['rearBodies','Bodies'], ['rearKeepouts','Keepouts'], ['pcb','PCB'], ['text','Text'], ['artwork','Artwork'], ['labels','Labels']
   ];
-  const selectedMobile = state.selected.length === 1 ? state.components.find(c => c.id === state.selected[0]) || null : null;
-  const selectedMobileCount = state.selected.length;
+  const selectedMobileItems = state.components.filter(c => state.selected.includes(c.id));
+  const selectedMobile = selectedMobileItems.length === 1 ? selectedMobileItems[0] : null;
+  const selectedMobileCount = selectedMobileItems.length;
+  const selectedMobileAllLocked = selectedMobileItems.length > 0 && selectedMobileItems.every(c => !!c.locked);
+  const selectedMobileSomeLocked = selectedMobileItems.some(c => !!c.locked);
   const selectedMobileScales = selectedMobile ? state.scaleItems.filter(sc => sc.componentId === selectedMobile.id) : [];
   const selectedMobileCategory = selectedMobile ? (selectedMobile.category ?? inferCategoryForType(selectedMobile.type)) : null;
   const selectedMobileCanKnobScale = !!selectedMobile && (selectedMobileCategory === 'potentiometer' || selectedMobileCategory === 'encoder' || isPotLike(selectedMobile));
@@ -19848,7 +19859,7 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
       <div className={`mobile-main-dock ${hidden ? 'hidden' : ''} ${dockCollapsed ? 'collapsed' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => { e.stopPropagation(); onDockTouchStart(e); }} onTouchEnd={e => { e.stopPropagation(); onDockTouchEnd(e); }}>
         <button className={mobileSheet === 'add' ? 'active' : ''} onClick={() => openSheet('add')}><b>＋</b><span>Add</span></button>
         <button className={touchMode === 'select' ? 'active' : ''} onClick={() => onSetTouchMode(touchMode === 'select' ? 'edit' : 'select')}><b>☑</b><span>{touchMode === 'select' ? 'Edit' : 'Select'}</span></button>
-        <button className={mobileSheet === 'edit' ? 'active' : ''} disabled={!selectedMobile && selectedMobileCount !== 1} onClick={() => openSheet('edit')}><b>✎</b><span>Part</span></button>
+        <button className={mobileSheet === 'edit' ? 'active' : ''} disabled={selectedMobileCount === 0} onClick={() => openSheet('edit')}><b>✎</b><span>Part</span></button>
         <button className={mobileSheet === 'view' ? 'active' : ''} onClick={() => openSheet('view')}><b>◉</b><span>View</span></button>
         <button className={mobileSheet === 'more' ? 'active' : ''} onClick={() => openSheet('more')}><b>•••</b><span>More</span></button>
       </div>
@@ -19972,21 +19983,22 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
 
             {mobileSheet === 'edit' && (
               <>
-                {!selectedMobile ? (
-                  <div className="mobile-sheet-note">Select exactly one component to edit it here.</div>
+                {selectedMobileCount === 0 ? (
+                  <div className="mobile-sheet-note">Select one or more components to edit them here.</div>
                 ) : (
                   <>
-                    <div className={`mobile-selected-card ${(selectedMobile.verificationStatus || 'approximate') === 'approximate' ? 'warn' : 'ok'}`}>
-                      <strong>{selectedMobile.ref || selectedMobile.label || selectedMobile.name}</strong>
-                      <span>{selectedMobile.name}</span>
-                      <small>{selectedMobile.manufacturer || 'Unknown maker'}{selectedMobile.partNumber ? ` · ${selectedMobile.partNumber}` : ''} · {selectedMobile.verificationStatus || 'approximate'}</small>
+                    <div className={`mobile-selected-card ${selectedMobile ? ((selectedMobile.verificationStatus || 'approximate') === 'approximate' ? 'warn' : 'ok') : 'ok'}`}>
+                      <strong>{selectedMobile ? (selectedMobile.ref || selectedMobile.label || selectedMobile.name) : `${selectedMobileCount} selected`}</strong>
+                      <span>{selectedMobile ? selectedMobile.name : `${selectedMobileCount} components`}</span>
+                      <small>{selectedMobile ? `${selectedMobile.manufacturer || 'Unknown maker'}${selectedMobile.partNumber ? ` · ${selectedMobile.partNumber}` : ''} · ${selectedMobile.verificationStatus || 'approximate'}` : `${selectedMobileSomeLocked ? 'some locked' : 'unlocked'} · batch actions`}</small>
                     </div>
                     <div className="mobile-action-grid">
-                      <button onClick={() => dispatch({ type:'DUPLICATE_COMPONENT', id:selectedMobile.id })}>Duplicate</button>
-                      <button onClick={() => dispatch({ type:'ROTATE_SELECTED', degrees:90 })}>Rotate +90°</button>
-                      <button onClick={() => dispatch({ type:'SET_COMPONENT_LOCKED', id:selectedMobile.id, locked:!selectedMobile.locked })}>{selectedMobile.locked ? 'Unlock' : 'Lock'}</button>
-                      <button className="danger" onClick={() => { dispatch({ type:'DELETE_COMPONENT', id:selectedMobile.id }); setMobileSheet(null); }}>Delete</button>
+                      <button onClick={() => dispatch({ type:'DUPLICATE_SELECTED' })}>Duplicate</button>
+                      <button onClick={() => dispatch({ type:'ROTATE_SELECTED', degrees:90 })}>Rot 90</button>
+                      <button onClick={() => dispatch({ type:'LOCK_SELECTED', locked:!selectedMobileAllLocked })}>{selectedMobileAllLocked ? 'Unlock' : 'Lock'}</button>
+                      <button className="danger" onClick={() => { dispatch({ type:'DELETE_SELECTED' }); setMobileSheet(null); }}>Delete</button>
                     </div>
+                    {selectedMobile ? (
                     <div className="mobile-sheet-section">
                       <div className="mobile-sheet-label">Position</div>
                       <div className="mobile-edit-grid">
@@ -19996,7 +20008,10 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
                         <label>Label<input type="text" value={selectedMobile.label || ''} onChange={e => dispatch({ type:'UPDATE_COMPONENT', id:selectedMobile.id, patch:{ label:e.target.value } })}/></label>
                       </div>
                     </div>
-                    <div className="mobile-sheet-section">
+                    ) : (
+                      <div className="mobile-sheet-note">Batch mode: Duplicate, Rotate, Lock/Unlock and Delete apply to all selected components.</div>
+                    )}
+                    {selectedMobile && <div className="mobile-sheet-section">
                       <div className="mobile-sheet-label">Mechanical summary</div>
                       <div className="mobile-dim-list">
                         <div><span>Hole</span><b>{selectedMobile.holeType === 'slot' ? `${selectedMobile.holeDiameter} × ${selectedMobile.slotLength ?? selectedMobile.holeDiameter} mm` : selectedMobile.holeType === 'rect' ? `${selectedMobile.holeW ?? selectedMobile.frontW ?? selectedMobile.holeDiameter} × ${selectedMobile.holeH ?? selectedMobile.frontH ?? selectedMobile.holeDiameter} mm` : `Ø ${selectedMobile.holeDiameter} mm`}</b></div>
@@ -20005,7 +20020,8 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
                         <div><span>Keepout</span><b>{selectedMobile.keepoutW} × {selectedMobile.keepoutH} mm</b></div>
                       </div>
                     </div>
-                    <div className="mobile-sheet-section">
+                    </div>}
+                    {selectedMobile && <div className="mobile-sheet-section">
                       <div className="mobile-sheet-label">Scales</div>
                       <div className="mobile-scale-card">
                         <div><strong>{selectedMobileScales.length}</strong><span>linked scale{selectedMobileScales.length === 1 ? '' : 's'}</span></div>
@@ -22096,7 +22112,9 @@ function App() {
       clientX: t.clientX,
       clientY: t.clientY,
       target: e.target,
-      shiftKey: false,
+      // Mobile has no Shift key; use desktop smart-snap path for touch placement/drag.
+      shiftKey: true,
+      preventDefault: () => {},
       stopPropagation: () => {},
     } as unknown as React.MouseEvent<SVGSVGElement>);
   }
