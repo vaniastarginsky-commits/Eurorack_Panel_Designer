@@ -10607,7 +10607,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v223-mobile-placement-and-lock-fix';
+const APP_VERSION = 'v224-mobile-placement-syntax-hotfix';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -16057,6 +16057,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v221 closes the left mobile drawer before opening the Component Library picker, then opens the headless picker on the clean canvas.');
     ok('v222 prevents iOS Safari page zoom on input focus by locking viewport scaling and forcing mobile form controls to 16px while keeping canvas zoom internal.');
     ok('v223 fixes mobile placement: Done places the pending part, touch placement has preventDefault/smart snap, Repeat keeps placement active, and mobile Lock/Unlock is unified with batch selected support.');
+    ok('v224 fixes JSX syntax in the mobile edit sheet after v223 batch/single selected wrappers.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -20019,7 +20020,6 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
                         <div><span>Depth</span><b>{selectedMobile.rearDepth} mm</b></div>
                         <div><span>Keepout</span><b>{selectedMobile.keepoutW} × {selectedMobile.keepoutH} mm</b></div>
                       </div>
-                    </div>
                     </div>}
                     {selectedMobile && <div className="mobile-sheet-section">
                       <div className="mobile-sheet-label">Scales</div>
@@ -20056,8 +20056,8 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
                           <div className="mobile-sheet-note">Scales are available for pots, encoders and faders.</div>
                         )}
                       </div>
-                    </div>
-                    {(selectedMobile.verificationStatus || 'approximate') === 'approximate' && <div className="mobile-sheet-note warn">Approximate part — verify datasheet/measured dimensions before production.</div>}
+                    </div>}
+                    {selectedMobile && (selectedMobile.verificationStatus || 'approximate') === 'approximate' && <div className="mobile-sheet-note warn">Approximate part — verify datasheet/measured dimensions before production.</div>}
                   </>
                 )}
               </>
