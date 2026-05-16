@@ -10607,7 +10607,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v224-mobile-placement-syntax-hotfix';
+const APP_VERSION = 'v225-dip8-socket-library-restore';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -10664,7 +10664,7 @@ const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
 type ComponentType = 'pot9mm' | 'pot16mm' | 'jack' | 'slimjack' |
                      'toggle' | 'led3mm' | 'encoder' | 'custom' |
                      'fader20' | 'fader20led' | 'fader35' | 'fader45' | 'tact6mm' | 'momentary12' | 'tactled' |
-                     'pot9mm_ra' | 'trimmer6mm' | 'slideSwitchMini' | 'subMiniSwitch' | 'rotary8pos' | 'customrect';
+                     'pot9mm_ra' | 'trimmer6mm' | 'slideSwitchMini' | 'subMiniSwitch' | 'rotary8pos' | 'customrect' | 'dip8socket';
 
 type ViewMode = 'front' | 'rear' | 'drill' | 'combined';
 type TopHardwareStyle = 'classic' | 'realistic';
@@ -10936,6 +10936,7 @@ function inferCategoryForType(type: ComponentType): ComponentDef['category'] {
   if (type === 'led3mm') return 'led';
   if (type === 'encoder') return 'encoder';
   if (type === 'fader20' || type === 'fader20led' || type === 'fader35' || type === 'fader45') return 'fader';
+  if (type === 'dip8socket') return 'custom';
   return 'custom';
 }
 
@@ -10956,6 +10957,7 @@ const COMPONENT_LIBRARY: ComponentDef[] = [
   { type: 'subMiniSwitch', name: 'Dailywell 5SES1S105M2RES Sub-mini Switch', holeDiameter: 1.8, frontDiameter: 5.0, rearBodyW: 5.0, rearBodyH: 9.5, rearDepth: 8.0, keepoutW: 7.0, keepoutH: 11.0, minSpacing: 1.0, holeType: 'rect', holeW: 3.2, holeH: 1.8, frontShape: 'rect', frontW: 5.0, frontH: 9.5, manufacturer: 'Dailywell / ChipDip', partNumber: '5SES1S105M2RES / 5SESP0005', category: 'switch', verificationStatus: 'datasheet', verification: 'Dailywell 5SES1S105M2RES / 5SESP0005 Sub-Miniature Slide Switch. Drawing shows 5.0×9.5mm face/body, 8.0mm body depth, actuator protrusion about 2.2mm, actuator/slider feature about 2.95mm, three PC pins at 2.54mm pitch with Ø1.0mm PCB holes, IP67 epoxy-sealed SPDT ON-NONE-ON function. Panel opening is modeled as a 3.2×1.8mm actuator slot with clearance; verify exact panel cutout against your mechanical mounting style.' },
   { type: 'rotary8pos', name: 'Alpha SR1712F 8-position Rotary Switch', holeDiameter: 9.0, frontDiameter: 14.0, knobEnabled: true, knobDiameter: 15.0, rearBodyW: 17.2, rearBodyH: 18.3, rearDepth: 7.5, keepoutW: 19.5, keepoutH: 20.5, minSpacing: 2.0, manufacturer: 'Alpha / Thonk', partNumber: 'SR1712F-0108-20F0A-N9-N', category: 'switch', verificationStatus: 'datasheet', verification: 'Alpha SR1712F-0108-20F0A-N9-N 8-position rotary switch, as sold by Thonk for the Turing Machine Length parameter. Datasheet drawing: M9×0.75 threaded bushing, Ø6.0 D-shaft, L=20mm shaft version with F=12mm, body/front envelope 17.2×18.3mm, rear body depth around 7.5mm, washer Ø14.0/Ø9.1×0.4mm, nut 11.0mm across flats ×2.0mm thick, PCB footprint 10 pins Ø0.9mm plus 2×Ø2.0mm stopper holes. Panel hole modeled as Ø9.0mm for the bushing; washer/front visual modeled as Ø14mm with 15mm knob preview.' },
   { type: 'custom',      name: 'Custom Hole', holeDiameter: 5.0, frontDiameter: 7.0, rearBodyW: 0, rearBodyH: 0, rearDepth: 0, keepoutW: 8.0, keepoutH: 8.0, minSpacing: 1.0, category: 'custom', verificationStatus: 'approximate', verification: 'User-defined circular cutout.' },
+  { type: 'dip8socket', name: 'DIP-8 IC Socket', holeDiameter: 7.62, frontDiameter: 10.6, rearBodyW: 10.16, rearBodyH: 7.62, rearDepth: 4.2, keepoutW: 12.5, keepoutH: 10.0, minSpacing: 1.0, holeType: 'rect', holeW: 10.16, holeH: 7.62, frontShape: 'rect', frontW: 10.8, frontH: 8.2, category: 'custom', manufacturer: 'Generic', partNumber: 'DIP-8 / 2.54mm IC socket', verificationStatus: 'approximate', verification: 'DIP-8 IC socket/front-panel cutout placeholder: 2.54mm pitch, 7.62mm row spacing, about 10.16×7.62mm socket footprint. Verify the exact socket body, bezel/cutout clearance and panel mounting method before production.' },
   { type: 'customrect',  name: 'Custom Rectangle', holeDiameter: 5.0, frontDiameter: 8.0, rearBodyW: 0, rearBodyH: 0, rearDepth: 0, keepoutW: 10.0, keepoutH: 8.0, minSpacing: 1.0, holeType: 'rect', holeW: 10.0, holeH: 6.0, frontShape: 'rect', frontW: 10.0, frontH: 6.0, category: 'custom', verificationStatus: 'approximate', verification: 'User-defined rectangular cutout.' },
   { type: 'fader20',    name: 'Alpha RA2045F 20mm Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 35.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 6.0, faderHandleH: 5.5, manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20 mechanical reference', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha RA2045F-20 illuminated slide series datasheet: single unit, 20mm travel, PC board vertical terminal, 7mm mounting height. For T=20mm: rear/PCB body length T+10 = 30mm, front rail/slot visual class T+11 = 31mm, practical actuator slot modeled as 3.0×27.0mm, overall metal/keepout envelope class T+15 = 35mm. LC insulated lever drawing shows approx 6.0mm top width, 5.5mm inner width, 6.6mm base, lever length L=10/15mm options.' },
   { type: 'fader20led', name: 'Alpha RA2045F-20 LED Slider', holeDiameter: 3.0, frontDiameter: 6.4, rearBodyW: 6.6, rearBodyH: 30.0, rearDepth: 7.0, keepoutW: 8.0, keepoutH: 35.0, minSpacing: 1.5, holeType: 'slot', slotLength: 27.0, frontShape: 'slot', frontW: 6.4, frontH: 31.0, faderHandleW: 3.2, faderHandleH: 4.4, topColor: '#ff2b2b', manufacturer: 'Taiwan Alpha', partNumber: 'RA2045F-20R-15LC-B10K-C', category: 'fader', verificationStatus: 'datasheet', verification: 'Taiwan Alpha RA2045F-20 illuminated slide datasheet: single unit, 20mm travel, PC board vertical terminal, LED colors A/B/G/R, 7mm mounting height. For T=20mm: rear/PCB body length T+10 = 30mm, front rail/slot visual class T+11 = 31mm, practical actuator slot modeled as 3.0×27.0mm, overall metal/keepout envelope class T+15 = 35mm. LC insulated lever drawing shows approx 6.0mm top width, 5.5mm inner width, 6.6mm base, lever length L=10/15mm options. Visual LED cap size is intentionally kept at the previous compact 3.2×4.4mm appearance for the panel designer.' },
@@ -11173,6 +11175,14 @@ function LibraryPartPreview({ def }: { def: ComponentDef }) {
           <circle cx={cx} cy={cy} r={Math.max(3, c.frontDiameter/2)} fill={isLedLike(c) ? '#ff4141' : '#777'} stroke="rgba(255,255,255,.55)" strokeWidth=".35" />
           <circle cx={cx - 1.2} cy={cy - 1.4} r={Math.max(.9, c.frontDiameter*.16)} fill="rgba(255,255,255,.5)" />
         </g>
+      ) : c.type === 'dip8socket' ? (
+        <g>
+          <rect x={cx-7.2} y={cy-5.2} width="14.4" height="10.4" rx="1.2" fill="#171a1d" stroke="rgba(235,245,248,.72)" strokeWidth=".35"/>
+          <rect x={cx-5.8} y={cy-3.9} width="11.6" height="7.8" rx=".8" fill="#050607" stroke="rgba(185,246,255,.34)" strokeWidth=".22"/>
+          {[...Array(4)].map((_,i) => <circle key={`l-${i}`} cx={cx-5.2} cy={cy-2.9+i*1.9} r=".42" fill="#b8c0c6" />)}
+          {[...Array(4)].map((_,i) => <circle key={`r-${i}`} cx={cx+5.2} cy={cy-2.9+i*1.9} r=".42" fill="#b8c0c6" />)}
+          <path d={`M ${cx-2.2} ${cy-5.2} C ${cx-1.3} ${cy-4.25}, ${cx+1.3} ${cy-4.25}, ${cx+2.2} ${cy-5.2}`} fill="none" stroke="rgba(235,245,248,.70)" strokeWidth=".25" strokeLinecap="round"/>
+        </g>
       ) : (
         <g>
           <rect x={cx-6} y={cy-6} width="12" height="12" rx="2" fill="#151515" stroke="rgba(185,246,255,.65)" strokeWidth=".45"/>
@@ -11209,6 +11219,7 @@ const COMPONENT_TYPE_SORT_ORDER: Record<string, number> = {
   fader45: 64,
   custom: 90,
   customrect: 91,
+  dip8socket: 92,
 };
 
 function componentSortKey(def: ComponentDef): string {
@@ -16058,6 +16069,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v222 prevents iOS Safari page zoom on input focus by locking viewport scaling and forcing mobile form controls to 16px while keeping canvas zoom internal.');
     ok('v223 fixes mobile placement: Done places the pending part, touch placement has preventDefault/smart snap, Repeat keeps placement active, and mobile Lock/Unlock is unified with batch selected support.');
     ok('v224 fixes JSX syntax in the mobile edit sheet after v223 batch/single selected wrappers.');
+    ok('v225 restores DIP-8 IC Socket to the Component Library with rectangular cutout geometry and a dedicated picker preview.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
