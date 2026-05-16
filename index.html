@@ -10245,87 +10245,256 @@ body::after {
 /* v219 Mobile snap + compact dock */
 @media (max-width: 860px), (pointer: coarse) {
   :root {
-    --mobile-dock-height: 58px !important;
+    --mobile-dock-height: 54px !important;
   }
 
   .mobile-main-dock {
-    left: calc(12px + var(--safe-left)) !important;
-    right: calc(12px + var(--safe-right)) !important;
-    bottom: max(8px, calc(env(safe-area-inset-bottom, 0px) + 8px)) !important;
+    display: grid !important;
     grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    grid-auto-rows: 48px !important;
+    left: calc(8px + env(safe-area-inset-left, 0px)) !important;
+    right: calc(8px + env(safe-area-inset-right, 0px)) !important;
+    bottom: max(8px, calc(env(safe-area-inset-bottom, 0px) + 6px)) !important;
     gap: 5px !important;
     padding: 6px !important;
-    border-radius: 19px !important;
+    border-radius: 20px !important;
     min-height: 0 !important;
-    background: rgba(7, 10, 12, .90) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    height: auto !important;
+    max-height: 62px !important;
+    overflow: hidden !important;
   }
 
   .mobile-main-dock button {
     min-height: 44px !important;
     height: 44px !important;
+    padding: 3px 2px !important;
     border-radius: 15px !important;
-    padding: 3px 4px !important;
-    gap: 2px !important;
+    gap: 1px !important;
     font-size: 11px !important;
     line-height: 1.05 !important;
   }
 
-  .mobile-main-dock button .dock-icon,
-  .mobile-main-dock button svg,
-  .mobile-main-dock button .icon {
-    width: 18px !important;
-    height: 18px !important;
-    font-size: 18px !important;
+  .mobile-main-dock button b {
+    font-size: 19px !important;
+    line-height: 18px !important;
+    margin: 0 !important;
   }
 
-  .mobile-main-dock .dock-label,
-  .mobile-main-dock button span:not(.dock-icon) {
+  .mobile-main-dock button span {
     font-size: 10.5px !important;
-    line-height: 1.05 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
   }
 
-  .mobile-main-dock button[disabled],
-  .mobile-main-dock .disabled {
-    opacity: .42 !important;
-  }
-
-  .mobile-main-dock.collapsed {
-    min-height: 0 !important;
-    height: 40px !important;
-    padding: 4px 8px !important;
+  /* If legacy/selection buttons ever add a 6th item, keep the dock compact by
+     hiding the least critical lock shortcut; lock is still available in Part. */
+  .mobile-main-dock button:nth-child(6) {
+    display: none !important;
   }
 
   .mobile-bottom-sheet {
-    bottom: max(72px, calc(env(safe-area-inset-bottom, 0px) + 68px)) !important;
+    bottom: max(70px, calc(env(safe-area-inset-bottom, 0px) + 66px)) !important;
   }
 
-  .canvas-wrap {
-    padding-bottom: 62px !important;
+  .mobile-dock-restore {
+    bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) + 12px)) !important;
   }
 }
 
-@media (max-width: 420px), (pointer: coarse) {
+@media (max-width: 390px), (pointer: coarse) {
   .mobile-main-dock {
     grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
     gap: 4px !important;
+    padding: 5px !important;
+  }
+  .mobile-main-dock button span {
+    font-size: 9.5px !important;
+  }
+  .mobile-main-dock button b {
+    font-size: 17px !important;
+  }
+}
+
+
+/* v220 Mobile Component Picker Fit
+   Phone picker must be a real bottom/top sheet sized to visual viewport,
+   not the desktop 624px square modal. */
+@media (max-width: 860px), (pointer: coarse) {
+  .component-library-popover {
+    left: max(8px, env(safe-area-inset-left, 0px) + 8px) !important;
+    right: max(8px, env(safe-area-inset-right, 0px) + 8px) !important;
+    top: max(62px, env(safe-area-inset-top, 0px) + 54px) !important;
+    bottom: max(76px, env(safe-area-inset-bottom, 0px) + 70px) !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    min-width: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    padding: 10px !important;
+    gap: 8px !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background:
+      radial-gradient(circle at 18% 10%, rgba(46,233,255,.18), transparent 42%),
+      linear-gradient(180deg, rgba(18,24,28,.82), rgba(5,8,11,.86)) !important;
   }
 
-  .mobile-main-dock button {
-    min-height: 40px !important;
-    height: 40px !important;
-    border-radius: 14px !important;
+  .component-library-popover-head {
+    min-height: 30px !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+  }
+
+  .component-library-popover-head strong {
+    font-size: 13px !important;
+    letter-spacing: .08em !important;
+  }
+
+  .component-library-popover-head span {
+    font-size: 10px !important;
+    margin-top: 1px !important;
+  }
+
+  .component-library-popover-head button {
+    width: 32px !important;
+    min-height: 32px !important;
+    height: 32px !important;
+    border-radius: 999px !important;
+    flex: 0 0 32px !important;
+  }
+
+  .component-library-popover-controls {
+    grid-template-columns: 1fr !important;
+    gap: 7px !important;
+    flex: 0 0 auto !important;
+  }
+
+  .component-library-popover-controls .mini-input,
+  .component-library-popover-controls select {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 36px !important;
+    height: 36px !important;
+    font-size: 12px !important;
+    border-radius: 13px !important;
+    padding: 6px 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .component-library-popover .popover-component-grid {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: 116px !important;
+    gap: 8px !important;
+    padding: 2px 2px 10px !important;
+    align-content: start !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .component-library-popover .component-icon-card,
+  .component-library-popover .component-icon-card.comp-lib-item,
+  .component-library-popover .component-icon-card.real-part-tile {
+    height: 116px !important;
+    min-height: 116px !important;
+    max-height: 116px !important;
+    grid-template-rows: 68px 24px 10px !important;
+    padding: 8px 5px 7px !important;
+    border-radius: 16px !important;
+  }
+
+  .component-library-popover .component-icon-preview {
+    height: 68px !important;
+    min-height: 68px !important;
+    max-height: 68px !important;
+  }
+
+  .component-library-popover .component-icon-preview::before {
+    width: 54px !important;
+    height: 54px !important;
+    border-radius: 16px !important;
+  }
+
+  .component-library-popover .component-icon-preview svg,
+  .component-library-popover .component-icon-preview canvas {
+    width: 52px !important;
+    height: 52px !important;
+    max-width: 52px !important;
+    max-height: 52px !important;
+  }
+
+  .component-library-popover .component-icon-name {
+    height: 23px !important;
+    max-height: 23px !important;
+    font-size: 9.2px !important;
+    line-height: 1.05 !important;
+    white-space: normal !important;
+  }
+
+  .component-library-popover .component-icon-meta {
+    height: 9px !important;
+    max-height: 9px !important;
+    font-size: 7px !important;
+  }
+
+  .component-library-popover .component-icon-card .part-favorite-mini {
+    top: 6px !important;
+    right: 6px !important;
+    width: 14px !important;
+    height: 14px !important;
     font-size: 10px !important;
   }
 
-  .mobile-main-dock .dock-label,
-  .mobile-main-dock button span:not(.dock-icon) {
-    font-size: 9.8px !important;
+  .component-library-popover .library-load-more {
+    flex: 0 0 auto !important;
+    min-height: 32px !important;
+    height: 32px !important;
+  }
+}
+
+/* Very narrow iPhones: keep 3 columns but shrink cards a little more. */
+@media (max-width: 390px), (pointer: coarse) {
+  .component-library-popover .popover-component-grid {
+    grid-auto-rows: 106px !important;
+    gap: 7px !important;
   }
 
-  .mobile-bottom-sheet {
-    bottom: max(66px, calc(env(safe-area-inset-bottom, 0px) + 62px)) !important;
+  .component-library-popover .component-icon-card,
+  .component-library-popover .component-icon-card.comp-lib-item,
+  .component-library-popover .component-icon-card.real-part-tile {
+    height: 106px !important;
+    min-height: 106px !important;
+    max-height: 106px !important;
+    grid-template-rows: 60px 23px 9px !important;
+    padding: 7px 4px 6px !important;
+  }
+
+  .component-library-popover .component-icon-preview {
+    height: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
+  }
+
+  .component-library-popover .component-icon-preview::before {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .component-library-popover .component-icon-preview svg,
+  .component-library-popover .component-icon-preview canvas {
+    width: 46px !important;
+    height: 46px !important;
+    max-width: 46px !important;
+    max-height: 46px !important;
   }
 }
 
@@ -10343,7 +10512,7 @@ body::after {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v219-mobile-snap-compact-dock';
+const APP_VERSION = 'v220-mobile-component-picker-fit';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -15772,7 +15941,8 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v216 improves mobile SVG crispness by removing forced GPU/raster compositing and SVG filters on touch devices.');
     ok('v217 improves mobile Fit by preventing SVG flex-shrink and using a stronger mobile fit zoom.');
     ok('v218 adds KiCad .kicad_pcb import V1: reads footprints, refs, Edge.Cuts, drill/slot geometry and creates front-panel components with exact relative positions.');
-    ok('v219 enables smart snap during mobile touch drag and compacts the mobile bottom dock/buttons to reclaim canvas space.');
+    ok('v219 restores mobile snapping by routing touch drag through the Shift smart-snap path and compacts the mobile bottom dock into one short row.');
+    ok('v220 optimizes Component Library picker for phones: viewport-fitted sheet, stacked controls, 3-column grid and compact square cards.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -21878,9 +22048,9 @@ function App() {
     onSVGMouseMove({
       clientX: t.clientX,
       clientY: t.clientY,
-      // Mobile has no Shift key. Use touch drag as snap-enabled editing so
-      // components/text behave like desktop Shift-drag.
-      shiftKey: !!(dragging || draggingText),
+      // Mobile has no Shift key; touch drag should use the same smart snapping
+      // path as desktop Shift-drag.
+      shiftKey: true,
     } as unknown as React.MouseEvent<SVGSVGElement>);
   }
 
