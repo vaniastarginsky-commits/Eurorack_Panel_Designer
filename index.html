@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#07090b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -10507,6 +10507,92 @@ body::after {
   }
 }
 
+
+/* v222 Mobile No Page Zoom
+   iOS Safari zooms the whole page when focusing inputs below 16px.
+   Keep browser/page zoom locked, and let only the SVG panel/canvas zoom logic work. */
+html,
+body {
+  touch-action: manipulation;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (max-width: 860px), (pointer: coarse) {
+  html,
+  body,
+  #root,
+  .app {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 16px !important;
+  }
+
+  /* Keep text visually compact by reducing padding/height instead of font-size.
+     This avoids Safari focus zoom without making the UI huge. */
+  .component-library-popover input,
+  .component-library-popover select,
+  .mobile-bottom-sheet input,
+  .mobile-bottom-sheet select,
+  .mobile-bottom-sheet textarea,
+  .sidebar-left input,
+  .sidebar-left select,
+  .sidebar-left textarea,
+  .sidebar-right input,
+  .sidebar-right select,
+  .sidebar-right textarea,
+  .mini-input,
+  .field-row input,
+  .field-row select,
+  .field-row textarea {
+    font-size: 16px !important;
+    line-height: 1.15 !important;
+    transform-origin: left center;
+  }
+
+  .component-library-popover-controls .mini-input,
+  .component-library-popover-controls select {
+    font-size: 16px !important;
+    min-height: 40px !important;
+    height: 40px !important;
+  }
+
+  .mobile-add-search {
+    font-size: 16px !important;
+    min-height: 40px !important;
+  }
+
+  /* Canvas is the only place where intentional zoom/pan should happen. */
+  .canvas-wrap,
+  .panel-canvas-svg {
+    touch-action: none !important;
+  }
+
+  /* Prevent accidental text selection/callout during editor gestures. */
+  .app,
+  .workspace,
+  .canvas-wrap,
+  .mobile-main-dock,
+  .mobile-bottom-sheet {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  input,
+  textarea {
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -10521,7 +10607,7 @@ body::after {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v221-mobile-picker-closes-left-panel';
+const APP_VERSION = 'v222-mobile-no-page-zoom';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -15962,6 +16048,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v219 restores mobile snapping by routing touch drag through the Shift smart-snap path and compacts the mobile bottom dock into one short row.');
     ok('v220 optimizes Component Library picker for phones: viewport-fitted sheet, stacked controls, 3-column grid and compact square cards.');
     ok('v221 closes the left mobile drawer before opening the Component Library picker, then opens the headless picker on the clean canvas.');
+    ok('v222 prevents iOS Safari page zoom on input focus by locking viewport scaling and forcing mobile form controls to 16px while keeping canvas zoom internal.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
