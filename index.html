@@ -10498,6 +10498,15 @@ body::after {
   }
 }
 
+
+/* v221: opening mobile Component Picker from the left drawer closes the drawer first.
+   Keep picker above mobile UI once it appears. */
+@media (max-width: 860px), (pointer: coarse) {
+  .component-library-popover {
+    z-index: 6200 !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -10512,7 +10521,7 @@ body::after {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v220-mobile-component-picker-fit';
+const APP_VERSION = 'v221-mobile-picker-closes-left-panel';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -14781,7 +14790,16 @@ function ComponentLibraryPanel({ onStartPartPlacement, headless = false }: { onS
       <button
         ref={triggerRef}
         className={`component-library-launcher ${libraryOpen ? 'active' : ''}`}
-        onClick={() => setLibraryOpen(v => !v)}
+        onClick={() => {
+          const isMobilePicker = window.matchMedia?.('(max-width: 860px), (pointer: coarse)').matches;
+          if (isMobilePicker) {
+            setLibraryOpen(false);
+            window.dispatchEvent(new Event('close-left-panel'));
+            window.setTimeout(() => window.dispatchEvent(new CustomEvent('open-component-library-picker')), 180);
+            return;
+          }
+          setLibraryOpen(v => !v);
+        }}
       >
         <span className="launcher-icon-grid">▦</span>
         <span>
@@ -15943,6 +15961,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v218 adds KiCad .kicad_pcb import V1: reads footprints, refs, Edge.Cuts, drill/slot geometry and creates front-panel components with exact relative positions.');
     ok('v219 restores mobile snapping by routing touch drag through the Shift smart-snap path and compacts the mobile bottom dock into one short row.');
     ok('v220 optimizes Component Library picker for phones: viewport-fitted sheet, stacked controls, 3-column grid and compact square cards.');
+    ok('v221 closes the left mobile drawer before opening the Component Library picker, then opens the headless picker on the clean canvas.');
     ok('Desktop left sidebar width matches the right sidebar for wider component cards.');
     ok('Component selection rotate handle is removed from the canvas; rotation remains available through commands/buttons.');
     hasLayerState ? ok('Layer Manager state is present: visibility/opacity/export flags.') : err('Layer Manager state is missing required fields.');
@@ -20340,6 +20359,15 @@ function App() {
   const [sidebarSwipe, setSidebarSwipe] = useState<{ startX: number; startY: number; active: boolean } | null>(null);
   const [drawerCloseSwipe, setDrawerCloseSwipe] = useState<{ startX: number; startY: number } | null>(null);
   const lastComponentTapRef = useRef<{ id: string; t: number; x: number; y: number } | null>(null);
+  useEffect(() => {
+    function closeLeftPanelFromPicker() {
+      setLeftPanelOpen(false);
+      setShowMobileNudge(false);
+    }
+    window.addEventListener('close-left-panel', closeLeftPanelFromPicker);
+    return () => window.removeEventListener('close-left-panel', closeLeftPanelFromPicker);
+  }, []);
+
   const sidePanelOpen = leftPanelOpen || rightPanelOpen;
   function toggleFocusMode() {
     setFocusMode(prev => {
