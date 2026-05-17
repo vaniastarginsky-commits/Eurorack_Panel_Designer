@@ -11201,6 +11201,177 @@ body {
   .app:not(.has-mobile-selection) .mobile-selection-actions { display: none !important; }
 }
 
+
+
+/* v256: mobile one selected-control bar only.
+   The legacy desktop SelectionActionToolbar duplicates the newer mobile-selection-actions rail
+   on phones, so hide it on touch/narrow screens and keep it desktop-only. */
+@media (max-width: 860px), (pointer: coarse) {
+  .selection-action-toolbar {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .app.has-mobile-selection .mobile-selection-actions {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 12px) !important;
+  }
+
+  .app.has-mobile-selection .mobile-selection-actions::before {
+    content: 'SELECTED';
+  }
+}
+
+
+/* v257: mobile cleanup — remove legacy mobile controls, keep one clean thumb workflow.
+   Goal: on phones there is either the main dock OR the selected-action rail, never both,
+   and no hidden/legacy strips are allowed to reserve visual space or intercept taps. */
+@media (max-width: 860px), (pointer: coarse) {
+  :root {
+    --mobile-clean-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+    --mobile-clean-bar-h: 58px;
+  }
+
+  /* Legacy / duplicate mobile UI surfaces: keep them out of the phone workflow. */
+  .mobile-mode-switch,
+  .mobile-selected-count,
+  .selection-info-strip,
+  .selection-info-strip.right-panel-open,
+  .selection-measure-float,
+  .selection-action-toolbar,
+  .canvas-quick-dock,
+  .project-health-pill {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* Normal state: one bottom dock. */
+  .app:not(.has-mobile-selection) .mobile-main-dock {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    bottom: var(--mobile-clean-bottom) !important;
+    min-height: var(--mobile-clean-bar-h) !important;
+    height: var(--mobile-clean-bar-h) !important;
+    padding: 6px !important;
+    gap: 6px !important;
+  }
+  .app:not(.has-mobile-selection) .mobile-selection-actions {
+    display: none !important;
+  }
+
+  /* Selected state: one action rail. Main dock is removed, not just visually moved. */
+  .app.has-mobile-selection .mobile-main-dock {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  .app.has-mobile-selection .mobile-selection-actions {
+    display: flex !important;
+    left: calc(8px + env(safe-area-inset-left, 0px)) !important;
+    right: calc(8px + env(safe-area-inset-right, 0px)) !important;
+    bottom: var(--mobile-clean-bottom) !important;
+    width: auto !important;
+    max-width: none !important;
+    min-height: var(--mobile-clean-bar-h) !important;
+    height: var(--mobile-clean-bar-h) !important;
+    padding: 6px !important;
+    gap: 6px !important;
+    border-radius: 22px !important;
+    align-items: center !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x !important;
+    scrollbar-width: none !important;
+    background: rgba(8, 12, 15, 0.90) !important;
+    border: 1px solid rgba(46, 233, 255, 0.78) !important;
+    box-shadow: 0 16px 44px rgba(0,0,0,.58), 0 0 24px rgba(46,233,255,.12) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    backdrop-filter: blur(16px) !important;
+    z-index: 1160 !important;
+  }
+  .app.has-mobile-selection .mobile-selection-actions::-webkit-scrollbar { display: none !important; }
+  .app.has-mobile-selection .mobile-selection-actions::before {
+    content: 'SELECTED';
+    flex: 0 0 auto;
+    align-self: center;
+    padding: 0 8px 0 5px;
+    color: rgba(185,246,255,.82);
+    font: 10px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    letter-spacing: .13em;
+    white-space: nowrap;
+  }
+  .app.has-mobile-selection .mobile-selection-actions button,
+  .app.has-mobile-selection .mobile-selection-actions summary {
+    flex: 0 0 auto !important;
+    min-height: 44px !important;
+    height: 44px !important;
+    padding: 7px 12px !important;
+    border-radius: 16px !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  /* While a part is selected the rail already communicates state; hide the extra mode badge. */
+  .app.has-mobile-selection .mobile-mode-pill-v250 {
+    display: none !important;
+  }
+  .app:not(.has-mobile-selection) .mobile-mode-pill-v250 {
+    top: calc(env(safe-area-inset-top, 0px) + 54px) !important;
+    transform: translateX(-50%) scale(.92) !important;
+    opacity: .84 !important;
+    pointer-events: none !important;
+  }
+
+  /* Popovers and sheets open above the single active bottom rail. */
+  .app.has-mobile-selection .mobile-nudge-pad,
+  .app.has-mobile-selection .mobile-arrange-popover {
+    bottom: calc(var(--mobile-clean-bottom) + var(--mobile-clean-bar-h) + 12px) !important;
+    z-index: 1170 !important;
+  }
+  .app.has-mobile-selection .mobile-bottom-sheet {
+    bottom: calc(var(--mobile-clean-bottom) + var(--mobile-clean-bar-h) + 10px) !important;
+    max-height: calc(100dvh - env(safe-area-inset-top, 0px) - var(--mobile-clean-bar-h) - env(safe-area-inset-bottom, 0px) - 76px) !important;
+  }
+  .app:not(.has-mobile-selection) .mobile-bottom-sheet {
+    bottom: calc(var(--mobile-clean-bottom) + var(--mobile-clean-bar-h) + 10px) !important;
+  }
+
+  /* More canvas, less chrome. */
+  .toolbar {
+    min-height: 48px !important;
+    height: 48px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+  .toolbar button { min-height: 36px !important; }
+  .canvas-wrap { padding-bottom: calc(var(--mobile-clean-bar-h) + env(safe-area-inset-bottom, 0px) + 14px) !important; }
+
+  /* Safer mobile inputs: prevent iOS auto zoom. */
+  .mobile-bottom-sheet input,
+  .mobile-bottom-sheet textarea,
+  .mobile-bottom-sheet select {
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .app.has-mobile-selection .mobile-selection-actions button,
+  .app.has-mobile-selection .mobile-selection-actions summary {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    font-size: 13px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -11215,7 +11386,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v255-mobile_single_bottom_bar';
+const APP_VERSION = 'v257-mobile_cleanup';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
