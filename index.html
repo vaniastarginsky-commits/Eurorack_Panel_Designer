@@ -10806,6 +10806,60 @@ body {
     .mobile-safe-zone-layer text { fill:#ffd89a; font-size:1.35px; paint-order:stroke; stroke:rgba(0,0,0,.65); stroke-width:.32; }
     @media (max-width:860px) { .mobile-selection-actions .quick-label-button { display:inline-flex; } .mobile-safe-zone-pill { top:72px; max-width:calc(100vw - 16px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } }
 
+
+    /* v252: mobile overlay stack + label readability polish */
+    @media (max-width: 860px), (pointer: coarse) {
+      .mobile-mode-pill-v250 {
+        top: calc(env(safe-area-inset-top, 0px) + 60px) !important;
+        bottom: auto !important;
+        z-index: 1122 !important;
+        padding: 4px 9px !important;
+        opacity: .96 !important;
+      }
+      .mobile-selection-actions {
+        left: calc(8px + env(safe-area-inset-left, 0px)) !important;
+        right: calc(8px + env(safe-area-inset-right, 0px)) !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 74px) !important;
+        width: auto !important;
+        max-width: none !important;
+        transform: none !important;
+        min-height: 40px !important;
+        padding: 4px !important;
+        gap: 4px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        touch-action: pan-x !important;
+        border-radius: 16px !important;
+        scrollbar-width: none;
+      }
+      .mobile-selection-actions::-webkit-scrollbar { display: none; }
+      .mobile-selection-actions button,
+      .mobile-selection-actions summary {
+        min-height: 32px !important;
+        padding: 4px 9px !important;
+        font-size: 12px !important;
+        border-radius: 12px !important;
+        flex: 0 0 auto !important;
+      }
+      .mobile-selected-count,
+      .selection-info-strip,
+      .canvas-wrap > .selection-info-strip,
+      .workspace-overlay .selection-info-strip {
+        display: none !important;
+        visibility: hidden !important;
+      }
+      .mobile-main-dock {
+        z-index: 1110 !important;
+      }
+      .mobile-nudge-pad {
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 122px) !important;
+        z-index: 1124 !important;
+      }
+      .mobile-bottom-sheet {
+        max-height: min(72vh, calc(100dvh - 138px)) !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -10820,7 +10874,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v251-mobile_workflow_pack_inline';
+const APP_VERSION = 'v252-mobile_label_and_overlay_polish';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -10880,6 +10934,7 @@ type ComponentType = 'pot9mm' | 'pot16mm' | 'jack' | 'slimjack' |
                      'pot9mm_ra' | 'trimmer6mm' | 'slideSwitchMini' | 'subMiniSwitch' | 'rotary8pos' | 'customrect' | 'dip8socket';
 
 type ViewMode = 'front' | 'rear' | 'drill' | 'combined';
+type ComponentLabelPosition = 'bottom' | 'top' | 'left' | 'right';
 type TopHardwareStyle = 'classic' | 'realistic';
 type HardwareRenderMode = 'auto' | 'classic' | 'realistic' | 'off';
 
@@ -10931,6 +10986,7 @@ interface PlacedComponent extends ComponentDef {
   id: string;
   ref: string;
   label: string;
+  labelPosition?: ComponentLabelPosition;
   x: number;
   y: number;
   rotation: number;
@@ -13631,6 +13687,50 @@ function previewTemplateComponents(pending: { template: UserTemplate; components
   return comps.map(c => { const dx=c.x-cx, dy=c.y-cy; return { ...c, x: pending.anchor.x + dx*co - dy*si, y: pending.anchor.y + dx*si + dy*co, rotation: ((c.rotation||0)+pending.rotation)%360 }; });
 }
 
+
+function getComponentLabelLayout(c: PlacedComponent, panelW: number) {
+  const text = c.label || c.name || '';
+  const pos = (c.labelPosition || 'bottom') as ComponentLabelPosition;
+  const bounds = getFrontBounds(c);
+  const sideGap = 2.1;
+  const verticalGap = 2.5;
+  const fontSize = 2;
+  const approxW = Math.max(2.8, text.length * fontSize * 0.54);
+  let x = c.x;
+  let y = c.y + getFrontBottomOffset(c) + verticalGap;
+  let anchor: 'start' | 'middle' | 'end' = 'middle';
+  let baseline: 'auto' | 'middle' = 'auto';
+
+  if (pos === 'top') {
+    y = c.y - getFrontTopOffset(c) - 1.8;
+    anchor = 'middle';
+  } else if (pos === 'left') {
+    x = c.x - bounds.w / 2 - sideGap;
+    y = c.y + 0.7;
+    anchor = 'end';
+    baseline = 'middle';
+  } else if (pos === 'right') {
+    x = c.x + bounds.w / 2 + sideGap;
+    y = c.y + 0.7;
+    anchor = 'start';
+    baseline = 'middle';
+  }
+
+  // Keep labels readable on narrow/mobile panels. Side labels remain horizontal;
+  // we only clamp their anchor point enough to avoid complete viewport clipping.
+  const pad = 0.7;
+  if (anchor === 'middle') {
+    const half = Math.min(approxW / 2, Math.max(0.5, panelW / 2 - pad));
+    x = Math.max(pad + half, Math.min(panelW - pad - half, x));
+  } else if (anchor === 'start') {
+    x = Math.max(pad, Math.min(panelW - pad, x));
+  } else {
+    x = Math.max(pad, Math.min(panelW - pad, x));
+  }
+
+  return { text, x, y, anchor, baseline, fontSize };
+}
+
 interface ComponentsLayerProps {
   components: PlacedComponent[];
   selectedIdSet: Set<string>;
@@ -13639,10 +13739,11 @@ interface ComponentsLayerProps {
   viewMode: ViewMode;
   warnings: CollisionWarning[];
   layers: LayerVisibility;
+  panelWidthMM: number;
   dragPerfMode?: boolean;
 }
 
-const ComponentsLayer = React.memo(function ComponentsLayer({ components, selectedIdSet, dragPreview, rotationPreview, viewMode, warnings, layers, dragPerfMode = false }: ComponentsLayerProps) {
+const ComponentsLayer = React.memo(function ComponentsLayer({ components, selectedIdSet, dragPreview, rotationPreview, viewMode, warnings, layers, panelWidthMM, dragPerfMode = false }: ComponentsLayerProps) {
   const warnIds = useMemo(() => new Set(warnings.flatMap(w => w.ids)), [warnings]);
   const errorIds = useMemo(() => new Set(warnings.filter(w => w.severity === 'error').flatMap(w => w.ids)), [warnings]);
 
@@ -13812,12 +13913,16 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Component label — front and combined views */}
-            {!useCheapDragShape && layers.labels && (viewMode === 'front' || viewMode === 'combined') && c.label && (
-              <text x={cx} y={cy + getFrontBottomOffset(c) + 2.5}
-                textAnchor="middle" fontSize={2} fill={isErr ? '#ff9a9a' : '#d6d9dc'} stroke="rgba(0,0,0,0.55)" strokeWidth={0.35} paintOrder="stroke fill">
-                {c.label}
-              </text>
-            )}
+            {!useCheapDragShape && layers.labels && (viewMode === 'front' || viewMode === 'combined') && c.label && (() => {
+              const label = getComponentLabelLayout({ ...c, x: cx, y: cy }, panelWidthMM);
+              return (
+                <text x={label.x} y={label.y}
+                  textAnchor={label.anchor} dominantBaseline={label.baseline === 'middle' ? 'middle' : undefined}
+                  fontSize={label.fontSize} fill={isErr ? '#ff9a9a' : '#d6d9dc'} stroke="rgba(0,0,0,0.55)" strokeWidth={0.35} paintOrder="stroke fill">
+                  {c.label}
+                </text>
+              );
+            })()}
 
             {/* Rear label — rear view */}
             {!useCheapDragShape && layers.labels && viewMode === 'rear' && (
@@ -14616,6 +14721,7 @@ function SVGCanvas({
             viewMode={state.viewMode}
             warnings={warnings}
             layers={state.layerVisibility}
+            panelWidthMM={widthMM}
             dragPerfMode={!!dragPreview && dragPreview.size > 8}
           />
           </g>
@@ -18293,8 +18399,8 @@ function exportSVGString(state: AppState, opts: ExportOptions): string {
       lines.push(`  <line x1="${c.x.toFixed(3)}" y1="${(c.y-cm).toFixed(3)}" x2="${c.x.toFixed(3)}" y2="${(c.y+cm).toFixed(3)}" stroke="#555" stroke-width="0.12"/>`);
     }
     if (opts.labels && !opts.drillOnly && exportLayer('labels')) {
-      const ly = (c.y + getFrontBottomOffset(c) + 2.5).toFixed(3);
-      lines.push(`  <text x="${c.x.toFixed(3)}" y="${ly}" text-anchor="middle" font-size="2" fill="#333">${escapeXml(c.label || c.name)}</text>`);
+      const label = getComponentLabelLayout(c, widthMM);
+      lines.push(`  <text x="${label.x.toFixed(3)}" y="${label.y.toFixed(3)}" text-anchor="${label.anchor}"${label.baseline === 'middle' ? ' dominant-baseline="middle"' : ''} font-size="2" fill="#333">${escapeXml(c.label || c.name)}</text>`);
     }
   }
   const bgArtLines = (opts.includeArtwork && !opts.drillOnly && exportLayer('artwork')) ? buildArtworkSVGLines(state.artworks, 'background', widthMM, heightMM, state.clipArtworkToPanel) : [];
