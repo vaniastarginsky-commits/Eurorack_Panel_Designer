@@ -10788,10 +10788,13 @@ interface ComponentDef {
   verification?: string;
 }
 
+type ComponentLabelPosition = 'bottom' | 'top' | 'left' | 'right';
+
 interface PlacedComponent extends ComponentDef {
   id: string;
   ref: string;
   label: string;
+  labelPosition?: ComponentLabelPosition;
   x: number;
   y: number;
   rotation: number;
@@ -11189,6 +11192,7 @@ function LibraryPartPreview({ def }: { def: ComponentDef }) {
     id: `preview-${def.type}-${def.name}`,
     ref: '',
     label: '',
+    labelPosition: 'bottom',
     x: 18,
     y: 18,
     rotation: 0,
@@ -11537,6 +11541,37 @@ function getFrontBottomOffset(c: ComponentDef | PlacedComponent): number {
 
   const knob = c.knobEnabled && c.knobDiameter ? c.knobDiameter / 2 : 0;
   return Math.max(face, knob);
+}
+
+function getComponentLabelPosition(c: PlacedComponent): ComponentLabelPosition {
+  return c.labelPosition === 'top' || c.labelPosition === 'left' || c.labelPosition === 'right' ? c.labelPosition : 'bottom';
+}
+
+function getFrontHalfExtent(c: ComponentDef | PlacedComponent, axis: 'x' | 'y'): number {
+  const b = getFrontBounds(c);
+  const shape = getFrontShape(c);
+  const rotation = shape !== 'circle' && typeof (c as PlacedComponent).rotation === 'number'
+    ? (c as PlacedComponent).rotation
+    : 0;
+  let face = axis === 'x' ? b.w / 2 : b.h / 2;
+  if (shape !== 'circle' && rotation !== 0) {
+    const r = degToRad(rotation);
+    face = axis === 'x'
+      ? Math.abs(Math.cos(r)) * (b.w / 2) + Math.abs(Math.sin(r)) * (b.h / 2)
+      : Math.abs(Math.sin(r)) * (b.w / 2) + Math.abs(Math.cos(r)) * (b.h / 2);
+  }
+  const knob = c.knobEnabled && c.knobDiameter ? c.knobDiameter / 2 : 0;
+  return Math.max(face, knob);
+}
+
+function componentLabelSvgProps(c: PlacedComponent, cx = c.x, cy = c.y): { x: number; y: number; textAnchor: 'start' | 'middle' | 'end'; dominantBaseline: 'middle' | 'auto'; rotate?: number } {
+  const pos = getComponentLabelPosition(c);
+  const gap = 2.5;
+  const sideGap = 2.2;
+  if (pos === 'top') return { x: cx, y: cy - getFrontHalfExtent(c, 'y') - gap, textAnchor: 'middle', dominantBaseline: 'auto' };
+  if (pos === 'left') return { x: cx - getFrontHalfExtent(c, 'x') - sideGap, y: cy, textAnchor: 'middle', dominantBaseline: 'middle', rotate: -90 };
+  if (pos === 'right') return { x: cx + getFrontHalfExtent(c, 'x') + sideGap, y: cy, textAnchor: 'middle', dominantBaseline: 'middle', rotate: 90 };
+  return { x: cx, y: cy + getFrontHalfExtent(c, 'y') + gap, textAnchor: 'middle', dominantBaseline: 'auto' };
 }
 
 function frontClearance(a: PlacedComponent, b: PlacedComponent): number {
@@ -12159,6 +12194,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
         id: crypto.randomUUID(),
         ref: nextRefForComponent(def.type, state.components),
         label: def.name,
+        labelPosition: 'bottom',
         x: action.x,
         y: action.y,
         rotation: 0,
@@ -12694,6 +12730,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           id: c.id,
           ref: c.ref,
           label: c.label,
+          labelPosition: c.labelPosition,
           x: c.x,
           y: c.y,
           rotation: c.rotation,
@@ -13673,12 +13710,25 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Component label — front and combined views */}
-            {!useCheapDragShape && layers.labels && (viewMode === 'front' || viewMode === 'combined') && c.label && (
-              <text x={cx} y={cy + getFrontBottomOffset(c) + 2.5}
-                textAnchor="middle" fontSize={2} fill={isErr ? '#ff9a9a' : '#d6d9dc'} stroke="rgba(0,0,0,0.55)" strokeWidth={0.35} paintOrder="stroke fill">
-                {c.label}
-              </text>
-            )}
+            {!useCheapDragShape && layers.labels && (viewMode === 'front' || viewMode === 'combined') && c.label && (() => {
+              const lp = componentLabelSvgProps(c, cx, cy);
+              return (
+                <text
+                  x={lp.x}
+                  y={lp.y}
+                  textAnchor={lp.textAnchor}
+                  dominantBaseline={lp.dominantBaseline}
+                  transform={lp.rotate ? `rotate(${lp.rotate}, ${lp.x}, ${lp.y})` : undefined}
+                  fontSize={2}
+                  fill={isErr ? '#ff9a9a' : '#d6d9dc'}
+                  stroke="rgba(0,0,0,0.55)"
+                  strokeWidth={0.35}
+                  paintOrder="stroke fill"
+                >
+                  {c.label}
+                </text>
+              );
+            })()}
 
             {/* Rear label — rear view */}
             {!useCheapDragShape && layers.labels && viewMode === 'rear' && (
@@ -15463,6 +15513,16 @@ function PropertiesPanel() {
           <input type="text" value={c.label}
             onChange={e => patch({ label: e.target.value })} />
         </div>
+      </div>
+
+      <div className="field-row">
+        <label>Label position</label>
+        <select value={getComponentLabelPosition(c)} onChange={e => patch({ labelPosition: e.target.value as ComponentLabelPosition })}>
+          <option value="bottom">Bottom</option>
+          <option value="top">Top</option>
+          <option value="left">Left</option>
+          <option value="right">Right</option>
+        </select>
       </div>
 
       <div className="field-row">
@@ -17370,7 +17430,7 @@ function normalizeTemplate(raw: any): UserTemplate | null {
     includeText: !!raw.includeText,
     includeScales: !!raw.includeScales,
     includeArtwork: !!raw.includeArtwork,
-    components: raw.components.map((c: any) => ({ ...sanitizePart(c), ...c, id: typeof c.id === 'string' ? c.id : crypto.randomUUID(), label: typeof c.label === 'string' ? c.label : (c.name || 'Component'), x: typeof c.x === 'number' ? c.x : 0, y: typeof c.y === 'number' ? c.y : 0, rotation: typeof c.rotation === 'number' ? c.rotation : 0, notes: typeof c.notes === 'string' ? c.notes : '' })),
+    components: raw.components.map((c: any) => ({ ...sanitizePart(c), ...c, id: typeof c.id === 'string' ? c.id : crypto.randomUUID(), label: typeof c.label === 'string' ? c.label : (c.name || 'Component'), labelPosition: c.labelPosition === 'top' || c.labelPosition === 'left' || c.labelPosition === 'right' ? c.labelPosition : 'bottom', x: typeof c.x === 'number' ? c.x : 0, y: typeof c.y === 'number' ? c.y : 0, rotation: typeof c.rotation === 'number' ? c.rotation : 0, notes: typeof c.notes === 'string' ? c.notes : '' })),
     pcb: raw.pcb && typeof raw.pcb === 'object' ? raw.pcb : undefined,
     mountingHoles: raw.mountingHoles && typeof raw.mountingHoles === 'object' ? raw.mountingHoles : undefined,
     textItems: Array.isArray(raw.textItems) ? raw.textItems : [],
@@ -18124,8 +18184,9 @@ function exportSVGString(state: AppState, opts: ExportOptions): string {
       lines.push(`  <line x1="${c.x.toFixed(3)}" y1="${(c.y-cm).toFixed(3)}" x2="${c.x.toFixed(3)}" y2="${(c.y+cm).toFixed(3)}" stroke="#555" stroke-width="0.12"/>`);
     }
     if (opts.labels && !opts.drillOnly && exportLayer('labels')) {
-      const ly = (c.y + getFrontBottomOffset(c) + 2.5).toFixed(3);
-      lines.push(`  <text x="${c.x.toFixed(3)}" y="${ly}" text-anchor="middle" font-size="2" fill="#333">${escapeXml(c.label || c.name)}</text>`);
+      const lp = componentLabelSvgProps(c);
+      const tr = lp.rotate ? ` transform="rotate(${lp.rotate.toFixed(3)} ${lp.x.toFixed(3)} ${lp.y.toFixed(3)})"` : '';
+      lines.push(`  <text x="${lp.x.toFixed(3)}" y="${lp.y.toFixed(3)}" text-anchor="${lp.textAnchor}" dominant-baseline="${lp.dominantBaseline}" font-size="2" fill="#333"${tr}>${escapeXml(c.label || c.name)}</text>`);
     }
   }
   const bgArtLines = (opts.includeArtwork && !opts.drillOnly && exportLayer('artwork')) ? buildArtworkSVGLines(state.artworks, 'background', widthMM, heightMM, state.clipArtworkToPanel) : [];
@@ -18358,8 +18419,9 @@ function exportSVG(state: AppState, opts: ExportOptions) {
     }
 
     if (opts.labels && !opts.drillOnly) {
-      const ly = (c.y + getFrontBottomOffset(c) + 2.5).toFixed(3);
-      lines.push(`  <text x="${c.x.toFixed(3)}" y="${ly}" text-anchor="middle" font-size="2" fill="#333">${escapeXml(c.label || c.name)}</text>`);
+      const lp = componentLabelSvgProps(c);
+      const tr = lp.rotate ? ` transform="rotate(${lp.rotate.toFixed(3)} ${lp.x.toFixed(3)} ${lp.y.toFixed(3)})"` : '';
+      lines.push(`  <text x="${lp.x.toFixed(3)}" y="${lp.y.toFixed(3)}" text-anchor="${lp.textAnchor}" dominant-baseline="${lp.dominantBaseline}" font-size="2" fill="#333"${tr}>${escapeXml(c.label || c.name)}</text>`);
     }
   }
 
