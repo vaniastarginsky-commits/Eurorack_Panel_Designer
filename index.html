@@ -11635,6 +11635,118 @@ body {
   }
 }
 
+
+/* v264 mobile actionbar cleanup: one clean selected rail, no duplicated pseudo labels, no clipped edge buttons */
+@media (max-width: 860px), (pointer: coarse) {
+  .app.has-mobile-selection .mobile-selection-actions::before,
+  .mobile-selection-actions::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .app.has-mobile-selection .mobile-selection-actions,
+  .mobile-selection-actions {
+    left: calc(8px + var(--safe-left)) !important;
+    right: calc(8px + var(--safe-right)) !important;
+    bottom: calc(var(--safe-bottom) + 10px) !important;
+    transform: none !important;
+    width: auto !important;
+    max-width: none !important;
+    min-height: 66px !important;
+    height: 66px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    touch-action: pan-x !important;
+    border-radius: 22px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-padding-left: 12px !important;
+    scroll-padding-right: 12px !important;
+    scrollbar-width: none !important;
+  }
+
+  .app.has-mobile-selection .mobile-selection-actions::-webkit-scrollbar,
+  .mobile-selection-actions::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .mobile-selection-actions .selected-kicker {
+    flex: 0 0 auto !important;
+    min-width: 92px !important;
+    max-width: 116px !important;
+    height: 48px !important;
+    align-self: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 10px !important;
+    border-radius: 15px !important;
+    border: 1px solid rgba(46,233,255,.18) !important;
+    background: rgba(46,233,255,.06) !important;
+    color: #9eefff !important;
+    letter-spacing: .03em !important;
+    font: 700 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+    white-space: nowrap !important;
+    text-transform: none !important;
+  }
+
+  .mobile-selection-actions button,
+  .mobile-selection-actions summary {
+    flex: 0 0 auto !important;
+    min-width: 76px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 16px !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    padding: 0 13px !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-selection-actions button.danger {
+    min-width: 70px !important;
+  }
+
+  .mobile-selection-actions details {
+    flex: 0 0 auto !important;
+  }
+
+  .mobile-selection-actions details > summary::-webkit-details-marker {
+    display: none !important;
+  }
+
+  .mobile-selection-more-popover,
+  .mobile-selection-actions .mobile-arrange-popover {
+    bottom: calc(var(--safe-bottom) + 86px) !important;
+    left: calc(8px + var(--safe-left)) !important;
+    right: calc(8px + var(--safe-right)) !important;
+    transform: none !important;
+    max-width: none !important;
+  }
+
+  .mobile-nudge-pad,
+  .mobile-nudge-popover {
+    bottom: calc(var(--safe-bottom) + 88px) !important;
+  }
+
+  .mobile-autosave-chip {
+    top: 88px !important;
+    right: calc(8px + var(--safe-right)) !important;
+    max-width: min(240px, calc(100vw - 16px)) !important;
+    opacity: .86 !important;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -11649,7 +11761,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v263-mobile_workflow_inline';
+const APP_VERSION = 'v264-mobile_actionbar_cleanup';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -17289,7 +17401,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v225 restores DIP-8 IC Socket to the Component Library with rectangular cutout geometry and a dedicated picker preview.');
     ok('v261 routes mobile Add+ to the existing Component Library picker and removes the duplicate v260 pull-up picker from the mobile flow.');
     ok('v262 renames the placement Repeat button to Multiple while keeping the same repeated-placement behavior.');
-    ok('v263 mobile workflow pack adds placement ghost defaults, fine/protect modes, context action bar, quick label double-tap, preflight/autosave chips and mobile cleanup polish.');
+    ok('v264 mobile actionbar cleanup removes duplicated SELECTED labels, normalizes the selected action rail, keeps one clean scrollable bar, and tightens mobile overlay stacking.');
     ok('v228 restores the v234 DIP-8 diode socket implementation: 10.2mm square socket body outline, 8 × Ø1.05mm pin holes, top hardware off by default.');
     ok('v229 restores visible batch Lock/Unlock controls: desktop selection toolbar and mobile selection actions both dispatch LOCK_SELECTED for the whole selection.');
     ok('v230 removes the separate Presets toolbar menu; factory/user layouts should live under Templates only.');
@@ -24518,7 +24630,7 @@ function App() {
             onMouseDown={e => e.stopPropagation()}
             onTouchStart={e => e.stopPropagation()}
           >
-            <span className="selected-kicker">SELECTED</span>
+            <span className="selected-kicker">{state.selected.length} selected</span>
             {isNarrowInitial && <button className="quick-label-button" title="Quick edit selected label" onClick={() => window.dispatchEvent(new Event('mobile-quick-label-edit'))}>Label</button>}
             <button title="Duplicate the selected components with a 5 mm offset" onClick={() => { dispatch({ type: 'DUPLICATE_SELECTED' }); showMobileToast('Duplicated'); }}>Dup</button>
             {isNarrowInitial && <button title={mobileFineMode ? 'Fine nudge: 0.10 mm' : 'Nudge: 0.25 mm'} className={showMobileNudge ? 'active' : ''} onClick={() => setShowMobileNudge(v => !v)}>Nudge</button>}
