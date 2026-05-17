@@ -12373,6 +12373,24 @@ body {
   }
 }
 
+
+/* v274 template edit/delete controls */
+.template-card-actions button {
+  min-width: 62px;
+}
+@media (max-width: 860px), (pointer: coarse) {
+  .template-card-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    width: 100%;
+  }
+  .template-card-actions button {
+    width: 100% !important;
+    min-height: 36px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -12388,7 +12406,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v273-mobile_grid_side_column_fix';
+const APP_VERSION = 'v274-templates_edit_delete';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -19114,6 +19132,120 @@ function deleteLocalTemplate(id: string) {
   localStorage.setItem(LOCAL_TEMPLATE_INDEX_KEY, JSON.stringify(ids));
 }
 
+const HIDDEN_TEMPLATE_IDS_KEY = 'eurorack_panel_designer_hidden_template_ids_v1';
+
+function hiddenTemplateIds(): Set<string> {
+  try {
+    const raw = JSON.parse(localStorage.getItem(HIDDEN_TEMPLATE_IDS_KEY) || '[]');
+    return new Set(Array.isArray(raw) ? raw.filter((x: any) => typeof x === 'string') : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveHiddenTemplateIds(ids: Set<string>) {
+  localStorage.setItem(HIDDEN_TEMPLATE_IDS_KEY, JSON.stringify([...ids]));
+}
+
+function hideTemplateEverywhere(id: string) {
+  const ids = hiddenTemplateIds();
+  ids.add(id);
+  saveHiddenTemplateIds(ids);
+  deleteLocalTemplate(id);
+}
+
+function unhideTemplate(id: string) {
+  const ids = hiddenTemplateIds();
+  if (ids.has(id)) {
+    ids.delete(id);
+    saveHiddenTemplateIds(ids);
+  }
+}
+
+function editableTemplateRecords(): (TemplateRecord & { factory?: boolean; editedFactory?: boolean })[] {
+  const hidden = hiddenTemplateIds();
+  const local = loadLocalTemplates();
+  const localById = new Map(local.map(t => [t.id, t]));
+  const factory = loadFactoryTemplateRecords()
+    .filter(t => !hidden.has(t.id))
+    .map(t => {
+      const override = localById.get(t.id);
+      return override ? { ...override, editedFactory: true } : t;
+    });
+
+  const factoryIds = new Set(loadFactoryTemplateRecords().map(t => t.id));
+  const localOnly = local.filter(t => !hidden.has(t.id) && !factoryIds.has(t.id));
+  return [...factory, ...localOnly].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
+
+function updateTemplateMetadata(record: TemplateRecord, name: string, description: string): UserTemplate | null {
+  try {
+    const t = normalizeTemplate(JSON.parse(record.data));
+    if (!t) return null;
+    const now = new Date().toISOString();
+    return {
+      ...t,
+      id: record.id,
+      name,
+      description,
+      updatedAt: now,
+      createdAt: t.createdAt || now,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function replaceTemplateContentFromState(record: TemplateRecord, state: AppState, name: string, description: string): UserTemplate | null {
+  const previous = (() => {
+    try { return normalizeTemplate(JSON.parse(record.data)); } catch { return null; }
+  })();
+  if (!previous) return null;
+
+  const kind = previous.kind;
+  const selectedSet = new Set(state.selected || []);
+  const comps = kind === 'block' && selectedSet.size > 0
+    ? state.components.filter(c => selectedSet.has(c.id))
+    : state.components;
+
+  if (comps.length === 0) {
+    alert(kind === 'block'
+      ? 'Nothing to replace with: select components first or add components to the panel.'
+      : 'Nothing to replace with: current panel has no components.');
+    return null;
+  }
+
+  const compIdSet = new Set(comps.map(c => c.id));
+  const now = new Date().toISOString();
+  return {
+    templateVersion: 1,
+    id: record.id,
+    name,
+    description,
+    kind,
+    hp: state.panel.widthHP,
+    createdAt: previous.createdAt || now,
+    updatedAt: now,
+    includeText: previous.includeText,
+    includeScales: previous.includeScales,
+    includeArtwork: previous.includeArtwork,
+    components: stripIdsFromComponents(comps),
+    pcb: kind === 'panel' ? state.pcb : undefined,
+    mountingHoles: kind === 'panel' ? state.mountingHoles : undefined,
+    textItems: previous.includeText
+      ? state.textItems.filter(t => kind === 'panel' || !t.componentId || compIdSet.has(t.componentId)).map(t => ({ ...t, id: t.id || crypto.randomUUID() }))
+      : [],
+    scaleItems: previous.includeScales
+      ? state.scaleItems.filter(sc => kind === 'panel' || !sc.componentId || compIdSet.has(sc.componentId)).map(sc => ({ ...sc, id: sc.id || crypto.randomUUID() }))
+      : [],
+    artworks: previous.includeArtwork && kind === 'panel'
+      ? state.artworks.map(a => ({ ...a, id: a.id || crypto.randomUUID() }))
+      : [],
+    customParts: state.customParts,
+  };
+}
+
+
 function exportTemplatesLibrary() {
   const templates = loadLocalTemplates().map(r => JSON.parse(r.data));
   if (templates.length === 0) { alert('No templates saved in this browser yet.'); return; }
@@ -21621,7 +21753,7 @@ function TemplateRealisticPreview({ record }: { record: TemplateRecord & { facto
 function TemplatesDialog({ onClose, onPlaceBlock }: { onClose: () => void; onPlaceBlock: (template: UserTemplate) => void }) {
   const state = useAppState();
   const dispatch = useAppDispatch();
-  const [templates, setTemplates] = useState<(TemplateRecord & { factory?: boolean })[]>(() => [...loadFactoryTemplateRecords(), ...loadLocalTemplates()]);
+  const [templates, setTemplates] = useState<(TemplateRecord & { factory?: boolean; editedFactory?: boolean })[]>(() => editableTemplateRecords());
   const [templateSearch, setTemplateSearch] = useState('');
   const [templateKind, setTemplateKind] = useState<'all'|'panel'|'block'>('all');
   const [templateSource, setTemplateSource] = useState<'all'|'factory'|'local'>('all');
@@ -21632,7 +21764,7 @@ function TemplatesDialog({ onClose, onPlaceBlock }: { onClose: () => void; onPla
     const hay = `${t.name} ${t.description} ${t.kind} ${t.hp}HP ${(t as any).factory ? 'preset factory built-in' : 'local saved'}`.toLowerCase();
     return matchesKind && matchesSource && (!q || hay.includes(q));
   });
-  function refresh() { setTemplates([...loadFactoryTemplateRecords(), ...loadLocalTemplates()]); }
+  function refresh() { setTemplates(editableTemplateRecords()); }
 
   function loadTemplate(record: TemplateRecord) {
     const t = normalizeTemplate(JSON.parse(record.data));
@@ -21668,9 +21800,36 @@ function TemplatesDialog({ onClose, onPlaceBlock }: { onClose: () => void; onPla
     onClose();
   }
 
-  function deleteTemplate(record: TemplateRecord) {
-    if (!confirm(`Delete template “${record.name}”?`)) return;
-    deleteLocalTemplate(record.id);
+  function editTemplate(record: TemplateRecord & { factory?: boolean; editedFactory?: boolean }) {
+    const current = normalizeTemplate(JSON.parse(record.data));
+    if (!current) { alert('Template is corrupted.'); return; }
+
+    const name = (prompt('Template name:', record.name) || '').trim();
+    if (!name) return;
+    const description = (prompt('Template description / notes:', record.description || '') || '').trim();
+
+    const replace = confirm(
+      'Replace this template content with the current panel?\n\nOK = replace layout/components.\nCancel = edit only name/description.'
+    );
+
+    const next = replace
+      ? replaceTemplateContentFromState(record, state, name, description)
+      : updateTemplateMetadata(record, name, description);
+
+    if (!next) { alert('Could not update template.'); return; }
+    unhideTemplate(record.id);
+    saveTemplateToBrowser(next);
+    refresh();
+  }
+
+  function deleteTemplate(record: TemplateRecord & { factory?: boolean; editedFactory?: boolean }) {
+    const source = (record as any).factory ? 'built-in preset/template' : ((record as any).editedFactory ? 'edited built-in template' : 'local template');
+    if (!confirm(`Delete ${source} “${record.name}”?\n\nThis hides/removes it in this browser. Built-in items can be restored by clearing site data or re-importing the file.`)) return;
+    if ((record as any).factory || (record as any).editedFactory) {
+      hideTemplateEverywhere(record.id);
+    } else {
+      deleteLocalTemplate(record.id);
+    }
     refresh();
   }
 
@@ -21686,7 +21845,7 @@ function TemplatesDialog({ onClose, onPlaceBlock }: { onClose: () => void; onPla
         </div>
         <div style={{ padding:12 }}>
           <div className="filter-row"><input type="text" placeholder="Search templates / presets…" value={templateSearch} onChange={e => setTemplateSearch(e.target.value)} /><select value={templateSource} onChange={e => setTemplateSource(e.target.value as any)}><option value="all">All sources</option><option value="factory">Factory presets</option><option value="local">Local templates</option></select><select value={templateKind} onChange={e => setTemplateKind(e.target.value as any)}><option value="all">All kinds</option><option value="panel">Panel</option><option value="block">Block</option></select></div>
-          <div className="template-preset-note">Factory presets: {templates.filter(t => (t as any).factory).length} · Local templates: {templates.filter(t => !(t as any).factory).length}</div>{templates.length === 0 ? (
+          <div className="template-preset-note">Factory presets: {templates.filter(t => (t as any).factory).length} · Edited built-ins: {templates.filter(t => (t as any).editedFactory).length} · Local templates: {templates.filter(t => !(t as any).factory && !(t as any).editedFactory).length}</div>{templates.length === 0 ? (
             <div style={{ color:'#888', fontSize:13, padding:12 }}>No templates found. Factory presets should always be available; try clearing the search/filter.</div>
           ) : visibleTemplates.length === 0 ? (
             <div style={{ color:'#888', fontSize:13, padding:12 }}>No templates match the filter.</div>
@@ -21695,12 +21854,13 @@ function TemplatesDialog({ onClose, onPlaceBlock }: { onClose: () => void; onPla
               <TemplateRealisticPreview record={t} />
               <div className="template-card-main">
                 <div style={{ minWidth:0 }}>
-                  <div style={{ fontWeight:800, color:'#edfaff', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{(t as any).factory ? 'Template' : (t.kind === 'block' ? 'Block' : 'Panel')} · {t.name} <span style={{ color:'#7f929a', fontWeight:500 }}>{t.hp}HP</span></div>
+                  <div style={{ fontWeight:800, color:'#edfaff', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{(t as any).factory ? 'Template' : (t as any).editedFactory ? 'Edited' : (t.kind === 'block' ? 'Block' : 'Panel')} · {t.name} <span style={{ color:'#7f929a', fontWeight:500 }}>{t.hp}HP</span></div>
                   {t.description && <div style={{ color:'#a8bac1', fontSize:12, marginTop:4, lineHeight:1.3 }}>{t.description}</div>}
                   <div style={{ color:'#7f929a', fontSize:11, marginTop:5 }}>{new Date(t.updatedAt).toLocaleString()} · {(t.sizeBytes/1024).toFixed(0)} KB · realistic preview</div>
                 </div>
                 <div className="btn-row template-card-actions">
                   <button className="primary" onClick={() => loadTemplate(t)}>{t.kind === 'block' ? 'Insert' : 'Load'}</button>{t.kind === 'block' && <button title="Place this block with a ghost preview under the cursor/finger" onClick={() => { const tpl = normalizeTemplate(JSON.parse(t.data)); if (tpl) { onPlaceBlock(tpl); onClose(); } }}>Place</button>}
+                  <button onClick={() => editTemplate(t)}>Edit</button>
                   <button className="danger" onClick={() => deleteTemplate(t)}>Delete</button>
                 </div>
               </div>
