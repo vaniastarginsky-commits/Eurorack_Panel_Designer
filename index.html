@@ -11372,6 +11372,83 @@ body {
   }
 }
 
+
+
+/* v258: mobile dock button sizing fix.
+   The normal bottom dock should use the full width with five equal, thumb-sized buttons.
+   Keep the selected action rail as the only selected-state bar; it already scrolls horizontally well. */
+@media (max-width: 860px), (pointer: coarse) {
+  .app:not(.has-mobile-selection) .mobile-main-dock:not(.collapsed) {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    gap: 7px !important;
+    padding: 6px 8px !important;
+    min-height: 64px !important;
+    height: 64px !important;
+    left: calc(10px + env(safe-area-inset-left, 0px)) !important;
+    right: calc(10px + env(safe-area-inset-right, 0px)) !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .app:not(.has-mobile-selection) .mobile-main-dock:not(.collapsed) button {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 52px !important;
+    height: 52px !important;
+    padding: 5px 4px !important;
+    border-radius: 18px !important;
+    display: grid !important;
+    grid-template-rows: 1fr auto !important;
+    place-items: center !important;
+    gap: 2px !important;
+    text-align: center !important;
+  }
+
+  .app:not(.has-mobile-selection) .mobile-main-dock:not(.collapsed) button b {
+    font-size: 18px !important;
+    line-height: 1 !important;
+    min-height: 18px !important;
+  }
+
+  .app:not(.has-mobile-selection) .mobile-main-dock:not(.collapsed) button span {
+    display: block !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11.5px !important;
+    line-height: 1.05 !important;
+  }
+
+  .app:not(.has-mobile-selection) .mobile-main-dock:not(.collapsed) button:disabled {
+    opacity: .34 !important;
+  }
+
+  /* Selected rail remains scrollable, but make sure its first label doesn't eat too much space. */
+  .app.has-mobile-selection .mobile-selection-actions::before {
+    flex: 0 0 auto !important;
+    padding-left: 8px !important;
+    padding-right: 10px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .app:not(.has-mobile-selection) .mobile-main-dock:not(.collapsed) {
+    gap: 6px !important;
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+  }
+  .app:not(.has-mobile-selection) .mobile-main-dock:not(.collapsed) button span {
+    font-size: 11px !important;
+  }
+  .app:not(.has-mobile-selection) .mobile-main-dock:not(.collapsed) button b {
+    font-size: 17px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -11386,7 +11463,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v257-mobile_cleanup';
+const APP_VERSION = 'v258-mobile_dock_button_fix';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
