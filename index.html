@@ -11376,6 +11376,13 @@ body {
 
 /* v260: mobile Add+ opens as a real pull-up component picker; keeps v259 Hide UI removal.
 */
+/* v261: Mobile Add+ now reuses the existing Component Library picker.
+   The custom v260 pull-up picker is intentionally bypassed/hidden. */
+@media (max-width: 860px), (pointer: coarse) {
+  .mobile-bottom-sheet.component-picker-sheet,
+  .mobile-component-picker { display: none !important; }
+}
+
 /* v259: remove Hide UI / Hide dock controls from mobile UI.
    The normal bottom dock should use the full width with five equal, thumb-sized buttons.
    Keep the selected action rail as the only selected-state bar; it already scrolls horizontally well. */
@@ -11549,7 +11556,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v260-mobile_add_component_picker';
+const APP_VERSION = 'v261-mobile_add_uses_library_picker';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -17187,6 +17194,7 @@ function runRuntimeSelfTest(state: AppState, warnings: CollisionWarning[]): Runt
     ok('v223 fixes mobile placement: Done places the pending part, touch placement has preventDefault/smart snap, Repeat keeps placement active, and mobile Lock/Unlock is unified with batch selected support.');
     ok('v224 fixes JSX syntax in the mobile edit sheet after v223 batch/single selected wrappers.');
     ok('v225 restores DIP-8 IC Socket to the Component Library with rectangular cutout geometry and a dedicated picker preview.');
+    ok('v261 routes mobile Add+ to the existing Component Library picker and removes the duplicate v260 pull-up picker from the mobile flow.');
     ok('v228 restores the v234 DIP-8 diode socket implementation: 10.2mm square socket body outline, 8 × Ø1.05mm pin holes, top hardware off by default.');
     ok('v229 restores visible batch Lock/Unlock controls: desktop selection toolbar and mobile selection actions both dispatch LOCK_SELECTED for the whole selection.');
     ok('v230 removes the separate Presets toolbar menu; factory/user layouts should live under Templates only.');
@@ -20987,7 +20995,13 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
   // the mobile dock's internal sheets without lifting a lot of state through App.
   useEffect(() => {
     const openEditSheet = () => { setDockCollapsed(false); setMobileSheet('edit'); };
-    const openAddSheet = () => { setDockCollapsed(false); setMobileSheet('add'); };
+    const openAddSheet = () => {
+      setOpen(false);
+      setMobileSheet(null);
+      setDockCollapsed(false);
+      window.dispatchEvent(new Event('close-left-panel'));
+      window.setTimeout(() => window.dispatchEvent(new CustomEvent('open-component-library-picker')), 80);
+    };
     const openViewSheet = () => { setDockCollapsed(false); setMobileSheet('view'); };
     const openMoreSheet = () => { setDockCollapsed(false); setMobileSheet('more'); };
     const hideDock = () => { setMobileSheet(null); setDockCollapsed(true); };
@@ -21119,7 +21133,21 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
     onSetTouchMode('edit');
   }
 
+  function openLibraryPickerFromMobileAdd() {
+    setOpen(false);
+    setMobileSheet(null);
+    setDockCollapsed(false);
+    // Use the same headless ComponentLibraryPanel picker as the left sidebar's
+    // "Open component picker" button, instead of the old custom mobile sheet.
+    window.dispatchEvent(new Event('close-left-panel'));
+    window.setTimeout(() => window.dispatchEvent(new CustomEvent('open-component-library-picker')), 80);
+  }
+
   function openSheet(sheet: 'add' | 'view' | 'more' | 'edit' | 'templates') {
+    if (sheet === 'add') {
+      openLibraryPickerFromMobileAdd();
+      return;
+    }
     setOpen(false);
     setDockCollapsed(false);
     setMobileSheet(v => v === sheet ? null : sheet);
@@ -21161,7 +21189,7 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
     if (dx > 28 && Math.abs(dx) > Math.abs(dy) * 1.15) setDockCollapsed(false);
   }
 
-  const sheetTitle = mobileSheet === 'add' ? 'Component picker' : mobileSheet === 'view' ? 'View & layers' : mobileSheet === 'edit' ? 'Mobile inspector' : mobileSheet === 'templates' ? 'Templates' : 'More tools';
+  const sheetTitle = mobileSheet === 'view' ? 'View & layers' : mobileSheet === 'edit' ? 'Mobile inspector' : mobileSheet === 'templates' ? 'Templates' : 'More tools';
 
   return (
     <>
@@ -21187,7 +21215,7 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
       </div>
 
       <div className={`mobile-main-dock ${hidden ? 'hidden' : ''} ${dockCollapsed ? 'collapsed' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => { e.stopPropagation(); onDockTouchStart(e); }} onTouchEnd={e => { e.stopPropagation(); onDockTouchEnd(e); }}>
-        <button className={mobileSheet === 'add' ? 'active' : ''} onClick={() => openSheet('add')} title="Open component picker"><b>＋</b><span>Add</span></button>
+        <button onClick={openLibraryPickerFromMobileAdd} title="Open Component Library picker"><b>＋</b><span>Add</span></button>
         <button className={touchMode === 'select' ? 'active' : ''} onClick={() => onSetTouchMode(touchMode === 'select' ? 'edit' : 'select')} title={touchMode === 'select' ? 'Multi-select is on; tap to return to single edit' : 'Single edit mode; tap to enable multi-select'}><b>{touchMode === 'select' ? '☑' : '✎'}</b><span>{touchMode === 'select' ? 'Multi ON' : 'Single'}</span></button>
         <button className={mobileSheet === 'edit' ? 'active' : ''} disabled={selectedMobileCount === 0} onClick={() => openSheet('edit')}><b>✎</b><span>Part</span></button>
         <button className={mobileSheet === 'view' ? 'active' : ''} onClick={() => openSheet('view')}><b>◉</b><span>View</span></button>
@@ -21206,51 +21234,14 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
 
       {mobileSheet && (
         <div className="mobile-sheet-backdrop" onMouseDown={() => setMobileSheet(null)}>
-          <div className={`mobile-bottom-sheet ${mobileSheet === 'add' ? 'component-picker-sheet' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
+          <div className="mobile-bottom-sheet" onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
             <div className="mobile-sheet-handle" />
             <div className="mobile-sheet-head">
               <strong>{sheetTitle}</strong>
               <button onClick={() => setMobileSheet(null)}>Close</button>
             </div>
 
-            {mobileSheet === 'add' && (
-              <div className="mobile-component-picker">
-                <div className="mobile-sheet-note">Pull-up component picker. Tap a part to place it at the panel center, then drag/snap it into position.</div>
-                <input className="mobile-add-search mobile-picker-search" value={mobileAddQuery} onChange={e => setMobileAddQuery(e.target.value)} placeholder="Search parts: jack, pot, fader, LED…" />
-                <div className="mobile-picker-cats" role="tablist" aria-label="Component categories">
-                  {([
-                    ['all','All'], ['verified','Verified'], ['potentiometer','Pots'], ['jack','Jacks'], ['fader','Faders'], ['switch','Switches'], ['led','LED'], ['encoder','Encoders'], ['custom','Custom']
-                  ] as [typeof mobileAddCategory, string][]).map(([key,label]) => (
-                    <button key={key} className={mobileAddCategory === key ? 'active' : ''} onClick={() => setMobileAddCategory(key)}>{label}</button>
-                  ))}
-                </div>
-                {!mobileAddQuery.trim() && mobileAddCategory === 'all' && (
-                  <div className="mobile-sheet-section compact-first mobile-picker-section">
-                    <div className="mobile-sheet-label">Quick picks</div>
-                    <div className="mobile-add-grid picker-quick">
-                      {commonParts.map(def => (
-                        <button key={`common-${def.type}`} title={partTooltip(def)} onClick={() => add(def)}>
-                          <PartPickerLabel def={def} />
-                          <small>{partMeta(def)}</small>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                <div className="mobile-sheet-section mobile-picker-section">
-                  <div className="mobile-sheet-label">Library <span>{allMobileParts.length} parts</span></div>
-                  <div className="mobile-add-grid full picker-library">
-                    {allMobileParts.map(def => (
-                      <button key={`all-${def.type}-${def.name}-${def.partNumber || ''}`} title={partTooltip(def)} onClick={() => add(def)}>
-                        <PartPickerLabel def={def} />
-                        <small>{partMeta(def)}</small>
-                      </button>
-                    ))}
-                    {allMobileParts.length === 0 && <div className="mobile-sheet-note">No parts found. Try another search or category.</div>}
-                  </div>
-                </div>
-              </div>
-            )}
+            {/* v261: Add uses the shared ComponentLibraryPanel picker; no duplicate mobile picker here. */}
 
             {mobileSheet === 'view' && (
               <>
@@ -21484,7 +21475,7 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
                   <div className="mobile-sheet-label">Tools</div>
                   <div className="mobile-action-grid">
                     <button className={focusMode ? 'active' : ''} onClick={onToggleFocus}>{focusMode ? 'Exit focus' : 'Focus mode'}</button>
-                    <button onClick={() => openSheet('add')}>Quick add</button>
+                    <button onClick={() => openSheet('add')}>Component picker</button>
                     <button onClick={() => { setMobileSheet(null); onOpenExport(); }}>Export preview</button>
                     <button onClick={() => openSheet('templates')}>Mobile templates</button>
                     <button onClick={() => { setMobileSheet(null); onOpenTemplates(); }}>Full templates dialog</button>
