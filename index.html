@@ -10681,7 +10681,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v232-realistic-template-previews';
+const APP_VERSION = 'v249-mobile-touch-selection-fix';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -10788,13 +10788,10 @@ interface ComponentDef {
   verification?: string;
 }
 
-type ComponentLabelPosition = 'bottom' | 'top' | 'left' | 'right';
-
 interface PlacedComponent extends ComponentDef {
   id: string;
   ref: string;
   label: string;
-  labelPosition?: ComponentLabelPosition;
   x: number;
   y: number;
   rotation: number;
@@ -11192,7 +11189,6 @@ function LibraryPartPreview({ def }: { def: ComponentDef }) {
     id: `preview-${def.type}-${def.name}`,
     ref: '',
     label: '',
-    labelPosition: 'bottom',
     x: 18,
     y: 18,
     rotation: 0,
@@ -11541,37 +11537,6 @@ function getFrontBottomOffset(c: ComponentDef | PlacedComponent): number {
 
   const knob = c.knobEnabled && c.knobDiameter ? c.knobDiameter / 2 : 0;
   return Math.max(face, knob);
-}
-
-function getComponentLabelPosition(c: PlacedComponent): ComponentLabelPosition {
-  return c.labelPosition === 'top' || c.labelPosition === 'left' || c.labelPosition === 'right' ? c.labelPosition : 'bottom';
-}
-
-function getFrontHalfExtent(c: ComponentDef | PlacedComponent, axis: 'x' | 'y'): number {
-  const b = getFrontBounds(c);
-  const shape = getFrontShape(c);
-  const rotation = shape !== 'circle' && typeof (c as PlacedComponent).rotation === 'number'
-    ? (c as PlacedComponent).rotation
-    : 0;
-  let face = axis === 'x' ? b.w / 2 : b.h / 2;
-  if (shape !== 'circle' && rotation !== 0) {
-    const r = degToRad(rotation);
-    face = axis === 'x'
-      ? Math.abs(Math.cos(r)) * (b.w / 2) + Math.abs(Math.sin(r)) * (b.h / 2)
-      : Math.abs(Math.sin(r)) * (b.w / 2) + Math.abs(Math.cos(r)) * (b.h / 2);
-  }
-  const knob = c.knobEnabled && c.knobDiameter ? c.knobDiameter / 2 : 0;
-  return Math.max(face, knob);
-}
-
-function componentLabelSvgProps(c: PlacedComponent, cx = c.x, cy = c.y): { x: number; y: number; textAnchor: 'start' | 'middle' | 'end'; dominantBaseline: 'middle' | 'auto'; rotate?: number } {
-  const pos = getComponentLabelPosition(c);
-  const gap = 2.5;
-  const sideGap = 2.2;
-  if (pos === 'top') return { x: cx, y: cy - getFrontHalfExtent(c, 'y') - gap, textAnchor: 'middle', dominantBaseline: 'auto' };
-  if (pos === 'left') return { x: cx - getFrontHalfExtent(c, 'x') - sideGap, y: cy, textAnchor: 'middle', dominantBaseline: 'middle', rotate: -90 };
-  if (pos === 'right') return { x: cx + getFrontHalfExtent(c, 'x') + sideGap, y: cy, textAnchor: 'middle', dominantBaseline: 'middle', rotate: 90 };
-  return { x: cx, y: cy + getFrontHalfExtent(c, 'y') + gap, textAnchor: 'middle', dominantBaseline: 'auto' };
 }
 
 function frontClearance(a: PlacedComponent, b: PlacedComponent): number {
@@ -12194,7 +12159,6 @@ function appReducer(state: AppState, action: AppAction): AppState {
         id: crypto.randomUUID(),
         ref: nextRefForComponent(def.type, state.components),
         label: def.name,
-        labelPosition: 'bottom',
         x: action.x,
         y: action.y,
         rotation: 0,
@@ -12730,7 +12694,6 @@ function appReducer(state: AppState, action: AppAction): AppState {
           id: c.id,
           ref: c.ref,
           label: c.label,
-          labelPosition: c.labelPosition,
           x: c.x,
           y: c.y,
           rotation: c.rotation,
@@ -13710,25 +13673,12 @@ const ComponentsLayer = React.memo(function ComponentsLayer({ components, select
             )}
 
             {/* Component label — front and combined views */}
-            {!useCheapDragShape && layers.labels && (viewMode === 'front' || viewMode === 'combined') && c.label && (() => {
-              const lp = componentLabelSvgProps(c, cx, cy);
-              return (
-                <text
-                  x={lp.x}
-                  y={lp.y}
-                  textAnchor={lp.textAnchor}
-                  dominantBaseline={lp.dominantBaseline}
-                  transform={lp.rotate ? `rotate(${lp.rotate}, ${lp.x}, ${lp.y})` : undefined}
-                  fontSize={2}
-                  fill={isErr ? '#ff9a9a' : '#d6d9dc'}
-                  stroke="rgba(0,0,0,0.55)"
-                  strokeWidth={0.35}
-                  paintOrder="stroke fill"
-                >
-                  {c.label}
-                </text>
-              );
-            })()}
+            {!useCheapDragShape && layers.labels && (viewMode === 'front' || viewMode === 'combined') && c.label && (
+              <text x={cx} y={cy + getFrontBottomOffset(c) + 2.5}
+                textAnchor="middle" fontSize={2} fill={isErr ? '#ff9a9a' : '#d6d9dc'} stroke="rgba(0,0,0,0.55)" strokeWidth={0.35} paintOrder="stroke fill">
+                {c.label}
+              </text>
+            )}
 
             {/* Rear label — rear view */}
             {!useCheapDragShape && layers.labels && viewMode === 'rear' && (
@@ -15513,16 +15463,6 @@ function PropertiesPanel() {
           <input type="text" value={c.label}
             onChange={e => patch({ label: e.target.value })} />
         </div>
-      </div>
-
-      <div className="field-row">
-        <label>Label position</label>
-        <select value={getComponentLabelPosition(c)} onChange={e => patch({ labelPosition: e.target.value as ComponentLabelPosition })}>
-          <option value="bottom">Bottom</option>
-          <option value="top">Top</option>
-          <option value="left">Left</option>
-          <option value="right">Right</option>
-        </select>
       </div>
 
       <div className="field-row">
@@ -17430,7 +17370,7 @@ function normalizeTemplate(raw: any): UserTemplate | null {
     includeText: !!raw.includeText,
     includeScales: !!raw.includeScales,
     includeArtwork: !!raw.includeArtwork,
-    components: raw.components.map((c: any) => ({ ...sanitizePart(c), ...c, id: typeof c.id === 'string' ? c.id : crypto.randomUUID(), label: typeof c.label === 'string' ? c.label : (c.name || 'Component'), labelPosition: c.labelPosition === 'top' || c.labelPosition === 'left' || c.labelPosition === 'right' ? c.labelPosition : 'bottom', x: typeof c.x === 'number' ? c.x : 0, y: typeof c.y === 'number' ? c.y : 0, rotation: typeof c.rotation === 'number' ? c.rotation : 0, notes: typeof c.notes === 'string' ? c.notes : '' })),
+    components: raw.components.map((c: any) => ({ ...sanitizePart(c), ...c, id: typeof c.id === 'string' ? c.id : crypto.randomUUID(), label: typeof c.label === 'string' ? c.label : (c.name || 'Component'), x: typeof c.x === 'number' ? c.x : 0, y: typeof c.y === 'number' ? c.y : 0, rotation: typeof c.rotation === 'number' ? c.rotation : 0, notes: typeof c.notes === 'string' ? c.notes : '' })),
     pcb: raw.pcb && typeof raw.pcb === 'object' ? raw.pcb : undefined,
     mountingHoles: raw.mountingHoles && typeof raw.mountingHoles === 'object' ? raw.mountingHoles : undefined,
     textItems: Array.isArray(raw.textItems) ? raw.textItems : [],
@@ -18184,9 +18124,8 @@ function exportSVGString(state: AppState, opts: ExportOptions): string {
       lines.push(`  <line x1="${c.x.toFixed(3)}" y1="${(c.y-cm).toFixed(3)}" x2="${c.x.toFixed(3)}" y2="${(c.y+cm).toFixed(3)}" stroke="#555" stroke-width="0.12"/>`);
     }
     if (opts.labels && !opts.drillOnly && exportLayer('labels')) {
-      const lp = componentLabelSvgProps(c);
-      const tr = lp.rotate ? ` transform="rotate(${lp.rotate.toFixed(3)} ${lp.x.toFixed(3)} ${lp.y.toFixed(3)})"` : '';
-      lines.push(`  <text x="${lp.x.toFixed(3)}" y="${lp.y.toFixed(3)}" text-anchor="${lp.textAnchor}" dominant-baseline="${lp.dominantBaseline}" font-size="2" fill="#333"${tr}>${escapeXml(c.label || c.name)}</text>`);
+      const ly = (c.y + getFrontBottomOffset(c) + 2.5).toFixed(3);
+      lines.push(`  <text x="${c.x.toFixed(3)}" y="${ly}" text-anchor="middle" font-size="2" fill="#333">${escapeXml(c.label || c.name)}</text>`);
     }
   }
   const bgArtLines = (opts.includeArtwork && !opts.drillOnly && exportLayer('artwork')) ? buildArtworkSVGLines(state.artworks, 'background', widthMM, heightMM, state.clipArtworkToPanel) : [];
@@ -18419,9 +18358,8 @@ function exportSVG(state: AppState, opts: ExportOptions) {
     }
 
     if (opts.labels && !opts.drillOnly) {
-      const lp = componentLabelSvgProps(c);
-      const tr = lp.rotate ? ` transform="rotate(${lp.rotate.toFixed(3)} ${lp.x.toFixed(3)} ${lp.y.toFixed(3)})"` : '';
-      lines.push(`  <text x="${lp.x.toFixed(3)}" y="${lp.y.toFixed(3)}" text-anchor="${lp.textAnchor}" dominant-baseline="${lp.dominantBaseline}" font-size="2" fill="#333"${tr}>${escapeXml(c.label || c.name)}</text>`);
+      const ly = (c.y + getFrontBottomOffset(c) + 2.5).toFixed(3);
+      lines.push(`  <text x="${c.x.toFixed(3)}" y="${ly}" text-anchor="middle" font-size="2" fill="#333">${escapeXml(c.label || c.name)}</text>`);
     }
   }
 
@@ -20231,7 +20169,7 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
 
       <div className={`mobile-main-dock ${hidden ? 'hidden' : ''} ${dockCollapsed ? 'collapsed' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => { e.stopPropagation(); onDockTouchStart(e); }} onTouchEnd={e => { e.stopPropagation(); onDockTouchEnd(e); }}>
         <button className={mobileSheet === 'add' ? 'active' : ''} onClick={() => openSheet('add')}><b>＋</b><span>Add</span></button>
-        <button className={touchMode === 'select' ? 'active' : ''} onClick={() => onSetTouchMode(touchMode === 'select' ? 'edit' : 'select')}><b>☑</b><span>{touchMode === 'select' ? 'Edit' : 'Select'}</span></button>
+        <button className={touchMode === 'select' ? 'active' : ''} onClick={() => onSetTouchMode(touchMode === 'select' ? 'edit' : 'select')}><b>{touchMode === 'select' ? '☑' : '✎'}</b><span>{touchMode === 'select' ? 'Multi ON' : 'Edit'}</span></button>
         <button className={mobileSheet === 'edit' ? 'active' : ''} disabled={selectedMobileCount === 0} onClick={() => openSheet('edit')}><b>✎</b><span>Part</span></button>
         <button className={mobileSheet === 'view' ? 'active' : ''} onClick={() => openSheet('view')}><b>◉</b><span>View</span></button>
         <button className={mobileSheet === 'more' ? 'active' : ''} onClick={() => openSheet('more')}><b>•••</b><span>More</span></button>
@@ -20836,6 +20774,9 @@ function App() {
   const [sidebarSwipe, setSidebarSwipe] = useState<{ startX: number; startY: number; active: boolean } | null>(null);
   const [drawerCloseSwipe, setDrawerCloseSwipe] = useState<{ startX: number; startY: number } | null>(null);
   const lastComponentTapRef = useRef<{ id: string; t: number; x: number; y: number } | null>(null);
+  // v249: touch events must not be reinterpreted by iOS/Safari ghost mouse events.
+  // Keep this separate from selection logic so mobile tap/edit stays deterministic.
+  const lastTouchEventAtRef = useRef(0);
   useEffect(() => {
     function closeLeftPanelFromPicker() {
       setLeftPanelOpen(false);
@@ -21941,6 +21882,12 @@ function App() {
   // ── SVG mouse events ───────────────────────────────────────────────────
   function onSVGMouseDown(e: React.MouseEvent<SVGSVGElement>) {
     if (e.button !== 0) return;
+    // v249: after a real touch Safari/Chrome may emit a ghost mousedown.
+    // Ignore only real browser mouse events; synthetic touch->mouse calls below have no nativeEvent.
+    if (isRealDesktopMouseEvent(e) && Date.now() - lastTouchEventAtRef.current < 700) {
+      e.preventDefault();
+      return;
+    }
     setComponentMenu(null);
     const mm = clientToMM(e.clientX, e.clientY);
     if (!mm) return;
@@ -22075,13 +22022,17 @@ function App() {
       const id   = group.getAttribute('data-id')!;
       const comp = state.components.find(c => c.id === id)!;
       const groupIds = comp.groupId ? state.components.filter(c => c.groupId === comp.groupId).map(c => c.id) : [id];
+      const isTouchSynthetic = !isRealDesktopMouseEvent(e);
+      // v249: mobile taps are component-level. Desktop may still select a grouped object,
+      // but phone Edit/Select must not expand a tap into the whole group unexpectedly.
+      const selectionIds = isTouchSynthetic ? [id] : groupIds;
 
       // Desktop double-click / mobile synthesized double-tap: select the component,
       // open the right sidebar and expand its edit/properties section. Do this
       // before starting drag so a double-click never leaves a component stuck in drag.
       if (e.detail >= 2) {
         e.preventDefault();
-        dispatch({ type: 'SELECT', ids: groupIds, additive: false });
+        dispatch({ type: 'SELECT', ids: selectionIds, additive: false });
         openComponentPropertiesPanel();
         setDragging(null);
         setDragPreview(null);
@@ -22090,17 +22041,17 @@ function App() {
       }
 
       if (touchMode === 'select') {
-        const next = groupIds.every(gid => state.selected.includes(gid))
-          ? state.selected.filter(selId => !groupIds.includes(selId))
-          : [...new Set([...state.selected, ...groupIds])];
+        const next = selectionIds.every(gid => state.selected.includes(gid))
+          ? state.selected.filter(selId => !selectionIds.includes(selId))
+          : [...new Set([...state.selected, ...selectionIds])];
         dispatch({ type: 'SELECT', ids: next, additive: false });
         return;
       }
 
       if (e.shiftKey) {
-        dispatch({ type: 'SELECT', ids: groupIds, additive: true });
-      } else if (!groupIds.every(gid => state.selected.includes(gid))) {
-        dispatch({ type: 'SELECT', ids: groupIds, additive: false });
+        dispatch({ type: 'SELECT', ids: selectionIds, additive: true });
+      } else if (!selectionIds.every(gid => state.selected.includes(gid))) {
+        dispatch({ type: 'SELECT', ids: selectionIds, additive: false });
       }
 
       if (comp.locked) {
@@ -22114,10 +22065,10 @@ function App() {
       setCanvasInteractionMode('draggingComponents');
 
       const newSelected = e.shiftKey
-        ? [...new Set([...state.selected, ...groupIds])]
-        : groupIds.every(gid => state.selected.includes(gid))
+        ? [...new Set([...state.selected, ...selectionIds])]
+        : selectionIds.every(gid => state.selected.includes(gid))
           ? state.selected
-          : groupIds;
+          : selectionIds;
 
       const startPositions = new Map(
         state.components
@@ -22131,7 +22082,18 @@ function App() {
       setDragPreview(initPreview);
       softHaptic(5);
     } else {
-      if (touchMode !== 'pan' && isRealDesktopMouseEvent(e)) {
+      const isDesktopMouse = isRealDesktopMouseEvent(e);
+      if (!isDesktopMouse) {
+        // v249: on mobile an empty tap is always an explicit clear-selection gesture.
+        // This must work in both Edit and Select/Multi, and must not depend on shiftKey.
+        e.preventDefault();
+        dispatch({ type: 'DESELECT_ALL' });
+        setPendingMarquee(null);
+        setMarqueeSelection(null);
+        resetCanvasInteractionMode();
+        return;
+      }
+      if (touchMode !== 'pan') {
         e.preventDefault();
         // Shift+marquee is additive: keep the current selection while drawing
         // the selection rectangle, then merge selected ids on mouseup. Direction
@@ -22433,6 +22395,7 @@ function App() {
 
     if (e.touches.length !== 1) return;
     if (pinching) return;
+    lastTouchEventAtRef.current = Date.now();
     const t = e.touches[0];
 
     // Mobile ruler: handle touch directly. Synthetic mouse events are unreliable on iOS.
@@ -22486,8 +22449,9 @@ function App() {
       clientX: t.clientX,
       clientY: t.clientY,
       target: e.target,
-      // Mobile has no Shift key; use desktop smart-snap path for touch placement/drag.
-      shiftKey: true,
+      // v249: mobile tap selection must not masquerade as Shift-click.
+      // Smart snapping for actual drag still happens in touchmove below.
+      shiftKey: false,
       preventDefault: () => {},
       stopPropagation: () => {},
     } as unknown as React.MouseEvent<SVGSVGElement>);
@@ -22519,6 +22483,7 @@ function App() {
 
     if (e.touches.length !== 1) return;
     if (pinching) return;
+    lastTouchEventAtRef.current = Date.now();
     const t = e.touches[0];
     cancelLongPressIfMoved(t.clientX, t.clientY);
     if (touchMode === 'ruler') {
@@ -22562,6 +22527,7 @@ function App() {
   }
 
   function onSVGTouchEnd(e: React.TouchEvent<SVGSVGElement>) {
+    lastTouchEventAtRef.current = Date.now();
     clearComponentLongPress();
     e.preventDefault();
     if (pinching) {
