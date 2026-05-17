@@ -12269,6 +12269,110 @@ body {
   }
 }
 
+
+
+/* v273: fix accidental unstyled Grid chip side-column + compact mobile HUD placement */
+@media (max-width: 860px), (pointer: coarse) {
+  .mobile-grid-corner-chip {
+    position: fixed !important;
+    left: calc(10px + var(--safe-left, 0px)) !important;
+    top: calc(92px + var(--safe-top, 0px)) !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: 1098 !important;
+    pointer-events: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    width: auto !important;
+    max-width: none !important;
+    border: 1px solid rgba(46,233,255,.24) !important;
+    border-radius: 999px !important;
+    background: rgba(8,12,15,.74) !important;
+    color: #bfeff7 !important;
+    padding: 5px 10px !important;
+    font: 10.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+    line-height: 1 !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.25) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    white-space: nowrap !important;
+  }
+
+  .mobile-workflow-chip-row {
+    position: fixed !important;
+    left: calc(8px + var(--safe-left, 0px)) !important;
+    right: auto !important;
+    bottom: calc(var(--safe-bottom, 0px) + 80px) !important;
+    width: auto !important;
+    max-width: 46vw !important;
+    justify-content: flex-start !important;
+    opacity: .62 !important;
+    z-index: 1097 !important;
+    pointer-events: none !important;
+    transform: none !important;
+  }
+  .mobile-workflow-chip-row .mobile-workflow-chip {
+    padding: 3px 7px !important;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    min-height: 20px !important;
+    border-radius: 999px !important;
+    background: rgba(8,12,15,.54) !important;
+    border-color: rgba(46,233,255,.18) !important;
+    color: rgba(190,239,247,.78) !important;
+    box-shadow: none !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+  .mobile-workflow-chip-row .mobile-workflow-chip.warn {
+    color: rgba(255,209,138,.78) !important;
+    border-color: rgba(255,184,77,.22) !important;
+  }
+  .mobile-workflow-chip-row .mobile-workflow-chip.bad {
+    color: rgba(255,196,196,.82) !important;
+    border-color: rgba(255,107,107,.26) !important;
+  }
+
+  .mobile-safe-zone-pill {
+    opacity: .38 !important;
+    pointer-events: none !important;
+  }
+
+  /* Restore safe-zone geometry visibility; keep only the status pill quiet. */
+  .mobile-safe-zone-layer { opacity: 1 !important; }
+  .mobile-safe-zone-layer .edge {
+    fill: rgba(255,184,77,.055) !important;
+    stroke: rgba(255,184,77,.35) !important;
+  }
+  .mobile-safe-zone-layer .rail {
+    fill: rgba(255,107,107,.050) !important;
+    stroke: rgba(255,107,107,.34) !important;
+    opacity: .92 !important;
+  }
+  .mobile-safe-zone-layer .pcb-limit {
+    fill: rgba(46,233,255,.045) !important;
+    stroke: rgba(46,233,255,.34) !important;
+    opacity: .96 !important;
+  }
+  .mobile-safe-zone-layer .clearance {
+    fill: rgba(180,145,255,.035) !important;
+    stroke: rgba(180,145,255,.24) !important;
+    opacity: .78 !important;
+  }
+
+  .ruler-result-bar,
+  .ruler-result-panel,
+  .ruler-toolbar,
+  .measurement-result,
+  .mobile-ruler-result {
+    bottom: calc(var(--safe-bottom, 0px) + 146px) !important;
+    left: calc(10px + var(--safe-left, 0px)) !important;
+    right: calc(10px + var(--safe-right, 0px)) !important;
+    max-width: none !important;
+    z-index: 1320 !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -12284,7 +12388,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v272-safe_zones_overlay_restore';
+const APP_VERSION = 'v273-mobile_grid_side_column_fix';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -25295,138 +25399,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 </script>
 </body>
 </html>
-
-
-/* v270: move mobile Grid chip to top-left corner */
-@media (max-width: 860px), (pointer: coarse) {
-  .mobile-grid-corner-chip {
-    position: fixed;
-    left: calc(10px + var(--safe-left, 0px));
-    top: calc(92px + var(--safe-top, 0px));
-    z-index: 1098;
-    pointer-events: none;
-    border: 1px solid rgba(46,233,255,.24);
-    border-radius: 999px;
-    background: rgba(8,12,15,.74);
-    color: #bfeff7;
-    padding: 5px 10px;
-    font: 10.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    box-shadow: 0 8px 24px rgba(0,0,0,.25);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    white-space: nowrap;
-  }
-}
-
-/* v271: compact mobile preflight + ruler exit/overlap cleanup */
-@media (max-width: 860px), (pointer: coarse) {
-  .mobile-workflow-chip-row {
-    left: calc(8px + var(--safe-left, 0px)) !important;
-    right: auto !important;
-    bottom: calc(var(--safe-bottom, 0px) + 80px) !important;
-    width: auto !important;
-    max-width: 46vw !important;
-    justify-content: flex-start !important;
-    opacity: .62 !important;
-    z-index: 1097 !important;
-    pointer-events: none !important;
-    transform: none !important;
-  }
-
-  .mobile-workflow-chip-row .mobile-workflow-chip {
-    padding: 3px 7px !important;
-    font-size: 8.5px !important;
-    line-height: 1 !important;
-    min-height: 20px !important;
-    border-radius: 999px !important;
-    background: rgba(8,12,15,.54) !important;
-    border-color: rgba(46,233,255,.18) !important;
-    color: rgba(190,239,247,.78) !important;
-    box-shadow: none !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-  }
-
-  .mobile-workflow-chip-row .mobile-workflow-chip.warn {
-    color: rgba(255,209,138,.78) !important;
-    border-color: rgba(255,184,77,.22) !important;
-  }
-
-  .mobile-workflow-chip-row .mobile-workflow-chip.bad {
-    color: rgba(255,196,196,.82) !important;
-    border-color: rgba(255,107,107,.26) !important;
-  }
-
-  /* Ruler readout should not sit on top of the dock/preflight chip. */
-  .ruler-result-bar,
-  .ruler-result-panel,
-  .ruler-toolbar,
-  .measurement-result,
-  .mobile-ruler-result {
-    bottom: calc(var(--safe-bottom, 0px) + 146px) !important;
-    left: calc(10px + var(--safe-left, 0px)) !important;
-    right: calc(10px + var(--safe-right, 0px)) !important;
-    max-width: none !important;
-    z-index: 1320 !important;
-  }
-
-  /* Generic fallback for inline ruler control container if class names are absent. */
-  .canvas-wrap button {
-    touch-action: manipulation;
-  }
-
-  .mobile-mode-pill-v250.ruler,
-  .mobile-mode-pill-v250 .ruler {
-    opacity: .78 !important;
-  }
-}
-
-
-/* v272: restore safe-zone overlay visibility; make only the status pill quieter */
-.safe-zones-overlay,
-.safe-zones-layer,
-.safe-zone-overlay,
-.safe-zone-layer,
-svg .safe-zones-overlay,
-svg .safe-zone-overlay {
-  opacity: 1 !important;
-}
-
-.safe-zones-overlay rect,
-.safe-zones-overlay circle,
-.safe-zones-overlay path,
-.safe-zones-overlay line,
-.safe-zone-overlay rect,
-.safe-zone-overlay circle,
-.safe-zone-overlay path,
-.safe-zone-overlay line,
-.safe-zones-layer rect,
-.safe-zones-layer circle,
-.safe-zones-layer path,
-.safe-zones-layer line,
-.safe-zone-layer rect,
-.safe-zone-layer circle,
-.safe-zone-layer path,
-.safe-zone-layer line {
-  opacity: revert !important;
-}
-
-/* The top SAFE ZONES status should be unobtrusive, not the actual overlay. */
-.safe-zones-status,
-.safe-zones-pill,
-.safe-zone-status,
-.safe-zone-pill,
-.mobile-safe-zones-status,
-.mobile-safe-zones-pill {
-  opacity: .38 !important;
-  pointer-events: none !important;
-}
-
-/* Fallback for the exact text pill if it has no stable class. */
-.canvas-wrap [class*="safe"][class*="pill"],
-.canvas-wrap [class*="Safe"][class*="pill"],
-.canvas-wrap [class*="safe"][class*="status"],
-.canvas-wrap [class*="Safe"][class*="status"] {
-  opacity: .38 !important;
-  pointer-events: none !important;
-}
