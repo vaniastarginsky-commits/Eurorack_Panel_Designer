@@ -11374,7 +11374,9 @@ body {
 
 
 
-/* v258: mobile dock button sizing fix.
+/* v260: mobile Add+ opens as a real pull-up component picker; keeps v259 Hide UI removal.
+*/
+/* v259: remove Hide UI / Hide dock controls from mobile UI.
    The normal bottom dock should use the full width with five equal, thumb-sized buttons.
    Keep the selected action rail as the only selected-state bar; it already scrolls horizontally well. */
 @media (max-width: 860px), (pointer: coarse) {
@@ -11449,6 +11451,90 @@ body {
   }
 }
 
+
+
+/* v260: Mobile Add+ becomes a real pull-up component picker. */
+@media (max-width: 860px), (pointer: coarse) {
+  .mobile-bottom-sheet.component-picker-sheet {
+    max-height: min(74vh, 640px) !important;
+    padding-bottom: calc(14px + var(--safe-bottom)) !important;
+  }
+  .mobile-component-picker {
+    display: grid;
+    gap: 10px;
+  }
+  .mobile-picker-search {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    min-height: 44px !important;
+    border-color: rgba(46,233,255,0.34) !important;
+    background: rgba(5,9,12,0.92) !important;
+  }
+  .mobile-picker-cats {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 1px 1px 8px;
+    margin: 0 -2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .mobile-picker-cats::-webkit-scrollbar { display: none; }
+  .mobile-picker-cats button {
+    flex: 0 0 auto;
+    min-height: 34px !important;
+    padding: 6px 10px !important;
+    border-radius: 999px !important;
+    font-size: 12px !important;
+    color: #cfe8ef;
+    background: rgba(255,255,255,0.055);
+  }
+  .mobile-picker-cats button.active {
+    background: rgba(0,118,150,0.68) !important;
+    border-color: rgba(46,233,255,0.82) !important;
+    color: #ffffff !important;
+  }
+  .mobile-picker-section {
+    margin: 0 !important;
+    padding: 9px !important;
+    border-radius: 16px !important;
+    background: rgba(255,255,255,0.026) !important;
+  }
+  .mobile-picker-section .mobile-sheet-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .mobile-picker-section .mobile-sheet-label span {
+    color: #7fdff0;
+    font-size: 10px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .mobile-add-grid.picker-quick,
+  .mobile-add-grid.picker-library {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+  .mobile-add-grid.picker-library {
+    max-height: min(40vh, 360px);
+    overflow: auto;
+    padding-right: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-add-grid.picker-quick button,
+  .mobile-add-grid.picker-library button {
+    min-height: 62px !important;
+    padding: 8px 9px !important;
+    text-align: left !important;
+    align-content: center;
+    border-radius: 13px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -11463,7 +11549,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v258-mobile_dock_button_fix';
+const APP_VERSION = 'v260-mobile_add_component_picker';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -20921,6 +21007,7 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
 
   const widthMM = panelWidthMM(state.panel);
   const [mobileAddQuery, setMobileAddQuery] = useState('');
+  const [mobileAddCategory, setMobileAddCategory] = useState<'all' | 'verified' | NonNullable<ComponentDef['category']>>('all');
   const commonTypes: ComponentType[] = ['pot9mm', 'jack', 'slimjack', 'toggle', 'led3mm', 'encoder', 'fader20', 'fader20led', 'tactled', 'trimmer6mm', 'slideSwitchMini', 'customrect'];
   const commonParts = sortComponentDefs(commonTypes
     .map(t => COMPONENT_LIBRARY.find(c => c.type === t))
@@ -20935,9 +21022,14 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
     });
     const sorted = sortComponentDefs(all);
     const q = mobileAddQuery.trim().toLowerCase();
-    if (!q) return sorted;
-    return sorted.filter(def => `${def.name} ${def.type} ${def.category || ''} ${def.manufacturer || ''} ${def.partNumber || ''}`.toLowerCase().includes(q));
-  }, [state.customParts, mobileAddQuery]);
+    return sorted.filter(def => {
+      const cat = def.category ?? inferCategoryForType(def.type);
+      const verified = (def.verificationStatus || 'approximate') !== 'approximate';
+      const matchesCategory = mobileAddCategory === 'all' || (mobileAddCategory === 'verified' ? verified : cat === mobileAddCategory);
+      const hay = `${def.name} ${def.type} ${cat || ''} ${def.manufacturer || ''} ${def.partNumber || ''}`.toLowerCase();
+      return matchesCategory && (!q || hay.includes(q));
+    });
+  }, [state.customParts, mobileAddQuery, mobileAddCategory]);
   const [mobileTemplateQuery, setMobileTemplateQuery] = useState('');
   const [mobileSpacingH, setMobileSpacingH] = useState('10');
   const [mobileSpacingV, setMobileSpacingV] = useState('10');
@@ -21069,7 +21161,7 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
     if (dx > 28 && Math.abs(dx) > Math.abs(dy) * 1.15) setDockCollapsed(false);
   }
 
-  const sheetTitle = mobileSheet === 'add' ? 'Add component' : mobileSheet === 'view' ? 'View & layers' : mobileSheet === 'edit' ? 'Mobile inspector' : mobileSheet === 'templates' ? 'Templates' : 'More tools';
+  const sheetTitle = mobileSheet === 'add' ? 'Component picker' : mobileSheet === 'view' ? 'View & layers' : mobileSheet === 'edit' ? 'Mobile inspector' : mobileSheet === 'templates' ? 'Templates' : 'More tools';
 
   return (
     <>
@@ -21095,7 +21187,7 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
       </div>
 
       <div className={`mobile-main-dock ${hidden ? 'hidden' : ''} ${dockCollapsed ? 'collapsed' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => { e.stopPropagation(); onDockTouchStart(e); }} onTouchEnd={e => { e.stopPropagation(); onDockTouchEnd(e); }}>
-        <button className={mobileSheet === 'add' ? 'active' : ''} onClick={() => openSheet('add')}><b>＋</b><span>Add</span></button>
+        <button className={mobileSheet === 'add' ? 'active' : ''} onClick={() => openSheet('add')} title="Open component picker"><b>＋</b><span>Add</span></button>
         <button className={touchMode === 'select' ? 'active' : ''} onClick={() => onSetTouchMode(touchMode === 'select' ? 'edit' : 'select')} title={touchMode === 'select' ? 'Multi-select is on; tap to return to single edit' : 'Single edit mode; tap to enable multi-select'}><b>{touchMode === 'select' ? '☑' : '✎'}</b><span>{touchMode === 'select' ? 'Multi ON' : 'Single'}</span></button>
         <button className={mobileSheet === 'edit' ? 'active' : ''} disabled={selectedMobileCount === 0} onClick={() => openSheet('edit')}><b>✎</b><span>Part</span></button>
         <button className={mobileSheet === 'view' ? 'active' : ''} onClick={() => openSheet('view')}><b>◉</b><span>View</span></button>
@@ -21114,7 +21206,7 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
 
       {mobileSheet && (
         <div className="mobile-sheet-backdrop" onMouseDown={() => setMobileSheet(null)}>
-          <div className="mobile-bottom-sheet" onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
+          <div className={`mobile-bottom-sheet ${mobileSheet === 'add' ? 'component-picker-sheet' : ''}`} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>
             <div className="mobile-sheet-handle" />
             <div className="mobile-sheet-head">
               <strong>{sheetTitle}</strong>
@@ -21122,32 +21214,42 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
             </div>
 
             {mobileSheet === 'add' && (
-              <>
-                <div className="mobile-sheet-note">Adds the part at the center of the current panel. Drag it after placement.</div>
-                <div className="mobile-sheet-section compact-first">
-                  <div className="mobile-sheet-label">Common</div>
-                  <div className="mobile-add-grid">
-                    {commonParts.map(def => (
-                      <button key={`common-${def.type}`} title={partTooltip(def)} onClick={() => add(def)}>
-                        <PartPickerLabel def={def} />
-                        <small>{partMeta(def)}</small>
-                      </button>
-                    ))}
-                  </div>
+              <div className="mobile-component-picker">
+                <div className="mobile-sheet-note">Pull-up component picker. Tap a part to place it at the panel center, then drag/snap it into position.</div>
+                <input className="mobile-add-search mobile-picker-search" value={mobileAddQuery} onChange={e => setMobileAddQuery(e.target.value)} placeholder="Search parts: jack, pot, fader, LED…" />
+                <div className="mobile-picker-cats" role="tablist" aria-label="Component categories">
+                  {([
+                    ['all','All'], ['verified','Verified'], ['potentiometer','Pots'], ['jack','Jacks'], ['fader','Faders'], ['switch','Switches'], ['led','LED'], ['encoder','Encoders'], ['custom','Custom']
+                  ] as [typeof mobileAddCategory, string][]).map(([key,label]) => (
+                    <button key={key} className={mobileAddCategory === key ? 'active' : ''} onClick={() => setMobileAddCategory(key)}>{label}</button>
+                  ))}
                 </div>
-                <div className="mobile-sheet-section">
-                  <div className="mobile-sheet-label">Full library</div>
-                  <input className="mobile-add-search" value={mobileAddQuery} onChange={e => setMobileAddQuery(e.target.value)} placeholder="Search: fader, jack, led, pot…" />
-                  <div className="mobile-add-grid full">
+                {!mobileAddQuery.trim() && mobileAddCategory === 'all' && (
+                  <div className="mobile-sheet-section compact-first mobile-picker-section">
+                    <div className="mobile-sheet-label">Quick picks</div>
+                    <div className="mobile-add-grid picker-quick">
+                      {commonParts.map(def => (
+                        <button key={`common-${def.type}`} title={partTooltip(def)} onClick={() => add(def)}>
+                          <PartPickerLabel def={def} />
+                          <small>{partMeta(def)}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div className="mobile-sheet-section mobile-picker-section">
+                  <div className="mobile-sheet-label">Library <span>{allMobileParts.length} parts</span></div>
+                  <div className="mobile-add-grid full picker-library">
                     {allMobileParts.map(def => (
                       <button key={`all-${def.type}-${def.name}-${def.partNumber || ''}`} title={partTooltip(def)} onClick={() => add(def)}>
                         <PartPickerLabel def={def} />
                         <small>{partMeta(def)}</small>
                       </button>
                     ))}
+                    {allMobileParts.length === 0 && <div className="mobile-sheet-note">No parts found. Try another search or category.</div>}
                   </div>
                 </div>
-              </>
+              </div>
             )}
 
             {mobileSheet === 'view' && (
@@ -21382,7 +21484,6 @@ function CanvasQuickAddDock({ hidden, focusMode, previewMode, onToggleFocus, onT
                   <div className="mobile-sheet-label">Tools</div>
                   <div className="mobile-action-grid">
                     <button className={focusMode ? 'active' : ''} onClick={onToggleFocus}>{focusMode ? 'Exit focus' : 'Focus mode'}</button>
-                    <button onClick={() => { setMobileSheet(null); setDockCollapsed(true); }}>Hide dock</button>
                     <button onClick={() => openSheet('add')}>Quick add</button>
                     <button onClick={() => { setMobileSheet(null); onOpenExport(); }}>Export preview</button>
                     <button onClick={() => openSheet('templates')}>Mobile templates</button>
@@ -24402,7 +24503,6 @@ function App() {
               </div>
             </details>
             {isNarrowInitial && <button title="Toggle safe-zone overlay" className={showSafeZones ? 'active' : ''} style={{ padding:'5px 7px', fontSize:11 }} onClick={() => setShowSafeZones(v => !v)}>Safe</button>}
-            {isNarrowInitial && <button title="Hide the bottom dock for more canvas space" style={{ padding:'5px 7px', fontSize:11 }} onClick={() => window.dispatchEvent(new Event('mobile-hide-main-dock'))}>Hide UI</button>}
             <button className="danger" title="Delete all selected components" style={{ padding:'5px 7px', fontSize:11 }} onClick={() => dispatch({ type: 'DELETE_SELECTED' })}>Del</button>
             <button title="Clear the current component selection" style={{ padding:'5px 7px', fontSize:11 }} onClick={() => { dispatch({ type: 'DESELECT_ALL' }); showMobileToast('Selection cleared'); }}>Clear</button>
             {touchMode === 'select' && <button title="Return to Edit mode so dragging a selected component moves the selection" style={{ padding:'5px 7px', fontSize:11 }} onClick={() => setTouchMode('edit')}>Edit</button>}
