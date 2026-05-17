@@ -10806,6 +10806,23 @@ body {
     .mobile-safe-zone-layer text { fill:#ffd89a; font-size:1.35px; paint-order:stroke; stroke:rgba(0,0,0,.65); stroke-width:.32; }
     @media (max-width:860px) { .mobile-selection-actions .quick-label-button { display:inline-flex; } .mobile-safe-zone-pill { top:72px; max-width:calc(100vw - 16px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } }
 
+    /* v268 desktop safe zones: same manufacturing overlay available on desktop canvas */
+    @media (min-width:861px) {
+      .mobile-safe-zone-pill {
+        top: 64px;
+        left: 50%;
+        font-size: 11px;
+        padding: 6px 10px;
+        border-color: rgba(255,184,77,.42);
+        background: rgba(9,12,15,.74);
+      }
+      .mobile-safe-zone-layer .edge { stroke-width: .16; }
+      .mobile-safe-zone-layer .rail { opacity: .92; }
+      .mobile-safe-zone-layer .pcb-limit { opacity: .96; }
+      .mobile-safe-zone-layer .clearance { opacity: .78; }
+    }
+
+
 
     /* v252: mobile overlay stack + label readability polish */
     @media (max-width: 860px), (pointer: coarse) {
@@ -12152,6 +12169,106 @@ body {
     pointer-events: none !important;
   }
 }
+
+
+/* v269 safe zones overlay/autosave polish */
+.mobile-safe-zone-pill {
+  top: 8px !important;
+  left: 50% !important;
+  bottom: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 46 !important;
+  opacity: .58 !important;
+  padding: 4px 8px !important;
+  font-size: 9.5px !important;
+  letter-spacing: .08em !important;
+  background: rgba(9,12,15,.42) !important;
+  border-color: rgba(255,184,77,.22) !important;
+  color: rgba(255,216,154,.82) !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,.22) !important;
+  pointer-events: none !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  backdrop-filter: blur(6px) !important;
+}
+.mobile-safe-zone-layer {
+  opacity: .52 !important;
+  pointer-events: none !important;
+}
+.mobile-safe-zone-layer .edge {
+  fill: rgba(255,184,77,.028) !important;
+  stroke: rgba(255,184,77,.24) !important;
+  stroke-width: .13 !important;
+}
+.mobile-safe-zone-layer .rail {
+  fill: rgba(255,107,107,.026) !important;
+  stroke: rgba(255,107,107,.22) !important;
+  stroke-width: .12 !important;
+  opacity: .62 !important;
+}
+.mobile-safe-zone-layer .pcb-limit {
+  fill: rgba(46,233,255,.023) !important;
+  stroke: rgba(46,233,255,.22) !important;
+  stroke-width: .13 !important;
+  opacity: .66 !important;
+}
+.mobile-safe-zone-layer .clearance {
+  fill: rgba(180,145,255,.018) !important;
+  stroke: rgba(180,145,255,.18) !important;
+  stroke-width: .10 !important;
+  opacity: .46 !important;
+}
+.mobile-safe-zone-layer text,
+.mobile-safe-zone-layer .safe-zone-top-labels text {
+  fill: rgba(255,216,154,.62) !important;
+  font-size: .95px !important;
+  opacity: .56 !important;
+  paint-order: stroke !important;
+  stroke: rgba(0,0,0,.55) !important;
+  stroke-width: .22 !important;
+}
+@media (min-width: 861px) {
+  .mobile-safe-zone-pill {
+    top: 10px !important;
+    font-size: 10px !important;
+    opacity: .50 !important;
+  }
+}
+@media (max-width: 860px), (pointer: coarse) {
+  .mobile-safe-zone-pill {
+    top: 6px !important;
+    max-width: calc(100vw - 84px) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    opacity: .54 !important;
+  }
+
+  /* Right-wall autosave badge: vertical, not rotated/upside-down. */
+  .mobile-autosave-chip {
+    position: fixed !important;
+    right: max(2px, env(safe-area-inset-right, 0px)) !important;
+    left: auto !important;
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    transform-origin: center right !important;
+    writing-mode: vertical-rl !important;
+    text-orientation: mixed !important;
+    max-width: none !important;
+    max-height: min(44vh, 220px) !important;
+    white-space: nowrap !important;
+    opacity: .34 !important;
+    padding: 6px 4px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    border-color: rgba(255,255,255,.10) !important;
+    background: rgba(9,12,15,.50) !important;
+    box-shadow: 0 4px 18px rgba(0,0,0,.20) !important;
+    pointer-events: none !important;
+    animation: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -12167,7 +12284,7 @@ body {
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APP_VERSION = 'v267-mobile_ux_cleanup_pack';
+const APP_VERSION = 'v269-safe_zones_overlay_autosave_fix';
 const HP_TO_MM = 5.08;
 const PANEL_HEIGHT_MM = 128.5;
 const MOUNTING_HOLE_TOP_Y_MM = 3.0;
@@ -15738,7 +15855,7 @@ function MobileSafeZonesLayer({ widthMM, components }: { widthMM: number; compon
   const pcbSafeTop = 9;
   const pcbSafeH = 110;
   return (
-    <g className="mobile-safe-zone-layer">
+    <g className="mobile-safe-zone-layer safe-zones-layer-v269">
       <rect className="edge" x={edge} y={edge} width={Math.max(0.1, widthMM - edge * 2)} height={Math.max(0.1, PANEL_HEIGHT_MM - edge * 2)} fill="none" />
       <rect className="rail" x={0} y={0} width={widthMM} height={railTop} />
       <rect className="rail" x={0} y={railBottom} width={widthMM} height={PANEL_HEIGHT_MM - railBottom} />
@@ -15747,9 +15864,11 @@ function MobileSafeZonesLayer({ widthMM, components }: { widthMM: number; compon
         const r = Math.max((c.keepoutW || c.frontDiameter || c.holeDiameter) / 2, (c.keepoutH || c.frontDiameter || c.holeDiameter) / 2, (c.minSpacing || 0) / 2);
         return <circle key={`safe-${c.id}`} className="clearance" cx={c.x} cy={c.y} r={Math.max(1.5, r)} />;
       })}
-      <text x={edge + .8} y={edge + 2.1}>2mm edge safe area</text>
-      <text x={edge + .8} y={railTop - 1.0}>rail screw / lip zone</text>
-      <text x={edge + .8} y={pcbSafeTop + 3.0}>110mm practical PCB envelope</text>
+      <g className="safe-zone-top-labels">
+        <text x={edge + .8} y={edge + 1.35}>2mm edge</text>
+        <text x={edge + .8} y={edge + 2.75}>rail / lip</text>
+        <text x={edge + .8} y={edge + 4.15}>PCB 110mm</text>
+      </g>
     </g>
   );
 }
@@ -20834,7 +20953,7 @@ function CommandPalette({ commands, onClose }: { commands: CommandItem[]; onClos
 // TOOLBAR
 // ═══════════════════════════════════════════════════════════════════════════
 
-function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpenLocalProjects, onOpenProductionCheck, onOpenShortcuts, leftPanelOpen, rightPanelOpen, onToggleLeftPanel, onToggleRightPanel, touchMode, onSetTouchMode, onFitView, onResetView, snapSettings, onSnapSettingsChange, clearanceMode, onToggleClearanceMode }: {
+function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpenLocalProjects, onOpenProductionCheck, onOpenShortcuts, leftPanelOpen, rightPanelOpen, onToggleLeftPanel, onToggleRightPanel, touchMode, onSetTouchMode, onFitView, onResetView, snapSettings, onSnapSettingsChange, clearanceMode, onToggleClearanceMode, showSafeZones, onToggleSafeZones }: {
   onImport: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onExportSVGClick: () => void;
   onRequestProjectFileImport: () => void;
@@ -20853,6 +20972,8 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
   onSnapSettingsChange: (s: SnapSettings) => void;
   clearanceMode: boolean;
   onToggleClearanceMode: () => void;
+  showSafeZones: boolean;
+  onToggleSafeZones: () => void;
 }) {
   const state    = useAppState();
   const dispatch = useAppDispatch();
@@ -20984,7 +21105,9 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
                 <button className={touchMode === 'edit' ? 'active' : ''} onClick={() => onSetTouchMode('edit')}>✏️ Edit</button>
                 <button className={touchMode === 'pan' ? 'active' : ''} onClick={() => onSetTouchMode('pan')}>✋ Pan</button>
                 <button className={touchMode === 'select' ? 'active' : ''} onClick={() => onSetTouchMode('select')}>☑ Select</button>
-                <button className={touchMode === 'ruler' ? 'active' : ''} onClick={() => onSetTouchMode('ruler')}>📏 Ruler</button><button className={clearanceMode ? 'active' : ''} onClick={onToggleClearanceMode}>Clearance</button>
+                <button className={touchMode === 'ruler' ? 'active' : ''} onClick={() => onSetTouchMode('ruler')}>📏 Ruler</button>
+                <button className={clearanceMode ? 'active' : ''} onClick={onToggleClearanceMode}>Clearance</button>
+                <button className={showSafeZones ? 'active' : ''} onClick={onToggleSafeZones}>{showSafeZones ? 'Hide safe zones' : 'Safe zones'}</button>
                 <button onClick={() => { onOpenProductionCheck(); setOpenMenu(null); }}>Production check</button>
                 <button onClick={() => { onFitView(); setOpenMenu(null); }}>Fit to screen</button>
                 <button onClick={() => { onResetView(); setOpenMenu(null); }}>Reset view</button>
@@ -21005,6 +21128,12 @@ function Toolbar({ onImport, onExportSVGClick, onRequestProjectFileImport, onOpe
                   </button>
                 ))}
               </div>
+              <div className="menu-title" style={{ marginTop: 10 }}>Overlays</div>
+              <div className="menu-grid two">
+                <button className={showSafeZones ? 'active' : ''} onClick={onToggleSafeZones}>{showSafeZones ? 'Safe zones ON' : 'Safe zones'}</button>
+                <button className={clearanceMode ? 'active' : ''} onClick={onToggleClearanceMode}>{clearanceMode ? 'Clearance ON' : 'Clearance'}</button>
+              </div>
+              <div className="menu-note">Safe zones overlays edge margin, rail/lip zones, 110mm PCB envelope and component clearance circles on the desktop canvas too.</div>
             </>
           )}
 
@@ -24740,6 +24869,7 @@ function App() {
   const commandItems: CommandItem[] = [
     { id:'preview-mode', label: previewMode ? 'Exit preview mode' : 'Enter preview mode', hint:'Hide editing HUD and show the module like a product', run:() => setPreviewMode(v => !v) },
     { id:'toggle-grid', label:'Toggle grid layer', hint:'Show/hide grid overlay', run:() => dispatch({ type:'SET_LAYER_VISIBILITY', key:'grid', value:!state.layerVisibility.grid }) },
+    { id:'toggle-safe-zones', label: showSafeZones ? 'Hide safe zones' : 'Show safe zones', hint:'Overlay edge, rail/lip, PCB envelope and clearance zones', run:() => setShowSafeZones(v => !v) },
     { id:'focus-mode', label: focusMode ? 'Exit focus mode' : 'Enter focus mode', hint:'Hide side panels and keep canvas clear', run:() => toggleFocusMode() },
     { id:'import-kicad-pcb', label:'Import KiCad PCB…', hint:'Read .kicad_pcb footprint positions into the front-panel layout', run:() => requestKiCadPcbImport() },
         { id:'shortcuts', label:'Show shortcuts', hint:'Keyboard and mouse cheat sheet', run:() => setShowShortcutHelp(true) },
@@ -24791,6 +24921,8 @@ function App() {
         onSnapSettingsChange={setSnapSettings}
         clearanceMode={clearanceMode}
         onToggleClearanceMode={() => setClearanceMode(v => !v)}
+        showSafeZones={showSafeZones}
+        onToggleSafeZones={() => setShowSafeZones(v => !v)}
       />
       {showCommandPalette && <CommandPalette commands={commandItems} onClose={() => setShowCommandPalette(false)} />}
       {showShortcutHelp && <ShortcutHelpOverlay onClose={() => setShowShortcutHelp(false)} />}
